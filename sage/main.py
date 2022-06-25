@@ -9,7 +9,6 @@ from googleapiclient.errors import HttpError
 
 import base64
 from bs4 import BeautifulSoup
-import email
 import re
 
 # If modifying these scopes, delete the file token.json.
@@ -41,19 +40,19 @@ def main():
     try:
         # Call the Gmail API
         service = build('gmail', 'v1', credentials=creds)
+        # List the messages in the mailbox.
         results = service.users().messages().list(userId='me').execute()
-        message_ids = results.get('messages', [])
-
-        if not message_ids:
+        if not results:
             print('No messages found.')
             return
-        
-        results = service.users().messages().list(userId='me').execute()
-        messages = results.get('messages', [])
-        messages = [service.users().messages().get(userId='me', id=msg['id']).execute() for msg in messages]
 
-        for content in messages:
-            headers = content['payload']['headers']
+        message_ids = results['messages']
+        # Get the message details
+        messages = [service.users().messages().get(userId='me', id=msg_id['id']).execute() for msg_id in message_ids]
+
+        for msg in messages:
+            headers = msg['payload']['headers']
+            
             for data in headers:
                 if data['name'] == 'From':
                     sender = data['value']
@@ -61,21 +60,25 @@ def main():
                     subject = data['value']
             
             if sender == 'Chase <no.reply.alerts@chase.com>':
-                print(subject)
+                pass
+                # print(subject)
 
-            message = None
-            if "data" in content['payload']['body']:
-                message = content['payload']['body']['data']
-                message = data_encoder(message)
-            elif "data" in content['payload']['parts'][0]['body']:
-                message = content['payload']['parts'][0]['body']['data']
-                message = data_encoder(message)
+            str_data = None
+            if "data" in msg['payload']['body']:
+                str_data = msg['payload']['body']['data']
+                html_data = data_encoder(str_data)
+            elif "data" in msg['payload']['parts'][0]['body']:
+                str_data = msg['payload']['parts'][0]['body']['data']
+                html_data = data_encoder(str_data)
             else:
-                print("body has no data.")
-            if message:
-                soup = BeautifulSoup(message, 'lxml')
+                print("The payload body has no data.")
+
+            if html_data:
+                soup = BeautifulSoup(html_data, 'lxml')
                 for elem in soup(text=re.compile(r' [$]\d\d[.]\d\d')):
-                    print(elem.parent)
+                    print(subject)
+                    # print(elem.parent)
+
 
 
     except HttpError as error:
@@ -83,12 +86,11 @@ def main():
         print(f'An error occurred: {error}')
 
 
-def data_encoder(text):
-    if len(text)>0:
-        message = base64.urlsafe_b64decode(text)
-        message = str(message, 'utf-8')
-        # message = email.message_from_string(message)
-    return message
+def data_encoder(str_data):
+    if len(str_data)>0:
+        byte_data = base64.urlsafe_b64decode(str_data)
+        html_data = str(byte_data, 'utf-8')
+    return html_data
 
 if __name__ == '__main__':
     main()
