@@ -53,19 +53,26 @@ def parse_chase(subject: str) -> str:
     I.e.
     Your $1.00 transaction with DIGITALOCEAN.COM
     """
-    amount = regex_search("(?<=\$)(.*)(?= transaction)", subject)
     merchant = regex_search("(?<=with )(.*)", subject)
+    amount = regex_search("(?<=\$)(.*)(?= transaction)", subject)
     return merchant, amount
 
 def parse_discover(subject, html_data):
+    """
+    Extract the transaction amount and merchant from the email body
+    I.e.
+    Transaction Date:: June 11, 2022
+
+    Merchant: SQ *EARTH BISTRO CAFE
+
+    Amount: $23.50
+    """
     if subject != 'Transaction Alert':
         return False
     if html_data:
-        soup = BeautifulSoup(html_data, 'lxml')
-        # print(soup)
-        # for elem in soup(text=re.compile(r' (?<=\$)(.*)(?= transaction')):
-        #     print(elem.parent)
-        #     return None
+        merchent = regex_search('(?<=Merchant: )(.*)(?=\n)', html_data)
+        amount = regex_search('(?<=Amount: )(.*)(?=\n)', html_data)
+        return merchent, amount
 
 def parse_huntington(html_data):
     if html_data:
@@ -77,5 +84,8 @@ def parse_huntington(html_data):
 
 def regex_search(pattern, string):
     results = re.search(pattern, string)
-    all_matches = results.group(0)
-    return all_matches
+    if results:
+        all_matches = results.group(0)
+        return all_matches
+    else:
+        return None
