@@ -1,6 +1,7 @@
 import base64
 from bs4 import BeautifulSoup
 import re
+import datetime
 
 def main(messages):
     for msg in messages:
@@ -27,24 +28,26 @@ def main(messages):
             account = 'Chase'
             merchant, amount = parse_chase(subject)
             
-
         if sender == 'Discover Card <discover@services.discover.com>':
             account = 'Discover'
+            parse_discover(subject, html_data)
 
         if sender == 'Huntington Alerts <HuntingtonAlerts@email.huntington.com>':
             account = 'Huntington'
             parse_huntington(html_data)
 
-    
+        gmail_id = msg['id']
+        epoch_gmail_time = float(msg['internalDate'])
+        gmail_time = datetime.datetime.fromtimestamp( epoch_gmail_time/ 1000.0).strftime('%Y-%m-%d %H:%M')
     return True
 
-def data_encoder(str_data):
+def data_encoder(str_data: str) -> str:
     if len(str_data)>0:
         byte_data = base64.urlsafe_b64decode(str_data)
         html_data = str(byte_data, 'utf-8')
     return html_data
 
-def parse_chase(subject):
+def parse_chase(subject: str) -> str:
     """
     Extract the transaction amount and merchant from the email subject
     I.e.
@@ -53,6 +56,16 @@ def parse_chase(subject):
     amount = regex_search("(?<=\$)(.*)(?= transaction)", subject)
     merchant = regex_search("(?<=with )(.*)", subject)
     return merchant, amount
+
+def parse_discover(subject, html_data):
+    if subject != 'Transaction Alert':
+        return False
+    if html_data:
+        soup = BeautifulSoup(html_data, 'lxml')
+        # print(soup)
+        # for elem in soup(text=re.compile(r' (?<=\$)(.*)(?= transaction')):
+        #     print(elem.parent)
+        #     return None
 
 def parse_huntington(html_data):
     if html_data:
