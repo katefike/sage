@@ -28,22 +28,25 @@ def main(msg):
 
     # Parse the email based on who the sender is
     if sender == 'Chase <no.reply.alerts@chase.com>':
-        account = 'Chase'
+        entity = 'Chase'
         merchant, amount = parse_chase(subject)
     
     if html_data:
         if sender == 'Discover Card <discover@services.discover.com>':
-            account = 'Discover'
+            entity = 'Discover'
             if subject != 'Transaction Alert':
                 return False
             merchant, amount = parse_discover(html_data)
 
         if sender == 'Huntington Alerts <HuntingtonAlerts@email.huntington.com>':
-            account = 'Huntington'
+            entity = 'Huntington'
             if subject == 'Deposit':
                 payer, amount = parse_huntington_deposit(html_data)
             elif subject == 'Withdrawal or Purchase':    
                 merchant, amount = parse_huntington_charge(html_data)
+            else:
+                return False
+            account = identify_huntington_account(html_data)
 
         gmail_id = msg['id']
         epoch_gmail_time = float(msg['internalDate'])
@@ -88,12 +91,15 @@ def parse_huntington_charge(html_data):
 def parse_huntington_deposit(html_data):
     payer = regex_search('(?<= from )(.*)(?= to your account nicknamed)', html_data)
     amount = regex_search('(?<=for \$)(.*)(?= from)', html_data)
-    print(payer)
-    print(amount)
     return payer, amount
 
-def identify_huntington_account(transaction_type, html_data):
-    pass
+def identify_huntington_account(html_data):
+    account = regex_search('(?<= your account nicknamed )(.*)(?=. That\'s above the)', html_data)
+    if account == 'CHECK':
+        account = 'Checking'
+    if account == 'SAVE':
+        account = 'Savings'
+    return account
 
 def get_huntington_balance(transaction_type, html_data):
     pass
