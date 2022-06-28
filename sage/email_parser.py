@@ -20,21 +20,30 @@ def main(messages):
         elif "data" in msg['payload']['parts'][0]['body']:
             str_data = msg['payload']['parts'][0]['body']['data']
             html_data = data_encoder(str_data)
-        else:
-            print("The payload body has no data.")
+        
+        if not sender or subject or html_data:
+            f"Sender: {sender}"
+            f"Subject: {subject}"
+            f"Body: {html_data}"
     
         # Parse the email based on who the sender is
         if sender == 'Chase <no.reply.alerts@chase.com>':
             account = 'Chase'
             merchant, amount = parse_chase(subject)
-            
-        if sender == 'Discover Card <discover@services.discover.com>':
-            account = 'Discover'
-            parse_discover(subject, html_data)
+        
+        if html_data:
+            if sender == 'Discover Card <discover@services.discover.com>':
+                account = 'Discover'
+                if subject != 'Transaction Alert':
+                    break
+                merchant, amount = parse_discover(html_data)
 
-        if sender == 'Huntington Alerts <HuntingtonAlerts@email.huntington.com>':
-            account = 'Huntington'
-            parse_huntington(html_data)
+            if sender == 'Huntington Alerts <HuntingtonAlerts@email.huntington.com>':
+                account = 'Huntington'
+                if subject == 'Depsoit':
+                    parse_huntington_deposit(html_data)
+                elif subject == 'Withdrawal or Purchase':    
+                    merchant, amount = parse_huntington_charge(html_data)
 
         gmail_id = msg['id']
         epoch_gmail_time = float(msg['internalDate'])
@@ -57,7 +66,7 @@ def parse_chase(subject: str) -> str:
     amount = regex_search("(?<=\$)(.*)(?= transaction)", subject)
     return merchant, amount
 
-def parse_discover(subject, html_data):
+def parse_discover(html_data):
     """
     Extract the transaction amount and merchant from the email body
     I.e.
@@ -67,20 +76,25 @@ def parse_discover(subject, html_data):
 
     Amount: $23.50
     """
-    if subject != 'Transaction Alert':
-        return False
-    if html_data:
-        merchent = regex_search('(?<=Merchant: )(.*)(?=\n)', html_data)
-        amount = regex_search('(?<=Amount: )(.*)(?=\n)', html_data)
-        return merchent, amount
+    merchent = regex_search('(?<=Merchant: )(.*)(?=\n)', html_data)
+    amount = regex_search('(?<=Amount: )(.*)(?=\n)', html_data)
+    return merchent, amount
 
-def parse_huntington(html_data):
-    if html_data:
-        soup = BeautifulSoup(html_data, 'lxml')
-        # for elem in soup(text=re.compile(r' (?<=\$)(.*)(?= transaction')):
-        #     pass
-            # print(subject)
-            # print(elem.parent)
+def parse_huntington_charge(html_data):
+    merchent = regex_search('(?<= at )(.*)(?= from your account nicknamed)', html_data)
+    amount = regex_search('(?<=for \$)(.*)(?= at)', html_data)
+    return merchent, amount
+
+def parse_huntington_deposit(html_data):
+    payee = regex_search('(?<=Merchant: )(.*)(?=\n)', html_data)
+    amount = regex_search('(?<=Amount: )(.*)(?=\n)', html_data)
+    return
+
+def identify_huntington_account(transaction_type, html_data):
+    pass
+
+def get_huntington_balance(transaction_type, html_data):
+    pass
 
 def regex_search(pattern, string):
     results = re.search(pattern, string)
