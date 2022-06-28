@@ -4,8 +4,6 @@ import re
 import datetime
 
 def main(msg):
-    # for msg in messages:
-    print(msg['id'])
     headers = msg['payload']['headers']
     
     for data in headers:
@@ -27,8 +25,6 @@ def main(msg):
         f"Sender: {sender}"
         f"Subject: {subject}"
         f"Body: {html_data}"
-    
-    print(subject)
 
     # Parse the email based on who the sender is
     if sender == 'Chase <no.reply.alerts@chase.com>':
@@ -44,7 +40,7 @@ def main(msg):
 
         if sender == 'Huntington Alerts <HuntingtonAlerts@email.huntington.com>':
             account = 'Huntington'
-            if subject == 'Depsoit':
+            if subject == 'Deposit':
                 payer, amount = parse_huntington_deposit(html_data)
             elif subject == 'Withdrawal or Purchase':    
                 merchant, amount = parse_huntington_charge(html_data)
