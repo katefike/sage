@@ -39,7 +39,7 @@ def main():
         # Call the Gmail API
         service = build('gmail', 'v1', credentials=creds)
         # List the messages in the mailbox.
-        results = service.users().messages().list(userId='me').execute()
+        results = service.users().messages().list(userId='me', maxResults=500).execute()
         if not results:
             print('No messages found.')
             return
@@ -47,13 +47,12 @@ def main():
         # TODO: Perform a partial synchronization once the history of message IDs is stored
         message_ids = results['messages']
         # Get the message details
-        messages = [service.users().messages().get(userId='me', id=msg_id['id']).execute() for msg_id in message_ids]
+        for msg_id in message_ids:
+            message = service.users().messages().get(userId='me', id=msg_id['id']).execute()
+            success = email_parser.main(message)
 
-        success = email_parser.main(messages)
-
-        if success:
-            print("SUCCESS")
-            exit
+        print("DONE")
+        exit
 
     except HttpError as error:
         # TODO: Handle errors from gmail API

@@ -3,47 +3,51 @@ from bs4 import BeautifulSoup
 import re
 import datetime
 
-def main(messages):
-    for msg in messages:
-
-        headers = msg['payload']['headers']
-        
-        for data in headers:
-            if data['name'] == 'From':
-                sender = data['value']
-            if data['name'] == 'Subject':
-                subject = data['value']
-
-        if "data" in msg['payload']['body']:
-            str_data = msg['payload']['body']['data']
-            html_data = data_encoder(str_data)
-        elif "data" in msg['payload']['parts'][0]['body']:
-            str_data = msg['payload']['parts'][0]['body']['data']
-            html_data = data_encoder(str_data)
-        
-        if not sender or subject or html_data:
-            f"Sender: {sender}"
-            f"Subject: {subject}"
-            f"Body: {html_data}"
+def main(msg):
+    # for msg in messages:
+    print(msg['id'])
+    headers = msg['payload']['headers']
     
-        # Parse the email based on who the sender is
-        if sender == 'Chase <no.reply.alerts@chase.com>':
-            account = 'Chase'
-            merchant, amount = parse_chase(subject)
-        
-        if html_data:
-            if sender == 'Discover Card <discover@services.discover.com>':
-                account = 'Discover'
-                if subject != 'Transaction Alert':
-                    break
-                merchant, amount = parse_discover(html_data)
+    for data in headers:
+        if data['name'] == 'From':
+            sender = data['value']
+        if data['name'] == 'Subject':
+            subject = data['value']
 
-            if sender == 'Huntington Alerts <HuntingtonAlerts@email.huntington.com>':
-                account = 'Huntington'
-                if subject == 'Depsoit':
-                    parse_huntington_deposit(html_data)
-                elif subject == 'Withdrawal or Purchase':    
-                    merchant, amount = parse_huntington_charge(html_data)
+    if "data" in msg['payload']['body']:
+        str_data = msg['payload']['body']['data']
+        html_data = data_encoder(str_data)
+    elif "data" in msg['payload']['parts'][0]['body']:
+        str_data = msg['payload']['parts'][0]['body']['data']
+        html_data = data_encoder(str_data)
+    else:
+        html_data = None
+    
+    if not sender or subject or html_data:
+        f"Sender: {sender}"
+        f"Subject: {subject}"
+        f"Body: {html_data}"
+    
+    print(subject)
+
+    # Parse the email based on who the sender is
+    if sender == 'Chase <no.reply.alerts@chase.com>':
+        account = 'Chase'
+        merchant, amount = parse_chase(subject)
+    
+    if html_data:
+        if sender == 'Discover Card <discover@services.discover.com>':
+            account = 'Discover'
+            if subject != 'Transaction Alert':
+                return False
+            merchant, amount = parse_discover(html_data)
+
+        if sender == 'Huntington Alerts <HuntingtonAlerts@email.huntington.com>':
+            account = 'Huntington'
+            if subject == 'Depsoit':
+                payer, amount = parse_huntington_deposit(html_data)
+            elif subject == 'Withdrawal or Purchase':    
+                merchant, amount = parse_huntington_charge(html_data)
 
         gmail_id = msg['id']
         epoch_gmail_time = float(msg['internalDate'])
@@ -86,9 +90,11 @@ def parse_huntington_charge(html_data):
     return merchent, amount
 
 def parse_huntington_deposit(html_data):
-    payee = regex_search('(?<=Merchant: )(.*)(?=\n)', html_data)
-    amount = regex_search('(?<=Amount: )(.*)(?=\n)', html_data)
-    return
+    payer = regex_search('(?<= from )(.*)(?= to your account nicknamed)', html_data)
+    amount = regex_search('(?<=for \$)(.*)(?= from)', html_data)
+    print(payer)
+    print(amount)
+    return payer, amount
 
 def identify_huntington_account(transaction_type, html_data):
     pass
