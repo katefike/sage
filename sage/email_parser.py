@@ -47,6 +47,7 @@ def main(msg):
             else:
                 return False
             account = identify_huntington_account(html_data)
+            balance = get_huntington_balance(html_data)
 
         gmail_id = msg['id']
         epoch_gmail_time = float(msg['internalDate'])
@@ -69,7 +70,7 @@ def parse_chase(subject: str) -> str:
     amount = regex_search("(?<=\$)(.*)(?= transaction)", subject)
     return merchant, amount
 
-def parse_discover(html_data):
+def parse_discover(html_data: str) -> str:
     """
     Extract the transaction amount and merchant from the email body
     I.e.
@@ -83,17 +84,36 @@ def parse_discover(html_data):
     amount = regex_search('(?<=Amount: )(.*)(?=\n)', html_data)
     return merchent, amount
 
-def parse_huntington_charge(html_data):
+def parse_huntington_charge(html_data: str) -> str:
+    """
+    Extract the transaction amount and merchent from the email body
+    I.e.
+    We've processed an ACH withdrawal for $1.72 at CHASE CREDIT CRD EPAY 
+    from your account nicknamed SAVE.
+    """
     merchent = regex_search('(?<= at )(.*)(?= from your account nicknamed)', html_data)
     amount = regex_search('(?<=for \$)(.*)(?= at)', html_data)
     return merchent, amount
 
-def parse_huntington_deposit(html_data):
+def parse_huntington_deposit(html_data: str) -> str:
+    """
+    Extract the transaction amount and merchent from the email body
+    I.e.
+    We've processed an ACH deposit for $59.81 
+    from CHASE CREDIT CRD RWRD RDM to your account nicknamed CHECK.
+    """
     payer = regex_search('(?<= from )(.*)(?= to your account nicknamed)', html_data)
     amount = regex_search('(?<=for \$)(.*)(?= from)', html_data)
     return payer, amount
 
-def identify_huntington_account(html_data):
+def identify_huntington_account(html_data: str) -> str:
+    """
+    Identify the Huntington account referenced.
+    Works for deposits or charges.
+    I.e.
+    We've processed an ACH withdrawal for $1.72 at CHASE CREDIT CRD EPAY 
+    from your account nicknamed SAVE.
+    """
     account = regex_search('(?<= your account nicknamed )(.*)(?=. That\'s above the)', html_data)
     if account == 'CHECK':
         account = 'Checking'
@@ -101,10 +121,17 @@ def identify_huntington_account(html_data):
         account = 'Savings'
     return account
 
-def get_huntington_balance(transaction_type, html_data):
-    pass
+def get_huntington_balance(html_data: str) -> str:
+    """
+    Extract the account balance for Huntington savings or checking accounts.
+    Works for deposits or charges.
+    I.e.
+    Your balance is $19,748.78 as of 6/25/22 2:35 AM ET.
+    """
+    balance = regex_search('(?<=Your balance is \$)(.*)(?=. as of)', html_data)
+    return balance
 
-def regex_search(pattern, string):
+def regex_search(pattern, string)-> str:
     results = re.search(pattern, string)
     if results:
         all_matches = results.group(0)
