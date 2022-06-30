@@ -8,6 +8,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 from email_parser import email_parser
+from db import db_transactions
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
@@ -49,7 +50,10 @@ def main():
         # Get the message details
         for msg_id in message_ids:
             message = service.users().messages().get(userId='me', id=msg_id['id']).execute()
-            success = email_parser.main(message)
+            transaction = email_parser.main(message)
+
+            if transaction:
+                db_transactions.write_transaction(transaction)
 
         print("DONE")
         exit

@@ -27,18 +27,18 @@ def main(msg):
 
     # Parse the email based on who the sender is
     if sender == 'Chase <no.reply.alerts@chase.com>':
-        entity = 'Chase'
+        bank = 'Chase'
         merchant, amount = parse_chase(subject)
     
     if html_data:
         if sender == 'Discover Card <discover@services.discover.com>':
-            entity = 'Discover'
+            bank = 'Discover'
             if subject != 'Transaction Alert':
                 return False
             merchant, amount = parse_discover(html_data)
 
         if sender == 'Huntington Alerts <HuntingtonAlerts@email.huntington.com>':
-            entity = 'Huntington'
+            bank = 'Huntington'
             if subject == 'Deposit':
                 payer, amount = parse_huntington_deposit(html_data)
             elif subject == 'Withdrawal or Purchase':    
@@ -51,7 +51,10 @@ def main(msg):
         gmail_id = msg['id']
         epoch_gmail_time = float(msg['internalDate'])
         gmail_time = datetime.datetime.fromtimestamp( epoch_gmail_time/ 1000.0).strftime('%Y-%m-%d %H:%M')
-    return True
+    
+    transaction = {'Gmail ID': gmail_id, 'time': gmail_time, 'bank': bank, 
+    'merchant': merchant, 'payer': payer, 'amount': amount, 'account': account, 'balance': balance}
+    return transaction
 
 def data_encoder(str_data: str) -> str:
     if len(str_data)>0:
