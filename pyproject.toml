@@ -1,8 +1,4 @@
-[metadata]
-name = sage
-version = 0.1.0
-
-[options]
+[tool.poetry.dependencies]
 beautifulsoup4 = "4.11.1"
 build = "0.8.0"
 cachetools = "5.2.0"
@@ -17,6 +13,7 @@ googleapis-common-protos = "1.56.3"
 httplib2 = "0.20.4"
 idna = "3.3"
 oauthlib = "3.2.0"
+pathlib = "1.0.1"
 packaging = "21.3"
 pep517 = "0.12.0"
 protobuf = "4.21.1"
