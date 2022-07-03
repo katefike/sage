@@ -1,5 +1,6 @@
 import os.path
-import types
+import typing
+import logging
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -10,8 +11,10 @@ from googleapiclient.errors import HttpError
 from email_parser import email_parser
 from db import db_transactions
 
+LOGGER = logging.getLogger(__name__)
+
 # If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
+SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 
 
 def main():
@@ -22,46 +25,47 @@ def main():
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    if os.path.exists("token.json"):
+        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open('token.json', 'w') as token:
+        with open("token.json", "w") as token:
             token.write(creds.to_json())
 
     try:
         # Call the Gmail API
-        service = build('gmail', 'v1', credentials=creds)
+        service = build("gmail", "v1", credentials=creds)
         # List the messages in the mailbox.
-        results = service.users().messages().list(userId='me', maxResults=500).execute()
+        results = service.users().messages().list(userId="me", maxResults=500).execute()
         if not results:
-            print('No messages found.')
+            print("No messages found.")
             return
 
         # TODO: Perform a partial synchronization once the history of message IDs is stored
-        message_ids = results['messages']
+        message_ids = results["messages"]
         # Get the message details
         for msg_id in message_ids:
-            message = service.users().messages().get(userId='me', id=msg_id['id']).execute()
+            message = (
+                service.users().messages().get(userId="me", id=msg_id["id"]).execute()
+            )
             transaction = email_parser.main(message)
 
             if transaction:
                 db_transactions.write_transaction(transaction)
 
-        print("DONE")
+        LOGGER.info("DONE")
         exit
 
     except HttpError as error:
         # TODO: Handle errors from gmail API
-        print(f'An error occurred: {error}')
+        LOGGER.error(f"An error occurred: {error}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
