@@ -131,3 +131,6 @@ dmypy.json
 # Secrets
 credentials.json
 token.json
+
+# SQLite
+*.db
