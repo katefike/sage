@@ -54,7 +54,8 @@ def main():
             )
             parsed_email = email_parser.main(message)
 
-            if parsed_email and parsed_email.get("Transaction"):
+            if parsed_email and parsed_email.get("transaction"):
+                db_transactions.insert_transaction(parsed_email)
                 logger.info("Success")
                 # db_transactions.write_transaction(transaction)
         logger.info("DONE")

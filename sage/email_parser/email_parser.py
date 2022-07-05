@@ -1,12 +1,22 @@
 import base64
 import re
 import datetime
-import logging
-
-LOGGER = logging.getLogger(__name__)
+from loguru import logger
 
 
-def main(msg):
+def main(msg) -> dict:
+
+    # Initialize returned variables
+    transaction = False
+    gmail_id = None
+    gmail_time = None
+    bank = None
+    merchant = None
+    payer = None
+    amount = None
+    account = None
+    balance = None
+
     headers = msg["payload"]["headers"]
 
     for data in headers:
@@ -23,11 +33,6 @@ def main(msg):
         html_data = data_encoder(str_data)
     else:
         html_data = None
-
-    if not sender or subject or html_data:
-        f"Sender: {sender}"
-        f"Subject: {subject}"
-        f"Body: {html_data}"
 
     # Parse the email based on who the sender is
     if sender == "Chase <no.reply.alerts@chase.com>":
@@ -52,23 +57,38 @@ def main(msg):
             account = identify_huntington_account(html_data)
             balance = get_huntington_balance(html_data)
 
-        gmail_id = msg["id"]
-        epoch_gmail_time = float(msg["internalDate"])
-        gmail_time = datetime.datetime.fromtimestamp(
-            epoch_gmail_time / 1000.0
-        ).strftime("%Y-%m-%d %H:%M")
+    gmail_id = msg["id"]
+    epoch_gmail_time = float(msg["internalDate"])
+    gmail_time = datetime.datetime.fromtimestamp(epoch_gmail_time / 1000.0).strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
 
-    transaction = {
-        "Gmail ID": gmail_id,
-        "time": gmail_time,
-        "bank": bank,
-        "merchant": merchant,
-        "payer": payer,
-        "amount": amount,
-        "account": account,
-        "balance": balance,
-    }
-    return transaction
+    if bank and amount and (merchant or payer):
+        # Successfully parsed transaction
+        transaction = True
+        parsed_email = {
+            "transaction": transaction,
+            "gmail ID": gmail_id,
+            "gmail time": gmail_time,
+            "bank": bank,
+            "merchant": merchant,
+            "payer": payer,
+            "amount": amount,
+            "account": account,
+            "balance": balance,
+        }
+    else:
+        # Non-transaction or transaction that failed to parse
+        parsed_email = {
+            "transaction": transaction,
+            "gmail ID": gmail_id,
+            "time": gmail_time,
+            "sender": sender,
+            "subject": subject,
+        }
+        logger.debug(f"GMAIL ID: {gmail_id} SENDER: {sender}")
+        logger.debug(f"GMAIL ID: {gmail_id} SUBJECT: {subject}")
+    return parsed_email
 
 
 def data_encoder(str_data: str) -> str:
@@ -140,9 +160,9 @@ def identify_huntington_account(html_data: str) -> str:
         "(?<= your account nicknamed )(.*)(?=. That's above the)", html_data
     )
     if account == "CHECK":
-        account = "Checking"
+        account = "checking"
     if account == "SAVE":
-        account = "Savings"
+        account = "savings"
     return account
 
 

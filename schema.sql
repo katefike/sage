@@ -1,9 +1,19 @@
 CREATE TABLE IF NOT EXISTS banks(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     NAME TEXT NOT NULL,
-    account TEXT NOT NULL,
+    account TEXT,
     TYPE TEXT NOT NULL
 );
+INSERT INTO
+    banks (NAME, account, TYPE)
+VALUES
+    ('Huntington', 'savings', 'liquid'),
+    ('Huntington', 'checking', 'liquid');
+INSERT INTO
+    banks (NAME, TYPE)
+VALUES
+    ('Chase', 'credit'),
+    ('Discover', 'credit');
 CREATE TABLE IF NOT EXISTS entities(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     NAME TEXT NOT NULL,
@@ -19,6 +29,7 @@ CREATE TABLE IF NOT EXISTS entity_tag_mapping(
 );
 CREATE TABLE IF NOT EXISTS transactions(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    gmail_id TEXT NOT NULL,
     bank_id INTEGER NOT NULL,
     cents INT NOT NULL,
     date TEXT NOT NULL,
