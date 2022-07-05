@@ -1,7 +1,6 @@
 import os.path
 import typing
-import logging
-
+from loguru import logger
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -11,8 +10,7 @@ from googleapiclient.errors import HttpError
 from email_parser import email_parser
 from db import db_transactions
 
-LOGGER = logging.getLogger(__name__)
-
+logger.add(sink="debug.log")
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 
@@ -44,7 +42,7 @@ def main():
         # List the messages in the mailbox.
         results = service.users().messages().list(userId="me", maxResults=500).execute()
         if not results:
-            print("No messages found.")
+            logger.info("No messages found.")
             return
 
         # TODO: Perform a partial synchronization once the history of message IDs is stored
@@ -54,17 +52,17 @@ def main():
             message = (
                 service.users().messages().get(userId="me", id=msg_id["id"]).execute()
             )
-            transaction = email_parser.main(message)
+            parsed_email = email_parser.main(message)
 
-            if transaction:
-                db_transactions.write_transaction(transaction)
-
-        LOGGER.info("DONE")
-        exit
+            if parsed_email and parsed_email.get("Transaction"):
+                logger.info("Success")
+                # db_transactions.write_transaction(transaction)
+        logger.info("DONE")
+        return
 
     except HttpError as error:
         # TODO: Handle errors from gmail API
-        LOGGER.error(f"An error occurred: {error}")
+        logger.error("An error occurred: %s", error)
 
 
 if __name__ == "__main__":
