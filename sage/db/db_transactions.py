@@ -18,19 +18,8 @@ def insert_transaction(parsed_email: Dict) -> bool:
     # TODO: Incorporate the entity ID into the transaction
     gmail_id = parsed_email.get("gmail ID")
     gmail_time = parsed_email.get("gmail time")
-    merchant = parsed_email.get("merchant")
-    payer = parsed_email.get("payer")
-    dollar_amount = parsed_email.get("amount")
-
-    cent_amount = dollar_amount * 100
-
-    descr = None
-    if merchant:
-        cent_amount = cent_amount * (-1)
-        descr = merchant
-
-    if payer:
-        descr = payer
+    descr = parsed_email.get("descr")
+    cent_amount = parsed_email.get("amount")
 
     transaction_data = (gmail_id, bank_id, cent_amount, gmail_time, descr)
     insert_stmt = """

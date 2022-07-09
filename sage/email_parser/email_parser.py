@@ -13,7 +13,7 @@ def main(msg) -> dict:
     bank = None
     merchant = None
     payer = None
-    amount = None
+    dollar_amount = None
     account = None
     balance = None
 
@@ -37,21 +37,21 @@ def main(msg) -> dict:
     # Parse the email based on who the sender is
     if sender == "Chase <no.reply.alerts@chase.com>":
         bank = "Chase"
-        merchant, amount = parse_chase(subject)
+        merchant, dollar_amount = parse_chase(subject)
 
     if html_data:
         if sender == "Discover Card <discover@services.discover.com>":
             bank = "Discover"
             if subject != "Transaction Alert":
                 return False
-            merchant, amount = parse_discover(html_data)
+            merchant, dollar_amount = parse_discover(html_data)
 
         if sender == "Huntington Alerts <HuntingtonAlerts@email.huntington.com>":
             bank = "Huntington"
             if subject == "Deposit":
-                payer, amount = parse_huntington_deposit(html_data)
+                payer, dollar_amount = parse_huntington_deposit(html_data)
             elif subject == "Withdrawal or Purchase":
-                merchant, amount = parse_huntington_charge(html_data)
+                merchant, dollar_amount = parse_huntington_charge(html_data)
             else:
                 return False
             account = identify_huntington_account(html_data)
@@ -63,20 +63,40 @@ def main(msg) -> dict:
         "%Y-%m-%d %H:%M:%S"
     )
 
-    if bank and amount and (merchant or payer):
-        # Successfully parsed transaction
-        transaction = True
-        parsed_email = {
-            "transaction": transaction,
-            "gmail ID": gmail_id,
-            "gmail time": gmail_time,
-            "bank": bank,
-            "merchant": merchant,
-            "payer": payer,
-            "amount": amount,
-            "account": account,
-            "balance": balance,
-        }
+    if bank and dollar_amount and (merchant or payer):
+        cent_amount = transform_amount(dollar_amount)
+        if cent_amount:
+            # Successfully parsed transaction
+            # Ready to be inserted into the database
+            transaction = True
+            if merchant:
+                descr = merchant
+                cent_amount = cent_amount * (-1)
+            if payer:
+                descr = merchant
+
+            parsed_email = {
+                "transaction": transaction,
+                "gmail ID": gmail_id,
+                "gmail time": gmail_time,
+                "sender": sender,
+                "subject": subject,
+                "bank": bank,
+                "descr": descr,
+                "amount": cent_amount,
+                "account": account,
+                "balance": balance,
+            }
+        else:
+            # Transaction that failed to parse
+            # Regex failed to get the dollar amount
+            logger.critical(
+                f"\n GMAIL TIME: {gmail_time} GMAIL ID: {gmail_id} \
+                \n SENDER: {sender} \n SUBJECT: {subject} \
+                \n PROBLEMATIC DOLLAR AMOUNT: {dollar_amount}"
+            )
+            return False
+
     else:
         # Non-transaction or transaction that failed to parse
         parsed_email = {
@@ -86,8 +106,10 @@ def main(msg) -> dict:
             "sender": sender,
             "subject": subject,
         }
-        logger.debug(f"GMAIL ID: {gmail_id} SENDER: {sender}")
-        logger.debug(f"GMAIL ID: {gmail_id} SUBJECT: {subject}")
+        # logger.debug(
+        #     f"\n GMAIL TIME: {gmail_time} GMAIL ID: {gmail_id} \
+        #     \n SENDER: {sender} \n SUBJECT: {subject}"
+        # )
     return parsed_email
 
 
@@ -100,52 +122,52 @@ def data_encoder(str_data: str) -> str:
 
 def parse_chase(subject: str) -> str:
     """
-    Extract the transaction amount and merchant from the email subject
+    Extract the transaction dollar_amount and merchant from the email subject
     I.e.
     Your $1.00 transaction with DIGITALOCEAN.COM
     """
     merchant = regex_search("(?<=with )(.*)", subject)
-    amount = regex_search("(?<=\$)(.*)(?= transaction)", subject)
-    return merchant, amount
+    dollar_amount = regex_search("(?<=\$)(.*)(?= transaction)", subject)
+    return merchant, dollar_amount
 
 
 def parse_discover(html_data: str) -> str:
     """
-    Extract the transaction amount and merchant from the email body
+    Extract the transaction dollar_amount and merchant from the email body
     I.e.
     Transaction Date:: June 11, 2022
 
     Merchant: SQ *EARTH BISTRO CAFE
 
-    Amount: $23.50
+    dollar_amount: $23.50
     """
     merchent = regex_search("(?<=Merchant: )(.*)(?=\n)", html_data)
-    amount = regex_search("(?<=Amount: )(.*)(?=\n)", html_data)
-    return merchent, amount
+    dollar_amount = regex_search("(?<=dollar_amount: )(.*)(?=\n)", html_data)
+    return merchent, dollar_amount
 
 
 def parse_huntington_charge(html_data: str) -> str:
     """
-    Extract the transaction amount and merchent from the email body
+    Extract the transaction dollar_amount and merchent from the email body
     I.e.
     We've processed an ACH withdrawal for $1.72 at CHASE CREDIT CRD EPAY
     from your account nicknamed SAVE.
     """
     merchent = regex_search("(?<= at )(.*)(?= from your account nicknamed)", html_data)
-    amount = regex_search("(?<=for \$)(.*)(?= at)", html_data)
-    return merchent, amount
+    dollar_amount = regex_search("(?<=for \$)(.*)(?= at)", html_data)
+    return merchent, dollar_amount
 
 
 def parse_huntington_deposit(html_data: str) -> str:
     """
-    Extract the transaction amount and merchent from the email body
+    Extract the transaction dollar_amount and merchent from the email body
     I.e.
     We've processed an ACH deposit for $59.81
     from CHASE CREDIT CRD RWRD RDM to your account nicknamed CHECK.
     """
     payer = regex_search("(?<= from )(.*)(?= to your account nicknamed)", html_data)
-    amount = regex_search("(?<=for \$)(.*)(?= from)", html_data)
-    return payer, amount
+    dollar_amount = regex_search("(?<=for \$)(.*)(?= from)", html_data)
+    return payer, dollar_amount
 
 
 def identify_huntington_account(html_data: str) -> str:
@@ -184,3 +206,12 @@ def regex_search(pattern, string) -> str:
         return all_matches
     else:
         return None
+
+
+def transform_amount(dollar_amount: str) -> int:
+    try:
+        cent_amount = int(float(dollar_amount) * 100)
+        return cent_amount
+    except ValueError:  # The dollar amount cannot be converted from a string to a float
+        # Due to incorrect parsing using regex
+        return False
