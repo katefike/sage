@@ -91,7 +91,7 @@ def main(msg) -> dict:
             # Transaction that failed to parse
             # Regex failed to get the dollar amount
             logger.critical(
-                f"\n GMAIL TIME: {gmail_time} GMAIL ID: {gmail_id} \
+                f"\n GMAIL TIME: {gmail_time} \n GMAIL ID: {gmail_id} \
                 \n SENDER: {sender} \n SUBJECT: {subject} \
                 \n PROBLEMATIC DOLLAR AMOUNT: {dollar_amount}"
             )
@@ -106,8 +106,9 @@ def main(msg) -> dict:
             "sender": sender,
             "subject": subject,
         }
+        # UNCOMMENT
         # logger.debug(
-        #     f"\n GMAIL TIME: {gmail_time} GMAIL ID: {gmail_id} \
+        #     f"\n GMAIL TIME: {gmail_time} \n GMAIL ID: {gmail_id} \
         #     \n SENDER: {sender} \n SUBJECT: {subject}"
         # )
     return parsed_email
