@@ -134,3 +134,4 @@ token.json
 
 # SQLite
 *.db
+debug.sql
