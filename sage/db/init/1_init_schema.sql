@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS public.transactions(
     gmail_id TEXT NOT NULL,
     bank_id INTEGER NOT NULL,
     cents INT NOT NULL,
-    date TEXT NOT NULL,
+    date DATE NOT NULL,
     descr TEXT NOT NULL,
     entity_id INT,
     FOREIGN KEY (bank_id) REFERENCES public.banks (id),
