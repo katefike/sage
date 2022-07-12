@@ -3,13 +3,17 @@ services:
   db:
     image: postgres:14.4
     restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+    env_file:
+      - .env
     ports:
       - '5432:5432'
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
     volumes: 
       - db:/var/lib/postgresql/data
+      - ./sage/db/init:/docker-entrypoint-initdb.d
 volumes:
   db:
     driver: local
