@@ -73,7 +73,7 @@ def main(msg) -> dict:
                 descr = merchant
                 cent_amount = cent_amount * (-1)
             if payer:
-                descr = merchant
+                descr = payer
 
             parsed_email = {
                 "transaction": transaction,
