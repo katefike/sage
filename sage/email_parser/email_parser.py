@@ -210,9 +210,12 @@ def regex_search(pattern, string) -> str:
 
 
 def transform_amount(dollar_amount: str) -> int:
+    # Remove the comma
+    dollar_amount = re.sub(",","",dollar_amount)
     try:
         cent_amount = int(float(dollar_amount) * 100)
         return cent_amount
     except ValueError:  # The dollar amount cannot be converted from a string to a float
         # Due to incorrect parsing using regex
+        logger.critical(f"Failure to transform the amount due to value error.")
         return False
