@@ -1,3 +1,4 @@
+-- Save file using CMD + K S
 \connect sage
 SET
     statement_timeout = 0;
@@ -57,7 +58,7 @@ CREATE TABLE IF NOT EXISTS public.transactions(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     gmail_id TEXT NOT NULL,
     bank_id INTEGER NOT NULL,
-    cents INT NOT NULL,
+    amount NUMERIC NOT NULL,
     date DATE NOT NULL,
     descr TEXT NOT NULL,
     entity_id INT,
