@@ -15,3 +15,9 @@ The data is stored in Postgres and viewed through Grafana.
 ```bash
 $ docker compose up
 ```
+
+# Useful Commands
+Remove all volumes
+```
+docker volume rm $(docker volume ls -q)
+```
