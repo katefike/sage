@@ -1,6 +1,7 @@
 import base64
 import re
 import datetime
+from decimal import Decimal
 from loguru import logger
 
 
@@ -13,7 +14,7 @@ def main(msg) -> dict:
     bank = None
     merchant = None
     payer = None
-    dollar_amount = None
+    raw_amount = None
     account = None
     balance = None
 
@@ -37,21 +38,21 @@ def main(msg) -> dict:
     # Parse the email based on who the sender is
     if sender == "Chase <no.reply.alerts@chase.com>":
         bank = "Chase"
-        merchant, dollar_amount = parse_chase(subject)
+        merchant, raw_amount = parse_chase(subject)
 
     if html_data:
         if sender == "Discover Card <discover@services.discover.com>":
             bank = "Discover"
             if subject != "Transaction Alert":
                 return False
-            merchant, dollar_amount = parse_discover(html_data)
+            merchant, raw_amount = parse_discover(html_data)
 
         if sender == "Huntington Alerts <HuntingtonAlerts@email.huntington.com>":
             bank = "Huntington"
             if subject == "Deposit":
-                payer, dollar_amount = parse_huntington_deposit(html_data)
+                payer, raw_amount = parse_huntington_deposit(html_data)
             elif subject == "Withdrawal or Purchase":
-                merchant, dollar_amount = parse_huntington_charge(html_data)
+                merchant, raw_amount = parse_huntington_charge(html_data)
             else:
                 return False
             account = identify_huntington_account(html_data)
@@ -63,17 +64,18 @@ def main(msg) -> dict:
         "%Y-%m-%d %H:%M:%S"
     )
 
-    if bank and dollar_amount and (merchant or payer):
-        cent_amount = transform_amount(dollar_amount)
-        if cent_amount:
+    if bank and raw_amount and (merchant or payer):
+        transformed_amount = transform_amount(raw_amount)
+        if transformed_amount:
             # Successfully parsed transaction
             # Ready to be inserted into the database
             transaction = True
             if merchant:
                 descr = merchant
-                cent_amount = cent_amount * (-1)
+                amount = "-" + transformed_amount
             if payer:
                 descr = payer
+                amount = transformed_amount
 
             parsed_email = {
                 "transaction": transaction,
@@ -83,7 +85,7 @@ def main(msg) -> dict:
                 "subject": subject,
                 "bank": bank,
                 "descr": descr,
-                "amount": cent_amount,
+                "amount": transformed_amount,
                 "account": account,
                 "balance": balance,
             }
@@ -93,7 +95,7 @@ def main(msg) -> dict:
             logger.critical(
                 f"\n GMAIL TIME: {gmail_time} \n GMAIL ID: {gmail_id} \
                 \n SENDER: {sender} \n SUBJECT: {subject} \
-                \n PROBLEMATIC DOLLAR AMOUNT: {dollar_amount}"
+                \n PROBLEMATIC DOLLAR AMOUNT: {raw_amount}"
             )
             return False
 
@@ -123,52 +125,52 @@ def data_encoder(str_data: str) -> str:
 
 def parse_chase(subject: str) -> str:
     """
-    Extract the transaction dollar_amount and merchant from the email subject
+    Extract the transaction raw_amount and merchant from the email subject
     I.e.
     Your $1.00 transaction with DIGITALOCEAN.COM
     """
     merchant = regex_search("(?<=with )(.*)", subject)
-    dollar_amount = regex_search("(?<=\$)(.*)(?= transaction)", subject)
-    return merchant, dollar_amount
+    raw_amount = regex_search("(?<=\$)(.*)(?= transaction)", subject)
+    return merchant, raw_amount
 
 
 def parse_discover(html_data: str) -> str:
     """
-    Extract the transaction dollar_amount and merchant from the email body
+    Extract the transaction raw_amount and merchant from the email body
     I.e.
     Transaction Date:: June 11, 2022
 
     Merchant: SQ *EARTH BISTRO CAFE
 
-    dollar_amount: $23.50
+    raw_amount: $23.50
     """
     merchent = regex_search("(?<=Merchant: )(.*)(?=\n)", html_data)
-    dollar_amount = regex_search("(?<=dollar_amount: )(.*)(?=\n)", html_data)
-    return merchent, dollar_amount
+    raw_amount = regex_search("(?<=raw_amount: )(.*)(?=\n)", html_data)
+    return merchent, raw_amount
 
 
 def parse_huntington_charge(html_data: str) -> str:
     """
-    Extract the transaction dollar_amount and merchent from the email body
+    Extract the transaction raw_amount and merchent from the email body
     I.e.
     We've processed an ACH withdrawal for $1.72 at CHASE CREDIT CRD EPAY
     from your account nicknamed SAVE.
     """
     merchent = regex_search("(?<= at )(.*)(?= from your account nicknamed)", html_data)
-    dollar_amount = regex_search("(?<=for \$)(.*)(?= at)", html_data)
-    return merchent, dollar_amount
+    raw_amount = regex_search("(?<=for \$)(.*)(?= at)", html_data)
+    return merchent, raw_amount
 
 
 def parse_huntington_deposit(html_data: str) -> str:
     """
-    Extract the transaction dollar_amount and merchent from the email body
+    Extract the transaction raw_amount and merchent from the email body
     I.e.
     We've processed an ACH deposit for $59.81
     from CHASE CREDIT CRD RWRD RDM to your account nicknamed CHECK.
     """
     payer = regex_search("(?<= from )(.*)(?= to your account nicknamed)", html_data)
-    dollar_amount = regex_search("(?<=for \$)(.*)(?= from)", html_data)
-    return payer, dollar_amount
+    raw_amount = regex_search("(?<=for \$)(.*)(?= from)", html_data)
+    return payer, raw_amount
 
 
 def identify_huntington_account(html_data: str) -> str:
@@ -199,6 +201,15 @@ def get_huntington_balance(html_data: str) -> str:
     balance = regex_search("(?<=Your balance is \$)(.*)(?=. as of)", html_data)
     return balance
 
+def transform_amount(raw_amount: str) -> int:
+    # Remove the comma
+    raw_amount = re.sub(",","",raw_amount)
+    # Check for decimals
+    if regex_search("(.\d\d)", raw_amount):
+        transformed_amount = raw_amount
+    else:
+        transformed_amount = raw_amount + ".00"
+    return transformed_amount
 
 def regex_search(pattern, string) -> str:
     results = re.search(pattern, string)
@@ -209,13 +220,3 @@ def regex_search(pattern, string) -> str:
         return None
 
 
-def transform_amount(dollar_amount: str) -> int:
-    # Remove the comma
-    dollar_amount = re.sub(",","",dollar_amount)
-    try:
-        cent_amount = int(float(dollar_amount) * 100)
-        return cent_amount
-    except ValueError:  # The dollar amount cannot be converted from a string to a float
-        # Due to incorrect parsing using regex
-        logger.critical(f"Failure to transform the amount due to value error.")
-        return False
