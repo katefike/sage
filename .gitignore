@@ -128,10 +128,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Secrets
-credentials.json
-token.json
-
 # SQLite
 *.db
 debug.sql
+
+# docker-mailserver
+docker-data
