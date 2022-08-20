@@ -133,4 +133,4 @@ dmypy.json
 debug.sql
 
 # docker-mailserver
-docker-data
+docker-data/dms/
