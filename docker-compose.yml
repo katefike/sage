@@ -14,6 +14,43 @@ services:
     volumes: 
       - db:/var/lib/postgresql/data
       - ./sage/db/init:/docker-entrypoint-initdb.d
+  mailserver:
+      image: docker.io/mailserver/docker-mailserver:latest
+      container_name: mailserver
+      restart: always
+      env_file:
+        - .env
+      # If the FQDN for your mail-server is only two labels (eg: example.com),
+      # you can assign this entirely to `hostname` and remove `domainname`.
+      # Override in .env is called OVERRIDE_HOSTNAME
+      hostname: mail
+      domainname: example.com
+      # More information about the mail-server ports:
+      # https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/
+      # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
+      ports:
+        - "25:25"    # SMTP  (explicit TLS => STARTTLS)
+        - "143:143"  # IMAP4 (explicit TLS => STARTTLS)
+        - "465:465"  # ESMTP (implicit TLS)
+        - "587:587"  # ESMTP (explicit TLS => STARTTLS)
+        - "993:993"  # IMAP4 (implicit TLS)
+      volumes:
+        - ./docker-data/dms/mail-data/:/var/mail/
+        - ./docker-data/dms/mail-state/:/var/mail-state/
+        - ./docker-data/dms/mail-logs/:/var/log/mail/
+        - ./docker-data/dms/config/:/tmp/docker-mailserver/
+        # - ./docker-data/dms/config/dovecot/10-master.conf:/etc/dovecot/conf.d/10-master.conf
+        # - ./service_configs/postfix_main.cf:/etc/postfix/main.cf
+        # - ./service_configs/postfix_master.cf:/etc/postfix/master.cf
+        # - ./service_configs/dovecot.cf:/etc/dovecot/dovecot.conf  
+        - /etc/localtime:/etc/localtime:ro
+      stop_grace_period: 1m
+      cap_add:
+        - NET_ADMIN
+      healthcheck:
+        test: "ss --listening --tcp | grep -P 'LISTEN.+:smtp' || exit 1"
+        timeout: 3s
+        retries: 0
 volumes:
   db:
     driver: local
