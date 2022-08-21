@@ -1,4 +1,4 @@
-share/postfix/main.cf.dist for a commented, more complete version
+# See /usr/share/postfix/main.cf.dist for a commented, more complete version
 
 smtpd_banner = $myhostname ESMTP
 biff = no
