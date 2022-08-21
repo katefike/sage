@@ -23,6 +23,8 @@ services:
       # If the FQDN for your mail-server is only two labels (eg: example.com),
       # you can assign this entirely to `hostname` and remove `domainname`.
       # Override in .env is called OVERRIDE_HOSTNAME
+      # hostname: ${HOST}
+      # domainname: ${DOMAIN}
       hostname: mail
       domainname: example.com
       # More information about the mail-server ports:
@@ -39,10 +41,10 @@ services:
         - ./docker-data/dms/mail-state/:/var/mail-state/
         - ./docker-data/dms/mail-logs/:/var/log/mail/
         - ./docker-data/dms/config/:/tmp/docker-mailserver/
-        # - ./docker-data/dms/config/dovecot/10-master.conf:/etc/dovecot/conf.d/10-master.conf
-        # - ./service_configs/postfix_main.cf:/etc/postfix/main.cf
-        # - ./service_configs/postfix_master.cf:/etc/postfix/master.cf
-        # - ./service_configs/dovecot.cf:/etc/dovecot/dovecot.conf  
+        - ./docker-data/configs/postfix-main.cf:/etc/postfix/main.cf
+        # - ./docker-data/configs/postfix_master.cf:/etc/postfix/master.cf
+        # - ./docker-data/configs/dovecot.cf:/etc/dovecot/dovecot.conf  
+        # - ./docker-data/configs/10-master.cf:/etc/dovecot/conf.d/10-master.conf
         - /etc/localtime:/etc/localtime:ro
       stop_grace_period: 1m
       cap_add:
