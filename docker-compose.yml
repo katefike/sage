@@ -23,10 +23,8 @@ services:
       # If the FQDN for your mail-server is only two labels (eg: example.com),
       # you can assign this entirely to `hostname` and remove `domainname`.
       # Override in .env is called OVERRIDE_HOSTNAME
-      # hostname: ${HOST}
-      # domainname: ${DOMAIN}
-      hostname: mail
-      domainname: example.com
+      hostname: ${HOST}
+      domainname: ${DOMAIN}
       # More information about the mail-server ports:
       # https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/
       # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
