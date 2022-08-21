@@ -1,3 +1,8 @@
+# File for additional dovecot configurations.
+# For more informations read https://doc.dovecot.org/configuration_manual/quick_configuration/
+
+#mail_max_userip_connections = 50
+
 disable_plaintext_auth = no
 mail_privileged_group = mail
 mail_location = mbox:~/mail:INBOX=/var/mail/%u
@@ -29,6 +34,6 @@ service auth {
 }
 
 ssl=required
-ssl_cert = </etc/letsencrypt/live/babys-first-server.troublebucket.dev/fullchain.pem
-ssl_key = </etc/letsencrypt/live/babys-first-server.troublebucket.dev/privkey.pem
+ssl_cert = </etc/letsencrypt/live/$host.$domain/fullchain.pem
+ssl_key = </etc/letsencrypt/live/$host.$domain/privkey.pem
 stats_writer_socket_path=
