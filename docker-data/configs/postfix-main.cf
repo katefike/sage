@@ -24,8 +24,8 @@ readme_directory = no
 
 
 # TLS parameters
-#smtpd_tls_cert_file = /etc/letsencrypt/live/babys-first-server.troublebucket.dev/fullchain.pem
-#smtpd_tls_key_file = /etc/letsencrypt/live/babys-first-server.troublebucket.dev/privkey.pem
+#smtpd_tls_cert_file = /etc/letsencrypt/live/$host.$domain/fullchain.pem
+#smtpd_tls_key_file = /etc/letsencrypt/live/$host.$domain/privkey.pem
 #smtpd_tls_security_level = may
 
 #smtp_tls_CApath=/etc/ssl/certs
@@ -34,13 +34,13 @@ readme_directory = no
 
 
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
-#myhostname = babys-first-server
+#myhostname = $host
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
 #virtual_alias_maps = hash:/etc/postfix/virtual
 alias_database = hash:/etc/aliases
 myorigin = /etc/mailname
-#mydestination = babys-first-server.troublebucket.dev, troublebucket.dev, localhost.troublebucket.dev, localhost.localdomain, localhost
+#mydestination = $host.$domain, $domain, localhost.$domain, localhost.localdomain, localhost
 mydestination = localhost.localdomain, localhost
 relayhost = 
 mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
