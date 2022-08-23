@@ -1,69 +1,55 @@
-import os.path
+import os
 import typing
 from loguru import logger
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
+import imaplib
+import pathlib
+from dotenv import load_dotenv
 
-from email_parser import email_parser
-from db import db_transactions
+# from email_parser import email_parser
+# from db import db_transactions
 
 logger.add(sink="debug.log")
-# If modifying these scopes, delete the file token.json.
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 
 
 def main():
     """
     DOCSTRING EVENTUALLY
     """
-    creds = None
-    # The file token.json stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists("token.json"):
-        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open("token.json", "w") as token:
-            token.write(creds.to_json())
+    app_root = str(pathlib.Path(__file__).parent.parent)
+    env_path = app_root + "/.env"
+    if not load_dotenv(env_path):
+        logger.critical(".env not loaded")
+    IMAP4_FQDN = os.environ.get("IMAP4_FQDN")
+    IMAP4_PORT = os.environ.get("IMAP4_PORT")
+    EMAIL_USER = os.environ.get("EMAIL_USER")
+    EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
+    mail = imaplib.IMAP4(IMAP4_FQDN, IMAP4_PORT)
+    mail.login(EMAIL_USER, EMAIL_PASSWORD)
+    mail.list()
+    mail.select("inbox")  # connect to inbox.
+    result, data = mail.search(None, "ALL")
+    ids = data[0]  # data is a list.
+    id_list = ids.split()  # ids is a space separated string
+    latest_email_id = id_list[-1]  # get the latest
+    # fetch the email body (RFC822) for the given ID
+    result, data = mail.fetch(latest_email_id, "(RFC822)")
 
-    try:
-        # Call the Gmail API
-        service = build("gmail", "v1", credentials=creds)
-        # List the messages in the mailbox.
-        results = service.users().messages().list(userId="me", maxResults=500).execute()
-        if not results:
-            logger.info("No messages found.")
-            return
+    raw_email = data[0][1]  # here's the body, which is raw text of the whole email
+    # including headers and alternate payloads
+    print(raw_email)
+    # Get the message details
+    # for msg_id in message_ids:
+    #     message = (
+    #         service.users().messages().get(userId="me", id=msg_id["id"]).execute()
+    #     )
+    #     parsed_email = email_parser.main(message)
 
-        # TODO: Perform a partial synchronization once the history of message IDs is stored
-        message_ids = results["messages"]
-        # Get the message details
-        for msg_id in message_ids:
-            message = (
-                service.users().messages().get(userId="me", id=msg_id["id"]).execute()
-            )
-            parsed_email = email_parser.main(message)
-
-            if parsed_email and parsed_email.get("transaction"):
-                db_transactions.insert_transaction(parsed_email)
-                logger.info("Success")
-                # db_transactions.write_transaction(transaction)
-        logger.info("DONE")
-        return
-
-    except HttpError as error:
-        # TODO: Handle errors from gmail API
-        logger.error("An error occurred: %s", error)
+    #     if parsed_email and parsed_email.get("transaction"):
+    #         db_transactions.insert_transaction(parsed_email)
+    #         logger.info("Success")
+    #         # db_transactions.write_transaction(transaction)
+    # logger.info("DONE")
+    return
 
 
 if __name__ == "__main__":
