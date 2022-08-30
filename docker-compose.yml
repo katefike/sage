@@ -39,9 +39,9 @@ services:
         - ./docker-data/dms/mail-state/:/var/mail-state/
         - ./docker-data/dms/mail-logs/:/var/log/mail/
         - ./docker-data/dms/config/:/tmp/docker-mailserver/
-        - ./docker-data/configs/postfix-main.cf:/etc/postfix/main.cf
-        - ./docker-data/configs/postfix-master.cf:/etc/postfix/master.cf
-        - ./docker-data/configs/postfix-aliases:/etc/aliases
+        - ./docker-data/dms-temp-configs/postfix-main.cf:/etc/postfix/main.cf
+        - ./docker-data/dms-temp-configs/postfix-master.cf:/etc/postfix/master.cf
+        - ./docker-data/dms-temp-configs/postfix-aliases:/etc/aliases
         # - ./docker-data/configs/dovecot.cf:/etc/dovecot/dovecot.conf  
         # - ./docker-data/configs/10-master.cf:/etc/dovecot/conf.d/10-master.conf
         - /etc/localtime:/etc/localtime:ro
