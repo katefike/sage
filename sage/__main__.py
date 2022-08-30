@@ -25,24 +25,15 @@ def main():
     FORWARDING_EMAIL = os.environ.get("FORWARDING_EMAIL")
     RECEIVING_EMAIL = os.environ.get("RECEIVING_EMAIL")
     RECEIVING_EMAIL_PASSWORD = os.environ.get("RECEIVING_EMAIL_PASSWORD")
-    conn = imaplib.IMAP4(IMAP4_FQDN, IMAP4_PORT)
-    conn.login(RECEIVING_EMAIL, RECEIVING_EMAIL_PASSWORD)
-    conn.select("INBOX")
-    response, uids = conn.uid("SEARCH", f"(FROM {FORWARDING_EMAIL})")
-    # response, uids = conn.uid("SEARCH", "ALL")
-    if response != "OK":
-        logger.critical("Message UIDs failed to be retrieved from email server.")
-    for uid in uids[0].split(b" "):
-        _result, raw_email = conn.uid("FETCH", uid, "(RFC822)")
-        print(raw_email[0][1])
+    # conn = imaplib.IMAP4(IMAP4_FQDN, IMAP4_PORT)
+    # conn.login(RECEIVING_EMAIL, RECEIVING_EMAIL_PASSWORD)
+    # Get date, subject and body len of all emails from INBOX folder
+    with imap_tools.MailBoxUnencrypted(IMAP4_FQDN).login(
+        RECEIVING_EMAIL, RECEIVING_EMAIL_PASSWORD
+    ) as mailbox:
+        for msg in mailbox.fetch():
+            print(msg.date, msg.subject, len(msg.text or msg.html))
 
-    # # fetch the email body (RFC822) for the given ID
-    # result, data = mail.fetch(latest_email_id, "(RFC822)")
-
-    # raw_email = data[0][1]  # here's the body, which is raw text of the whole email
-    # including headers and alternate payloads
-    # print(raw_email)
-    # Get the message details
     # for msg_id in message_ids:
     #     message = (
     #         service.users().messages().get(userId="me", id=msg_id["id"]).execute()
