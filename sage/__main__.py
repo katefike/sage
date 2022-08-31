@@ -32,8 +32,9 @@ def main():
         RECEIVING_EMAIL, RECEIVING_EMAIL_PASSWORD
     ) as mailbox:
         for msg in mailbox.fetch():
-            print(msg.date, msg.subject, len(msg.text or msg.html))
+            print(msg.uid, msg.to, msg.from_, msg.subject, msg.text)
 
+    # TODO: Hand over the emails to the rest of the app
     # for msg_id in message_ids:
     #     message = (
     #         service.users().messages().get(userId="me", id=msg_id["id"]).execute()
