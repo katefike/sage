@@ -5,9 +5,9 @@ This app is is like Mint, but better. It collects all of an individual's persona
 ## Usage
 1. TBD
 2. Create the .env file using .env-example as a template.
-3. Start docker:
+3. Create and start containers:
 ```bash
-$ docker compose up
+$ docker compose -f docker-compose.yml up
 ```
 
 # Useful Commands
@@ -24,7 +24,7 @@ docker volume rm $(docker volume ls -q)
 - Python 3.7 or higher
 
 ## Create a docker-mailserver (DMS) Account
-1. Start the docker containers
+1. Create and start containers in development
 ```bash
 $ docker compose up
 ```
