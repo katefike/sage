@@ -34,7 +34,7 @@
   - name: save ip and hostname to local hosts file
     become: yes
     lineinfile:
-      path: /home/kfike/Projects/sage/ansible/hosts_example
+      path: /home/kfike/Projects/sage/ansible/droplet_hosts
       regexp: '.*{{ item.data.droplet.name }}$'
       line: "{{ item.data.droplet.networks.v4[0].ip_address }}  {{ item.data.droplet.name }}"
     with_items: "{{ droplet_result.results }}"

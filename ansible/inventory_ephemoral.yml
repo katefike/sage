@@ -1,6 +1,6 @@
 web:
   hosts:
-    web01.example.com:
+    sage.epehemeral:
   vars:
     ansible_user: root
     ephemeral_ssh_private_key_file: EPHEMERAL_SSH_KEY_PRIVATE_FILE

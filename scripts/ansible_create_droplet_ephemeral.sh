@@ -9,4 +9,4 @@ set +o allexport
 
 # Run Ansible Playbook for creating an ephemeral DO Droplet server
 cd ansible/
-exec ansible-playbook -i prod.yml ephemeral_droplet.yml --ask-become-pass
+exec ansible-playbook -i inventory_ephemoral.yml create_droplet_ephemeral.yml --ask-become-pass
