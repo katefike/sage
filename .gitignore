@@ -134,3 +134,6 @@ debug.sql
 
 # docker-mailserver
 docker-data/dms/
+
+# Ansible
+/ansible/droplet_hosts
