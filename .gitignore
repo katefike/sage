@@ -136,4 +136,4 @@ debug.sql
 docker-data/dms/
 
 # Ansible
-/ansible/droplet_hosts
+ansible/droplet_hosts
