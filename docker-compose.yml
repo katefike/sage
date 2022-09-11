@@ -14,6 +14,15 @@ services:
     volumes: 
       - db:/var/lib/postgresql/data
       - ./sage/db/init:/docker-entrypoint-initdb.d
+  postfix:
+    image: juanluisbaptiste/postfix:latest
+    expose:
+    - "25"
+    env_file:
+      - .env
+    restart: always
+    volumes:
+     - "/etc/localtime:/etc/localtime:ro"
 volumes:
   db:
     driver: local
