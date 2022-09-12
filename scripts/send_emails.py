@@ -40,5 +40,5 @@ try:
     smtp_conn = smtplib.SMTP("localhost")
     smtp_conn.sendmail(sender, receivers, msg.as_string())
     print("Successfully sent email")
-except smtplib.SMTPException:
-    print("Error: unable to send email")
+except smtplib.SMTPException as error:
+    print(f"Error: {error}")
