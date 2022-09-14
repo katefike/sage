@@ -9,17 +9,17 @@ postconf -# "smtp_tls_session_cache_database"
 
 
 postconf -# "smtpd_relay_restrictions"
-postconf -e "myhostname = mail.example.com"
+postconf -e "myhostname = $DOMAIN"
 postconf -e "alias_maps = hash:/etc/aliases"
 postconf -e "alias_database = hash:/etc/aliases"
-postconf -e "mydestination = $myhostname, example.com, localhost.example.com, localhost.localdomain, localhost"
+postconf -e "mydestination = $HOST.$DOMAIN, $DOMAIN, localhost.$DOMAIN, localhost.localdomain, localhost"
 postconf -e "relayhost = "
 postconf -e "mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128"
 postconf -e "mailbox_size_limit = 0"
 postconf -e "recipient_delimiter = +"
 postconf -e "inet_interfaces = all"
 postconf -e "inet_protocols = all"
-postconf -e "myorigin = example.com"
+postconf -e "myorigin = $DOMAIN"
 postconf -e "maillog_file = /var/log/mail.log"
 postconf -# "smtpd_sasl_auth_enable"
 postconf -# "broken_sasl_auth_clients"
@@ -29,5 +29,5 @@ postconf -e "home_mailbox = Maildir/"
 # Initialize a user
 apt-get update
 yes | apt install mailutils
-useradd -m -s /bin/bash incoming
-examplepassword | passwd incoming
+useradd -m -s /bin/bash $RECEIVING_EMAIL
+{ echo "$RECEIVING_EMAIL_PASSWORD"; echo "$RECEIVING_EMAIL_PASSWORD"; } | passwd $RECEIVING_EMAIL
