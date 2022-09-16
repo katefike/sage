@@ -15,7 +15,7 @@ DOMAIN = os.environ.get("DOMAIN")
 
 
 sender = "root@localhost"
-receivers = f"{RECEIVING_EMAIL}@e{DOMAIN}"
+receivers = f"{RECEIVING_EMAIL}@{DOMAIN}"
 
 # Create message container - the correct MIME type is multipart/alternative.
 msg = MIMEMultipart("alternative")
