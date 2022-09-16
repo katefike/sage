@@ -20,6 +20,7 @@ services:
       - '25'
     ports:
       - '25:25'
+      - '143:143'
     env_file:
       - .env
     restart: always
