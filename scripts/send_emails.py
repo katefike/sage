@@ -1,11 +1,21 @@
 #!/usr/bin/python3
+import os
 import smtplib
-
+import pathlib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from dotenv import load_dotenv
+
+app_root = str(pathlib.Path(__file__).parent.parent)
+env_path = app_root + "/.env"
+if not load_dotenv(env_path):
+    print(".env failed to load.")
+RECEIVING_EMAIL = os.environ.get("RECEIVING_EMAIL")
+DOMAIN = os.environ.get("DOMAIN")
+
 
 sender = "root@localhost"
-receivers = "incoming@example.com"
+receivers = f"{RECEIVING_EMAIL}@e{DOMAIN}"
 
 # Create message container - the correct MIME type is multipart/alternative.
 msg = MIMEMultipart("alternative")
