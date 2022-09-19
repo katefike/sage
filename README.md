@@ -16,6 +16,13 @@ Remove all volumes
 docker volume rm $(docker volume ls -q)
 ```
 
+Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
+```
+docker cp sage-mailserver-1:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.conf \
+&& docker cp sage-mailserver-1:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
+&& docker cp sage-mailserver-1:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf \
+```
+
 # Local Development
 
 ## Globally Installed Software
