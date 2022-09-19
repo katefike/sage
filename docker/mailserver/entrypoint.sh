@@ -1,7 +1,9 @@
 #!/usr/bin/bash
 
-MAIL_DOMAIN=${MAIL_DOMAIN:=example.com}
-MAIL_HOST=${MAIL_HOST:-$MAIL_DOMAIN}
+DOMAIN=${DOMAIN}
+HOST=${HOST}
+# MAIL_DOMAIN=${MAIL_DOMAIN:=example.com}
+# MAIL_HOST=${MAIL_HOST:-$MAIL_DOMAIN}
 SMTP_USER=${SMTP_USER:=user:password}
 DKIM_SELECTOR=${DKIM_SELECTOR:=mail}
 CRON_ENABLED=${LOGS_CLEANUP:=1}
@@ -63,12 +65,12 @@ EOF
 
 chmod +x /postfix.sh
 
-postconf -e myhostname=${MAIL_HOST}
-postconf -e myorigin=${MAIL_DOMAIN}
+postconf -e myhostname=${HOST}
+postconf -e myorigin=${DOMAIN}
 
 postconf -F '*/*/chroot = n'
 
-echo "$MAIL_DOMAIN" > /etc/mailname
+echo "$DOMAIN" > /etc/mailname
 
 postconf -e maillog_file=/var/log/mail.log
 
@@ -91,14 +93,14 @@ EOF
 # sasldb2
 echo ${SMTP_USER} | tr , \\n > /tmp/passwd
 while IFS=':' read -r _user _pwd; do
-  echo $_pwd | saslpasswd2 -p -c -u ${MAIL_HOST} $_user
+  echo $_pwd | saslpasswd2 -p -c -u ${HOST} $_user
 done < /tmp/passwd
 chown postfix.sasl /etc/sasldb2
 
 # TLS
 
-CRT_FILE=/etc/postfix/certs/${MAIL_HOST}.crt
-KEY_FILE=/etc/postfix/certs/${MAIL_HOST}.key
+CRT_FILE=/etc/postfix/certs/${HOST}.crt
+KEY_FILE=/etc/postfix/certs/${HOST}.key
 
 if [[ -f "${CRT_FILE}" && -f "${KEY_FILE}" ]]; then
 
@@ -175,17 +177,17 @@ localhost
 10.0.0.0/8
 172.16.0.0/12
 192.168.0.0/16
-${MAIL_DOMAIN}
+${DOMAIN}
 EOF
 
 DKIM_FILE=/etc/opendkim/domainkeys/${DKIM_SELECTOR}.private
 
 cat > /etc/opendkim/KeyTable <<EOF
-${DKIM_SELECTOR}._domainkey.${MAIL_DOMAIN} ${MAIL_DOMAIN}:${DKIM_SELECTOR}:${DKIM_FILE}
+${DKIM_SELECTOR}._domainkey.${DOMAIN} ${DOMAIN}:${DKIM_SELECTOR}:${DKIM_FILE}
 EOF
 
 cat > /etc/opendkim/SigningTable <<EOF
-*@${MAIL_DOMAIN} ${DKIM_SELECTOR}._domainkey.${MAIL_DOMAIN}
+*@${DOMAIN} ${DKIM_SELECTOR}._domainkey.${DOMAIN}
 EOF
 
 for kf in ${KEY_FILES}; do
