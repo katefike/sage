@@ -23,6 +23,15 @@ docker cp sage-mailserver-1:/etc/postfix/main.cf ./docker/mailserver/configs/pos
 && docker cp sage-mailserver-1:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf \
 ```
 
+Clean restart of Docker
+```
+docker compose down
+# Removes all containers
+docker rm -f $(docker ps -a -q)
+# Removes all volumes
+docker volume rm $(docker volume ls -q)
+docker-compose up
+```
 # Local Development
 
 ## Globally Installed Software
