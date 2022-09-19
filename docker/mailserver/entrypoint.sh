@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 MAIL_DOMAIN=${MAIL_DOMAIN:=example.com}
 MAIL_HOST=${MAIL_HOST:-$MAIL_DOMAIN}
