@@ -1,6 +1,9 @@
 #!/bin/bash
-postconf -e "smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem"
-postconf -e "smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key"
+# TODO: Use a TLS cert for staging and production
+# postconf -e "smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem"
+# postconf -e "smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key"
+postconf -# "smtpd_tls_cert_file"
+postconf -# "smtpd_tls_key_file"
 postconf -# "smtpd_tls_security_level"
 
 postconf -# "smtp_tls_CApath"
