@@ -30,7 +30,7 @@ docker compose down
 docker rm -f $(docker ps -a -q)
 # Removes all volumes
 docker volume rm $(docker volume ls -q)
-docker-compose up
+docker compose up
 ```
 # Local Development
 
