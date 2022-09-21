@@ -11,11 +11,6 @@ $ docker compose up
 ```
 
 # Useful Commands
-Remove all volumes
-```
-docker volume rm $(docker volume ls -q)
-```
-
 Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
 ```
 docker cp sage-mailserver-1:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.conf \
@@ -23,6 +18,10 @@ docker cp sage-mailserver-1:/etc/postfix/main.cf ./docker/mailserver/configs/pos
 && docker cp sage-mailserver-1:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf \
 ```
 
+Show the names of all docker containers (active and inactive)
+```
+docker ps -a --format '{{.Names}}'
+```
 Clean restart of Docker
 ```
 docker compose down
@@ -31,6 +30,8 @@ docker rm -f $(docker ps -a -q)
 # Removes all volumes
 docker volume rm $(docker volume ls -q)
 docker compose up
+# Removes all images
+docker rmi $(docker images -q)
 ```
 # Local Development
 

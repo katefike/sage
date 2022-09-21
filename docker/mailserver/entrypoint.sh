@@ -5,6 +5,11 @@ HOST=${HOST}
 DKIM_SELECTOR=${DKIM_SELECTOR:=mail}
 CRON_ENABLED=${LOGS_CLEANUP:=1}
 
+# TODO: Try removing this, it probably isn't needed
+# It was added to resolve the docker error message discussed in this issue
+# https://github.com/docker-mailserver/docker-mailserver/issues/802
+echo "192.168.80.1  cutie" >> /etc/hosts
+
 # SUPERVISOR
 cat > /etc/supervisor/conf.d/supervisord.conf <<EOF
 [supervisord]
@@ -242,12 +247,6 @@ service auth {
   }
 }
 EOF
-
-# WHERE YOU LEFT OFF
-# FOLLOW https://www.digitalocean.com/community/tutorials/how-to-set-up-a-postfix-e-mail-server-with-dovecot#dovecot
-# May need to enable dovecot in postfix?
-# Then restart both services
-# Then test to see if IMAP finally works
-postfix reload
-service dovecot reload
+service postfix reload
+service dovecot restart
 exec "$@"
