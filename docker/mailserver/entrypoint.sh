@@ -217,4 +217,37 @@ rm -f /var/run/rsyslogd.pid
 
 [[ -f "/configure.sh" ]] && bash /configure.sh
 
+# DOVECOT
+# Clear the file contents
+:> /etc/dovecot/dovecot.conf
+
+cat >> /etc/dovecot/dovecot.conf <<EOF
+disable_plaintext_auth = yes
+mail_privileged_group = mail
+mail_location = mbox:~/mail:INBOX=/var/mail/%u
+userdb {
+  driver = passwd
+}
+passdb {
+  args = %s
+  driver = pam
+}
+protocols = "imap"
+
+service auth {
+  unix_listener /var/spool/postfix/private/auth {
+    group = postfix
+    mode = 0660
+    user = postfix
+  }
+}
+EOF
+
+# WHERE YOU LEFT OFF
+# FOLLOW https://www.digitalocean.com/community/tutorials/how-to-set-up-a-postfix-e-mail-server-with-dovecot#dovecot
+# May need to enable dovecot in postfix?
+# Then restart both services
+# Then test to see if IMAP finally works
+postfix reload
+service dovecot reload
 exec "$@"

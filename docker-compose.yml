@@ -19,6 +19,7 @@ services:
     build: ./docker/mailserver/
     expose:
       - '25'
+      - '143'
     ports:
       - '25:25'
       - '143:143'
