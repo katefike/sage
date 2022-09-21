@@ -227,7 +227,7 @@ rm -f /var/run/rsyslogd.pid
 :> /etc/dovecot/dovecot.conf
 
 cat >> /etc/dovecot/dovecot.conf <<EOF
-disable_plaintext_auth = yes
+disable_plaintext_auth = no
 mail_privileged_group = mail
 mail_location = mbox:~/mail:INBOX=/var/mail/%u
 userdb {
