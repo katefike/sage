@@ -5,16 +5,14 @@ HOST=${HOST}
 DKIM_SELECTOR=${DKIM_SELECTOR:=mail}
 CRON_ENABLED=${LOGS_CLEANUP:=1}
 
-# Supervisor
-
+# SUPERVISOR
 cat > /etc/supervisor/conf.d/supervisord.conf <<EOF
 [supervisord]
 nodaemon=true
 user=root
 EOF
 
-# Cron
-
+# CRON
 if [[ "${CRON_ENABLED,,}" = "1" || "${CRON_ENABLED,,}" = "yes" || "${CRON_ENABLED,,}" = "true" ]]; then
 
 cat >> /etc/supervisor/conf.d/supervisord.conf <<EOF
@@ -31,8 +29,7 @@ rm -f /etc/cron.d/*
 
 fi
 
-# Postfix
-
+# POSTFIX
 cat >> /etc/supervisor/conf.d/supervisord.conf <<EOF
 [program:postfix]
 command=/postfix.sh
