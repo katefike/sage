@@ -245,14 +245,6 @@ service auth {
     user = postfix
   }
 }
-
-service auth-worker {
-  # This should be enough:
-  group = shadow
-  # If not, just give full root permissions:
-  #user = root
-}
-
 EOF
 
 # Initialize a user
