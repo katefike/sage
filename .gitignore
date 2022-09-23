@@ -133,7 +133,7 @@ dmypy.json
 debug.sql
 
 # docker-mailserver
-docker-data/dms/
+docker/mailserver/configs/
 
 # Ansible
 ansible/droplet_hosts
