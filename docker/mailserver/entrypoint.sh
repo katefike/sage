@@ -250,10 +250,6 @@ EOF
 # Initialize a user
 useradd -m -s /bin/bash $RECEIVING_EMAIL
 { echo "$RECEIVING_EMAIL_PASSWORD"; echo "$RECEIVING_EMAIL_PASSWORD"; } | passwd $RECEIVING_EMAIL
-cat >> /etc/dovecot/passwd <<EOF
-incoming@example.com:{PLAIN}1234::::::
-incoming:{PLAIN}1234::::::
-EOF
 
 service postfix reload
 service dovecot restart
