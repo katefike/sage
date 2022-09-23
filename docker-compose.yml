@@ -27,7 +27,7 @@ services:
       - .env
     restart: always
     volumes:
-      - ./scripts/postfix_config.sh:/configure.sh
+      - ./docker/mailserver/scripts/postfix_config_development.sh:/configure.sh
 volumes:
   db:
     driver: local
