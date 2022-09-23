@@ -29,9 +29,3 @@ postconf -# "smtpd_sasl_auth_enable"
 postconf -# "broken_sasl_auth_clients"
 postconf -# "smtpd_recipient_restrictions"
 postconf -e "home_mailbox = Maildir/"
-
-# Initialize a user
-apt-get update
-yes | apt install mailutils
-useradd -m -s /bin/bash $RECEIVING_EMAIL
-{ echo "$RECEIVING_EMAIL_PASSWORD"; echo "$RECEIVING_EMAIL_PASSWORD"; } | passwd $RECEIVING_EMAIL

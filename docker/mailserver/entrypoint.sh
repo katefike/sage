@@ -227,17 +227,16 @@ rm -f /var/run/rsyslogd.pid
 :> /etc/dovecot/dovecot.conf
 
 cat >> /etc/dovecot/dovecot.conf <<EOF
+protocols = "imap"
 disable_plaintext_auth = no
 mail_privileged_group = mail
-mail_location = mbox:~/mail:INBOX=/var/mail/%u
+mail_location = maildir:~/Maildir
 userdb {
   driver = passwd
 }
 passdb {
-  args = %s
-  driver = pam
+  driver = shadow
 }
-protocols = "imap"
 
 service auth {
   unix_listener /var/spool/postfix/private/auth {
@@ -246,7 +245,24 @@ service auth {
     user = postfix
   }
 }
+
+service auth-worker {
+  # This should be enough:
+  group = shadow
+  # If not, just give full root permissions:
+  #user = root
+}
+
 EOF
+
+# Initialize a user
+useradd -m -s /bin/bash $RECEIVING_EMAIL
+{ echo "$RECEIVING_EMAIL_PASSWORD"; echo "$RECEIVING_EMAIL_PASSWORD"; } | passwd $RECEIVING_EMAIL
+cat >> /etc/dovecot/passwd <<EOF
+incoming@example.com:{PLAIN}1234::::::
+incoming:{PLAIN}1234::::::
+EOF
+
 service postfix reload
 service dovecot restart
 exec "$@"
