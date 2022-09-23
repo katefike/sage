@@ -33,6 +33,11 @@ docker compose up
 # Removes all images
 docker rmi $(docker images -q)
 ```
+
+# Show dovecot errors
+```
+doveadm log errors
+```
 # Local Development
 
 ## Globally Installed Software
