@@ -17,7 +17,6 @@ postconf -e "alias_maps = hash:/etc/aliases"
 postconf -e "alias_database = hash:/etc/aliases"
 postconf -e "mydestination = $HOST.$DOMAIN, $DOMAIN, localhost.$DOMAIN, localhost.localdomain, localhost"
 postconf -e "relayhost = "
-# TODO: Find out if 192.168.1.0/24 is need bwlow; probably not
 postconf -e "mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128"
 postconf -e "mailbox_size_limit = 0"
 postconf -e "recipient_delimiter = +"
