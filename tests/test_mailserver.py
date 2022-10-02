@@ -7,6 +7,6 @@ def test_sending_single_email(send_single_email):
 
 def test_getting_emails(get_emails):
     """
-    Test if emails can be retrieved via IMAP
+    Test if emails can be retrieved via IMAP.
     """
     assert len(get_emails) is not 0
