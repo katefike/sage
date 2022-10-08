@@ -1,8 +1,15 @@
-def test_sending_single_email(send_single_email):
+def test_sending_accepted_email(send_accepted_email):
     """
-    Test if emails are successfully sent via SMTP
+    Test if emails from authorized the authoized sender is successfully sent via SMTP.
     """
-    assert send_single_email is True
+    assert send_accepted_email is True
+
+
+def test_sending_rejected_email(send_rejected_email):
+    """
+    Test if emails from an unauthorized sender is rejected.
+    """
+    assert send_rejected_email is False
 
 
 def test_getting_emails(get_emails):

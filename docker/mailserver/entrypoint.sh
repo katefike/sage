@@ -64,6 +64,15 @@ EOF
 
 chmod +x /postfix.sh
 
+# Only allow the forwarding email to successfully send emails to receiving email
+touch /etc/postfix/header_checks
+cat >> /etc/postfix/header_checks <<EOF
+if /^To:/
+/^To: UnwantedEmail@gmail.com/ DISCARD
+endif
+EOF
+postconf -e header_checks=pcre:/etc/postfix/header_checks
+
 postconf -e myhostname=${HOST}
 postconf -e myorigin=${DOMAIN}
 

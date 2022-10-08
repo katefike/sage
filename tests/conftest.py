@@ -17,17 +17,37 @@ if not load_dotenv(env_path):
     print(".env faled to load.")
 DOMAIN = os.environ.get("DOMAIN")
 IMAP4_FQDN = os.environ.get("IMAP4_FQDN")
+FORWARDING_EMAIL = os.environ.get("FORWARDING_EMAIL")
 RECEIVING_EMAIL = os.environ.get("RECEIVING_EMAIL")
 RECEIVING_EMAIL_PASSWORD = os.environ.get("RECEIVING_EMAIL_PASSWORD")
 
 
 @pytest.fixture()
-def send_single_email():
+def send_rejected_email():
+    """
+    Send a single email to the mail server that will get rejected because it's from an unauthroized
+    email.
+    """
+    sender = "UnwantedEmail@gmail.com"
+    success = send_single_email(sender)
+    return success
+
+
+@pytest.fixture()
+def send_accepted_email():
+    """
+    Send a single email to the mail server that will get accepted because it's from the authorized
+    forwarding email.
+    """
+    sender = f"{FORWARDING_EMAIL}"
+    success = send_single_email(sender)
+    return success
+
+
+def send_single_email(sender):
     """
     Send a single pre-defined email to the mail server.
     """
-
-    sender = "root@localhost"
     receivers = f"{RECEIVING_EMAIL}@{DOMAIN}"
 
     # Create message container - the correct MIME type is multipart/alternative.
@@ -68,10 +88,9 @@ def send_single_email():
         smtp_conn.sendmail(sender, receivers, msg.as_string())
         print("Email successfully sent.")
         success = True
-        return success
     except smtplib.SMTPException as error:
         print(f"Error sending email: {error}")
-        return success, error
+    return success
 
 
 @pytest.fixture()
