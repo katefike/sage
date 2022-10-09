@@ -1,9 +1,10 @@
 import os
-import typing
-from loguru import logger
 import pathlib
-from dotenv import load_dotenv
+import typing
+
 import imap_tools
+from dotenv import load_dotenv
+from loguru import logger
 
 # from email_parser import email_parser
 # from db import db_transactions
@@ -21,11 +22,11 @@ def main():
         logger.critical(".env failed to load.")
     IMAP4_FQDN = os.environ.get("IMAP4_FQDN")
     FORWARDING_EMAIL = os.environ.get("FORWARDING_EMAIL")
-    RECEIVING_EMAIL = os.environ.get("RECEIVING_EMAIL")
+    RECEIVING_EMAIL_USER = os.environ.get("RECEIVING_EMAIL_USER")
     RECEIVING_EMAIL_PASSWORD = os.environ.get("RECEIVING_EMAIL_PASSWORD")
 
     with imap_tools.MailBoxUnencrypted(IMAP4_FQDN).login(
-        RECEIVING_EMAIL, RECEIVING_EMAIL_PASSWORD
+        RECEIVING_EMAIL_USER, RECEIVING_EMAIL_PASSWORD
     ) as mailbox:
         for msg in mailbox.fetch():
             print(msg.uid, msg.to, msg.from_, msg.subject, msg.text)
