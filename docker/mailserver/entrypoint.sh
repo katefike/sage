@@ -251,10 +251,14 @@ EOF
 useradd -m -s /bin/bash $RECEIVING_EMAIL
 { echo "$RECEIVING_EMAIL_PASSWORD"; echo "$RECEIVING_EMAIL_PASSWORD"; } | passwd $RECEIVING_EMAIL
 
-# Move test mbox files to the receiving user's home directory
-# mv test_data/ ~incoming/
-# chown incoming ~incoming/test_data/
+# Create a Maildir directory
+mkdir /home/incoming/Maildir
+chmod -R 777 /home/incoming/Maildir
 
 service postfix reload
 service dovecot restart
+
+# Comvert the Mbox files to Maildir 
+# su - incoming
+
 exec "$@"
