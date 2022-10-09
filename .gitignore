@@ -137,3 +137,5 @@ docker/mailserver/configs/
 
 # Ansible
 ansible/droplet_hosts
+
+tests/test_data/real_data/

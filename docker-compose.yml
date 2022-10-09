@@ -28,6 +28,7 @@ services:
     restart: always
     volumes:
       - ./docker/mailserver/scripts/postfix_config_development.sh:/configure.sh
+      - ./tests/test_data/:/test_data/
 volumes:
   db:
     driver: local
