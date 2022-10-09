@@ -10,4 +10,3 @@ def test_getting_emails(get_emails):
     Test if emails can be retrieved via IMAP.
     """
     assert len(get_emails) is not 0
-    assert len(get_emails) == 1
