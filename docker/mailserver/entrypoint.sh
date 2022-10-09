@@ -259,6 +259,7 @@ service postfix reload
 service dovecot restart
 
 # Comvert the Mbox files to Maildir 
-# su - incoming
+su - incoming
+mb2md  -s test_data/example_data/
 
 exec "$@"
