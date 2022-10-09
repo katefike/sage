@@ -1,6 +1,7 @@
 # Provides fixtures for the entire directory and subdirectories
 # This file is run during the test collection phase (before any tests are run)
 
+import datetime
 import os
 import pathlib
 import smtplib
@@ -17,7 +18,7 @@ if not load_dotenv(env_path):
     print(".env faled to load.")
 DOMAIN = os.environ.get("DOMAIN")
 IMAP4_FQDN = os.environ.get("IMAP4_FQDN")
-RECEIVING_EMAIL = os.environ.get("RECEIVING_EMAIL")
+RECEIVING_EMAIL_USER = os.environ.get("RECEIVING_EMAIL_USER")
 RECEIVING_EMAIL_PASSWORD = os.environ.get("RECEIVING_EMAIL_PASSWORD")
 
 
@@ -28,11 +29,12 @@ def send_single_email():
     """
 
     sender = "root@localhost"
-    receivers = f"{RECEIVING_EMAIL}@{DOMAIN}"
+    receivers = f"{RECEIVING_EMAIL_USER}@{DOMAIN}"
+    now = datetime.datetime.now()
 
     # Create message container - the correct MIME type is multipart/alternative.
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = "Link"
+    msg["Subject"] = f"Sent {now}"
     msg["From"] = sender
     msg["To"] = receivers
 
@@ -81,7 +83,7 @@ def get_emails():
     """
     msgs = []
     with imap_tools.MailBoxUnencrypted(IMAP4_FQDN).login(
-        RECEIVING_EMAIL, RECEIVING_EMAIL_PASSWORD
+        RECEIVING_EMAIL_USER, RECEIVING_EMAIL_PASSWORD
     ) as mailbox:
         for msg in mailbox.fetch():
             email = [

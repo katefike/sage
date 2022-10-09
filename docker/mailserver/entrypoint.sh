@@ -248,9 +248,18 @@ service auth {
 EOF
 
 # Initialize a user
-useradd -m -s /bin/bash $RECEIVING_EMAIL
-{ echo "$RECEIVING_EMAIL_PASSWORD"; echo "$RECEIVING_EMAIL_PASSWORD"; } | passwd $RECEIVING_EMAIL
+useradd -m -s /bin/bash $RECEIVING_EMAIL_USER
+{ echo "$RECEIVING_EMAIL_PASSWORD"; echo "$RECEIVING_EMAIL_PASSWORD"; } | passwd $RECEIVING_EMAIL_USER
 
 service postfix reload
 service dovecot restart
+
+# For local development:
+mkdir /home/incoming/Maildir
+# Convert mbox (mb) file to Maildir (md)
+# docs found out https://github.com/dovecot/tools/blob/main/mb2md.pl
+mb2md -s /home/$RECEIVING_EMAIL_USER/test_data/example_data/transaction_emails_development.mbox -d /home/incoming/Maildir/
+# TODO: Create an imap group
+chmod -R 777 /home/incoming/Maildir
+
 exec "$@"
