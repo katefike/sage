@@ -138,4 +138,5 @@ docker/mailserver/configs/
 # Ansible
 ansible/droplet_hosts
 
+# Real financial data used by pytest
 tests/test_data/real_data/
