@@ -1,6 +1,7 @@
 # Provides fixtures for the entire directory and subdirectories
 # This file is run during the test collection phase (before any tests are run)
 
+import datetime
 import os
 import pathlib
 import smtplib
@@ -29,10 +30,11 @@ def send_single_email():
 
     sender = "root@localhost"
     receivers = f"{RECEIVING_EMAIL}@{DOMAIN}"
+    now = datetime.datetime.now()
 
     # Create message container - the correct MIME type is multipart/alternative.
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = "Link"
+    msg["Subject"] = f"Sent {now}"
     msg["From"] = sender
     msg["To"] = receivers
 
