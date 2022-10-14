@@ -1,5 +1,8 @@
 #!/usr/bin/bash
 
+# TODO: For toggling between dev and prod, use ISDEV
+# TODO: Make more .env vars for dev and prod where you can- instead of ISDEV when you can
+
 DOMAIN=${DOMAIN}
 HOST=${HOST}
 DKIM_SELECTOR=${DKIM_SELECTOR:=mail}
