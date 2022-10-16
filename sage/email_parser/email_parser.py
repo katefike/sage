@@ -1,23 +1,12 @@
 import base64
-import re
 import datetime
+import re
 from decimal import Decimal
+
 from loguru import logger
 
 
 def main(msg) -> dict:
-
-    # Initialize returned variables
-    transaction = False
-    gmail_id = None
-    gmail_time = None
-    bank = None
-    merchant = None
-    payer = None
-    raw_amount = None
-    account = None
-    balance = None
-
     headers = msg["payload"]["headers"]
 
     for data in headers:
@@ -201,15 +190,17 @@ def get_huntington_balance(html_data: str) -> str:
     balance = regex_search("(?<=Your balance is \$)(.*)(?=. as of)", html_data)
     return balance
 
+
 def transform_amount(raw_amount: str) -> int:
     # Remove the comma
-    raw_amount = re.sub(",","",raw_amount)
+    raw_amount = re.sub(",", "", raw_amount)
     # Check for decimals
     if regex_search("(.\d\d)", raw_amount):
         transformed_amount = raw_amount
     else:
         transformed_amount = raw_amount + ".00"
     return transformed_amount
+
 
 def regex_search(pattern, string) -> str:
     results = re.search(pattern, string)
@@ -218,5 +209,3 @@ def regex_search(pattern, string) -> str:
         return all_matches
     else:
         return None
-
-
