@@ -13,8 +13,6 @@ class Transaction:
     uid: int
     # Time the email was received by the mail server
     time_received: datetime
-    # Time the email was parsed by the app
-    time_parsed: datetime = field(default=None)
     # Transaction type can be one of the following
     # withdrawal: a merchant removed money from the account
     # deposit: a payer added money from the account
