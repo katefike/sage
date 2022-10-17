@@ -6,7 +6,7 @@ import imap_tools
 from dotenv import load_dotenv
 from loguru import logger
 
-from email_parser import email_parser
+from sage.email_parser import email_parser
 
 # from db import db_transactions
 
@@ -38,10 +38,10 @@ def main():
             if msg.from_ != FORWARDING_EMAIL:
                 continue
             # Ignore emails that don't have a text or html body
-            if not msg.text or msg.html:
+            if not msg.text or not msg.html:
                 continue
-            print(msg.uid, msg.to, msg.from_, msg.subject, msg.text, msg.html)
-            parsed_email = email_parser.main(msg)
+            transaction = email_parser.main(msg)
+            print(transaction)
 
     # TODO: Write the emails to the db
     #     if parsed_email and parsed_email.get("transaction"):
