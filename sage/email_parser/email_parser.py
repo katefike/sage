@@ -22,9 +22,24 @@ def main(msg: MailMessage) -> Transaction:
     transaction.bank = get_bank(body)
     # Parse the email based on who the bank is
     if transaction.bank == "Chase":
+        transaction.type_ = "withdrawal"
         transaction.merchant, transaction.raw_amount = parse_chase(msg.subject)
     if transaction.bank == "Discover":
+        transaction.type_ = "withdrawal"
         transaction.merchant, transaction.raw_amount = parse_discover(body)
+    if transaction.bank == "Huntington":
+        transaction.type_ = identify_huntington_transaction_type(body)
+        if transaction.type_ == "transfer withdrawal":
+            transaction.raw_amount = parse_huntington_transfer_withdrawal(body)
+        elif transaction.type_ == "transfer deposit":
+            transaction.raw_amount = parse_huntington_transfer_deposit(body)
+        elif transaction.type_ == "withdrawal":
+            transaction.merchant, transaction.raw_amount = parse_huntington_withdrawal(
+                body
+            )
+        elif transaction.type_ == "deposit":
+            transaction.payer, transaction.raw_amount = parse_huntington_deposit(body)
+        transaction.account = identify_huntington_account(body)
 
     # merchant, raw_amount = parse_discover(body)
     # print(f"Merchant: {merchant}")
@@ -42,13 +57,12 @@ def get_bank(body: str) -> str:
         Subject: Withdrawal or Purchase
         To: <example.com>
     """
-    bank = None
-    if regex_search("(HuntingtonAlerts@email.huntington.com)", body):
-        bank = "Huntington"
-    elif regex_search("(no.reply.alerts@chase.com)", body):
+    if regex_search("(no.reply.alerts@chase.com)", body):
         bank = "Chase"
     elif regex_search("(discover@services.discover.com)", body):
         bank = "Discover"
+    elif regex_search("(HuntingtonAlerts@email.huntington.com)", body):
+        bank = "Huntington"
     return bank
 
 
@@ -78,6 +92,45 @@ def parse_discover(body: str) -> str:
     return merchant, raw_amount
 
 
+def identify_huntington_transaction_type(body: str) -> str:
+    """
+    Identify the Huntington transaction type
+    """
+    if regex_search("transfer withdrawal", body):
+        type_ = "transfer withdrawal"
+    elif regex_search("transfer deposit", body):
+        type_ = "transfer deposit"
+    elif regex_search("withdrawal", body):
+        type_ = "withdrawal"
+    elif regex_search("deposit", body):
+        type_ = "deposit"
+    return type_
+
+
+def parse_huntington_transfer_withdrawal(body: str) -> str:
+    """
+    Extract the transferred amount from the email body
+    I.e.
+    We've processed a transfer withdrawal for $999.51
+    from your account nicknamed CHECK. That's above the $0.00 you set for an alert.
+    """
+    merchant = regex_search("(?<= at )(.*)(?= from your)", body)
+    raw_amount = regex_search("(?<=for \$)(.*)(?= at)", body)
+    return merchant, raw_amount
+
+
+def parse_huntington_transfer_deposit(body: str) -> str:
+    """
+    Extract the tranferred amount from the email body
+    I.e.
+    We've processed a transfer deposit for $999.51 to your account nicknamed
+    SAVE. That's above the $0.00 you set for an alert.
+    """
+    payer = regex_search("(?<= from )(.*)(?= to your)", body)
+    raw_amount = regex_search("(?<=for \$)(.*)(?= from)", body)
+    return payer, raw_amount
+
+
 def parse_huntington_withdrawal(body: str) -> str:
     """
     Extract the transaction amount and merchant from the email body
@@ -85,7 +138,7 @@ def parse_huntington_withdrawal(body: str) -> str:
     We've processed an ACH withdrawal for $1.72 at CHASE CREDIT CRD EPAY
     from your account nicknamed SAVE.
     """
-    merchant = regex_search("(?<= at )(.*)(?= from your account nicknamed)", body)
+    merchant = regex_search("(?<= at )(.*)(?= from your)", body)
     raw_amount = regex_search("(?<=for \$)(.*)(?= at)", body)
     return merchant, raw_amount
 
@@ -97,7 +150,7 @@ def parse_huntington_deposit(body: str) -> str:
     We've processed an ACH deposit for $59.81
     from CHASE CREDIT CRD RWRD RDM to your account nicknamed CHECK.
     """
-    payer = regex_search("(?<= from )(.*)(?= to your account nicknamed)", body)
+    payer = regex_search("(?<= from )(.*)(?= to your)", body)
     raw_amount = regex_search("(?<=for \$)(.*)(?= from)", body)
     return payer, raw_amount
 
