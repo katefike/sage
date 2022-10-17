@@ -19,7 +19,7 @@ def main(msg: MailMessage) -> Transaction:
     elif msg.html:
         body = msg.html
     # Identify who the bank is
-    transaction.bank = get_bank(body)
+    transaction.bank = identify_bank(body)
     # Parse the email based on who the bank is
     if transaction.bank == "Chase":
         transaction.type_ = "withdrawal"
@@ -29,10 +29,12 @@ def main(msg: MailMessage) -> Transaction:
         transaction.merchant, transaction.raw_amount = parse_discover(body)
     if transaction.bank == "Huntington":
         transaction.type_ = identify_huntington_transaction_type(body)
+        # Parse the Huntington based on the transaction type
         if transaction.type_ == "transfer withdrawal":
             transaction.raw_amount = parse_huntington_transfer_withdrawal(body)
         elif transaction.type_ == "transfer deposit":
             transaction.raw_amount = parse_huntington_transfer_deposit(body)
+            print(transaction.raw_amount)
         elif transaction.type_ == "withdrawal":
             transaction.merchant, transaction.raw_amount = parse_huntington_withdrawal(
                 body
@@ -47,7 +49,7 @@ def main(msg: MailMessage) -> Transaction:
     return transaction
 
 
-def get_bank(body: str) -> str:
+def identify_bank(body: str) -> str:
     """
     Identify the bank using the bank's email
     I.e.
@@ -114,9 +116,8 @@ def parse_huntington_transfer_withdrawal(body: str) -> str:
     We've processed a transfer withdrawal for $999.51
     from your account nicknamed CHECK. That's above the $0.00 you set for an alert.
     """
-    merchant = regex_search("(?<= at )(.*)(?= from your)", body)
-    raw_amount = regex_search("(?<=for \$)(.*)(?= at)", body)
-    return merchant, raw_amount
+    raw_amount = regex_search("(?<=for \$)(.*)(?=from your)", body)
+    return raw_amount
 
 
 def parse_huntington_transfer_deposit(body: str) -> str:
@@ -126,9 +127,8 @@ def parse_huntington_transfer_deposit(body: str) -> str:
     We've processed a transfer deposit for $999.51 to your account nicknamed
     SAVE. That's above the $0.00 you set for an alert.
     """
-    payer = regex_search("(?<= from )(.*)(?= to your)", body)
-    raw_amount = regex_search("(?<=for \$)(.*)(?= from)", body)
-    return payer, raw_amount
+    raw_amount = regex_search("(?<=for \$)(.*)(?= to your)", body)
+    return raw_amount
 
 
 def parse_huntington_withdrawal(body: str) -> str:
@@ -138,7 +138,7 @@ def parse_huntington_withdrawal(body: str) -> str:
     We've processed an ACH withdrawal for $1.72 at CHASE CREDIT CRD EPAY
     from your account nicknamed SAVE.
     """
-    merchant = regex_search("(?<= at )(.*)(?= from your)", body)
+    merchant = regex_search("(?<= at )(.*)(?= from your account nicknamed )", body)
     raw_amount = regex_search("(?<=for \$)(.*)(?= at)", body)
     return merchant, raw_amount
 
@@ -150,7 +150,7 @@ def parse_huntington_deposit(body: str) -> str:
     We've processed an ACH deposit for $59.81
     from CHASE CREDIT CRD RWRD RDM to your account nicknamed CHECK.
     """
-    payer = regex_search("(?<= from )(.*)(?= to your)", body)
+    payer = regex_search("(?<= from )(.*)(?= to your account nicknamed )", body)
     raw_amount = regex_search("(?<=for \$)(.*)(?= from)", body)
     return payer, raw_amount
 
@@ -196,7 +196,8 @@ def transform_amount(raw_amount: str) -> int:
 
 
 def regex_search(pattern, string) -> str:
-    results = re.search(pattern, string)
+    string = string.replace("\r", "")
+    results = re.search(pattern, string, flags=re.DOTALL)
     if results:
         all_matches = results.group(0)
         return all_matches
