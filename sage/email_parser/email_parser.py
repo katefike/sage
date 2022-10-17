@@ -9,10 +9,9 @@ logger.add(sink="debug.log")
 
 def main(msg: MailMessage) -> Transaction:
     """
-    Parse the transaction data out of the email.
+    Parse the transaction data from the email.
     """
-    # print(msg.date, msg.uid, msg.to, msg.from_, msg.subject)
-    transaction = Transaction(msg.uid, msg.date)
+    transaction = Transaction(msg.uid, msg.date_str)
     transaction.uid = msg.uid
 
     if msg.text:
@@ -22,6 +21,8 @@ def main(msg: MailMessage) -> Transaction:
     # Identify who the bank is
     transaction.bank = get_bank(body)
     # Parse the email based on who the bank is
+    if transaction.bank == "Chase":
+        transaction.merchant, transaction.raw_amount = parse_chase(msg.subject)
     if transaction.bank == "Discover":
         transaction.merchant, transaction.raw_amount = parse_discover(body)
 
@@ -51,14 +52,14 @@ def get_bank(body: str) -> str:
     return bank
 
 
-def parse_chase(body: str) -> str:
+def parse_chase(subject: MailMessage.subject) -> str:
     """
     Extract the transaction amount and merchant from the email subject
     I.e.
     Your $1.00 transaction with DIGITALOCEAN.COM
     """
-    merchant = regex_search("(?<=with )(.*)", body)
-    raw_amount = regex_search("(?<=\$)(.*)(?= transaction)", body)
+    merchant = regex_search("(?<=with )(.*)", subject)
+    raw_amount = regex_search("(?<=\$)(.*)(?= transaction)", subject)
     return merchant, raw_amount
 
 
