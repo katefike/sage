@@ -127,7 +127,7 @@ def parse_huntington_transfer_deposit(body: str) -> str:
     We've processed a transfer deposit for $999.51 to your account nicknamed
     SAVE. That's above the $0.00 you set for an alert.
     """
-    raw_amount = regex_search("(?<=for \$)(.*)(?= to your)", body)
+    raw_amount = regex_search("(?<=for \$)(.*)(?=to your account nicknamed)", body)
     return raw_amount
 
 
