@@ -12,7 +12,7 @@ class Transaction:
 
     uid: int
     # Time the email was received by the mail server
-    time_received: datetime
+    time_received: str
     # Transaction type can be one of the following
     # withdrawal: a merchant removed money from the account
     # deposit: a payer added money from the account
@@ -20,7 +20,7 @@ class Transaction:
     # or I withdrew cash from this account
     # transfer deposit: I moved money into this account from another account
     # or I deposited cash into this account
-    type: str = field(default=None)
+    type_: str = field(default=None)
     # Bank can be Huntington, Chase, Discover or cash
     bank: str = field(default=None)
     # Merchants perform withdrawals
