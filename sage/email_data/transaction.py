@@ -27,10 +27,7 @@ class Transaction:
     merchant: str = field(default=None)
     # Payers perform deposits
     payer: str = field(default=None)
-    # The raw amount is what the amount looked like before it was transformed to the format X.XX
-    # For example, $200 would be formatted to 200.00
-    raw_amount: str = field(default=None)
-    transformed_amount: str = field(default=None)
+    amount: str = field(default=None)
     # Not all banks have accounts. If there is no account listed that means there is
     # only one account associated with the bank.
     account: str = field(default=None)
