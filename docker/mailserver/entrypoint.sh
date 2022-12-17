@@ -3,15 +3,22 @@
 # TODO: For toggling between dev and prod, use ISDEV
 # TODO: Make more .env vars for dev and prod where you can- instead of ISDEV when you can
 
+ISDEV=${ISDEV}
+PUBLIC_IP=${PUBLIC_IP}
+LOCALHOST=${LOCALHOST}
 DOMAIN=${DOMAIN}
 HOST=${HOST}
+
 DKIM_SELECTOR=${DKIM_SELECTOR:=mail}
 CRON_ENABLED=${LOGS_CLEANUP:=1}
 
-# TODO: Try removing this, it probably isn't needed
-# It was added to resolve the docker error message discussed in this issue
-# https://github.com/docker-mailserver/docker-mailserver/issues/802
-echo "192.168.80.1  cutie" >> /etc/hosts
+# if [$ISDEV]
+# then
+#   # TODO: Try removing this, it probably isn't needed
+#   # It was added to resolve the docker error message discussed in this issue
+#   # https://github.com/docker-mailserver/docker-mailserver/issues/802
+#   echo "$PUBLIC_IP  $LOCALHOST" >> /etc/hosts
+# fi
 
 # SUPERVISOR
 cat > /etc/supervisor/conf.d/supervisord.conf <<EOF
