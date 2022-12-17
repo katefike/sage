@@ -12,7 +12,6 @@ from sage.email_parser import email_parser
 
 logger.add(sink="debug.log")
 
-
 def main():
     """
     DOCSTRING EVENTUALLY
@@ -28,15 +27,18 @@ def main():
     RECEIVING_EMAIL_PASSWORD = os.environ.get("RECEIVING_EMAIL_PASSWORD")
 
     # Log into the receiving mailbox on the mail server and retrieve all messages
-    # TODO: Refactor to only retrieve messages from the forwarding email
-    # TODO: Refactor to only retrieve messages that haven't been parsed already
+    # FIXME: Only retrieve messages that haven't been parsed already
     try:
         with imap_tools.MailBoxUnencrypted(IMAP4_FQDN).login(
             RECEIVING_EMAIL_USER, RECEIVING_EMAIL_PASSWORD
         ) as mailbox:
             for msg in mailbox.fetch():
                 # Ignore emails that aren't from the forwarding email
+                # FIXME: The emails loaded from transaction_emails_development.mbox have
+                # msg.from_ = bank's alert email address
+                # not the forwarding email
                 if msg.from_ != FORWARDING_EMAIL:
+                    logger.info(f"Rejecting email from {msg.from_}")
                     continue
                 # Ignore emails that don't have a text or html body
                 if not msg.text or not msg.html:
@@ -51,7 +53,7 @@ def main():
                 print(transaction)
                 logger.info(transaction)
 
-                # TODO: Write the emails to the db
+                # FIXME: Write the emails to the db
                 #     if parsed_email and parsed_email.get("transaction"):
                 #         db_transactions.insert_transaction(parsed_email)
                 #         logger.info("Success")
@@ -59,7 +61,7 @@ def main():
                 logger.info("DONE")
                 return True
     except Exception as error:
-        logger.info("FAILED")
+        logger.critical("FAILED")
         logger.critical(f"MAILSERVER ERROR: Failed to connect via IMAP to the inbox of user {RECEIVING_EMAIL_USER}.")
         return False
 
