@@ -21,7 +21,7 @@ def main():
     app_root = str(pathlib.Path(__file__).parent.parent)
     env_path = app_root + "/.env"
     if not load_dotenv(env_path):
-        logger.critical(".env failed to load.")
+        logger.critical(f"ENVIRONMENT ERROR: .env failed to load from {env_path}")
     IMAP4_FQDN = os.environ.get("IMAP4_FQDN")
     FORWARDING_EMAIL = os.environ.get("FORWARDING_EMAIL")
     RECEIVING_EMAIL_USER = os.environ.get("RECEIVING_EMAIL_USER")
@@ -41,7 +41,13 @@ def main():
                 # Ignore emails that don't have a text or html body
                 if not msg.text or not msg.html:
                     continue
-                transaction = email_parser.main(msg)
+
+                # Parse a email message into the transaction data
+                try:
+                    transaction = email_parser.main(msg)
+                except Exception as error:
+                    logger.info("FAILED")
+                    logger.critical(f"EMAIL PARSER ERROR: Failed to parse msg UID {msg.uid}.")
                 print(transaction)
                 logger.info(transaction)
 
