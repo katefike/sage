@@ -51,13 +51,13 @@ def main():
                 print(transaction)
                 logger.info(transaction)
 
-        # TODO: Write the emails to the db
-        #     if parsed_email and parsed_email.get("transaction"):
-        #         db_transactions.insert_transaction(parsed_email)
-        #         logger.info("Success")
-        #         # db_transactions.write_transaction(transaction)
-        logger.info("DONE")
-        return True
+                # TODO: Write the emails to the db
+                #     if parsed_email and parsed_email.get("transaction"):
+                #         db_transactions.insert_transaction(parsed_email)
+                #         logger.info("Success")
+                #         # db_transactions.write_transaction(transaction)
+                logger.info("DONE")
+                return True
     except Exception as error:
         logger.info("FAILED")
         logger.critical(f"MAILSERVER ERROR: Failed to connect via IMAP to the inbox of user {RECEIVING_EMAIL_USER}.")
