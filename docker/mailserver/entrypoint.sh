@@ -4,8 +4,6 @@
 # TODO: Make more .env vars for dev and prod where you can- instead of ISDEV when you can
 
 ISDEV=${ISDEV}
-PUBLIC_IP=${PUBLIC_IP}
-LOCALHOST=${LOCALHOST}
 DOMAIN=${DOMAIN}
 HOST=${HOST}
 
@@ -17,6 +15,8 @@ CRON_ENABLED=${LOGS_CLEANUP:=1}
 #   # TODO: Try removing this, it probably isn't needed
 #   # It was added to resolve the docker error message discussed in this issue
 #   # https://github.com/docker-mailserver/docker-mailserver/issues/802
+#   PUBLIC_IP=${PUBLIC_IP}
+#   LOCALHOST=${LOCALHOST}
 #   echo "$PUBLIC_IP  $LOCALHOST" >> /etc/hosts
 # fi
 
