@@ -71,4 +71,10 @@ quit
 ```
 
 ## Testing with pytest
+
+
 ### Getting mbox files
+For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. Here's how you get mbox files for a gmail account:
+https://support.google.com/accounts/answer/3024190
+
+If mbox files are changed, don't forget to restart the mailserver docker container; the mbox file's emails are loaded into the server on docker compose up when docker/mailserver/entrypoint.sh runs.
