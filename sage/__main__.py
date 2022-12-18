@@ -16,6 +16,7 @@ def main():
     """
     DOCSTRING EVENTUALLY
     """
+    logger.info("STARTING SAGE")
     # Get all environment variables
     app_root = str(pathlib.Path(__file__).parent.parent)
     env_path = app_root + "/.env"
@@ -32,25 +33,36 @@ def main():
         with imap_tools.MailBoxUnencrypted(IMAP4_FQDN).login(
             RECEIVING_EMAIL_USER, RECEIVING_EMAIL_PASSWORD
         ) as mailbox:
+            total_messages_count = 0
+            rejected_messages_count = 0
+            unparsed_messages_count = 0
+            unwritten_transactions_count = 0
+            processed_transactions_count = 0
             for msg in mailbox.fetch():
+                total_messages_count = total_messages_count + 1
                 # Ignore emails that aren't from the forwarding email
                 # FIXME: The emails loaded from transaction_emails_development.mbox have
                 # msg.from_ = bank's alert email address
                 # not the forwarding email
                 if msg.from_ != FORWARDING_EMAIL:
-                    logger.info(f"Rejecting email from {msg.from_}")
+                    logger.info(f"Rejecting email from {msg.from_}. The mail server is only accepting emails from {FORWARDING_EMAIL}.")
+                    rejected_messages_count = rejected_messages_count + 1
                     continue
                 # Ignore emails that don't have a text or html body
                 if not msg.text or not msg.html:
+                    logger.info(f"Rejecting email from {msg.from_} because it doesn't have a message body.")
+                    rejected_messages_count = rejected_messages_count + 1
                     continue
 
                 # Parse a email message into the transaction data
                 try:
                     transaction = email_parser.main(msg)
+                    # TODO: Move this to after the transaction is written to the db
+                    processed_transactions_count = processed_transactions_count + 1
                 except Exception as error:
                     logger.info("FAILED")
                     logger.critical(f"EMAIL PARSER ERROR: Failed to parse msg UID {msg.uid}.")
-                print(transaction)
+                    unparsed_messages_count = unparsed_messages_count + 1
                 logger.info(transaction)
 
                 # FIXME: Write the emails to the db
@@ -58,8 +70,14 @@ def main():
                 #         db_transactions.insert_transaction(parsed_email)
                 #         logger.info("Success")
                 #         # db_transactions.write_transaction(transaction)
-                logger.info("DONE")
-                return True
+                #         unwritten_transactions_count = unwritten_transactions_count + 1
+            logger.info(f"Total Messages in Batch = {total_messages_count}")
+            logger.info(f"Rejected Messages = {rejected_messages_count}")
+            logger.info(f"Unparsed Messages = {unparsed_messages_count}")
+            # logger.info(f"Unwritten Transactions = {unwritten_transactions_count}")
+            logger.info(f"Processed Transactions = {processed_transactions_count}")
+            logger.info("DONE")
+            return True
     except Exception as error:
         logger.critical("FAILED")
         logger.critical(f"MAILSERVER ERROR: Failed to connect via IMAP to the inbox of user {RECEIVING_EMAIL_USER}.")
