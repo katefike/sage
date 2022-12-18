@@ -14,7 +14,13 @@ logger.add(sink="debug.log")
 
 def main():
     """
-    DOCSTRING EVENTUALLY
+    This is starting point of the program. It steps through the following tasks:
+
+    1. Load the environment variables.
+    2. Log into the email account on the mail server that is receiving the forwarded alert emails. 
+    3. For each unprocessed email in the inbox:
+        3a. Parse the transaction data from the email message.
+        3b. Write the transaction data to the Postgres database.
     """
     logger.info("STARTING SAGE")
     # Get all environment variables
@@ -28,7 +34,7 @@ def main():
     RECEIVING_EMAIL_PASSWORD = os.environ.get("RECEIVING_EMAIL_PASSWORD")
 
     # Log into the receiving mailbox on the mail server and retrieve all messages
-    # FIXME: Only retrieve messages that haven't been parsed already
+    # FIXME: Only retrieve messages that haven't been parsed and written to the db already
     try:
         with imap_tools.MailBoxUnencrypted(IMAP4_FQDN).login(
             RECEIVING_EMAIL_USER, RECEIVING_EMAIL_PASSWORD
@@ -65,7 +71,7 @@ def main():
 
                 # FIXME: Write the emails to the db
                 # unwritten_transactions_count = unwritten_transactions_count + 1
-                
+
                 # One down!
                 processed_transactions_count = processed_transactions_count + 1
 
