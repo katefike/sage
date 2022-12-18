@@ -57,31 +57,34 @@ def main():
                 # Parse a email message into the transaction data
                 try:
                     transaction = email_parser.main(msg)
-                    # TODO: Move this to after the transaction is written to the db
-                    processed_transactions_count = processed_transactions_count + 1
                 except Exception as error:
                     logger.info("FAILED")
-                    logger.critical(f"EMAIL PARSER ERROR: Failed to parse msg UID {msg.uid}.")
+                    logger.critical(f"EMAIL PARSER ERROR: Failed to parse msg UID {msg.uid}: {error}")
                     unparsed_messages_count = unparsed_messages_count + 1
                 logger.info(transaction)
 
                 # FIXME: Write the emails to the db
-                #     if parsed_email and parsed_email.get("transaction"):
-                #         db_transactions.insert_transaction(parsed_email)
-                #         logger.info("Success")
-                #         # db_transactions.write_transaction(transaction)
-                #         unwritten_transactions_count = unwritten_transactions_count + 1
+                # unwritten_transactions_count = unwritten_transactions_count + 1
+                
+                # One down!
+                processed_transactions_count = processed_transactions_count + 1
+
+            deduced_total_messages_count = rejected_messages_count + unparsed_messages_count + unwritten_transactions_count + processed_transactions_count
+            if deduced_total_messages_count != total_messages_count:
+                logger.critical("FAILED")
+                logger.critical(f"ERROR-HANDLING ERROR: {total_messages_count} messages were retrieved from the mail server, but only {deduced_total_messages_count} were accounted for.")
             logger.info(f"Total Messages in Batch = {total_messages_count}")
             logger.info(f"Rejected Messages = {rejected_messages_count}")
             logger.info(f"Unparsed Messages = {unparsed_messages_count}")
             # logger.info(f"Unwritten Transactions = {unwritten_transactions_count}")
             logger.info(f"Processed Transactions = {processed_transactions_count}")
             logger.info("DONE")
-            return True
+            return
+
     except Exception as error:
         logger.critical("FAILED")
-        logger.critical(f"MAILSERVER ERROR: Failed to connect via IMAP to the inbox of user {RECEIVING_EMAIL_USER}.")
-        return False
+        logger.critical(f"MAILSERVER ERROR: Failed to connect via IMAP to the inbox of user {RECEIVING_EMAIL_USER}: {error}")
+        return
 
 
 if __name__ == "__main__":
