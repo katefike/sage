@@ -12,7 +12,7 @@ def main(msg: MailMessage) -> Transaction:
     """
     Parse the transaction data from the email.
     """
-    transaction = Transaction(msg.uid)
+    transaction = Transaction(int(msg.uid))
 
     if msg.text:
         body = msg.text
