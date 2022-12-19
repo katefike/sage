@@ -1,7 +1,7 @@
 import re
 
 from imap_tools import MailMessage
-from loguru import logger
+from loguru import logger 
 from sage.email_data.transaction import Transaction
 
 logger.add(sink="debug.log")
@@ -12,7 +12,6 @@ def main(msg: MailMessage) -> Transaction:
     Parse the transaction data from the email.
     """
     transaction = Transaction(msg.uid, msg.date_str)
-    transaction.uid = msg.uid
 
     if msg.text:
         body = msg.text
@@ -23,24 +22,24 @@ def main(msg: MailMessage) -> Transaction:
     # Parse the email based on who the bank is
     if transaction.bank == "Chase":
         transaction.type_ = "withdrawal"
-        transaction.merchant, transaction.raw_amount = parse_chase(msg.subject)
+        transaction.merchant, raw_amount = parse_chase(msg.subject)
     if transaction.bank == "Discover":
         transaction.type_ = "withdrawal"
-        transaction.merchant, transaction.raw_amount = parse_discover(body)
+        transaction.merchant, raw_amount = parse_discover(body)
     if transaction.bank == "Huntington":
         transaction.type_ = identify_huntington_transaction_type(body)
-        # Parse the Huntington based on the transaction type
+        # Parse the Huntington transaction based on the transaction type
         if transaction.type_ == "transfer withdrawal":
-            transaction.raw_amount = parse_huntington_transfer_withdrawal(body)
+            raw_amount = parse_huntington_transfer_withdrawal(body)
         elif transaction.type_ == "transfer deposit":
-            transaction.raw_amount = parse_huntington_transfer_deposit(body)
-            print(transaction.raw_amount)
+            raw_amount = parse_huntington_transfer_deposit(body)
         elif transaction.type_ == "withdrawal":
-            transaction.merchant, transaction.raw_amount = parse_huntington_withdrawal(
+            transaction.merchant, raw_amount = parse_huntington_withdrawal(
                 body
             )
+            print(raw_amount)
         elif transaction.type_ == "deposit":
-            transaction.payer, transaction.raw_amount = parse_huntington_deposit(body)
+            transaction.payer, raw_amount = parse_huntington_deposit(body)
         transaction.account = identify_huntington_account(body)
 
     # merchant, raw_amount = parse_discover(body)
@@ -138,7 +137,7 @@ def parse_huntington_withdrawal(body: str) -> str:
     We've processed an ACH withdrawal for $1.72 at CHASE CREDIT CRD EPAY
     from your account nicknamed SAVE.
     """
-    merchant = regex_search("(?<= at )(.*)(?= from your account nicknamed )", body)
+    merchant = regex_search("(?<= at )(.*)(?=from your account nicknamed)", body)
     raw_amount = regex_search("(?<=for \$)(.*)(?= at)", body)
     return merchant, raw_amount
 
@@ -150,8 +149,8 @@ def parse_huntington_deposit(body: str) -> str:
     We've processed an ACH deposit for $59.81
     from CHASE CREDIT CRD RWRD RDM to your account nicknamed CHECK.
     """
-    payer = regex_search("(?<= from )(.*)(?= to your account nicknamed )", body)
-    raw_amount = regex_search("(?<=for \$)(.*)(?= from)", body)
+    payer = regex_search("(?<= from )(.*)(?=to your account nicknamed)", body)
+    raw_amount = regex_search("(?<=for \$)(.*)(?=from)", body)
     return payer, raw_amount
 
 
@@ -196,8 +195,8 @@ def transform_amount(raw_amount: str) -> int:
 
 
 def regex_search(pattern, string) -> str:
-    string = string.replace("\r", "")
-    results = re.search(pattern, string, flags=re.DOTALL)
+    string = string.replace("\r", "").replace("\n", " ")
+    results = re.search(pattern, string, flags=re.DOTALL | re.MULTILINE)
     if results:
         all_matches = results.group(0)
         return all_matches
