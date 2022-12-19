@@ -13,7 +13,7 @@ class Transaction:
     uid: int
     # Time the transaction was made; based on the time the email was
     # originally received; not based on the time the email was forwarded
-    transaction_time: str
+    transaction_time: str = field(default=None)
     # Transaction type can be one of the following
     # withdrawal: a merchant removed money from the account
     # deposit: a payer added money from the account
