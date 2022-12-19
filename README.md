@@ -11,39 +11,52 @@ $ docker compose up
 ```
 
 # Useful Commands
+## Docker
 Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
 ```
-docker cp sage-mailserver-1:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.conf \
+(venv) $ docker cp sage-mailserver-1:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.conf \
 && docker cp sage-mailserver-1:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
 && docker cp sage-mailserver-1:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf \
 ```
-
 Show the names of all docker containers (active and inactive)
 ```
-docker ps -a --format '{{.Names}}'
+(venv) $ docker ps -a --format '{{.Names}}'
 ```
 Clean restart of Docker
 ```
-docker compose down
-# Removes all containers
-docker rm -f $(docker ps -a -q)
-# Removes all volumes
-docker volume rm $(docker volume ls -q)
-docker compose up
-# Removes all images
+(venv) $ docker compose down
+```
+Removes all containers
+```
+(venv) $ docker rm -f $(docker ps -a -q)
+```
+Removes all volumes
+```
+(venv) $ docker volume rm $(docker volume ls -q)
+(venv) $ docker compose up
+```
+Removes all images
+```
 docker rmi $(docker images -q)
 ```
 
-# Show dovecot errors
+## Dovecot
+Show dovecot errors
 ```
-doveadm log errors
+(venv) $ doveadm log errors
 ```
+
 # Local Development
 
 ## Globally Installed Software
 - Docker
   - Use [these instructions](https://docs.docker.com/engine/install/) to install 
 - Python 3.7 or higher
+
+## Dependencies
+```
+(venv) $ python3 -m pip install -r requirements.txt
+```
 
 ## Create a docker-mailserver (DMS) Account
 1. Start the docker containers
@@ -71,4 +84,10 @@ quit
 ```
 
 ## Testing with pytest
+
+
 ### Getting mbox files
+For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. Here's how you get mbox files for a gmail account:
+https://support.google.com/accounts/answer/3024190
+
+If mbox files are changed, don't forget to restart the mailserver docker container; the mbox file's emails are loaded into the server on docker compose up when docker/mailserver/entrypoint.sh runs.
