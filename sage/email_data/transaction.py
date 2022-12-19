@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from datetime import datetime
 
 
 @dataclass(init=True, repr=True)
@@ -11,8 +10,8 @@ class Transaction:
     # pylint: disable=too-many-instance-attributes
 
     uid: int
-    # Time the email was received by the mail server
-    time_received: str
+    # Time the transaction was made
+    transaction_time: str
     # Transaction type can be one of the following
     # withdrawal: a merchant removed money from the account
     # deposit: a payer added money from the account
