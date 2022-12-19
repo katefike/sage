@@ -1,7 +1,8 @@
 import re
 
 from imap_tools import MailMessage
-from loguru import logger 
+from loguru import logger
+
 from sage.email_data.transaction import Transaction
 
 logger.add(sink="debug.log")
