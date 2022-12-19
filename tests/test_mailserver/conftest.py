@@ -29,15 +29,12 @@ def send_single_email():
     Send a single pre-defined email to the mail server.
     """
 
-<<<<<<< HEAD
-    sender = "root@localhost"
-=======
     sender = FORWARDING_EMAIL
->>>>>>> 313c9a058ed2016ebcc3355a24d55e60beaedbf4
     receivers = f"{RECEIVING_EMAIL_USER}@{DOMAIN}"
     now = datetime.datetime.now()
 
-    # Create message container - the correct MIME type is multipart/alternative.
+    # Create message container - the correct MIME type is 
+    # multipart/alternative.
     msg = MIMEMultipart("alternative")
     msg["Subject"] = f"Sent {now}"
     msg["From"] = sender
