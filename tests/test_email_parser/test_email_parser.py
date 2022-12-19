@@ -5,14 +5,13 @@ Tests the module sage/email_parser/email_parser.py
 import pathlib
 
 import pytest
+from imap_tools import MailMessage
 
 from sage.email_data.transaction import Transaction
 from sage.email_parser import email_parser
 
 
 def create_test_data():
-    dir = str(pathlib.Path(__file__).parent)
-    path = f"{dir}/test_data/example_data"
     data = [
         (
             (
@@ -55,7 +54,7 @@ def create_test_data():
             ),
         ),
         (
-            (dict(uid="5", date_str="Thu, 13 Oct 2022 23:36:32 -0400")),
+            (dict(uid="5")),
             (
                 dict(
                     uid=5,
@@ -151,7 +150,7 @@ def create_test_data():
             ),
         ),
         (
-            (dict(uid="19", date_str="Thu, 13 Oct 2022 23:52:07 -0400")),
+            (dict(uid="19")),
             (
                 dict(
                     uid=19,
@@ -168,13 +167,16 @@ def create_test_data():
         ),
     ]
 
-    for case in data:
-        input = case[0]
+    dir = str(pathlib.Path(__file__).parent)
+    path = f"{dir}/test_data/example_data"
+
+    for email in data:
+        input = email[0]
         uid = input.get("uid")
         text_file = open(f"{path}/uid_{uid}.txt", "r")
         text_data = text_file.read()
         text_file.close()
-        case[0]["text"] = text_data
+        email[0]["text"] = text_data
     return data
 
 
@@ -184,14 +186,20 @@ def test_email_parser(input, output):
     Test the email parser to ensure it correctly parses emails into
     transaction data.
 
+    The input is the UID of the email, which maps to the email file name.
+    EX) uid_1.txt contains a forwarded email with the UID 1
+
+    The expected output is the transaction object defined in
+    sage/email_data/transaction.py
+
     expected = uid, transaction_time, type_, bank, merchant,
-    payer, raw_amount, account, balance
+    payer, account, balance
     """
     # Pass the msg object to the email parser
+    input = MailMessage
     transaction = email_parser.main(input)
     # Compare the transaction object to the expected output
-
-    uid = str
+    uid = input.get("uid")
     assert uid == "1"
 
 
