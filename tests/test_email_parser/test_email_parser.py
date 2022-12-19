@@ -2,12 +2,9 @@
 Tests the module sage/email_parser/email_parser.py
 """
 
-import pathlib
-
+import imap_tools
 import pytest
-from imap_tools import MailMessage
 
-from sage.email_data.transaction import Transaction
 from sage.email_parser import email_parser
 
 
@@ -167,16 +164,18 @@ def create_test_data():
         ),
     ]
 
-    dir = str(pathlib.Path(__file__).parent)
-    path = f"{dir}/test_data/example_data"
-
-    for email in data:
-        input = email[0]
-        uid = input.get("uid")
-        text_file = open(f"{path}/uid_{uid}.txt", "r")
-        text_data = text_file.read()
-        text_file.close()
-        email[0]["text"] = text_data
+    # Retrieve the email corresponding to the UID
+    with imap_tools.MailBoxUnencrypted(pytest.IMAP4_FQDN).login(
+        pytest.RECEIVING_EMAIL_USER, pytest.RECEIVING_EMAIL_PASSWORD
+    ) as mailbox:
+        for email in data:
+            input = email[0]
+            input_uid = input.get("uid")
+            try:
+                for msg in mailbox.fetch(imap_tools.AND(uid=[input_uid])):
+                    input["msg"] = msg
+            except Exception as error:
+                print(f"No email having UID {input_uid} was found: {error}")
     return data
 
 
@@ -186,21 +185,24 @@ def test_email_parser(input, output):
     Test the email parser to ensure it correctly parses emails into
     transaction data.
 
-    The input is the UID of the email, which maps to the email file name.
-    EX) uid_1.txt contains a forwarded email with the UID 1
+    The input is the UID of the email, which maps to an email that was loaded
+    into the mail server when the docker container was created. These emails
+    are contained within the file
+    docker/mailserver/test_data/example_data/transaction_emails_development.mbox
+    They're also listed as separate files in
+    tests/test_email_parser/test_data/example_data so they can be more easily
+    viewed.
 
     The expected output is the transaction object defined in
     sage/email_data/transaction.py
 
-    expected = uid, transaction_time, type_, bank, merchant,
+    output = uid, transaction_time, type_, bank, merchant,
     payer, account, balance
     """
     # Pass the msg object to the email parser
-    input = MailMessage
-    transaction = email_parser.main(input)
+    transaction = email_parser.main(input.get("msg"))
     # Compare the transaction object to the expected output
-    uid = input.get("uid")
-    assert uid == "1"
+    assert output.get("uid") == transaction.uid
 
 
 if __name__ == "__main__":
