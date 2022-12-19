@@ -12,7 +12,7 @@ from sage.email_parser import email_parser
 
 def create_test_data():
     dir = str(pathlib.Path(__file__).parent)
-    path = f"{dir}/test_data"
+    path = f"{dir}/test_data/example_data"
     data = [
         (
             (
