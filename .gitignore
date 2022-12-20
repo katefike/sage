@@ -140,3 +140,7 @@ ansible/droplet_hosts
 
 # Real financial data used
 real_data/
+
+# Files and folders made strictly troubleshooting
+*debug*
+*scratch*
