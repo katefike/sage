@@ -38,14 +38,9 @@ def main(msg: MailMessage) -> Transaction:
             transaction.merchant, raw_amount = parse_huntington_withdrawal(
                 body
             )
-            print(raw_amount)
         elif transaction.type_ == "deposit":
             transaction.payer, raw_amount = parse_huntington_deposit(body)
         transaction.account = identify_huntington_account(body)
-
-    # merchant, raw_amount = parse_discover(body)
-    # print(f"Merchant: {merchant}")
-    # print(f"Raw amount: {raw_amount}")
     return transaction
 
 
@@ -74,8 +69,8 @@ def parse_chase(subject: MailMessage.subject) -> str:
     I.e.
     Your $1.00 transaction with DIGITALOCEAN.COM
     """
-    merchant = regex_search("(?<=with )(.*)", subject)
-    raw_amount = regex_search("(?<=\$)(.*)(?= transaction)", subject)
+    merchant = regex_search(r"(?<=with )(.*)", subject)
+    raw_amount = regex_search(r"(?<=\$)(.*)(?= transaction)", subject)
     return merchant, raw_amount
 
 
@@ -89,8 +84,8 @@ def parse_discover(body: str) -> str:
 
     Amount: $23.50
     """
-    merchant = regex_search("(?<=Merchant: )(.*)(?=\r)", body)
-    raw_amount = regex_search("(?<=Amount: )(.*)(?=\r)", body)
+    merchant = regex_search(r"(?<=Merchant: )(.*)(?=\r)", body)
+    raw_amount = regex_search(r"(?<=Amount: )(.*)(?=\r)", body)
     return merchant, raw_amount
 
 
@@ -116,7 +111,7 @@ def parse_huntington_transfer_withdrawal(body: str) -> str:
     We've processed a transfer withdrawal for $999.51
     from your account nicknamed CHECK. That's above the $0.00 you set for an alert.
     """
-    raw_amount = regex_search("(?<=for \$)(.*)(?=from your)", body)
+    raw_amount = regex_search(r"(?<=for \$)(.*)(?=from your)", body)
     return raw_amount
 
 
@@ -127,7 +122,7 @@ def parse_huntington_transfer_deposit(body: str) -> str:
     We've processed a transfer deposit for $999.51 to your account nicknamed
     SAVE. That's above the $0.00 you set for an alert.
     """
-    raw_amount = regex_search("(?<=for \$)(.*)(?=to your account nicknamed)", body)
+    raw_amount = regex_search(r"(?<=for \$)(.*)(?=to your account nicknamed)", body)
     return raw_amount
 
 
@@ -138,8 +133,9 @@ def parse_huntington_withdrawal(body: str) -> str:
     We've processed an ACH withdrawal for $1.72 at CHASE CREDIT CRD EPAY
     from your account nicknamed SAVE.
     """
-    merchant = regex_search("(?<= at )(.*)(?=from your account nicknamed)", body)
-    raw_amount = regex_search("(?<=for \$)(.*)(?= at)", body)
+    match = regex_search(r"(for \$[0-9]+\.[0-9]{2} at\s)(.*)(?=\sfrom your account nicknamed)", body, get_full_match = False)
+        merchant = match.group(2)
+    raw_amount = regex_search(r"(?<=for \$)(.*)(?= at)", body)
     return merchant, raw_amount
 
 
@@ -150,8 +146,8 @@ def parse_huntington_deposit(body: str) -> str:
     We've processed an ACH deposit for $59.81
     from CHASE CREDIT CRD RWRD RDM to your account nicknamed CHECK.
     """
-    payer = regex_search("(?<= from )(.*)(?=to your account nicknamed)", body)
-    raw_amount = regex_search("(?<=for \$)(.*)(?=from)", body)
+    payer = regex_search(r"(?<= from )(.*)(?=to your account nicknamed)", body)
+    raw_amount = regex_search(r"(?<=for \$)(.*)(?=from)", body)
     return payer, raw_amount
 
 
@@ -164,7 +160,7 @@ def identify_huntington_account(body: str) -> str:
     from your account nicknamed SAVE.
     """
     account = regex_search(
-        "(?<= your account nicknamed )(.*)(?=. That's above the)", body
+        r"(?<= your account nicknamed )(.*)(?=. That's above the)", body
     )
     if account == "CHECK":
         account = "checking"
@@ -180,7 +176,7 @@ def get_huntington_balance(body: str) -> str:
     I.e.
     Your balance is $19,748.78 as of 6/25/22 2:35 AM ET.
     """
-    balance = regex_search("(?<=Your balance is \$)(.*)(?=. as of)", body)
+    balance = regex_search(r"(?<=Your balance is \$)(.*)(?=. as of)", body)
     return balance
 
 
@@ -188,18 +184,19 @@ def transform_amount(raw_amount: str) -> int:
     # Remove the comma
     raw_amount = re.sub(",", "", raw_amount)
     # Check for decimals
-    if regex_search("(.\d\d)", raw_amount):
+    if regex_search(r"(.\d\d)", raw_amount):
         transformed_amount = raw_amount
     else:
         transformed_amount = raw_amount + ".00"
     return transformed_amount
 
 
-def regex_search(pattern, string) -> str:
-    string = string.replace("\r", "").replace("\n", " ")
-    results = re.search(pattern, string, flags=re.DOTALL | re.MULTILINE)
-    if results:
-        all_matches = results.group(0)
-        return all_matches
-    else:
-        return None
+def regex_search(pattern:str, string: str, get_full_match = True) -> str:
+    string = string.replace(r"\r", "").replace(r"\n", " ")
+    print(string)
+    match = re.search(pattern, string, flags=re.DOTALL | re.MULTILINE)
+    if match:
+        if not get_full_match:
+            return match
+        full_match = match.group(0)
+        return full_match
