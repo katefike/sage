@@ -1,82 +1,74 @@
 ---------- Forwarded message ---------
-From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
-Date: Wed, Aug 24, 2022 at 4:42 AM
-Subject: Deposit
+From: Discover Card <discover@services.discover.com>
+Date: Wed, Oct 5, 2022 at 8:20 PM
+Subject: Transaction Alert
 To: <dev.kfike@gmail.com>
 
 
-A deposit was made to CHECK above the amount you set for an alert.
-View as a web page
-<https://view.email.huntington.com/?qs=42f5786f052085319ce5f11141ba83e4997a1a410a8650b365923114baf5181ee86d32aa2d57a6eec072fa3da848ed9293f9256d5d4527ebf27da4a8d1c2b41867d30b1942b81a5c35365c3d03d8c9e9f24855a8e89d0f28e7e1aa1e9dfee388>
+ Account Center
+<https://fzttlwrt.r.us-east-1.awstrack.me/L0/https:%2F%2Fdiscover.app.link%2F3p%3F%25243p=e_rs%26%2524original_url=https%253A%252F%252Fportal.discover.com%252Fcustomersvcs%252FuniversalLogin%252Fac_main%253Flink%253D%252Fcardmembersvcs%252Fachome%252Fhomepage%253FselAcct%26deeplink=linktohome%26dmscmpgn=DCReminderRTA_TRANTHR_A1_A1_A1%26ekey=1037075133%26dmsdate=20221005_192052%26msgid=20526889205%26edm=gmail%26emailstat=clk%26section=header/1/01000183aaaaa205-94d4f7b4-3eee-4751-ba02-376ebcfa60ee-000000/aZVx1xdhRPSUJobGJJ50_KzFSZE=290>
+— Last 4 #: 4169
+[image: Discover logo]
 
-We've processed an ACH deposit for $17.09 from CHASE CREDIT CRD RWRD RDM to
-your account nicknamed CHECK. That's above the $0.00 you set for an alert.
+*Transaction threshold exceeded*
 
-Your balance is $257.06 as of 8/24/22 4:22 AM ET.
+You've set an account alert to let you know if a purchase or cash advance
+exceeds your specified amount. This alert is just informational: we've
+processed the transaction as usual.
 
-Thank you for banking with Huntington.
+Transaction Date: October 05, 2022
+Merchant: BOMBAY SITAR
+Amount: $20.18
 
-You received this message because you turned on email alerts for certain
-events or conditions related to your Huntington account(s). For more
-information or to manage your alerts, log into huntington.com
-<https://click.email.huntington.com/?qs=4fb2a6960d6da7303272f0b2977c2af9392a0e1a786a800c43a1db1354389e7812c2cc3856713258f97e049a2340de33d8a43f2a3e1a90ac22ef41aa58ebe603>
-or the Huntington Mobile app
-<https://click.email.huntington.com/?qs=3aa43ab11d145706416ae5f5ad48a3b55183983d1797ae8d991aee24abeab858a6ae23b921d4d1542e07650e2366dc9dc9b951a32531c1db95c608dc33e99130>
-.
-
-This email was generated automatically. Please do not reply to this message
-
-[image: Facebook]
-<https://click.email.huntington.com/?qs=ffe63ddd08fe0460d8a420d3fcc1cb72c9514e4d18a5aaedc3cce41c1928620fc195072c5fdca8546afd59850302fdfb6f3bf920e52bf1445748e394e3ef20ce>
-[image: Instagram]
-<https://click.email.huntington.com/?qs=87c481db4bc89109311eaff91eaf12e2ba65c083af6742e972abd64eccd71852c34156c462e7af7af4a88ddedba6b39527790b841fa5005eb03088d0befff1d3>
-[image: LinkedIn]
-<https://click.email.huntington.com/?qs=b0d901ab6a2ca2969a1911334836cd322b5b332c13ac2e85b17f77bbfae9d7c8bdc2dc0ea6440d9c559185be1ca0cbfb472627691049b9e9fc9302480d600e66>
-[image: Twitter]
-<https://click.email.huntington.com/?qs=e9720b0b1e1324961a7fe919fd9ba9946a9ae0bc71ca0c9f9f44ab456c8b3446e4c0fd825535b639e5bbc9b7ff5dc3fff2af7b8626e99ff5e904096050a16d1f>
-[image: YouTube]
-<https://click.email.huntington.com/?qs=1c3a3d3cc67dcda89383328f439a15c702b609ba7b613f5cf29edc52534124c5211aeccc0c8be323d12f965774764ecc90dd47e91b82b549670d4cb4f0e48fe1>
-HUNTINGTON.COM
-<https://click.email.huntington.com/?qs=aea33d870dfa212cf99dbced9049f135f7fa74382a7187af9462337e352a1ce90ec24777d22ccb93e613649a316f36dbb6066fa161d3fb5fb41e1140e647625b>
-    BANK & ATM LOCATOR
-<https://click.email.huntington.com/?qs=07e9006dd97ac340da6ed5f33b8c60f615667727bd95a63cb2a03745a96d7534b3a16f6d35d7917e8059293945dad77c33102a15b192e8591006b55a50fb54c2>
-HUNTINGTON.COM
-<https://click.email.huntington.com/?qs=aea33d870dfa212cf99dbced9049f135f7fa74382a7187af9462337e352a1ce90ec24777d22ccb93e613649a316f36dbb6066fa161d3fb5fb41e1140e647625b>
-BANK
-& ATM LOCATOR
-<https://click.email.huntington.com/?qs=07e9006dd97ac340da6ed5f33b8c60f615667727bd95a63cb2a03745a96d7534b3a16f6d35d7917e8059293945dad77c33102a15b192e8591006b55a50fb54c2>
-Save paper. Please think before you print.
-
-*Privacy Policy for how we use email to communicate with our customers:*
-When we send you communications, they may include links that connect you to
-information on our website about our products, services, and special
-pricing or promotional offers. However, we will never include links, in
-emails or texts, that take you to a non-secure page (for example, a page
-that doesn't start with "https" or show a lock symbol) that asks you to
-provide personal information. Additionally, Huntington will never ask you
-to provide your personal information such as username, password, PINs,
-account number, or Social Security number via email, phone, or text unless
-you contact us first. To verify whether a communication you have received
-from Huntington is legitimate, you can contact our Customer Service Center
-toll-free at 1-800-480-2265.
-
-*Security:*
-If you receive an email or other correspondence requesting that you provide
-any sensitive information via email or to a website that does not seem to
-be affiliated with the website, or that otherwise seems suspicious to you,
-please do not provide such information and report such requests to
-ReportFraud@huntington.com.
-
-*Investment, Insurance and Non-deposit Trust products are:* NOT A DEPOSIT •
-NOT FDIC INSURED • NOT GUARANTEED BY THE BANK • NOT INSURED BY ANY FEDERAL
-GOVERNMENT AGENCY • MAY LOSE VALUE
-
-Loans subject to credit application and approval.
-
-The Huntington National Bank is an Equal Housing Lender and Member FDIC. ®,
-Huntington®, Huntington® and Huntington.Welcome.® are federally registered
-service marks of Huntington Bancshares Incorporated. ©2022 Huntington
-Bancshares Incorporated.
-
-*This email was sent by:*
-The Huntington National Bank, 41 South High Street, Columbus, OH 43215, USA
+If you don't recognize this transaction, call us at 1-800-DISCOVER
+(1-800-347-2683).
+View Recent Activity
+<https://fzttlwrt.r.us-east-1.awstrack.me/L0/https:%2F%2Fdiscover.app.link%2F3p%3F%25243p=e_rs%26%2524original_url=https%253A%252F%252Fportal.discover.com%252Fcustomersvcs%252FuniversalLogin%252Fac_main%253Flink%253D%252Fcardmembersvcs%252Fstatements%252Fapp%252Factivity%2523%252Frecent%253FEMAIL-TAG%26deeplink=linktoactivity%26dmscmpgn=DCReminderRTA_TRANTHR_A1_A1_A1%26ekey=1037075133%26dmsdate=20221005_192052%26msgid=20526889205%26edm=gmail%26emailstat=clk%26section=body/1/01000183aaaaa205-94d4f7b4-3eee-4751-ba02-376ebcfa60ee-000000/m5kmmmnvoRVl8hRGCS_VyAGMyNg=290>
+*Discover App*
+Manage your account anywhere
+[image: Apple App Store]
+<http://fzttlwrt.r.us-east-1.awstrack.me/L0/http:%2F%2Fitunes.apple.com%2Fapp%2Fdiscovermobile%2Fid338010821%3Fmt=8%26icmpgn=1006_mobile_app_iphone_btn%26dmscmpgn=DCReminderRTA_TRANTHR_A1_A1_A1%26ekey=1037075133%26dmsdate=20221005_192052%26msgid=20526889205%26edm=gmail%26emailstat=clk%26section=footer/1/01000183aaaaa205-94d4f7b4-3eee-4751-ba02-376ebcfa60ee-000000/O2R7c1zgwcjjjHjJS5PewytRj5o=290>
+[image:
+Google Play Store]
+<https://fzttlwrt.r.us-east-1.awstrack.me/L0/https:%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid=com.discoverfinancial.mobile%26hl=en%26dmscmpgn=DCReminderRTA_TRANTHR_A1_A1_A1%26ekey=1037075133%26dmsdate=20221005_192052%26msgid=20526889205%26edm=gmail%26emailstat=clk%26section=footer/1/01000183aaaaa205-94d4f7b4-3eee-4751-ba02-376ebcfa60ee-000000/OWB8McpU0WwdhPy4FlugsOd66Uc=290>
+[image: FACEBOOK]
+<https://fzttlwrt.r.us-east-1.awstrack.me/L0/https:%2F%2Fwww.facebook.com%2Fdiscover%3Fdmscmpgn=DCReminderRTA_TRANTHR_A1_A1_A1%26ekey=1037075133%26dmsdate=20221005_192052%26msgid=20526889205%26edm=gmail%26emailstat=clk%26section=footer/1/01000183aaaaa205-94d4f7b4-3eee-4751-ba02-376ebcfa60ee-000000/HjvIj4hdxG5tT468kBB5DlQQdnw=290>
+[image:
+TWITTER]
+<https://fzttlwrt.r.us-east-1.awstrack.me/L0/https:%2F%2Ftwitter.com%2FDiscover%3Fdmscmpgn=DCReminderRTA_TRANTHR_A1_A1_A1%26ekey=1037075133%26dmsdate=20221005_192052%26msgid=20526889205%26edm=gmail%26emailstat=clk%26section=footer/1/01000183aaaaa205-94d4f7b4-3eee-4751-ba02-376ebcfa60ee-000000/7zjBu0Mc9Sm3YoV5Oav4RwQB_wU=290>
+[image:
+INSTAGRAM]
+<https://fzttlwrt.r.us-east-1.awstrack.me/L0/https:%2F%2Fwww.instagram.com%2Fofficialdiscover%2F%3Fdmscmpgn=DCReminderRTA_TRANTHR_A1_A1_A1%26ekey=1037075133%26dmsdate=20221005_192052%26msgid=20526889205%26edm=gmail%26emailstat=clk%26section=footer/1/01000183aaaaa205-94d4f7b4-3eee-4751-ba02-376ebcfa60ee-000000/9akIcwtUsGby-6zdsg1WiZRO9ps=290>
+[image:
+REFER A FRIEND]
+<https://fzttlwrt.r.us-east-1.awstrack.me/L0/https:%2F%2Fwww.discover.com%2Fcredit-cards%2Fexclusives%2Frefer%2Findex.html%3Fdmscmpgn=DCReminderRTA_TRANTHR_A1_A1_A1%26ekey=1037075133%26dmsdate=20221005_192052%26msgid=20526889205%26edm=gmail%26emailstat=clk%26section=footer/1/01000183aaaaa205-94d4f7b4-3eee-4751-ba02-376ebcfa60ee-000000/Q-X316mm9b8y3wRolcvtqKnKQMs=290>
+[image: Discover logo]
+<https://fzttlwrt.r.us-east-1.awstrack.me/L0/https:%2F%2Fdiscover.app.link%2F3p%3F%25243p=e_rs%26%2524original_url=https%253A%252F%252Fcard.discover.com%252Fcardmembersvcs%252Fachome%252Fhomepage%253FselAcct%26deeplink=linktohome%26dmscmpgn=DCReminderRTA_TRANTHR_A1_A1_A1%26ekey=1037075133%26dmsdate=20221005_192052%26msgid=20526889205%26edm=gmail%26emailstat=clk%26section=body/1/01000183aaaaa205-94d4f7b4-3eee-4751-ba02-376ebcfa60ee-000000/oVH6rvZlRT-EUMKQV8YW7KYmZ3Y=290>
+Add discover@services.discover.com to your address book to ensure delivery
+of these emails. See ways to help identify authentic Discover emails by
+visiting our email security
+<https://fzttlwrt.r.us-east-1.awstrack.me/L0/https:%2F%2Fwww.discover.com%2Fcredit-cards%2Fmember-benefits%2Fsecurity-center%2Fkeep-secure%2Femail-safety.html%3Fdmscmpgn=DCReminderRTA_TRANTHR_A1_A1_A1%26ekey=1037075133%26dmsdate=20221005_192052%26msgid=20526889205%26edm=gmail%26emailstat=clk%26section=body/1/01000183aaaaa205-94d4f7b4-3eee-4751-ba02-376ebcfa60ee-000000/2nh-l6O4PDrTXnxGTj6yDDc1-3Q=290>
+page.
+IMPORTANT INFORMATION
+This email was sent to: dev.kfike@gmail.com for Discover card account
+number ending with 4169.
+You are receiving this email because you are a Discover Cardmember.
+Log in
+<https://fzttlwrt.r.us-east-1.awstrack.me/L0/https:%2F%2Fdiscover.app.link%2F3p%3F%25243p=e_rs%26%2524original_url=https%253A%252F%252Fportal.discover.com%252Fcustomersvcs%252FuniversalLogin%252Fac_main%253Flink%253D%252Fcardmembersvcs%252Fpersonalprofile%252Fpp%252FMyProfilePage%253FEMAIL-TAG%26deeplink=linktoincptr%26dmscmpgn=DCReminderRTA_TRANTHR_A1_A1_A1%26ekey=1037075133%26dmsdate=20221005_192052%26msgid=20526889205%26edm=gmail%26emailstat=clk%26section=body/1/01000183aaaaa205-94d4f7b4-3eee-4751-ba02-376ebcfa60ee-000000/GTansk18bL2OITQClkycZjpCJGU=290>
+to update your email address or view your account email preferences.
+If you have any questions about your account, please visit our contact us
+<https://fzttlwrt.r.us-east-1.awstrack.me/L0/https:%2F%2Fwww.discover.com%2Fcredit-cards%2Fhelp-center%2Fcontact-us%2F%3Fdmscmpgn=DCReminderRTA_TRANTHR_A1_A1_A1%26ekey=1037075133%26dmsdate=20221005_192052%26msgid=20526889205%26edm=gmail%26emailstat=clk%26section=body/1/01000183aaaaa205-94d4f7b4-3eee-4751-ba02-376ebcfa60ee-000000/WiQuE9-9s8BsCtm-5R_v1l_jFuk=290>
+page and we will be happy to assist you.
+Please do not reply to this email as we are not able to respond to messages
+sent to this address.
+We respect your privacy. To view our privacy policy online
+<https://fzttlwrt.r.us-east-1.awstrack.me/L0/https:%2F%2Fwww.discover.com%2Fprivacy-statement%2Fcredit-cards-privacy-policy.html%3Fdmscmpgn=DCReminderRTA_TRANTHR_A1_A1_A1%26ekey=1037075133%26dmsdate=20221005_192052%26msgid=20526889205%26edm=gmail%26emailstat=clk%26section=body/1/01000183aaaaa205-94d4f7b4-3eee-4751-ba02-376ebcfa60ee-000000/hpiqFGsMk3yymlfG5Q0NhEdsm1o=290>,
+visit Discover.com.
+DISCOVER and other trademarks, logos and service marks used in this email
+are the trademarks of Discover Financial Services or their respective
+third-party owners.
+Discover Products Inc.
+P­.O­. Box 30666
+Salt Lake City­, UT 84130
+©2022 Discover Bank, Member FDIC
+TRANTHR_A1_A1_A1

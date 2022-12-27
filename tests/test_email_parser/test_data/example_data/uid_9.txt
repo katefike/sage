@@ -1,82 +1,55 @@
 ---------- Forwarded message ---------
-From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
-Date: Thu, Sep 15, 2022 at 3:25 AM
-Subject: Deposit
+From: Chase <no.reply.alerts@chase.com>
+Date: Thu, Oct 6, 2022 at 10:39 AM
+Subject: Your $113.11 transaction with EB *TRAUMA 2022
 To: <dev.kfike@gmail.com>
 
 
-A deposit was made to SAVE above the amount you set for an alert.
-View as a web page
-<https://view.email.huntington.com/?qs=42f5786f052085319ce5f11141ba83e4997a1a410a8650b365923114baf5181ee86d32aa2d57a6eec072fa3da848ed9293f9256d5d4527ebf27da4a8d1c2b4189db043ea03b2f77e22cc87f7a0e0e0347b6c120fbc4076e3b9dc8ed75beadd18>
+This transaction is above the level you set, see more here.
+ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌
+‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+[image: Chase Logo]
+Transaction alert
+You made a $113.11 transaction
+Account Amazon Rewards Visa (...3650)
+Date Oct 6, 2022 at 10:39 AM ET
+Merchant EB *TRAUMA 2022
+Amount $113.11
+You are receiving this alert because your transaction was more than the
+$0.01 level you set. You can visit our Resource Center
+<https://www.chase.com/personal/credit-cards/card-resource-center> anytime
+to help answer your questions or manage your account.
+Review account
+<https://secure.chase.com/web/auth/nav?navKey=requestDashboard>
+Securely access your accounts with the Chase Mobile® app
+<https://www.chase.com/digital/mobile-banking> or chase.com
+<https://secure.chase.com/web/auth/nav?navKey=requestDashboard>.
+About this message
 
-We've processed an ACH deposit for $1,000.00 from SIP US LLC DIRECT DEP to
-your account nicknamed SAVE. That's above the $0.00 you set for an alert.
+Chase Mobile® app is available for select mobile devices. Message and data
+rates may apply.
 
-Your balance is $18,000.00 as of 9/15/22 3:12 AM ET.
+This service email was sent based on your alert settings. Use the
+Chase Mobile app or visit chase.com/alerts
+<https://www.chase.com/personal/mobile-online-banking/login-alerts> to view
+or manage your settings.
 
-Thank you for banking with Huntington.
+Chase cannot guarantee the delivery of alerts and notifications. Wireless
+or internet service provider outages or other circumstances could delay
+them. You can always check chase.com or the Chase Mobile app for the status
+of your accounts including your latest account balances and transaction
+details.
 
-You received this message because you turned on email alerts for certain
-events or conditions related to your Huntington account(s). For more
-information or to manage your alerts, log into huntington.com
-<https://click.email.huntington.com/?qs=848dd86a975ba545a8c90ad3b52c086f5643359d815e8858abf26260e2fb6d30cf684cb48564d3ce2bab1bc1705a45997bed809c220e7d42da8ffed009cfd7b4>
-or the Huntington Mobile app
-<https://click.email.huntington.com/?qs=04b49f13094376ab72a583d11890d7043d3d529aded447f3ea89b2a8a2a7de2249800fb2a57fa1586bd13dae3fe2af8eba01db3e499260434d50fb48ef267ae5>
-.
+To protect your personal information, please don't reply to this message.
+Chase won't ask for confidential information in an email.
 
-This email was generated automatically. Please do not reply to this message
+If you have concerns about the authenticity of this message or have
+questions about your account visit chase.com/CustomerService
+<https://www.chase.com/digital/customer-service> for ways to contact us.
 
-[image: Facebook]
-<https://click.email.huntington.com/?qs=7fcec84d9f52781917ee41e858dbb0e04d8939a110c704c1b44260c1d36312073b3a3c822058ec48472971a2854dba6d0f7064f86d493fd3f4fd0fc47bb1e09c>
-[image: Instagram]
-<https://click.email.huntington.com/?qs=c59d00d3fb52023c26ee0edcbb3401d2a5f1f892acf11b6ac954ac111643831c2b97bc4e19b408f76b4766bbebfadd358f46c83177040b5da3190a1e76e2f05a>
-[image: LinkedIn]
-<https://click.email.huntington.com/?qs=da54e0fc150aa1f2a28894bc43108df24bd7fb059766c8d8f035c319687570dccf45a5216b6c79b2f7606741562875a8ccb83f7da2e96b6040a8929c98de006d>
-[image: Twitter]
-<https://click.email.huntington.com/?qs=8410dc2df11e837f93a730cdf95e091e8f8c1495f820a69545a91519b19e29d4d5373b4b78aa45192b5542c3b9222eb4e0d5056f275474cb4b84624c1e1bacd1>
-[image: YouTube]
-<https://click.email.huntington.com/?qs=996f15591f3c5b73cc93b2d8023636c5f12c6e11063b1338b10eeea5c675cb0bbfd7ea9ff995d8ad0e2e57f90ef2c0be526c86005f52f2340b62c06de4be57da>
-HUNTINGTON.COM
-<https://click.email.huntington.com/?qs=988cd2b295d229b46a1d0ad88c6ea5622d2c72c91b925f7c948451f6f094407bd9b5ea03edeb38e4eeeccf7235078f6d7063aed13de1b4ab268aa4f45f8f4972>
-    BANK & ATM LOCATOR
-<https://click.email.huntington.com/?qs=4d1cd43eddd35ed92a132216c4f7a4d31e282ebd306b08a603dbed5c4d472434809933ae451b51c51558110540fd3a3f47518dcbc87cb3d48f7383810be5fcd4>
-HUNTINGTON.COM
-<https://click.email.huntington.com/?qs=988cd2b295d229b46a1d0ad88c6ea5622d2c72c91b925f7c948451f6f094407bd9b5ea03edeb38e4eeeccf7235078f6d7063aed13de1b4ab268aa4f45f8f4972>
-BANK
-& ATM LOCATOR
-<https://click.email.huntington.com/?qs=4d1cd43eddd35ed92a132216c4f7a4d31e282ebd306b08a603dbed5c4d472434809933ae451b51c51558110540fd3a3f47518dcbc87cb3d48f7383810be5fcd4>
-Save paper. Please think before you print.
+Your privacy is important to us. See our online Security Center
+<https://www.chase.com/digital/resources/privacy-security> to learn how to
+protect your information.
 
-*Privacy Policy for how we use email to communicate with our customers:*
-When we send you communications, they may include links that connect you to
-information on our website about our products, services, and special
-pricing or promotional offers. However, we will never include links, in
-emails or texts, that take you to a non-secure page (for example, a page
-that doesn't start with "https" or show a lock symbol) that asks you to
-provide personal information. Additionally, Huntington will never ask you
-to provide your personal information such as username, password, PINs,
-account number, or Social Security number via email, phone, or text unless
-you contact us first. To verify whether a communication you have received
-from Huntington is legitimate, you can contact our Customer Service Center
-toll-free at 1-800-480-2265.
-
-*Security:*
-If you receive an email or other correspondence requesting that you provide
-any sensitive information via email or to a website that does not seem to
-be affiliated with the website, or that otherwise seems suspicious to you,
-please do not provide such information and report such requests to
-ReportFraud@huntington.com.
-
-*Investment, Insurance and Non-deposit Trust products are:* NOT A DEPOSIT •
-NOT FDIC INSURED • NOT GUARANTEED BY THE BANK • NOT INSURED BY ANY FEDERAL
-GOVERNMENT AGENCY • MAY LOSE VALUE
-
-Loans subject to credit application and approval.
-
-The Huntington National Bank is an Equal Housing Lender and Member FDIC. ®,
-Huntington®, Huntington® and Huntington.Welcome.® are federally registered
-service marks of Huntington Bancshares Incorporated. ©2022 Huntington
-Bancshares Incorporated.
-
-*This email was sent by:*
-The Huntington National Bank, 41 South High Street, Columbus, OH 43215, USA
+© 2022 JPMorgan Chase & Co.
