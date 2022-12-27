@@ -130,13 +130,15 @@ def parse_huntington_withdrawal(body: str) -> str:
     I.e.
     We've processed an ACH withdrawal for $1.72 at CHASE CREDIT CRD EPAY
     from your account nicknamed SAVE.
+    I.e.
+    We've processed an ACH withdrawal for $10,000.00 at TREASURY DIRECT TREAS DRCT from your account nicknamed SAVE.
     """
     match = regex_search(
-        r"(for \$[0-9]+\.[0-9]{2} at\s)(.*)(?=\sfrom your account nicknamed)",
+        r"(?:for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} at )(.*)(?= from your account nicknamed)",
         body,
         get_full_match=False,
     )
-    merchant = match.group(2)
+    merchant = match.group(1)
     raw_amount = regex_search(r"(?<=for \$)(.*)(?= at)", body)
     return merchant, raw_amount
 
@@ -193,10 +195,11 @@ def transform_amount(raw_amount: str) -> int:
     return transformed_amount
 
 
-def regex_search(pattern: str, string: str, get_full_match=True) -> str:
-    string = string.replace(r"\r", "").replace(r"\n", " ")
-    print(string)
-    match = re.search(pattern, string, flags=re.DOTALL | re.MULTILINE)
+def regex_search(pattern: str, raw_input: str, get_full_match=True) -> str:
+    clean_input = raw_input.replace("\r", "").replace("\n", " ")
+    print("-----REGEX STRING---")
+    print(clean_input)
+    match = re.search(pattern, clean_input, flags=re.DOTALL | re.MULTILINE)
     if match:
         if not get_full_match:
             return match
