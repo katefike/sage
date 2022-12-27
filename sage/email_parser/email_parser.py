@@ -35,9 +35,7 @@ def main(msg: MailMessage) -> Transaction:
         elif transaction.type_ == "transfer deposit":
             raw_amount = parse_huntington_transfer_deposit(body)
         elif transaction.type_ == "withdrawal":
-            transaction.merchant, raw_amount = parse_huntington_withdrawal(
-                body
-            )
+            transaction.merchant, raw_amount = parse_huntington_withdrawal(body)
         elif transaction.type_ == "deposit":
             transaction.payer, raw_amount = parse_huntington_deposit(body)
         transaction.account = identify_huntington_account(body)
@@ -133,8 +131,12 @@ def parse_huntington_withdrawal(body: str) -> str:
     We've processed an ACH withdrawal for $1.72 at CHASE CREDIT CRD EPAY
     from your account nicknamed SAVE.
     """
-    match = regex_search(r"(for \$[0-9]+\.[0-9]{2} at\s)(.*)(?=\sfrom your account nicknamed)", body, get_full_match = False)
-        merchant = match.group(2)
+    match = regex_search(
+        r"(for \$[0-9]+\.[0-9]{2} at\s)(.*)(?=\sfrom your account nicknamed)",
+        body,
+        get_full_match=False,
+    )
+    merchant = match.group(2)
     raw_amount = regex_search(r"(?<=for \$)(.*)(?= at)", body)
     return merchant, raw_amount
 
@@ -191,7 +193,7 @@ def transform_amount(raw_amount: str) -> int:
     return transformed_amount
 
 
-def regex_search(pattern:str, string: str, get_full_match = True) -> str:
+def regex_search(pattern: str, string: str, get_full_match=True) -> str:
     string = string.replace(r"\r", "").replace(r"\n", " ")
     print(string)
     match = re.search(pattern, string, flags=re.DOTALL | re.MULTILINE)
