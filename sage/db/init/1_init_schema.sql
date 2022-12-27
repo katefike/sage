@@ -1,5 +1,5 @@
--- Save file using CMD + K S
-\ connect sage
+-- Save file using ctrl+K S
+\connect sage
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -30,8 +30,7 @@ CREATE TABLE IF NOT EXISTS public.entity_tags(
 );
 CREATE TABLE IF NOT EXISTS public.entities(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    NAME TEXT NOT NULL,
-    FOREIGN KEY (entity_tag_id) REFERENCES public.entity_tags(id)
+    NAME TEXT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS public.entity_tag_mapping(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -41,20 +40,25 @@ CREATE TABLE IF NOT EXISTS public.entity_tag_mapping(
     FOREIGN KEY (entity_tag_id) REFERENCES public.entity_tags(id)
 );
 CREATE TABLE IF NOT EXISTS public.transactions(
-    uid INT AS IDENTITY PRIMARY KEY,
+    uid INT PRIMARY KEY,
     time DATE NOT NULL,
     -- TODO: Replace with enum (withdrawal, deposit, transfer withdrawal, transfer deposit)
-    TYPE AS TEXT NOT NULL,
+    TYPE TEXT NOT NULL,
     bank_id INTEGER NOT NULL,
     amount NUMERIC NOT NULL,
     entity_id INT,
-    FOREIGN KEY (bank_id) REFERENCES public.banks (id),
-    FOREIGN KEY (entity_id) REFERENCES public.entities (id)
+    FOREIGN KEY (bank_id) REFERENCES public.banks(id),
+    FOREIGN KEY (entity_id) REFERENCES public.entities(id)
+);
+CREATE TABLE IF NOT EXISTS public.transaction_tags(
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    NAME TEXT NOT NULL,
+    recurring BOOLEAN NOT NULL
 );
 CREATE TABLE IF NOT EXISTS public.transaction_tag_mapping(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    transaction_id INT NOT NULL,
-    tag_id INT NOT NULL,
-    FOREIGN KEY (transaction_id) REFERENCES public.transactions (id),
-    FOREIGN KEY (tag_id) REFERENCES public.tags(id)
+    transaction_uid INT NOT NULL,
+    transaction_tag_id INT NOT NULL,
+    FOREIGN KEY (transaction_uid) REFERENCES public.transactions(uid),
+    FOREIGN KEY (transaction_tag_id) REFERENCES public.transaction_tags(id)
 );
