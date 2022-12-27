@@ -23,11 +23,11 @@ from sage.email_parser import email_parser
 
 def create_test_data():
     data = [
-                (
-            (dict(uid="14")),
+        (
+            (dict(uid="3")),
             (
                 dict(
-                    uid=14,
+                    uid=3,
                     transaction_time="2022-10-06 10:32:00",
                     type_="transfer withdrawal",
                     bank="Huntington",
@@ -40,10 +40,10 @@ def create_test_data():
             ),
         ),
         (
-            (dict(uid="3")),
+            (dict(uid="14")),
             (
                 dict(
-                    uid=3,
+                    uid=14,
                     transaction_time="2022-10-06 10:28:00",
                     type_="transfer deposit",
                     bank="Huntington",

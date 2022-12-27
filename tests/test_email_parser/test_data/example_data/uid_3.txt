@@ -1,50 +1,55 @@
 ---------- Forwarded message ---------
 From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
-Date: Thu, Oct 6, 2022 at 10:28 AM
-Subject: Deposit
+Date: Thu, Oct 6, 2022 at 10:32 AM
+Subject: Withdrawal or Purchase
 To: <dev.kfike@gmail.com>
 
 
-A deposit was made to SAVE above the amount you set for an alert.
+We've processed a withdrawal or purchase above the amount you set for an
+alert.
 View as a web page
-<https://view.email.huntington.com/?qs=42f5786f052085319ce5f11141ba83e4997a1a410a8650b365923114baf5181ee86d32aa2d57a6eec072fa3da848ed9293f9256d5d4527ebf27da4a8d1c2b4182ed3a88d627d5fb6ef684d479e8da7446ab81835ebdbf23ca585bcb6a34513da>
+<https://view.email.huntington.com/?qs=42f5786f05208531f07816028606a876f230942aa878645f45a53b0603d34e3ada603d39e49103a03ebb00599bd2769457080ac4d8f37c977ad19d89fbf11f26253253a4b32e0b2ed942f5e24dc116608fcc964d372e30a5e9fb85334897e598>
 
-We've processed a transfer deposit for $999.51 to your account nicknamed
-SAVE. That's above the $0.00 you set for an alert.
 
-Your balance is $20,000.00 as of 10/06/22 10:10 AM ET.
+Hello,
+
+Just a heads up for you. We've processed a transfer withdrawal for $999.51
+from your account nicknamed CHECK. That's above the $0.00 you set for an
+alert.
+
+Your balance is $1,693.13 as of 10/06/22 10:10 AM ET.
 
 Thank you for banking with Huntington.
 
 You received this message because you turned on email alerts for certain
 events or conditions related to your Huntington account(s). For more
 information or to manage your alerts, log into huntington.com
-<https://click.email.huntington.com/?qs=d6ba0751d055c893238eb532a5c43603447adc140f38ecc07ba1955918d6cc01c9b18508d438545bb0502b30190ded51197e92becc95e6c6>
+<https://click.email.huntington.com/?qs=3e328024cf3e29c7571f6b99d90562109d7de7d6c34cfac48b36efc6c04fa9a7246e4d29fd45a2b73f5de2fbe2b3a27bef065bf5849186600de5d552081f94a8>
 or the Huntington Mobile app
-<https://click.email.huntington.com/?qs=5a9bb6d552a1976097dd4991af4734d216df37967a87d97d900542ccb2fd63d126845685a4f71ce03dffa5d4c2866cb645d9bac2566db06b>
+<https://click.email.huntington.com/?qs=cf3caacfbb31d6f896cea441762586475a8e9ee073dad35a9a2fd26ee60c13b69f83d7001fde88b38cc3d6a9e280ceb98bc8c35a19479edd45c6847e5dba76d7>
 .
 
 This email was generated automatically. Please do not reply to this message
 
 [image: Facebook]
-<https://click.email.huntington.com/?qs=5a475fd1be7e63caa60a934b6061e3bf1866a9dee5ff6bcad51c7dd55baf92eacd4357c02910e81f6368e206446ea4452a524532192afdde>
+<https://click.email.huntington.com/?qs=423fb174f04299aa03b0e4ce8d1b3e0c3e6020ad7f607c991198a5834a36d4ea9abb297792f1b510ca08ab1ee4b362691f6010051127120d64f65b50d9918216>
 [image: Instagram]
-<https://click.email.huntington.com/?qs=d4614dbcbff1d9a7252433b3ccf16f584e1a84a35bccd12aaee084fe6d325c65b091bbc60f3fb3aa42dbfe5659dd6ffede4c890871d10a8a>
+<https://click.email.huntington.com/?qs=74e2de304e80a4640c03c8010543a9da1c437b43f22d80eb7920566b2c7136ccb7b81b69adba3020b98f2359d5720b920cc2858166fd3435993313a2841ed8f9>
 [image: LinkedIn]
-<https://click.email.huntington.com/?qs=95524531280fea99c5d4f7a787c51b44c861bbe215afc88aac8f9d982adbeef6c97b181bc0273cdbb034048b328eca3ee28475d9f12f494f>
+<https://click.email.huntington.com/?qs=49510c8d3365175db5fc79ae5821abdc92f7b41689deed72f700d2edc579555d246f7c219dbf4f44e9c0bd509900334b4243e6427954a7ca1452a54d9ca01835>
 [image: Twitter]
-<https://click.email.huntington.com/?qs=5dc9fea6617732ab56b7e5fba659525c9b336e201cf34a79f76bdc713995bdc027ccf29201daa2496312c0ffb4310c4d09c46fc302b6aded>
+<https://click.email.huntington.com/?qs=2090d07f40d5fce71f08c8ed5008fafa5b5cbd73219c4a6d7d55829d40f5a201b62e70d248e8ac42050802d09e58d40e8dfbf602a14785bcf694461e1c12f72f>
 [image: YouTube]
-<https://click.email.huntington.com/?qs=8a01b525291de125796d3b671b6d755a4cb3ec2db06952549484d758cab4aaf15dce79f2fa17026d2857ae2456b270aefa43d973103bda3d>
+<https://click.email.huntington.com/?qs=50aefc915e492cadcc89c08eb203d8fe98845770b11b8330ecf59bcc2637e12f9bc7c2fb1ad4973383e11d934ff82f0c33ba0fa14af578acbe3089d47b098fd5>
 HUNTINGTON.COM
-<https://click.email.huntington.com/?qs=f49422f3502ae3c4d75747a7d5b03a9fa817802f8efeac026cd1f8a1146cac2cd1269badba71f5b7c3fca96f89ae32c0d268b0124781e865>
+<https://click.email.huntington.com/?qs=a791f4e0e8970c8dea47acc956665a320e33e50b1939c5eac199d249e02a7215428eda0ed7add619b7b6d734ba5deeee501fde805324e4bf63ced3ec48b05cec>
     BANK & ATM LOCATOR
-<https://click.email.huntington.com/?qs=d2e1504bbf35e8dc0ab594ae9f956087a78f9ac3b6c2c4a7f04fa96d9ade3891ee989d4a3db42d18e11799dbc115f4f864417f06267f7e70>
+<https://click.email.huntington.com/?qs=860e0cdd2bdaa6c33fee3413d23e1bfe3a05d440fc41c2507d6431d56778507c6adcf6af79a3fe1aa7c85df1de8b6589f45b6f5de40b01a95e5a5e5b67454a70>
 HUNTINGTON.COM
-<https://click.email.huntington.com/?qs=f49422f3502ae3c4d75747a7d5b03a9fa817802f8efeac026cd1f8a1146cac2cd1269badba71f5b7c3fca96f89ae32c0d268b0124781e865>
+<https://click.email.huntington.com/?qs=a791f4e0e8970c8dea47acc956665a320e33e50b1939c5eac199d249e02a7215428eda0ed7add619b7b6d734ba5deeee501fde805324e4bf63ced3ec48b05cec>
 BANK
 & ATM LOCATOR
-<https://click.email.huntington.com/?qs=d2e1504bbf35e8dc0ab594ae9f956087a78f9ac3b6c2c4a7f04fa96d9ade3891ee989d4a3db42d18e11799dbc115f4f864417f06267f7e70>
+<https://click.email.huntington.com/?qs=860e0cdd2bdaa6c33fee3413d23e1bfe3a05d440fc41c2507d6431d56778507c6adcf6af79a3fe1aa7c85df1de8b6589f45b6f5de40b01a95e5a5e5b67454a70>
 Save paper. Please think before you print.
 
 *Privacy Policy for how we use email to communicate with our customers:*
