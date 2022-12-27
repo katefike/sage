@@ -82,8 +82,8 @@ def parse_discover(body: str) -> str:
 
     Amount: $23.50
     """
-    merchant = regex_search(r"(?<=Merchant: )(.*)(?=\r)", body)
-    raw_amount = regex_search(r"(?<=Amount: )(.*)(?=\r)", body)
+    merchant = regex_search(r"(?<=Merchant: )(.*)(?= Amount: )", body)
+    raw_amount = regex_search(r"(?<=Amount: )(\$[0-9]+(?:,[0-9]{3})?\.[0-9]{2})", body)
     return merchant, raw_amount
 
 
