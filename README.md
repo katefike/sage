@@ -33,11 +33,14 @@ Removes all containers
 Removes all volumes
 ```
 (venv) $ docker volume rm $(docker volume ls -q)
-(venv) $ docker compose up
 ```
 Removes all images
 ```
 docker rmi $(docker images -q)
+```
+Access the postgres interactive CLI within the database container
+```
+docker exec -it  sage-db-1 psql -U admin sage
 ```
 
 ## Dovecot
