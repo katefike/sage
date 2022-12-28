@@ -39,6 +39,8 @@ def main(msg: MailMessage) -> Transaction:
         elif transaction.type_ == "deposit":
             transaction.payer, raw_amount = parse_huntington_deposit(body)
         transaction.account = identify_huntington_account(body)
+        raw_balance = get_huntington_balance(body)
+        transaction.balance = transform_amount(raw_balance)
     transaction.amount = transform_amount(raw_amount)
     return transaction
 
