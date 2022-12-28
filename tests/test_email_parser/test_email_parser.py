@@ -51,7 +51,7 @@ def create_test_data():
                     payer=None,
                     amount="999.51",
                     account="savings",
-                    balance="20,000.00",
+                    balance="20000.00",
                 )
             ),
         ),

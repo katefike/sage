@@ -202,7 +202,9 @@ def get_huntington_balance(body: str) -> str:
     I.e.
     Your balance is $19,748.78 as of 6/25/22 2:35 AM ET.
     """
-    balance = regex_search(r"(?<=Your balance is \$)(.*)(?=. as of)", body)
+    balance = regex_search(
+        r"(?<=Your balance is \$)([0-9]+(,[0-9]{3})?\.[0-9]{2})(?= as of)", body
+    )
     return balance
 
 
