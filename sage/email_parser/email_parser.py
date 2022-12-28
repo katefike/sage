@@ -165,6 +165,7 @@ def parse_huntington_deposit(body: str) -> str:
     payer = regex_search(
         r"(?:for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} from )(.*)(?= to your account nicknamed)",
         body,
+        get_full_match=False,
     )
     raw_amount = regex_search(
         r"(?<=for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= from)",
