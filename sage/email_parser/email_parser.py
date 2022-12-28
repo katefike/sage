@@ -147,7 +147,11 @@ def parse_huntington_withdrawal(body: str) -> str:
         body,
         get_full_match=False,
     )
-    raw_amount = regex_search(r"(?<=for \$)(.*)(?= at)", body)
+    raw_amount = regex_search(
+        r"(?<=for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= at)",
+        body,
+        get_full_match=False,
+    )
     return merchant, raw_amount
 
 
@@ -161,9 +165,12 @@ def parse_huntington_deposit(body: str) -> str:
     payer = regex_search(
         r"(?:for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} from )(.*)(?= to your account nicknamed)",
         body,
+    )
+    raw_amount = regex_search(
+        r"(?<=for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= from)",
+        body,
         get_full_match=False,
     )
-    raw_amount = regex_search(r"(?<=for \$)(.*)(?=from)", body)
     return payer, raw_amount
 
 
