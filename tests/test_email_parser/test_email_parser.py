@@ -170,7 +170,7 @@ def create_test_data():
                     merchant=None,
                     payer="CHASE CREDIT CRD RWRD RDM",
                     amount="17.09",
-                    naccount="checking",
+                    account="checking",
                     balance="257.06",
                 )
             ),
