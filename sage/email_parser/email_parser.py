@@ -39,6 +39,7 @@ def main(msg: MailMessage) -> Transaction:
         elif transaction.type_ == "deposit":
             transaction.payer, raw_amount = parse_huntington_deposit(body)
         transaction.account = identify_huntington_account(body)
+    transaction.amount = transform_amount(raw_amount)
     return transaction
 
 
@@ -110,8 +111,9 @@ def parse_huntington_transfer_withdrawal(body: str) -> str:
     from your account nicknamed CHECK. That's above the $0.00 you set for an alert.
     """
     raw_amount = regex_search(
-        r"(?:for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= from your account nicknamed)",
+        r"(?:We've processed a transfer withdrawal for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= from your account nicknamed)",
         body,
+        get_full_match=False,
     )
     return raw_amount
 
@@ -202,10 +204,12 @@ def transform_amount(raw_amount: str) -> int:
 
 
 def regex_search(pattern: str, raw_input: str, get_full_match=True) -> str:
-    clean_input = raw_input.replace("\r", "").replace("\n", " ")
+    transformed_input = raw_input.replace("\r", "").replace("\n", " ")
     print("-----REGEX STRING---")
-    print(clean_input)
-    match = re.search(pattern, clean_input, flags=re.DOTALL | re.MULTILINE)
+    print(transformed_input)
+    print("-----PATTERN---")
+    print(pattern)
+    match = re.search(pattern, transformed_input, flags=re.DOTALL | re.MULTILINE)
     if match:
         if not get_full_match:
             group = match.group(1)
