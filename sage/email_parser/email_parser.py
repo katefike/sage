@@ -111,7 +111,7 @@ def parse_huntington_transfer_withdrawal(body: str) -> str:
     from your account nicknamed CHECK. That's above the $0.00 you set for an alert.
     """
     raw_amount = regex_search(
-        r"(?:We've processed a transfer withdrawal for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= from your account nicknamed)",
+        r"(?:We've processed a transfer withdrawal for \$)(.*)(?= from your account nicknamed)",
         body,
         get_full_match=False,
     )
@@ -125,7 +125,11 @@ def parse_huntington_transfer_deposit(body: str) -> str:
     We've processed a transfer deposit for $999.51 to your account nicknamed
     SAVE. That's above the $0.00 you set for an alert.
     """
-    raw_amount = regex_search(r"(?<=for \$)(.*)(?=to your account nicknamed)", body)
+    raw_amount = regex_search(
+        r"(?<=We've processed a transfer deposit for \$)(.*)(?= to your account nicknamed)",
+        body,
+        get_full_match=False,
+    )
     return raw_amount
 
 
