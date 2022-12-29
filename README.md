@@ -61,16 +61,6 @@ Show dovecot errors
 (venv) $ python3 -m pip install -r requirements.txt
 ```
 
-## Create a docker-mailserver (DMS) Account
-1. Start the docker containers
-```bash
-$ docker compose up
-```
-2. Create at least one email account (unless you're using LDAP). You have two minutes to do so, otherwise DMS will shutdown and restart. You can add accounts with tusing the `dms_setup.sh` script:
-```bash
-$ scripts/dms_setup.sh email add fake_account@example.com
-```
-
 ## Send Emails Locally
 Test that the dockerized email server works by sending an email locally via telnet
 ```
