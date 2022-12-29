@@ -12,9 +12,8 @@ def main(msg: MailMessage) -> Transaction:
     """
     Parse the transaction data from the email.
 
-    :param param1: this is a first param
-    :param param2: this is a second param
-    :returns: this is a description of what is returned
+    :param msg: this is an an email
+    :returns: this is a transaction object defined by the program
     """
     transaction = Transaction(int(msg.uid))
 
