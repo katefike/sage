@@ -116,13 +116,13 @@ def get_huntington_transaction_type(body: str) -> str:
     """
     Identify the Huntington transaction type
     """
-    if regex_search("transfer withdrawal", body):
+    if regex_search("(transfer withdrawal)", body):
         type_ = "transfer withdrawal"
-    elif regex_search("transfer deposit", body):
+    elif regex_search("(transfer deposit)", body):
         type_ = "transfer deposit"
-    elif regex_search("withdrawal", body):
+    elif regex_search("(withdrawal)", body):
         type_ = "withdrawal"
-    elif regex_search("deposit", body):
+    elif regex_search("(deposit)", body):
         type_ = "deposit"
     return type_
 
@@ -137,7 +137,6 @@ def parse_huntington_transfer_withdrawal(body: str) -> str:
     raw_amount = regex_search(
         r"(?:We've processed a transfer withdrawal for \$)(.*)(?= from your account nicknamed)",
         body,
-        get_full_match=False,
     )
     return raw_amount
 
@@ -152,7 +151,6 @@ def parse_huntington_transfer_deposit(body: str) -> str:
     raw_amount = regex_search(
         r"(?<=We've processed a transfer deposit for \$)(.*)(?= to your account nicknamed)",
         body,
-        get_full_match=False,
     )
     return raw_amount
 
@@ -169,12 +167,10 @@ def parse_huntington_withdrawal(body: str) -> str:
     merchant = regex_search(
         r"(?:for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} at )(.*)(?= from your account nicknamed)",
         body,
-        get_full_match=False,
     )
     raw_amount = regex_search(
         r"(?<=for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= at)",
         body,
-        get_full_match=False,
     )
     return merchant, raw_amount
 
@@ -189,12 +185,10 @@ def parse_huntington_deposit(body: str) -> str:
     payer = regex_search(
         r"(?:for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} from )(.*)(?= to your account nicknamed)",
         body,
-        get_full_match=False,
     )
     raw_amount = regex_search(
         r"(?<=for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= from)",
         body,
-        get_full_match=False,
     )
     return payer, raw_amount
 
@@ -241,7 +235,7 @@ def transform_amount(raw_amount: str) -> int:
     return transformed_amount
 
 
-def regex_search(pattern: str, raw_input: str, get_full_match=True) -> str:
+def regex_search(pattern: str, raw_input: str) -> str:
     transformed_input = raw_input.replace("\r", "").replace("\n", " ")
     print("-----REGEX STRING---")
     print(transformed_input)
@@ -249,8 +243,5 @@ def regex_search(pattern: str, raw_input: str, get_full_match=True) -> str:
     print(pattern)
     match = re.search(pattern, transformed_input, flags=re.DOTALL | re.MULTILINE)
     if match:
-        if not get_full_match:
-            group = match.group(1)
-            return group
-        full_match = match.group(0)
-        return full_match
+        group_1 = match.group(1)
+        return group_1
