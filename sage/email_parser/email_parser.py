@@ -183,11 +183,11 @@ def parse_huntington_deposit(body: str) -> str:
     from CHASE CREDIT CRD RWRD RDM to your account nicknamed CHECK.
     """
     payer = regex_search(
-        r"(?:for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} from )(.*)(?= to your account nicknamed)",
+        r"(?: for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} from )(.*)(?= to your account nicknamed)",
         body,
     )
     raw_amount = regex_search(
-        r"(?<=for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= from)",
+        r"(?<= for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= from)",
         body,
     )
     return payer, raw_amount
@@ -202,7 +202,7 @@ def get_huntington_account(body: str) -> str:
     from your account nicknamed SAVE.
     """
     account = regex_search(
-        r"(?<= your account nicknamed )(.*)(?=. That's above the)", body
+        r"(?<= your account nicknamed )(\w*)(?=. That's above the)", body
     )
     if account == "CHECK":
         account = "checking"
@@ -237,10 +237,6 @@ def transform_amount(raw_amount: str) -> int:
 
 def regex_search(pattern: str, raw_input: str) -> str:
     transformed_input = raw_input.replace("\r", "").replace("\n", " ")
-    print("-----REGEX STRING---")
-    print(transformed_input)
-    print("-----PATTERN---")
-    print(pattern)
     match = re.search(pattern, transformed_input, flags=re.DOTALL | re.MULTILINE)
     if match:
         group_1 = match.group(1)
