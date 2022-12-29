@@ -14,10 +14,12 @@ def main(msg: MailMessage) -> Transaction:
     """
     transaction = Transaction(int(msg.uid))
 
+    # Get the email body
     if msg.text:
         body = msg.text
     elif msg.html:
         body = msg.html
+
     # Identify who the bank is
     transaction.bank = get_bank(body)
     # Parse the email based on who the bank is
@@ -38,10 +40,13 @@ def main(msg: MailMessage) -> Transaction:
             transaction.merchant, raw_amount = parse_huntington_withdrawal(body)
         elif transaction.type_ == "deposit":
             transaction.payer, raw_amount = parse_huntington_deposit(body)
+        # Identify the Huntington account the transaction occurred on
         transaction.account = get_huntington_account(body)
+        # Get the balance of the Huntington account
         raw_balance = get_huntington_balance(body)
         transaction.balance = transform_amount(raw_balance)
     transaction.amount = transform_amount(raw_amount)
+    # Identify the date the tansaction email arrived
     transaction.date = get_date(body)
     return transaction
 
