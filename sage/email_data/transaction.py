@@ -11,9 +11,10 @@ class Transaction:
 
     # Unique identifier; defined by Dovecot. Increments sequentially
     uid: int
-    # Time the transaction was made; based on the time the email was
-    # originally received; not based on the time the email was forwarded
-    transaction_time: str = field(default=None)
+    # Date the transaction was made; based on the day the email was
+    # originally received; not based on the day the email was forwarded.
+    # ISO 8601 format; 1999-01-08. No time is included.
+    date: str = field(default=None)
     # Transaction type can be one of the following
     # withdrawal: a merchant removed money from the account
     # deposit: a payer added money from the account

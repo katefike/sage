@@ -1,5 +1,5 @@
 import re
-
+from datetime import datetime
 from imap_tools import MailMessage
 from loguru import logger
 
@@ -42,7 +42,29 @@ def main(msg: MailMessage) -> Transaction:
         raw_balance = get_huntington_balance(body)
         transaction.balance = transform_amount(raw_balance)
     transaction.amount = transform_amount(raw_amount)
+    transaction.date = get_date(body)
     return transaction
+
+
+def get_date(body: str) -> str:
+    """
+    Identify the date using the bank's email
+    I.e.
+        ---------- Forwarded message ---------
+        From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
+        Date: Thu, Oct 6, 2022 at 10:32 AM
+        Subject: Withdrawal or Purchase
+        To: <example.com>
+    """
+    raw_date = regex_search(
+        r"(?<=Date: \w{3}, )(\w{3} [0-9]{1,2}, [0-9]{4})(?= at [0-9]{1,2}:[0-9]{2} \w{2} Subject: )",
+        body,
+    )
+    # Converts raw date to datetime object. I.e. "Oct 6, 2022"
+    datetime_raw_date = datetime.strptime(raw_date, "%b %d, %Y")
+    # Reformat the datetime object to ISO 8601 format
+    transformed_date = datetime.strftime(datetime_raw_date, "%Y-%m-%d")
+    return transformed_date
 
 
 def get_bank(body: str) -> str:

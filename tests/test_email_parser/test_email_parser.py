@@ -28,7 +28,7 @@ def create_test_data():
             (
                 dict(
                     uid=3,
-                    transaction_time="2022-10-06 10:32:00",
+                    date="2022-10-06",
                     type_="transfer withdrawal",
                     bank="Huntington",
                     merchant=None,
@@ -44,7 +44,7 @@ def create_test_data():
             (
                 dict(
                     uid=14,
-                    transaction_time="2022-10-06 10:28:00",
+                    date="2022-10-06",
                     type_="transfer deposit",
                     bank="Huntington",
                     merchant=None,
@@ -60,7 +60,7 @@ def create_test_data():
             (
                 dict(
                     uid=5,
-                    transaction_time="2022-09-13 04:47:00",
+                    date="2022-09-13",
                     type_="withdrawal",
                     bank="Huntington",
                     merchant="VENMO PAYMENT",
@@ -80,7 +80,7 @@ def create_test_data():
             (
                 dict(
                     uid=7,
-                    transaction_time="2022-08-08 04:31:00",
+                    date="2022-08-08",
                     type_="withdrawal",
                     bank="Huntington",
                     merchant="TREASURY DIRECT TREAS DRCT",
@@ -96,7 +96,7 @@ def create_test_data():
             (
                 dict(
                     uid=9,
-                    transaction_time="2022-10-06 10:39:00",
+                    date="2022-10-06",
                     type_="withdrawal",
                     bank="Chase",
                     merchant="EB *TRAUMA 2022",
@@ -116,7 +116,7 @@ def create_test_data():
             (
                 dict(
                     uid=11,
-                    transaction_time="2022-08-24 08:20:00",
+                    date="2022-08-24",
                     type_="transfer withdrawal",
                     bank="Huntington",
                     merchant=None,
@@ -132,7 +132,7 @@ def create_test_data():
             (
                 dict(
                     uid=17,
-                    transaction_time="2022-10-05 08:20:00",
+                    date="2022-10-05",
                     type_="withdrawal",
                     bank="Discover",
                     merchant="BOMBAY SITAR",
@@ -148,7 +148,7 @@ def create_test_data():
             (
                 dict(
                     uid=19,
-                    transaction_time="2022-08-24 08:20:00",
+                    date="2022-08-24",
                     type_="transfer deposit",
                     bank="Huntington",
                     merchant=None,
@@ -164,7 +164,7 @@ def create_test_data():
             (
                 dict(
                     uid=21,
-                    transaction_time="2022-08-24 04:42:00",
+                    date="2022-08-24",
                     type_="deposit",
                     bank="Huntington",
                     merchant=None,
@@ -287,11 +287,11 @@ def test_transaction_balance_parsing(input, expected_output):
 
 
 @pytest.mark.parametrize("input,expected_output", create_test_data())
-def test_transaction_time_parsing(input, expected_output):
+def test_date_parsing(input, expected_output):
     """
     Ensure that the time the alert email was sent to dev.kfike@gmail.com is
     right. The time the email was forwarded to the mail server should not be
     recorded.
     """
     transaction = email_parser.main(input.get("msg"))
-    assert expected_output.get("transaction_time") == transaction.transaction_time
+    assert expected_output.get("date") == transaction.date
