@@ -11,6 +11,10 @@ logger.add(sink="debug.log")
 def main(msg: MailMessage) -> Transaction:
     """
     Parse the transaction data from the email.
+
+    :param param1: this is a first param
+    :param param2: this is a second param
+    :returns: this is a description of what is returned
     """
     transaction = Transaction(int(msg.uid))
 
@@ -45,6 +49,10 @@ def main(msg: MailMessage) -> Transaction:
         # Get the balance of the Huntington account
         raw_balance = get_huntington_balance(body)
         transaction.balance = transform_amount(raw_balance)
+    # Don't return a transaction object if the no amount could be determined.
+    # The email was likely some other notification email from the bank.
+    if not raw_amount:
+        return
     transaction.amount = transform_amount(raw_amount)
     # Identify the date the tansaction email arrived
     transaction.date = get_date(body)

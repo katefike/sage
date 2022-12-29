@@ -66,16 +66,11 @@ def main():
                     continue
 
                 # Parse a email message into the transaction data
-                try:
-                    transaction = email_parser.main(msg)
-                    logger.info(transaction)
-                except Exception as error:
-                    logger.critical("FAILED")
-                    logger.critical(
-                        f"EMAIL PARSER ERROR: Failed to parse msg \
-                        UID {msg.uid}: {error}"
-                    )
+                transaction = email_parser.main(msg)
+                if not transaction.amount:
+                    logger.info(f"UID {msg.uid} was not parsed into a transaction.")
                     unparsed_messages_count = unparsed_messages_count + 1
+                    continue
 
                 # FIXME: Write the emails to the db
                 # unwritten_transactions_count = unwritten_transactions_count \
