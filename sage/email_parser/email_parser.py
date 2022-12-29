@@ -19,7 +19,7 @@ def main(msg: MailMessage) -> Transaction:
     elif msg.html:
         body = msg.html
     # Identify who the bank is
-    transaction.bank = identify_bank(body)
+    transaction.bank = get_bank(body)
     # Parse the email based on who the bank is
     if transaction.bank == "Chase":
         transaction.type_ = "withdrawal"
@@ -28,7 +28,7 @@ def main(msg: MailMessage) -> Transaction:
         transaction.type_ = "withdrawal"
         transaction.merchant, raw_amount = parse_discover(body)
     if transaction.bank == "Huntington":
-        transaction.type_ = identify_huntington_transaction_type(body)
+        transaction.type_ = get_huntington_transaction_type(body)
         # Parse the Huntington transaction based on the transaction type
         if transaction.type_ == "transfer withdrawal":
             raw_amount = parse_huntington_transfer_withdrawal(body)
@@ -38,14 +38,14 @@ def main(msg: MailMessage) -> Transaction:
             transaction.merchant, raw_amount = parse_huntington_withdrawal(body)
         elif transaction.type_ == "deposit":
             transaction.payer, raw_amount = parse_huntington_deposit(body)
-        transaction.account = identify_huntington_account(body)
+        transaction.account = get_huntington_account(body)
         raw_balance = get_huntington_balance(body)
         transaction.balance = transform_amount(raw_balance)
     transaction.amount = transform_amount(raw_amount)
     return transaction
 
 
-def identify_bank(body: str) -> str:
+def get_bank(body: str) -> str:
     """
     Identify the bank using the bank's email
     I.e.
@@ -90,7 +90,7 @@ def parse_discover(body: str) -> str:
     return merchant, raw_amount
 
 
-def identify_huntington_transaction_type(body: str) -> str:
+def get_huntington_transaction_type(body: str) -> str:
     """
     Identify the Huntington transaction type
     """
@@ -177,7 +177,7 @@ def parse_huntington_deposit(body: str) -> str:
     return payer, raw_amount
 
 
-def identify_huntington_account(body: str) -> str:
+def get_huntington_account(body: str) -> str:
     """
     Identify the Huntington account referenced.
     Works for deposits or charges.
