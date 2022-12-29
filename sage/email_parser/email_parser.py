@@ -228,16 +228,19 @@ def transform_amount(raw_amount: str) -> int:
     # Remove the comma
     raw_amount = re.sub(",", "", raw_amount)
     # Check for decimals
-    if regex_search(r"(.\d\d)", raw_amount):
+    if regex_search(r"(.\d{2})", raw_amount):
         transformed_amount = raw_amount
     else:
         transformed_amount = raw_amount + ".00"
     return transformed_amount
 
 
-def regex_search(pattern: str, raw_input: str) -> str:
-    transformed_input = raw_input.replace("\r", "").replace("\n", " ")
-    match = re.search(pattern, transformed_input, flags=re.DOTALL | re.MULTILINE)
-    if match:
-        group_1 = match.group(1)
-        return group_1
+def regex_search(pattern: str, raw_text: str) -> str:
+    transformed_text = raw_text.replace("\r", "").replace("\n", " ")
+    match = re.search(pattern, transformed_text, flags=re.DOTALL | re.MULTILINE)
+    if not match:
+        logger.warning(
+            f"Regex search failed to find a match for the following pattern and text. PATTERN: {pattern} TEXT: {transformed_text}"
+        )
+    group_1 = match.group(1)
+    return group_1
