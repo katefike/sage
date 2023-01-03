@@ -8,7 +8,7 @@ from contextlib import closing
 from loguru import logger
 from db import open_connection
 from typing import Dict, Optional
-from sqlite3 import Error
+import execute_statements
 
 
 def insert_transaction(parsed_email: Dict) -> bool:
@@ -28,7 +28,7 @@ def insert_transaction(parsed_email: Dict) -> bool:
     VALUES
         (?, ?, ?, ?, ?);
     """
-    success = execute_insert(insert_stmt, transaction_data)
+    success = execute_statements.execute_insert(insert_stmt, transaction_data)
     if success:
         return True
 
@@ -55,7 +55,7 @@ def get_bank_id(bank_name: str, account: Optional[str]) -> int:
             WHERE
                 name = ?
             """
-    bank_id_result = execute_select(select_stmt, parameters)
+    bank_id_result = execute_statements.execute_select(select_stmt, parameters)
     if bank_id_result:
         if len(bank_id_result) == 1:
             bank_id = bank_id_result[0]
@@ -81,27 +81,5 @@ def get_entity_id(entity_name: str) -> int:
     WHERE
         name = ?
     """
-    entity_id = execute_select(select_stmt, entity_name)
+    entity_id = execute_statements.execute_select(select_stmt, entity_name)
     return entity_id
-
-
-def execute_select(select_stmt: str, parameters: tuple) -> tuple:
-    with open_connection() as connection:
-        # possibly not needed to close connection
-        with closing(connection.cursor()) as cursor:
-            try:
-                result = cursor.execute(select_stmt, parameters)
-                return result.fetchone()
-            except Error as error:
-                logger.critical(f"{error}")
-                return False
-
-
-def execute_insert(insert_stmt: str, transaction_data: tuple) -> int:
-    with open_connection() as connection:
-        with closing(connection.cursor()) as cursor:
-            try:
-                return cursor.execute(insert_stmt, transaction_data)
-            except Error as error:
-                logger.critical(f"{error}")
-                return False

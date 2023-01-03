@@ -1,5 +1,4 @@
-import pathlib
-import sqlite3
+import psycopg2
 
 DB_PATH = pathlib.Path(__file__).parent.parent.parent / "sage_db.db"
 
