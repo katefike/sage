@@ -4,13 +4,12 @@ import typing
 
 import imap_tools
 from dotenv import load_dotenv
+from email_parser import email_parser
 from loguru import logger
-
-from sage.email_parser import email_parser
 
 # from db import db_transactions
 
-logger.add(sink="debug.log")
+logger.add(sink="debug.log", level="INFO")
 
 
 def main():
@@ -68,7 +67,10 @@ def main():
                 # Parse a email message into the transaction data
                 transaction = email_parser.main(msg)
                 if not transaction.amount:
-                    logger.info(f"UID {msg.uid} was not parsed into a transaction.")
+                    logger.info(
+                        f"UID {msg.uid} was not parsed into a \
+                        transaction."
+                    )
                     unparsed_messages_count = unparsed_messages_count + 1
                     continue
 
