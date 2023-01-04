@@ -14,25 +14,25 @@ $ docker compose up
 ## Docker
 Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
 ```
-(venv) $ docker cp sage-mailserver-1:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.conf \
+docker cp sage-mailserver-1:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.conf \
 && docker cp sage-mailserver-1:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
 && docker cp sage-mailserver-1:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf \
 ```
 Show the names of all docker containers (active and inactive)
 ```
-(venv) $ docker ps -a --format '{{.Names}}'
+docker ps -a --format '{{.Names}}'
 ```
 Clean restart of Docker
 ```
-(venv) $ docker compose down
+docker compose down
 ```
 Removes all containers
 ```
-(venv) $ docker rm -f $(docker ps -a -q)
+docker rm -f $(docker ps -a -q)
 ```
 Removes all volumes
 ```
-(venv) $ docker volume rm $(docker volume ls -q)
+docker volume rm $(docker volume ls -q)
 ```
 Removes all images
 ```
@@ -46,7 +46,17 @@ docker exec -it  sage-db-1 psql -U admin sage
 ## Dovecot
 Show dovecot errors
 ```
-(venv) $ doveadm log errors
+doveadm log errors
+```
+
+## Postgres
+Enter the database container and access the database.
+```
+docker exec -it sage-db-1 psql -h localhost -U sage_admin sage
+```
+Remove all containers and volumes after a schema change.
+```
+docker rm -f $(docker ps -a -q) && docker volume rm $(docker volume ls -q)
 ```
 
 # Local Development
