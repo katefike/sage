@@ -289,7 +289,7 @@ def test_transaction_balance_parsing(input, expected_output):
 @pytest.mark.parametrize("input,expected_output", create_test_data())
 def test_date_parsing(input, expected_output):
     """
-    Ensure that the time the alert email was sent to dev.kfike@gmail.com is
+    Ensure that the time the alert email was sent to outgoing@gmail.com is
     right. The time the email was forwarded to the mail server should not be
     recorded.
     """
