@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS public.entity_tag_mapping(
 );
 CREATE TABLE IF NOT EXISTS public.transactions(
     uid INT PRIMARY KEY,
-    time DATE NOT NULL,
+    date DATE NOT NULL,
     -- TODO: Replace with enum (withdrawal, deposit, transfer withdrawal, transfer deposit)
     TYPE TEXT NOT NULL,
     bank_id INTEGER NOT NULL,
