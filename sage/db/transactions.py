@@ -26,7 +26,7 @@ def insert_transaction(transaction: Transaction) -> bool:
     )
     stmt = """
     INSERT INTO
-        transactions (uid, date, type, bank_id, amount)
+        transactions (uid, date, bank_id, type, amount)
     VALUES
         (%s, %s, %s, %s, %s);
     """
