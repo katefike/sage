@@ -2,7 +2,7 @@
 From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
 Date: Wed, Aug 24, 2022 at 8:20 AM
 Subject: Withdrawal or Purchase
-To: <dev.kfike@gmail.com>
+To: <outgoing@gmail.com>
 
 
 We've processed a withdrawal or purchase above the amount you set for an

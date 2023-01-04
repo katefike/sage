@@ -2,7 +2,7 @@
 From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
 Date: Wed, Aug 24, 2022 at 4:42 AM
 Subject: Deposit
-To: <dev.kfike@gmail.com>
+To: <outgoing@gmail.com>
 
 
 A deposit was made to CHECK above the amount you set for an alert.
