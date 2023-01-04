@@ -1,6 +1,6 @@
 import os
 import pathlib
-from typing import Optional
+from typing import List, Optional
 
 import psycopg2
 from dotenv import load_dotenv
@@ -38,34 +38,30 @@ def open_connection():
         raise error
 
 
-def execute_select(query: str, params: Optional[tuple]) -> tuple:
+def execute_select(query: str, params: Optional[tuple]) -> List:
     with open_connection() as connection:
-        with connection.cursor() as cursor:
-            try:
-                if params:
-                    cursor.execute(query, params)
-                else:
-                    cursor.execute(query)
-                records = [row for row in cursor.fetchall()]
-                connection.close()
-                return records
-            except psycopg2.DatabaseError as error:
-                logger.error(
-                    f"Query execution failed due to an error:\
-                        {error}"
-                )
+        try:
+            if params:
+                connection.execute(query, params)
+            else:
+                connection.execute(query)
+            records = [row for row in connection.fetchall()]
+            return records
+        except psycopg2.DatabaseError as error:
+            logger.error(
+                f"Query execution failed due to an error:\
+                    {error}"
+            )
 
 
-def execute_insert(stmt: str, data: tuple) -> tuple:
+def execute_insert(stmt: str, data: tuple) -> int:
     with open_connection() as connection:
-        with connection.cursor() as cursor:
-            try:
-                cursor.execute(stmt, data)
-                connection.commit()
-                connection.close()
-                return cursor.rowcount
-            except psycopg2.DatabaseError as error:
-                logger.error(
-                    f"Query execution failed due to an error:\
-                     {error}"
-                )
+        try:
+            connection.execute(stmt, data)
+            connection.commit()
+            return connection.rowcount
+        except psycopg2.DatabaseError as error:
+            logger.error(
+                f"Query execution failed due to an error:\
+                    {error}"
+            )
