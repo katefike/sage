@@ -39,13 +39,13 @@ def open_connection():
 
 
 def execute_select(query: str, params: Optional[tuple]) -> List:
-    with open_connection() as connection:
+    with open_connection() as cursor:
         try:
             if params:
-                connection.execute(query, params)
+                cursor.execute(query, params)
             else:
-                connection.execute(query)
-            records = [row for row in connection.fetchall()]
+                cursor.execute(query)
+            records = [row for row in cursor.fetchall()]
             return records
         except psycopg2.DatabaseError as error:
             logger.error(
@@ -55,11 +55,10 @@ def execute_select(query: str, params: Optional[tuple]) -> List:
 
 
 def execute_insert(stmt: str, data: tuple) -> int:
-    with open_connection() as connection:
+    with open_connection() as cursor:
         try:
-            connection.execute(stmt, data)
-            connection.commit()
-            return connection.rowcount
+            cursor.execute(stmt, data)
+            return cursor.rowcount
         except psycopg2.DatabaseError as error:
             logger.error(
                 f"Query execution failed due to an error:\
