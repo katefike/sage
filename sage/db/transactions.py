@@ -13,7 +13,8 @@ def get_maximum_uid() -> int:
     stmt = """
         SELECT MAX(uid) FROM transactions;
         """
-    max_uid = execute_statements.select(stmt)
+    results = execute_statements.select(stmt)
+    max_uid = results[0][0]
     return max_uid
 
 
