@@ -42,11 +42,20 @@ Access the postgres interactive CLI within the database container
 ```
 docker exec -it  sage-db-1 psql -U admin sage
 ```
+## Mailserver Container
+Enter the mailsserver container
+```
+docker exec -it sage-mailserver-1 bash
+```
 
-## Dovecot
+### Dovecot
 Show dovecot errors
 ```
 doveadm log errors
+```
+Delete all emails from a mailbox
+```
+doveadm expunge -u incoming mailbox 'INBOX' all
 ```
 
 ## Postgres
@@ -72,7 +81,7 @@ docker rm -f $(docker ps -a -q) && docker volume rm $(docker volume ls -q)
 ```
 
 ## Send Emails Locally
-Test that the dockerized email server works by sending an email locally via telnet
+Test that the dockerized email server works by sending an email locally (i.e. from outside of the container) via telnet.
 ```
 telnet localhost 25
 
