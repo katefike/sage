@@ -15,6 +15,10 @@ def get_maximum_uid() -> int:
         """
     results = execute_statements.select(stmt)
     max_uid = results[0][0]
+    # Upon starting the program for the first time, get UIDs greater than zero
+    # Zero is not a valid UID; they start with 1.
+    if not max_uid:
+        max_uid = 0
     return max_uid
 
 
