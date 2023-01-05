@@ -2,12 +2,19 @@
 Insert a transaction into the transactions table.
 """
 
+from db import banks, entities, execute_statements
+from email_data.transaction import Transaction
 from loguru import logger
 
-from sage.db import banks, entities, execute_statements
-from sage.email_data.transaction import Transaction
-
 logger.add(sink="debug.log")
+
+
+def get_maximum_uid() -> int:
+    stmt = """
+        SELECT MAX(uid) FROM transactions;
+        """
+    max_uid = execute_statements.select(stmt)
+    return max_uid
 
 
 def insert_transaction(transaction: Transaction) -> bool:

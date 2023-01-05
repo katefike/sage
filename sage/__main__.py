@@ -16,11 +16,19 @@ def main():
     tasks:
 
     1. Load the environment variables.
-    2. Log into the email account on the mail server that is receiving the
-    forwarded alert emails.
-    3. For each unprocessed email in the inbox:
-        3a. Parse the transaction data from the email message.
-        3b. Write the transaction data to the Postgres database.
+    2. Query the database to retrieve the maximum UID. According to RFC9051:
+    "Unique identifiers are assigned in a strictly ascending fashion in the
+    mailbox; as each message is added to the mailbox, it is assigned a
+    higher UID than those of all message(s) that are already in the
+    mailbox.  Unlike message sequence numbers, unique identifiers are not
+    necessarily contiguous."
+    3. Log into the email account on the mail server that is receiving the
+    forwarded alert emails. Retrieve emails that have a UID greater than the
+    maximum UID in the database.
+    4. Skip emails that are not from the forwarding email or don't have a body.
+    5. Process the transaction data contained in the email message:
+        5a. Parse the transaction data from the email message.
+        5b. Write the transaction data to the Postgres database.
     """
     logger.info("STARTING SAGE")
     # Get all environment variables
@@ -36,8 +44,11 @@ def main():
     RECEIVING_EMAIL_USER = os.environ.get("RECEIVING_EMAIL_USER")
     RECEIVING_EMAIL_PASSWORD = os.environ.get("RECEIVING_EMAIL_PASSWORD")
 
-    # Log into the receiving mailbox on the mail server and retrieve all
-    # messages
+    # Log into the receiving mailbox on the mail server and retrieve emails
+    # that have a UID that is larger than the maximum UID in the database.
+    max_uid = transactions.get_maximum_uid()
+    print(max_uid)
+    exit
     try:
         with imap_tools.MailBoxUnencrypted(IMAP4_FQDN).login(
             RECEIVING_EMAIL_USER, RECEIVING_EMAIL_PASSWORD
