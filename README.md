@@ -14,36 +14,49 @@ $ docker compose up
 ## Docker
 Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
 ```
-(venv) $ docker cp sage-mailserver-1:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.conf \
+docker cp sage-mailserver-1:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.conf \
 && docker cp sage-mailserver-1:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
 && docker cp sage-mailserver-1:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf \
 ```
 Show the names of all docker containers (active and inactive)
 ```
-(venv) $ docker ps -a --format '{{.Names}}'
+docker ps -a --format '{{.Names}}'
 ```
 Clean restart of Docker
 ```
-(venv) $ docker compose down
+docker compose down
 ```
 Removes all containers
 ```
-(venv) $ docker rm -f $(docker ps -a -q)
+docker rm -f $(docker ps -a -q)
 ```
 Removes all volumes
 ```
-(venv) $ docker volume rm $(docker volume ls -q)
-(venv) $ docker compose up
+docker volume rm $(docker volume ls -q)
 ```
 Removes all images
 ```
 docker rmi $(docker images -q)
 ```
+Access the postgres interactive CLI within the database container
+```
+docker exec -it  sage-db-1 psql -U admin sage
+```
 
 ## Dovecot
 Show dovecot errors
 ```
-(venv) $ doveadm log errors
+doveadm log errors
+```
+
+## Postgres
+Enter the database container and access the database.
+```
+docker exec -it sage-db-1 psql -h localhost -U sage_admin sage
+```
+Remove all containers and volumes after a schema change.
+```
+docker rm -f $(docker ps -a -q) && docker volume rm $(docker volume ls -q)
 ```
 
 # Local Development
@@ -56,16 +69,6 @@ Show dovecot errors
 ## Dependencies
 ```
 (venv) $ python3 -m pip install -r requirements.txt
-```
-
-## Create a docker-mailserver (DMS) Account
-1. Start the docker containers
-```bash
-$ docker compose up
-```
-2. Create at least one email account (unless you're using LDAP). You have two minutes to do so, otherwise DMS will shutdown and restart. You can add accounts with tusing the `dms_setup.sh` script:
-```bash
-$ scripts/dms_setup.sh email add fake_account@example.com
 ```
 
 ## Send Emails Locally

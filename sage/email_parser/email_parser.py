@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+
 from imap_tools import MailMessage
 from loguru import logger
 
@@ -250,9 +251,6 @@ def transform_amount(raw_amount: str) -> int:
 def regex_search(pattern: str, raw_text: str) -> str:
     transformed_text = raw_text.replace("\r", "").replace("\n", " ")
     match = re.search(pattern, transformed_text, flags=re.DOTALL | re.MULTILINE)
-    if not match:
-        logger.warning(
-            f"Regex search failed to find a match for the following pattern and text. PATTERN: {pattern} TEXT: {transformed_text}"
-        )
-    group_1 = match.group(1)
-    return group_1
+    if match:
+        group_1 = match.group(1)
+        return group_1

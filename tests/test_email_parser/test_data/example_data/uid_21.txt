@@ -2,7 +2,7 @@
 From: Discover Card <discover@services.discover.com>
 Date: Wed, Oct 5, 2022 at 8:20 PM
 Subject: Transaction Alert
-To: <dev.kfike@gmail.com>
+To: <outgoing@gmail.com>
 
 
  Account Center
@@ -50,7 +50,7 @@ visiting our email security
 <https://fzttlwrt.r.us-east-1.awstrack.me/L0/https:%2F%2Fwww.discover.com%2Fcredit-cards%2Fmember-benefits%2Fsecurity-center%2Fkeep-secure%2Femail-safety.html%3Fdmscmpgn=DCReminderRTA_TRANTHR_A1_A1_A1%26ekey=1037075133%26dmsdate=20221005_192052%26msgid=20526889205%26edm=gmail%26emailstat=clk%26section=body/1/01000183aaaaa205-94d4f7b4-3eee-4751-ba02-376ebcfa60ee-000000/2nh-l6O4PDrTXnxGTj6yDDc1-3Q=290>
 page.
 IMPORTANT INFORMATION
-This email was sent to: dev.kfike@gmail.com for Discover card account
+This email was sent to: outgoing@gmail.com for Discover card account
 number ending with 4169.
 You are receiving this email because you are a Discover Cardmember.
 Log in
