@@ -60,7 +60,6 @@ def main():
                     uid=imap_tools.U(f"{max_uid + 1}", "*"), from_=FORWARDING_EMAIL
                 )
             ):
-                print(msg.uid)
                 total_messages_count = total_messages_count + 1
                 # Ignore emails that don't have a text or html body
                 # This seems unlikely but who knows
