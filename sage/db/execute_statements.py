@@ -38,7 +38,7 @@ def open_connection():
         raise error
 
 
-def select(query: str, params: Optional[tuple]) -> List:
+def select(query: str, params: Optional[tuple] = None) -> List:
     with open_connection() as conn:
         with conn.cursor() as cursor:
             try:

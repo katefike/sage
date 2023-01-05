@@ -2,12 +2,24 @@
 Insert a transaction into the transactions table.
 """
 
+from db import banks, entities, execute_statements
+from email_data.transaction import Transaction
 from loguru import logger
 
-from sage.db import banks, entities, execute_statements
-from sage.email_data.transaction import Transaction
-
 logger.add(sink="debug.log")
+
+
+def get_maximum_uid() -> int:
+    stmt = """
+        SELECT MAX(uid) FROM transactions;
+        """
+    results = execute_statements.select(stmt)
+    max_uid = results[0][0]
+    # Upon starting the program for the first time, get UIDs greater than zero
+    # Zero is not a valid UID; they start with 1.
+    if not max_uid:
+        max_uid = 0
+    return max_uid
 
 
 def insert_transaction(transaction: Transaction) -> bool:

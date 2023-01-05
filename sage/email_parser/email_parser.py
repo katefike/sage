@@ -1,10 +1,9 @@
 import re
 from datetime import datetime
 
+from email_data.transaction import Transaction
 from imap_tools import MailMessage
 from loguru import logger
-
-from sage.email_data.transaction import Transaction
 
 logger.add(sink="debug.log")
 
