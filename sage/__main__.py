@@ -35,20 +35,15 @@ def main():
     app_root = str(pathlib.Path(__file__).parent.parent)
     env_path = app_root + "/.env"
     if not load_dotenv(env_path):
-        logger.critical(
-            f"ENVIRONMENT ERROR: .env failed to load from \
-            {env_path}"
-        )
+        logger.critical(f"ENVIRONMENT ERROR: .env failed to load from {env_path}")
     IMAP4_FQDN = os.environ.get("IMAP4_FQDN")
     FORWARDING_EMAIL = os.environ.get("FORWARDING_EMAIL")
     RECEIVING_EMAIL_USER = os.environ.get("RECEIVING_EMAIL_USER")
     RECEIVING_EMAIL_PASSWORD = os.environ.get("RECEIVING_EMAIL_PASSWORD")
 
     # Log into the receiving mailbox on the mail server and retrieve emails
-    # that have a UID that is larger than the maximum UID in the database.
+    # that have a UID that is greater than the maximum UID in the database.
     max_uid = transactions.get_maximum_uid()
-    print(max_uid)
-    exit
     try:
         with imap_tools.MailBoxUnencrypted(IMAP4_FQDN).login(
             RECEIVING_EMAIL_USER, RECEIVING_EMAIL_PASSWORD
@@ -58,21 +53,23 @@ def main():
             unparsed_messages_count = 0
             unwritten_transactions_count = 0
             processed_transactions_count = 0
-            for msg in mailbox.fetch():
+            # Retrieve emails that are greater than the maximum UID
+            # and are from the forwarding email
+            for msg in mailbox.fetch(
+                imap_tools.A(
+                    uid=imap_tools.U(f"{max_uid + 1}", "*"), from_=FORWARDING_EMAIL
+                )
+            ):
+                print(msg.uid)
                 total_messages_count = total_messages_count + 1
-                # Ignore emails that aren't from the forwarding email
-                if msg.from_ != FORWARDING_EMAIL:
-                    rejected_messages_count = rejected_messages_count + 1
-                    continue
                 # Ignore emails that don't have a text or html body
+                # This seems unlikely but who knows
                 if not msg.text or not msg.html:
                     logger.warning(
-                        f"Rejecting email from {msg.from_} because it \
-                    doesn't have a message body."
+                        f"Rejecting email from {msg.from_} because it doesn't have a message body."
                     )
                     rejected_messages_count = rejected_messages_count + 1
                     continue
-                exit
                 # Parse a email message into the transaction data
                 transaction = email_parser.main(msg)
                 if not transaction.amount:
@@ -99,17 +96,12 @@ def main():
             if deduced_total_messages_count != total_messages_count:
                 logger.critical("FAILED")
                 logger.critical(
-                    f"ERROR-HANDLING ERROR: {total_messages_count}\
-                     messages were retrieved from the mail server, but only\
-                    {deduced_total_messages_count} were accounted for."
+                    f"ERROR-HANDLING ERROR: {total_messages_count} messages were retrieved from the mail server, but only {deduced_total_messages_count} were accounted for."
                 )
             logger.info(f"Total Messages in Batch = {total_messages_count}")
             logger.info(f"Rejected Messages = {rejected_messages_count}")
             logger.info(f"Unparsed Messages = {unparsed_messages_count}")
-            logger.info(
-                f"Processed Transactions \
-                {processed_transactions_count}"
-            )
+            logger.info(f"Processed Transactions {processed_transactions_count}")
             logger.info("DONE")
             return
 
