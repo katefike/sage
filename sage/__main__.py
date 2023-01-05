@@ -1,23 +1,23 @@
 import os
 import pathlib
-import typing
 
 import imap_tools
+from db import transactions
 from dotenv import load_dotenv
 from email_parser import email_parser
 from loguru import logger
-
-# from db import db_transactions
 
 logger.add(sink="debug.log", level="INFO")
 
 
 def main():
     """
-    This is starting point of the program. It steps through the following tasks:
+    This is starting point of the program. It steps through the following
+    tasks:
 
     1. Load the environment variables.
-    2. Log into the email account on the mail server that is receiving the forwarded alert emails.
+    2. Log into the email account on the mail server that is receiving the
+    forwarded alert emails.
     3. For each unprocessed email in the inbox:
         3a. Parse the transaction data from the email message.
         3b. Write the transaction data to the Postgres database.
@@ -38,8 +38,6 @@ def main():
 
     # Log into the receiving mailbox on the mail server and retrieve all
     # messages
-    # FIXME: Only retrieve messages that haven't been parsed and written to
-    # the db already
     try:
         with imap_tools.MailBoxUnencrypted(IMAP4_FQDN).login(
             RECEIVING_EMAIL_USER, RECEIVING_EMAIL_PASSWORD
@@ -63,7 +61,7 @@ def main():
                     )
                     rejected_messages_count = rejected_messages_count + 1
                     continue
-
+                exit
                 # Parse a email message into the transaction data
                 transaction = email_parser.main(msg)
                 if not transaction.amount:
@@ -73,10 +71,10 @@ def main():
                     )
                     unparsed_messages_count = unparsed_messages_count + 1
                     continue
-
-                # FIXME: Write the emails to the db
-                # unwritten_transactions_count = unwritten_transactions_count \
-                # + 1
+                row_count = transactions.insert_transaction(transaction)
+                if row_count != 1:
+                    unwritten_transactions_count = unwritten_transactions_count + 1
+                    continue
 
                 # One down!
                 processed_transactions_count = processed_transactions_count + 1
