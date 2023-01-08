@@ -1,69 +1,116 @@
-import os.path
-import typing
-from loguru import logger
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
+import os
+import pathlib
 
+import imap_tools
+from db import transactions
+from dotenv import load_dotenv
 from email_parser import email_parser
-from db import db_transactions
+from loguru import logger
 
-logger.add(sink="debug.log")
-# If modifying these scopes, delete the file token.json.
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
+logger.add(sink="debug.log", level="INFO")
 
 
 def main():
     """
-    DOCSTRING EVENTUALLY
-    """
-    creds = None
-    # The file token.json stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists("token.json"):
-        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open("token.json", "w") as token:
-            token.write(creds.to_json())
+    This is starting point of the program. It steps through the following
+    tasks:
 
+    1. Load the environment variables.
+    2. Query the database to retrieve the maximum UID. According to RFC9051:
+    "Unique identifiers are assigned in a strictly ascending fashion in the
+    mailbox; as each message is added to the mailbox, it is assigned a
+    higher UID than those of all message(s) that are already in the
+    mailbox.  Unlike message sequence numbers, unique identifiers are not
+    necessarily contiguous."
+    3. Log into the email account on the mail server that is receiving the
+    forwarded alert emails. Retrieve emails that have a UID greater than the
+    maximum UID in the database.
+    4. Skip emails that are not from the forwarding email or don't have a body.
+    5. Process the transaction data contained in the email message:
+        5a. Parse the transaction data from the email message.
+        5b. Write the transaction data to the Postgres database.
+    """
+    logger.info("STARTING SAGE")
+    # Get all environment variables
+    app_root = str(pathlib.Path(__file__).parent.parent)
+    env_path = app_root + "/.env"
+    if not load_dotenv(env_path):
+        logger.critical(f"ENVIRONMENT ERROR: .env failed to load from {env_path}")
+    IMAP4_FQDN = os.environ.get("IMAP4_FQDN")
+    FORWARDING_EMAIL = os.environ.get("FORWARDING_EMAIL")
+    RECEIVING_EMAIL_USER = os.environ.get("RECEIVING_EMAIL_USER")
+    RECEIVING_EMAIL_PASSWORD = os.environ.get("RECEIVING_EMAIL_PASSWORD")
+
+    # Log into the receiving mailbox on the mail server and retrieve emails
+    # that have a UID that is greater than the maximum UID in the database.
+    max_uid = transactions.get_maximum_uid()
     try:
-        # Call the Gmail API
-        service = build("gmail", "v1", credentials=creds)
-        # List the messages in the mailbox.
-        results = service.users().messages().list(userId="me", maxResults=500).execute()
-        if not results:
-            logger.info("No messages found.")
+        with imap_tools.MailBoxUnencrypted(IMAP4_FQDN).login(
+            RECEIVING_EMAIL_USER, RECEIVING_EMAIL_PASSWORD
+        ) as mailbox:
+            total_messages_count = 0
+            rejected_messages_count = 0
+            unparsed_messages_count = 0
+            unwritten_transactions_count = 0
+            processed_transactions_count = 0
+            # Retrieve emails that are greater than the maximum UID
+            # and are from the forwarding email
+            for msg in mailbox.fetch(
+                imap_tools.A(
+                    uid=imap_tools.U(f"{max_uid + 1}", "*"), from_=FORWARDING_EMAIL
+                )
+            ):
+                total_messages_count = total_messages_count + 1
+                # Ignore emails that don't have a text or html body
+                # This seems unlikely but who knows
+                if not msg.text or not msg.html:
+                    logger.warning(
+                        f"Rejecting email from {msg.from_} because it doesn't have a message body."
+                    )
+                    rejected_messages_count = rejected_messages_count + 1
+                    continue
+                # Parse a email message into the transaction data
+                transaction = email_parser.main(msg)
+                if not transaction.amount:
+                    logger.info(
+                        f"UID {msg.uid} was not parsed into a \
+                        transaction."
+                    )
+                    unparsed_messages_count = unparsed_messages_count + 1
+                    continue
+                row_count = transactions.insert_transaction(transaction)
+                if row_count != 1:
+                    unwritten_transactions_count = unwritten_transactions_count + 1
+                    continue
+
+                # One down!
+                processed_transactions_count = processed_transactions_count + 1
+
+            deduced_total_messages_count = (
+                rejected_messages_count
+                + unparsed_messages_count
+                + unwritten_transactions_count
+                + processed_transactions_count
+            )
+            if deduced_total_messages_count != total_messages_count:
+                logger.critical("FAILED")
+                logger.critical(
+                    f"ERROR-HANDLING ERROR: {total_messages_count} messages were retrieved from the mail server, but only {deduced_total_messages_count} were accounted for."
+                )
+            logger.info(f"Total Messages in Batch = {total_messages_count}")
+            logger.info(f"Rejected Messages = {rejected_messages_count}")
+            logger.info(f"Unparsed Messages = {unparsed_messages_count}")
+            logger.info(f"Processed Transactions {processed_transactions_count}")
+            logger.info("DONE")
             return
 
-        # TODO: Perform a partial synchronization once the history of message IDs is stored
-        message_ids = results["messages"]
-        # Get the message details
-        for msg_id in message_ids:
-            message = (
-                service.users().messages().get(userId="me", id=msg_id["id"]).execute()
-            )
-            parsed_email = email_parser.main(message)
-
-            if parsed_email and parsed_email.get("transaction"):
-                db_transactions.insert_transaction(parsed_email)
-                logger.info("Success")
-                # db_transactions.write_transaction(transaction)
-        logger.info("DONE")
+    except Exception as error:
+        logger.critical("FAILED")
+        logger.critical(
+            f"MAILSERVER ERROR: Failed to connect via IMAP to the \
+            inbox of user {RECEIVING_EMAIL_USER}: {error}"
+        )
         return
-
-    except HttpError as error:
-        # TODO: Handle errors from gmail API
-        logger.error("An error occurred: %s", error)
 
 
 if __name__ == "__main__":

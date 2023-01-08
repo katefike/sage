@@ -1,179 +1,211 @@
-import base64
 import re
-import datetime
-from decimal import Decimal
+from datetime import datetime
+
+from email_data.transaction import Transaction
+from imap_tools import MailMessage
 from loguru import logger
 
-
-def main(msg) -> dict:
-
-    # Initialize returned variables
-    transaction = False
-    gmail_id = None
-    gmail_time = None
-    bank = None
-    merchant = None
-    payer = None
-    raw_amount = None
-    account = None
-    balance = None
-
-    headers = msg["payload"]["headers"]
-
-    for data in headers:
-        if data["name"] == "From":
-            sender = data["value"]
-        if data["name"] == "Subject":
-            subject = data["value"]
-
-    if "data" in msg["payload"]["body"]:
-        str_data = msg["payload"]["body"]["data"]
-        html_data = data_encoder(str_data)
-    elif "data" in msg["payload"]["parts"][0]["body"]:
-        str_data = msg["payload"]["parts"][0]["body"]["data"]
-        html_data = data_encoder(str_data)
-    else:
-        html_data = None
-
-    # Parse the email based on who the sender is
-    if sender == "Chase <no.reply.alerts@chase.com>":
-        bank = "Chase"
-        merchant, raw_amount = parse_chase(subject)
-
-    if html_data:
-        if sender == "Discover Card <discover@services.discover.com>":
-            bank = "Discover"
-            if subject != "Transaction Alert":
-                return False
-            merchant, raw_amount = parse_discover(html_data)
-
-        if sender == "Huntington Alerts <HuntingtonAlerts@email.huntington.com>":
-            bank = "Huntington"
-            if subject == "Deposit":
-                payer, raw_amount = parse_huntington_deposit(html_data)
-            elif subject == "Withdrawal or Purchase":
-                merchant, raw_amount = parse_huntington_charge(html_data)
-            else:
-                return False
-            account = identify_huntington_account(html_data)
-            balance = get_huntington_balance(html_data)
-
-    gmail_id = msg["id"]
-    epoch_gmail_time = float(msg["internalDate"])
-    gmail_time = datetime.datetime.fromtimestamp(epoch_gmail_time / 1000.0).strftime(
-        "%Y-%m-%d %H:%M:%S"
-    )
-
-    if bank and raw_amount and (merchant or payer):
-        transformed_amount = transform_amount(raw_amount)
-        if transformed_amount:
-            # Successfully parsed transaction
-            # Ready to be inserted into the database
-            transaction = True
-            if merchant:
-                descr = merchant
-                amount = "-" + transformed_amount
-            if payer:
-                descr = payer
-                amount = transformed_amount
-
-            parsed_email = {
-                "transaction": transaction,
-                "gmail ID": gmail_id,
-                "gmail time": gmail_time,
-                "sender": sender,
-                "subject": subject,
-                "bank": bank,
-                "descr": descr,
-                "amount": transformed_amount,
-                "account": account,
-                "balance": balance,
-            }
-        else:
-            # Transaction that failed to parse
-            # Regex failed to get the dollar amount
-            logger.critical(
-                f"\n GMAIL TIME: {gmail_time} \n GMAIL ID: {gmail_id} \
-                \n SENDER: {sender} \n SUBJECT: {subject} \
-                \n PROBLEMATIC DOLLAR AMOUNT: {raw_amount}"
-            )
-            return False
-
-    else:
-        # Non-transaction or transaction that failed to parse
-        parsed_email = {
-            "transaction": transaction,
-            "gmail ID": gmail_id,
-            "time": gmail_time,
-            "sender": sender,
-            "subject": subject,
-        }
-        # UNCOMMENT
-        # logger.debug(
-        #     f"\n GMAIL TIME: {gmail_time} \n GMAIL ID: {gmail_id} \
-        #     \n SENDER: {sender} \n SUBJECT: {subject}"
-        # )
-    return parsed_email
+logger.add(sink="debug.log")
 
 
-def data_encoder(str_data: str) -> str:
-    if len(str_data) > 0:
-        byte_data = base64.urlsafe_b64decode(str_data)
-        html_data = str(byte_data, "utf-8")
-    return html_data
-
-
-def parse_chase(subject: str) -> str:
+def main(msg: MailMessage) -> Transaction:
     """
-    Extract the transaction raw_amount and merchant from the email subject
+    Parse the transaction data from the email.
+
+    :param msg: this is an an email
+    :returns: this is a transaction object defined by the program
+    """
+    transaction = Transaction(int(msg.uid))
+
+    # Get the email body
+    if msg.text:
+        body = msg.text
+    elif msg.html:
+        body = msg.html
+
+    # Identify who the bank is
+    transaction.bank = get_bank(body)
+    # Parse the email based on who the bank is
+    if transaction.bank == "Chase":
+        transaction.type_ = "withdrawal"
+        transaction.merchant, raw_amount = parse_chase(msg.subject)
+    if transaction.bank == "Discover":
+        transaction.type_ = "withdrawal"
+        transaction.merchant, raw_amount = parse_discover(body)
+    if transaction.bank == "Huntington":
+        transaction.type_ = get_huntington_transaction_type(body)
+        # Parse the Huntington transaction based on the transaction type
+        if transaction.type_ == "transfer withdrawal":
+            raw_amount = parse_huntington_transfer_withdrawal(body)
+        elif transaction.type_ == "transfer deposit":
+            raw_amount = parse_huntington_transfer_deposit(body)
+        elif transaction.type_ == "withdrawal":
+            transaction.merchant, raw_amount = parse_huntington_withdrawal(body)
+        elif transaction.type_ == "deposit":
+            transaction.payer, raw_amount = parse_huntington_deposit(body)
+        # Identify the Huntington account the transaction occurred on
+        transaction.account = get_huntington_account(body)
+        # Get the balance of the Huntington account
+        raw_balance = get_huntington_balance(body)
+        transaction.balance = transform_amount(raw_balance)
+    # Don't return a transaction object if the no amount could be determined.
+    # The email was likely some other notification email from the bank.
+    if not raw_amount:
+        return
+    transaction.amount = transform_amount(raw_amount)
+    # Identify the date the tansaction email arrived
+    transaction.date = get_date(body)
+    return transaction
+
+
+def get_date(body: str) -> str:
+    """
+    Identify the date using the bank's email
+    I.e.
+        ---------- Forwarded message ---------
+        From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
+        Date: Thu, Oct 6, 2022 at 10:32 AM
+        Subject: Withdrawal or Purchase
+        To: <example.com>
+    """
+    raw_date = regex_search(
+        r"(?<=Date: \w{3}, )(\w{3} [0-9]{1,2}, [0-9]{4})(?= at [0-9]{1,2}:[0-9]{2} \w{2} Subject: )",
+        body,
+    )
+    # Converts raw date to datetime object. I.e. "Oct 6, 2022"
+    datetime_raw_date = datetime.strptime(raw_date, "%b %d, %Y")
+    # Reformat the datetime object to ISO 8601 format
+    transformed_date = datetime.strftime(datetime_raw_date, "%Y-%m-%d")
+    return transformed_date
+
+
+def get_bank(body: str) -> str:
+    """
+    Identify the bank using the bank's email
+    I.e.
+        ---------- Forwarded message ---------
+        From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
+        Date: Thu, Oct 6, 2022 at 10:32 AM
+        Subject: Withdrawal or Purchase
+        To: <example.com>
+    """
+    if regex_search("(no.reply.alerts@chase.com)", body):
+        bank = "Chase"
+    elif regex_search("(discover@services.discover.com)", body):
+        bank = "Discover"
+    elif regex_search("(HuntingtonAlerts@email.huntington.com)", body):
+        bank = "Huntington"
+    return bank
+
+
+def parse_chase(subject: MailMessage.subject) -> str:
+    """
+    Extract the transaction amount and merchant from the email subject
     I.e.
     Your $1.00 transaction with DIGITALOCEAN.COM
     """
-    merchant = regex_search("(?<=with )(.*)", subject)
-    raw_amount = regex_search("(?<=\$)(.*)(?= transaction)", subject)
+    merchant = regex_search(r"(?<=with )(.*)", subject)
+    raw_amount = regex_search(r"(?<=\$)(.*)(?= transaction)", subject)
     return merchant, raw_amount
 
 
-def parse_discover(html_data: str) -> str:
+def parse_discover(body: str) -> str:
     """
-    Extract the transaction raw_amount and merchant from the email body
+    Extract the transaction amount and merchant from the email body
     I.e.
-    Transaction Date:: June 11, 2022
+    Transaction Date: June 11, 2022
 
     Merchant: SQ *EARTH BISTRO CAFE
 
-    raw_amount: $23.50
+    Amount: $23.50
     """
-    merchent = regex_search("(?<=Merchant: )(.*)(?=\n)", html_data)
-    raw_amount = regex_search("(?<=raw_amount: )(.*)(?=\n)", html_data)
-    return merchent, raw_amount
+    merchant = regex_search(r"(?<=Merchant: )(.*)(?= Amount: )", body)
+    raw_amount = regex_search(r"(?<=Amount: \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})", body)
+    return merchant, raw_amount
 
 
-def parse_huntington_charge(html_data: str) -> str:
+def get_huntington_transaction_type(body: str) -> str:
     """
-    Extract the transaction raw_amount and merchent from the email body
+    Identify the Huntington transaction type
+    """
+    if regex_search("(transfer withdrawal)", body):
+        type_ = "transfer withdrawal"
+    elif regex_search("(transfer deposit)", body):
+        type_ = "transfer deposit"
+    elif regex_search("(withdrawal)", body):
+        type_ = "withdrawal"
+    elif regex_search("(deposit)", body):
+        type_ = "deposit"
+    return type_
+
+
+def parse_huntington_transfer_withdrawal(body: str) -> str:
+    """
+    Extract the transferred amount from the email body
+    I.e.
+    We've processed a transfer withdrawal for $999.51
+    from your account nicknamed CHECK. That's above the $0.00 you set for an alert.
+    """
+    raw_amount = regex_search(
+        r"(?:We've processed a transfer withdrawal for \$)(.*)(?= from your account nicknamed)",
+        body,
+    )
+    return raw_amount
+
+
+def parse_huntington_transfer_deposit(body: str) -> str:
+    """
+    Extract the tranferred amount from the email body
+    I.e.
+    We've processed a transfer deposit for $999.51 to your account nicknamed
+    SAVE. That's above the $0.00 you set for an alert.
+    """
+    raw_amount = regex_search(
+        r"(?<=We've processed a transfer deposit for \$)(.*)(?= to your account nicknamed)",
+        body,
+    )
+    return raw_amount
+
+
+def parse_huntington_withdrawal(body: str) -> str:
+    """
+    Extract the transaction amount and merchant from the email body
     I.e.
     We've processed an ACH withdrawal for $1.72 at CHASE CREDIT CRD EPAY
     from your account nicknamed SAVE.
+    I.e.
+    We've processed an ACH withdrawal for $10,000.00 at TREASURY DIRECT TREAS DRCT from your account nicknamed SAVE.
     """
-    merchent = regex_search("(?<= at )(.*)(?= from your account nicknamed)", html_data)
-    raw_amount = regex_search("(?<=for \$)(.*)(?= at)", html_data)
-    return merchent, raw_amount
+    merchant = regex_search(
+        r"(?:for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} at )(.*)(?= from your account nicknamed)",
+        body,
+    )
+    raw_amount = regex_search(
+        r"(?<=for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= at)",
+        body,
+    )
+    return merchant, raw_amount
 
 
-def parse_huntington_deposit(html_data: str) -> str:
+def parse_huntington_deposit(body: str) -> str:
     """
-    Extract the transaction raw_amount and merchent from the email body
+    Extract the transaction amount and merchant from the email body
     I.e.
     We've processed an ACH deposit for $59.81
     from CHASE CREDIT CRD RWRD RDM to your account nicknamed CHECK.
     """
-    payer = regex_search("(?<= from )(.*)(?= to your account nicknamed)", html_data)
-    raw_amount = regex_search("(?<=for \$)(.*)(?= from)", html_data)
+    payer = regex_search(
+        r"(?: for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} from )(.*)(?= to your account nicknamed)",
+        body,
+    )
+    raw_amount = regex_search(
+        r"(?<= for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= from)",
+        body,
+    )
     return payer, raw_amount
 
 
-def identify_huntington_account(html_data: str) -> str:
+def get_huntington_account(body: str) -> str:
     """
     Identify the Huntington account referenced.
     Works for deposits or charges.
@@ -182,7 +214,7 @@ def identify_huntington_account(html_data: str) -> str:
     from your account nicknamed SAVE.
     """
     account = regex_search(
-        "(?<= your account nicknamed )(.*)(?=. That's above the)", html_data
+        r"(?<= your account nicknamed )(\w*)(?=. That's above the)", body
     )
     if account == "CHECK":
         account = "checking"
@@ -191,32 +223,33 @@ def identify_huntington_account(html_data: str) -> str:
     return account
 
 
-def get_huntington_balance(html_data: str) -> str:
+def get_huntington_balance(body: str) -> str:
     """
     Extract the account balance for Huntington savings or checking accounts.
     Works for deposits or charges.
     I.e.
     Your balance is $19,748.78 as of 6/25/22 2:35 AM ET.
     """
-    balance = regex_search("(?<=Your balance is \$)(.*)(?=. as of)", html_data)
+    balance = regex_search(
+        r"(?<=Your balance is \$)([0-9]+(,[0-9]{3})?\.[0-9]{2})(?= as of)", body
+    )
     return balance
+
 
 def transform_amount(raw_amount: str) -> int:
     # Remove the comma
-    raw_amount = re.sub(",","",raw_amount)
+    raw_amount = re.sub(",", "", raw_amount)
     # Check for decimals
-    if regex_search("(.\d\d)", raw_amount):
+    if regex_search(r"(.\d{2})", raw_amount):
         transformed_amount = raw_amount
     else:
         transformed_amount = raw_amount + ".00"
     return transformed_amount
 
-def regex_search(pattern, string) -> str:
-    results = re.search(pattern, string)
-    if results:
-        all_matches = results.group(0)
-        return all_matches
-    else:
-        return None
 
-
+def regex_search(pattern: str, raw_text: str) -> str:
+    transformed_text = raw_text.replace("\r", "").replace("\n", " ")
+    match = re.search(pattern, transformed_text, flags=re.DOTALL | re.MULTILINE)
+    if match:
+        group_1 = match.group(1)
+        return group_1

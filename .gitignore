@@ -133,4 +133,14 @@ dmypy.json
 debug.sql
 
 # docker-mailserver
-docker-data/dms/
+docker/mailserver/configs/
+
+# Ansible
+ansible/droplet_hosts
+
+# Real financial data used
+real_data/
+
+# Files and folders made strictly troubleshooting
+*debug*
+*scratch*
