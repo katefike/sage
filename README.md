@@ -3,12 +3,14 @@
 This app is like Mint, but better. It collects all of an individual's personal financial data. The data is collected from alert emails sent from your financial institutions. The bank alert emails can be directed to your personal email account, such as a Gmail account. Then setup your account to forward the alert emails to a self-hosted email server. The financial data in the emails is extracted, stored, and made viewable. 
 
 ## Usage
-1. TBD
-2. Create the .env file using .env-example as a template.
-3. Start docker:
-```bash
-$ docker compose up
-```
+** This app is actively under development. It isn't ready to be used.**
+1. Run the production setup script. This will create a .env file using .env-example as a template. 
+2. Buy a domain name. Add it to the .env file.
+3. Create a Digital Ocean API Key. Add it to the .env file.
+4. Create SSH keys for the production server. Add it to the .env file.
+5. Set up the email account that received the transaction alert emails to forward all emails to the receiving email address specified in the .env file.
+6. Add the forwarding email address to the .env file.
+7. Change the app logic to reflect the bank email addresses and regex searches needed to parse your personal transaction data.
 
 # Useful Commands
 ## Docker
