@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 
 def pytest_configure():
-    app_root = str(pathlib.Path(__file__).parent.parent.parent)
+    app_root = str(pathlib.Path(__file__).parent.parent)
     env_path = app_root + "/.env"
     if not load_dotenv(env_path):
         print(f".env faled to load from {env_path}")
