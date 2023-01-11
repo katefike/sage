@@ -32,7 +32,12 @@ jobs:
       env:
           QA_ENV_FILE: ${{ secrets.QA_ENV_FILE }}
       run: |
-        docker-compose up -d
+        docker-compose up
+    - name: See if there's any containers
+      env:
+          QA_ENV_FILE: ${{ secrets.QA_ENV_FILE }}
+      run: |
+        docker ps
     - name: Test with pytest
       env:
           QA_ENV_FILE: ${{ secrets.QA_ENV_FILE }}
