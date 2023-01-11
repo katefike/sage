@@ -31,14 +31,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: See if there's any containers
+    - name: Check for running docker containers
       env:
           QA_ENV_FILE: ${{ secrets.QA_ENV_FILE }}
       run: docker ps
     - name: Test with pytest
       env:
           QA_ENV_FILE: ${{ secrets.QA_ENV_FILE }}
-      run: pytest tests/test_mailserver/
+      run: pytest tests/
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
