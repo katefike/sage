@@ -14,4 +14,6 @@ def pytest_configure():
     pytest.IMAP4_FQDN = os.environ.get("IMAP4_FQDN")
     pytest.FORWARDING_EMAIL = os.environ.get("FORWARDING_EMAIL")
     pytest.RECEIVING_EMAIL_USER = os.environ.get("RECEIVING_EMAIL_USER")
-    pytest.RECEIVING_EMAIL_PASSWORD = os.environ.get("RECEIVING_EMAIL_PASSWORD") # noqa: E501,E261,W292
+    pytest.RECEIVING_EMAIL_PASSWORD = os.environ.get(
+        "RECEIVING_EMAIL_PASSWORD"
+    )  # noqa: E501,E261,W292
