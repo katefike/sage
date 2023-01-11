@@ -98,7 +98,10 @@ quit
 ```
 
 ## Testing with pytest
-
+Run the full test suite, stop after the first failure.
+```
+pytest -xv
+```
 
 ### Getting mbox files
 For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. Here's how you get mbox files for a gmail account:
