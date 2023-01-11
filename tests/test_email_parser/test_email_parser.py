@@ -178,8 +178,8 @@ def create_test_data():
     ]
 
     # Retrieve the email corresponding to the UID
-    with imap_tools.MailBoxUnencrypted(pytest.IMAP4_FQDN).login(
-        pytest.RECEIVING_EMAIL_USER, pytest.RECEIVING_EMAIL_PASSWORD
+    with imap_tools.MailBoxUnencrypted(env.get("IMAP4_FQDN")).login(
+        env.get("RECEIVING_EMAIL_USER"), env.get("RECEIVING_EMAIL_PASSWORD")
     ) as mailbox:
         for email in data:
             input = email[0]
