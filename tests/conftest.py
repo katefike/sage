@@ -17,3 +17,40 @@ def pytest_configure():
     pytest.RECEIVING_EMAIL_PASSWORD = os.environ.get(
         "RECEIVING_EMAIL_PASSWORD"
     )  # noqa: E501,E261,W292
+
+def truncate_db(db_conn):
+    """Only truncates `public` tables"""
+
+    LIST_OF_TABLES_NOT_TO_TRUNCATE = []
+    with db_conn, db_conn.cursor() as cursor:
+        cursor.execute(
+            """
+SELECT table_name
+    FROM information_schema.tables
+    WHERE table_schema = 'public'
+    AND table_type = 'BASE TABLE'
+            """
+        )
+        for result in cursor.fetchall():
+            table_name = result[0]
+            if table_name in LIST_OF_TABLES_NOT_TO_TRUNCATE:
+                # we don't want these truncated
+                continue
+            cursor.execute(f"TRUNCATE {table_name} CASCADE")
+
+        cursor.execute(
+            """
+TRUNCATE auth.audit_log_entries
+            """
+        )
+
+        # cleanup users
+        cursor.execute(
+            """
+DELETE FROM auth.users
+            """
+        )
+
+        print("TRUNCATED DB")
+
+
