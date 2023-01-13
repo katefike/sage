@@ -1,17 +1,14 @@
-import os
-import pathlib
 from typing import Dict
 
 import psycopg2
 import pytest
-from dotenv import dotenv_values
+
+from . import ENV
 
 
 @pytest.fixture(scope="session")
 def env() -> Dict:
-    app_root = str(pathlib.Path(__file__).parent.parent)
-    env = dotenv_values(app_root + "/.env")
-    return env
+    return ENV
 
 
 # @pytest.fixture(scope="session")
