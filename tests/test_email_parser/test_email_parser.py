@@ -195,7 +195,7 @@ def get_test_data():
 
 
 @pytest.mark.parametrize("input,expected_output", get_test_data())
-def test_email_uid_parsing(input, expected_output, env):
+def test_email_uid_parsing(input, expected_output):
     """
     Ensure the UID is correct and that it's an integer and not a string.
     """
