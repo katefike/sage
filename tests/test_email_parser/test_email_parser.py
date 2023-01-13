@@ -180,17 +180,22 @@ data = [
 # TODO: Run this once for the module instead of once per test
 def get_test_data():
     # Retrieve the email corresponding to the UID
-    with imap_tools.MailBoxUnencrypted(ENV.get("IMAP4_FQDN")).login(
-        ENV.get("RECEIVING_EMAIL_USER"), ENV.get("RECEIVING_EMAIL_PASSWORD")
-    ) as mailbox:
-        for email in data:
-            input = email[0]
-            input_uid = input.get("uid")
-            try:
-                for msg in mailbox.fetch(imap_tools.AND(uid=[input_uid])):
-                    input["msg"] = msg
-            except Exception as error:
-                print(f"No email having UID {input_uid} was found: {error}")
+    try:
+        with imap_tools.MailBoxUnencrypted(ENV["IMAP4_FQDN"]).login(
+            ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
+        ) as mailbox:
+            for email in data:
+                input = email[0]
+                input_uid = input.get("uid")
+                try:
+                    for msg in mailbox.fetch(imap_tools.AND(uid=[input_uid])):
+                        input["msg"] = msg
+                except Exception as error:
+                    print(
+                        f"WARNING: No email having UID {input_uid} was found: {error}"
+                    )
+    except imap_tools.MailboxLoginError as error:
+        print(f"CRITICAL: Failed to login to the mailbox: {error}")
     return data
 
 
