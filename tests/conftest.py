@@ -6,33 +6,34 @@ import pytest
 from . import ENV
 
 
+def pytest_configure():
+    assert (
+        ENV["ISDEV"] == "True"
+    ), "CRITICAL: Only run pytest in the development environment."
+
+
 @pytest.fixture(scope="session")
 def env() -> Dict:
     return ENV
 
 
 @pytest.fixture(scope="session")
-def db_conn(env):
-    assert (
-        "test" in env["COMPOSE_PROJECT_NAME"]
-    ), "CRITICAL: env not the test env. DON'T NUKE YOUR PROD ENV!!"
-
-    connection = psycopg2.connect(
-        host="localhost",
-        dbname="postgres",
-        user="postgres",
-        password=env["POSTGRES_PASSWORD"],
-        port=env["POSTGRES_PORT"],
+def conn():
+    conn = psycopg2.connect(
+        host=ENV["POSTGRES_HOST"],
+        dbname=ENV["POSTGRES_DB"],
+        user=ENV["POSTGRES_USER"],
+        password=ENV["POSTGRES_PASSWORD"],
     )
-    yield connection
-    connection.close()
+    yield conn
+    conn.close()
 
 
-def truncate_db(db_conn):
+def truncate_tables(conn):
     """Only truncates `public` tables"""
 
-    LIST_OF_TABLES_NOT_TO_TRUNCATE = []
-    with db_conn, db_conn.cursor() as cursor:
+    tables_to_truncate = ["banks"]
+    with conn, conn.cursor() as cursor:
         cursor.execute(
             """
             SELECT
@@ -46,18 +47,18 @@ def truncate_db(db_conn):
         )
         for result in cursor.fetchall():
             table_name = result[0]
-            if table_name in LIST_OF_TABLES_NOT_TO_TRUNCATE:
-                # we don't want these truncated
+            if table_name in tables_to_truncate:
                 continue
             cursor.execute(f"TRUNCATE {table_name} CASCADE")
+        print("TRUNCATED TABLES")
 
-        print("TRUNCATED DB")
 
-@pytest.fixture(scope="function")
-def fresh_db_conn(db_conn):
+@pytest.fixture(scope="function", autouse=True)
+def fresh_conn(conn):
+    # Preemptive pre-test truncation
+    truncate_tables(conn)
 
-    # preemptive truncation
-    util.truncate_db(db_co
-    yield db_c
-    # cleanup truncation
-    util.truncate_db(db_conn)
+    yield conn
+
+    # Post-test truncation
+    truncate_tables(conn)
