@@ -95,7 +95,8 @@ def main():
             if deduced_total_messages_count != total_messages_count:
                 logger.critical("FAILED")
                 logger.critical(
-                    f"ERROR-HANDLING ERROR: {total_messages_count} messages were retrieved from the mail server, but only {deduced_total_messages_count} were accounted for."
+                    f"ERROR-HANDLING ERROR: {total_messages_count} total messages \
+                    but only {deduced_total_messages_count} were accounted for."
                 )
             logger.info(f"Total Messages in Batch = {total_messages_count}")
             logger.info(f"Rejected Messages = {rejected_messages_count}")
