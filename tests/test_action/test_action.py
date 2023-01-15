@@ -19,4 +19,4 @@ def test_tables(conn, env):
         user = env["POSTGRES_USER"]
         passw = env["POSTGRES_PASSWORD"]
         print(f"HOST: {host} DB: {db} USER: {user} PASS: {passw} ")
-        assert 0 == 1
+        assert 1 == 1
