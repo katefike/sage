@@ -50,3 +50,5 @@ jobs:
       uses: jwalton/gh-docker-logs@v2.2.0
     - name: Check if SQL files are in the postgres container
       run: docker exec sage-db-1 ls -l /docker-entrypoint-initdb.d/
+    - name: Stop docker contaienrs and remove volumes
+      run: docker-compose down -v
