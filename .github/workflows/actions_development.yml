@@ -45,10 +45,9 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\
-    - name: Dump Docker logs on failure
-      if: failure()
-      uses: jwalton/gh-docker-logs@v2.2.0
     - name: Check if SQL files are in the postgres container
       run: docker exec sage-db-1 ls -l /docker-entrypoint-initdb.d/
     - name: Stop docker contaienrs and remove volumes
       run: docker-compose down -v
+    - name: Dump Docker logs
+      uses: jwalton/gh-docker-logs@v2.2.0
