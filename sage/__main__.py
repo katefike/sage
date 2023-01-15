@@ -36,11 +36,13 @@ def main():
         with imap_tools.MailBoxUnencrypted(ENV["IMAP4_FQDN"]).login(
             ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
         ) as mailbox:
-            total_messages_count = 0
-            rejected_messages_count = 0
-            unparsed_messages_count = 0
-            unwritten_transactions_count = 0
-            processed_transactions_count = 0
+            msg_count = {
+                "retrieved": 0,
+                "rejected": 0,
+                "unparsed": 0,
+                "unwritten": 0,
+                "processed": 0,
+            }
             # Retrieve emails that are greater than the maximum UID
             # and are from the forwarding email
             for msg in mailbox.fetch(
@@ -49,14 +51,14 @@ def main():
                     from_=ENV["FORWARDING_EMAIL"],
                 )
             ):
-                total_messages_count = total_messages_count + 1
+                msg_count["retrieved"] = msg_count.get("retrieved", 0) + 1
                 # Ignore emails that don't have a text or html body
                 # This seems unlikely but who knows
                 if not msg.text or not msg.html:
                     logger.warning(
                         f"Rejecting email from {msg.from_} because it doesn't have a message body."
                     )
-                    rejected_messages_count = rejected_messages_count + 1
+                    msg_count["rejected"] = msg_count.get("rejected", 0) + 1
                     continue
                 # Parse a email message into the transaction data
                 transaction = email_parser.main(msg)
@@ -65,34 +67,33 @@ def main():
                         f"UID {msg.uid} was not parsed into a \
                         transaction."
                     )
-                    unparsed_messages_count = unparsed_messages_count + 1
+                    msg_count["unparsed"] = msg_count.get("unparsed", 0) + 1
                     continue
                 row_count = transactions.insert_transaction(transaction)
                 if row_count != 1:
-                    unwritten_transactions_count = unwritten_transactions_count + 1
+                    msg_count["unwritten"] = msg_count.get("unwritten", 0) + 1
                     continue
 
                 # One down!
-                processed_transactions_count = processed_transactions_count + 1
+                msg_count["processed"] = msg_count.get("processed", 0) + 1
 
-            deduced_total_messages_count = (
-                rejected_messages_count
-                + unparsed_messages_count
-                + unwritten_transactions_count
-                + processed_transactions_count
+        deduced_msg_count = (
+            msg_count.get("rejected")
+            + msg_count.get("unparsed")
+            + msg_count.get("unwritten")
+            + msg_count.get("processed")
+        )
+        retrieved_msg_count = msg_count.get("retrieved")
+        if deduced_msg_count != msg_count.get("retrieved"):
+            logger.critical("FAILED")
+            logger.critical(
+                f"ERROR-HANDLING ERROR: {retrieved_msg_count} msgs retrieved \
+                but {deduced_msg_count} were accounted for."
             )
-            if deduced_total_messages_count != total_messages_count:
-                logger.critical("FAILED")
-                logger.critical(
-                    f"ERROR-HANDLING ERROR: {total_messages_count} total messages \
-                    but only {deduced_total_messages_count} were accounted for."
-                )
-            logger.info(f"Total Messages in Batch = {total_messages_count}")
-            logger.info(f"Rejected Messages = {rejected_messages_count}")
-            logger.info(f"Unparsed Messages = {unparsed_messages_count}")
-            logger.info(f"Processed Transactions {processed_transactions_count}")
-            logger.info("DONE")
-            return
+        logger.info(f"Total Messages in Batch = {retrieved_msg_count}")
+        logger.info(f"{msg_count}")
+        logger.info("DONE")
+        return msg_count
 
     except Exception as error:
         receiving_email_user = ENV["RECEIVING_EMAIL_USER"]
@@ -105,4 +106,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    msg_count = main()

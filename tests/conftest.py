@@ -1,5 +1,11 @@
+import datetime
+import smtplib
+import subprocess
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from typing import Dict
 
+import imap_tools
 import psycopg2
 import pytest
 
@@ -70,3 +76,81 @@ def fresh_conn(conn):
 
     # Post-test truncation
     truncate_tables(conn)
+
+
+@pytest.fixture()
+def send_non_transaction_email(env: Dict):
+    """
+    Send a single pre-defined email to the mail server.
+    """
+
+    sender = env.get("FORWARDING_EMAIL")
+    receivers = f"{env.get('RECEIVING_EMAIL_USER')}@{env.get('DOMAIN')}"
+    now = datetime.datetime.now()
+
+    # Create message container - the correct MIME type is
+    # multipart/alternative.
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = f"Sent {now}"
+    msg["From"] = sender
+    msg["To"] = receivers
+
+    # Create the body of the message
+    html = """\
+    <html>
+    <head></head>
+    <body>
+        <p>Hi!<br>
+        This is a single test email.
+        </p>
+    </body>
+    </html>
+    """
+
+    # Record the MIME type
+    part1 = MIMEText(html, "html")
+    # Attach the part to the message
+    msg.attach(part1)
+
+    host = ""
+    port = 25
+    local_hostname = "localhost"
+    smtp_conn = smtplib.SMTP(host, port, local_hostname)
+
+    try:
+        smtp_conn = smtplib.SMTP("localhost")
+        smtp_conn.sendmail(sender, receivers, msg.as_string())
+        print("Email successfully sent.")
+        success = True
+        return success
+    except smtplib.SMTPException as error:
+        print(f"Error sending email: {error}")
+        return
+
+
+@pytest.fixture()
+def total_emails(env: Dict):
+    """
+    Get all emails from the mail server via IMAP
+    """
+    msgs = []
+    with imap_tools.MailBoxUnencrypted(env.get("IMAP4_FQDN")).login(
+        env.get("RECEIVING_EMAIL_USER"), env.get("RECEIVING_EMAIL_PASSWORD")
+    ) as mailbox:
+        for msg in mailbox.fetch():
+            msgs.append(msg)
+    return msgs
+
+
+@pytest.fixture(scope="function")
+def delete_all_emails(env: Dict):
+    """Delete all emails for the receiving email's inbox"""
+    try:
+        subprocess.call(
+            f"docker exec sage-mailserver-1 doveadm expunge -u {env['RECEIVING_EMAIL_USER']} mailbox 'INBOX' all",
+            shell=True,
+        )
+    except Exception as error:
+        print(
+            f"CRITICAL: Failed to delete all emails from the mailserver container: {error}"
+        )

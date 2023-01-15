@@ -3,7 +3,7 @@ from typing import List, Optional
 import psycopg2
 from loguru import logger
 
-from .. import ENV
+from . import ENV
 
 logger.add(sink="debug.log")
 
