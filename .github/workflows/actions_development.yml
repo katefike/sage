@@ -25,7 +25,7 @@ jobs:
     - name: Start docker containers
       env:
           QA_ENV_FILE: ${{ secrets.QA_ENV_FILE }}
-      run: docker-compose up -d
+      run: docker-compose up --build -d
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
