@@ -40,7 +40,7 @@ def conn():
 def truncate_tables(conn):
     """Only truncates `public` tables"""
 
-    tables_to_truncate = ["banks"]
+    tables_not_to_truncate = ["banks"]
     with conn, conn.cursor() as cursor:
         cursor.execute(
             """
@@ -55,7 +55,7 @@ def truncate_tables(conn):
         )
         for result in cursor.fetchall():
             table_name = result[0]
-            if table_name in tables_to_truncate:
+            if table_name in tables_not_to_truncate:
                 continue
             cursor.execute(f"TRUNCATE {table_name} CASCADE")
         print("TRUNCATED TABLES")
