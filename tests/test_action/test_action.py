@@ -1,4 +1,4 @@
-def test_tables(conn, ENV):
+def test_tables(conn, env):
     with conn, conn.cursor() as cursor:
         cursor.execute(
             """
@@ -14,9 +14,9 @@ def test_tables(conn, ENV):
         for result in cursor.fetchall():
             table_name = result[0]
             print(f"FOUND {table_name}")
-        host = ENV["POSTGRES_HOST"]
-        db = ENV["POSTGRES_DB"]
-        user = ENV["POSTGRES_USER"]
-        passw = ENV["POSTGRES_PASSWORD"]
+        host = env["POSTGRES_HOST"]
+        db = env["POSTGRES_DB"]
+        user = env["POSTGRES_USER"]
+        passw = env["POSTGRES_PASSWORD"]
         print(f"HOST: {host} DB: {db} USER: {user} PASS: {passw} ")
         assert 0 == 1
