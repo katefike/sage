@@ -19,12 +19,20 @@ def env() -> Dict:
 
 @pytest.fixture(scope="session")
 def conn():
-    conn = psycopg2.connect(
-        host=ENV["POSTGRES_HOST"],
-        dbname=ENV["POSTGRES_DB"],
-        user=ENV["POSTGRES_USER"],
-        password=ENV["POSTGRES_PASSWORD"],
-    )
+    try:
+        conn = psycopg2.connect(
+            host=ENV["POSTGRES_HOST"],
+            dbname=ENV["POSTGRES_DB"],
+            user=ENV["POSTGRES_USER"],
+            password=ENV["POSTGRES_PASSWORD"],
+        )
+    except psycopg2.DatabaseError as error:
+        print(f"Failed to connect to the database: {error}")
+        host = ENV["POSTGRES_HOST"]
+        db = ENV["POSTGRES_DB"]
+        user = ENV["POSTGRES_USER"]
+        passw = ENV["POSTGRES_PASSWORD"]
+        print(f"HOST: {host} DB: {db} USER: {user} PASS: {passw} ")
     yield conn
     conn.close()
 
