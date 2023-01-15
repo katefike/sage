@@ -3,11 +3,23 @@ Tests the mailserver container called sage-mailserver-1.
 """
 
 
-def test_sending_single_email(send_non_transaction_email):
+def test_sending_single_email(send_email):
     """
     Test if emails are successfully sent via SMTP
     """
-    assert send_non_transaction_email is True
+
+    html_body = """\
+    <html>
+    <head></head>
+    <body>
+        <p>Hi!<br>
+        This is a single test email.
+        </p>
+    </body>
+    </html>
+    """
+    success = send_email(html_body)
+    assert success is True
 
 
 def test_getting_emails(total_emails):
