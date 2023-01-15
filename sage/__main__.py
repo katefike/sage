@@ -3,9 +3,10 @@ import pathlib
 
 import imap_tools
 from db import transactions
-from dotenv import load_dotenv
 from email_parser import email_parser
 from loguru import logger
+
+from . import ENV
 
 logger.add(sink="debug.log", level="INFO")
 
@@ -31,22 +32,12 @@ def main():
         5b. Write the transaction data to the Postgres database.
     """
     logger.info("STARTING SAGE")
-    # Get all environment variables
-    app_root = str(pathlib.Path(__file__).parent.parent)
-    env_path = app_root + "/.env"
-    if not load_dotenv(env_path):
-        logger.critical(f"ENVIRONMENT ERROR: .env failed to load from {env_path}")
-    IMAP4_FQDN = os.environ.get("IMAP4_FQDN")
-    FORWARDING_EMAIL = os.environ.get("FORWARDING_EMAIL")
-    RECEIVING_EMAIL_USER = os.environ.get("RECEIVING_EMAIL_USER")
-    RECEIVING_EMAIL_PASSWORD = os.environ.get("RECEIVING_EMAIL_PASSWORD")
-
     # Log into the receiving mailbox on the mail server and retrieve emails
     # that have a UID that is greater than the maximum UID in the database.
     max_uid = transactions.get_maximum_uid()
     try:
-        with imap_tools.MailBoxUnencrypted(IMAP4_FQDN).login(
-            RECEIVING_EMAIL_USER, RECEIVING_EMAIL_PASSWORD
+        with imap_tools.MailBoxUnencrypted(ENV["IMAP4_FQDN"]).login(
+            ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
         ) as mailbox:
             total_messages_count = 0
             rejected_messages_count = 0
@@ -57,7 +48,8 @@ def main():
             # and are from the forwarding email
             for msg in mailbox.fetch(
                 imap_tools.A(
-                    uid=imap_tools.U(f"{max_uid + 1}", "*"), from_=FORWARDING_EMAIL
+                    uid=imap_tools.U(f"{max_uid + 1}", "*"),
+                    from_=ENV["FORWARDING_EMAIL"],
                 )
             ):
                 total_messages_count = total_messages_count + 1
@@ -106,10 +98,11 @@ def main():
             return
 
     except Exception as error:
+        receiving_email_user = ENV["RECEIVING_EMAIL_USER"]
         logger.critical("FAILED")
         logger.critical(
             f"MAILSERVER ERROR: Failed to connect via IMAP to the \
-            inbox of user {RECEIVING_EMAIL_USER}: {error}"
+            inbox of user {receiving_email_user}: {error}"
         )
         return
 
