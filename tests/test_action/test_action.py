@@ -14,5 +14,5 @@ def test_tables(conn):
         for result in cursor.fetchall():
             table_name = result[0]
             print(f"FOUND {table_name}")
-        print(f"CHECK")
+        print(f"CHECK1")
         assert 0 == 1
