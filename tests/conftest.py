@@ -3,7 +3,7 @@ import smtplib
 import subprocess
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from typing import Dict
+from typing import Dict, Optional
 
 import imap_tools
 import psycopg2
@@ -78,54 +78,44 @@ def fresh_conn(conn):
     truncate_tables(conn)
 
 
-@pytest.fixture()
-def send_non_transaction_email(env: Dict):
-    """
-    Send a single pre-defined email to the mail server.
-    """
+@pytest.fixture
+def send_email(env: Dict):
+    def _send_email(html_body: str, sender: Optional[str] = None):
+        """
+        Send a single pre-defined email to the mail server.
+        """
+        if not sender:
+            sender = env.get("FORWARDING_EMAIL")
 
-    sender = env.get("FORWARDING_EMAIL")
-    receivers = f"{env.get('RECEIVING_EMAIL_USER')}@{env.get('DOMAIN')}"
-    now = datetime.datetime.now()
+        receivers = f"{env.get('RECEIVING_EMAIL_USER')}@{env.get('DOMAIN')}"
+        now = datetime.datetime.now()
 
-    # Create message container - the correct MIME type is
-    # multipart/alternative.
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"Sent {now}"
-    msg["From"] = sender
-    msg["To"] = receivers
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = f"Sent {now}"
+        msg["From"] = sender
+        msg["To"] = receivers
 
-    # Create the body of the message
-    html = """\
-    <html>
-    <head></head>
-    <body>
-        <p>Hi!<br>
-        This is a single test email.
-        </p>
-    </body>
-    </html>
-    """
+        # Record the MIME type
+        part1 = MIMEText(html_body, "html")
+        # Attach the part to the message
+        msg.attach(part1)
 
-    # Record the MIME type
-    part1 = MIMEText(html, "html")
-    # Attach the part to the message
-    msg.attach(part1)
+        # host = ""
+        # port = 25
+        # local_hostname = "localhost"
+        # smtp_conn = smtplib.SMTP(host, port, local_hostname)
 
-    host = ""
-    port = 25
-    local_hostname = "localhost"
-    smtp_conn = smtplib.SMTP(host, port, local_hostname)
+        try:
+            smtp_conn = smtplib.SMTP("localhost")
+            smtp_conn.sendmail(sender, receivers, msg.as_string())
+            print("Email successfully sent.")
+            success = True
+            return success
+        except smtplib.SMTPException as error:
+            print(f"Error sending email: {error}")
+            return
 
-    try:
-        smtp_conn = smtplib.SMTP("localhost")
-        smtp_conn.sendmail(sender, receivers, msg.as_string())
-        print("Email successfully sent.")
-        success = True
-        return success
-    except smtplib.SMTPException as error:
-        print(f"Error sending email: {error}")
-        return
+    return _send_email
 
 
 @pytest.fixture()
