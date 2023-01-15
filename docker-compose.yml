@@ -13,7 +13,7 @@ services:
         max-file: "3"
     volumes: 
       - db:/var/lib/postgresql/data
-      - ./sage/db/init:/docker-entrypoint-initdb.d
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d
   mailserver:
     image: sage_mailserver
     build: ./docker/mailserver/
