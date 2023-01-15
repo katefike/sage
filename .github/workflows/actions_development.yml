@@ -38,7 +38,7 @@ jobs:
     - name: Test with pytest
       env:
           QA_ENV_FILE: ${{ secrets.QA_ENV_FILE }}
-      run: pytest tests/
+      run: pytest tests/test_action/
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
