@@ -80,7 +80,7 @@ def fresh_conn(conn):
 
 @pytest.fixture
 def send_email(env: Dict):
-    def _send_email(html_body: str, sender: Optional[str] = None):
+    def _send_email(html_body: Optional[str] = None, sender: Optional[str] = None):
         """
         Send a single pre-defined email to the mail server.
         """
@@ -95,15 +95,11 @@ def send_email(env: Dict):
         msg["From"] = sender
         msg["To"] = receivers
 
-        # Record the MIME type
-        part1 = MIMEText(html_body, "html")
-        # Attach the part to the message
-        msg.attach(part1)
-
-        # host = ""
-        # port = 25
-        # local_hostname = "localhost"
-        # smtp_conn = smtplib.SMTP(host, port, local_hostname)
+        if html_body:
+            # Record the MIME type
+            part1 = MIMEText(html_body, "html")
+            # Attach the part to the message
+            msg.attach(part1)
 
         try:
             smtp_conn = smtplib.SMTP("localhost")
