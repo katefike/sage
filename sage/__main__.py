@@ -1,6 +1,3 @@
-import os
-import pathlib
-
 import imap_tools
 from db import transactions
 from email_parser import email_parser
