@@ -1,10 +1,9 @@
-import os
-import pathlib
 from typing import List, Optional
 
 import psycopg2
-from dotenv import load_dotenv
 from loguru import logger
+
+from .. import ENV
 
 logger.add(sink="debug.log")
 
@@ -13,24 +12,12 @@ logger.add(sink="debug.log")
 
 
 def open_connection():
-    # Get all environment variables
-    app_root = str(pathlib.Path(__file__).parent.parent.parent)
-    env_path = app_root + "/.env"
-    if not load_dotenv(env_path):
-        logger.critical(
-            f"ENVIRONMENT ERROR: .env failed to load from \
-            {env_path}"
-        )
-    POSTGRES_HOST = os.environ.get("POSTGRES_HOST")
-    POSTGRES_DB = os.environ.get("POSTGRES_DB")
-    POSTGRES_USER = os.environ.get("POSTGRES_USER")
-    POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
     try:
         conn = psycopg2.connect(
-            host=POSTGRES_HOST,
-            database=POSTGRES_DB,
-            user=POSTGRES_USER,
-            password=POSTGRES_PASSWORD,
+            host=ENV["POSTGRES_HOST"],
+            dbname=ENV["POSTGRES_DB"],
+            user=ENV["POSTGRES_USER"],
+            password=ENV["POSTGRES_PASSWORD"],
         )
         return conn
     except psycopg2.DatabaseError as error:
