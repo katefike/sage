@@ -5,22 +5,23 @@ import datetime
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from typing import Dict
 
 import imap_tools
 import pytest
 
 
 @pytest.fixture()
-def send_single_email():
+def send_single_email(env: Dict):
     """
     Send a single pre-defined email to the mail server.
     """
 
-    sender = pytest.FORWARDING_EMAIL
-    receivers = f"{pytest.RECEIVING_EMAIL_USER}@{pytest.DOMAIN}"
+    sender = env.get("FORWARDING_EMAIL")
+    receivers = f"{env.get('RECEIVING_EMAIL_USER')}@{env.get('DOMAIN')}"
     now = datetime.datetime.now()
 
-    # Create message container - the correct MIME type is 
+    # Create message container - the correct MIME type is
     # multipart/alternative.
     msg = MIMEMultipart("alternative")
     msg["Subject"] = f"Sent {now}"
@@ -66,13 +67,13 @@ def send_single_email():
 
 
 @pytest.fixture()
-def get_all_emails():
+def get_all_emails(env):
     """
     Get all emails from the mail server via IMAP
     """
     msgs = []
-    with imap_tools.MailBoxUnencrypted(pytest.IMAP4_FQDN).login(
-        pytest.RECEIVING_EMAIL_USER, pytest.RECEIVING_EMAIL_PASSWORD
+    with imap_tools.MailBoxUnencrypted(env.get("IMAP4_FQDN")).login(
+        env.get("RECEIVING_EMAIL_USER"), env.get("RECEIVING_EMAIL_PASSWORD")
     ) as mailbox:
         for msg in mailbox.fetch():
             msgs.append(msg)
