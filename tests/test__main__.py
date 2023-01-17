@@ -37,7 +37,7 @@ def test_rejected_email(delete_emails, send_email):
     assert msg_count.get("rejected") == 1
 
 
-def test_unparsable_emails(delete_emails, fresh_inbox):
+def test_unparsable_emails(fresh_inbox):
     """
     Send unparasble emails that are from the forwarding email and have bodies,
     but the contents are not transactions.
@@ -46,5 +46,5 @@ def test_unparsable_emails(delete_emails, fresh_inbox):
 
     fresh_inbox("unparsable_emails_development.mbox")
     msg_count = main()
-    assert msg_count.get("retrieved") == 1
-    assert msg_count.get("rejected") == 1
+    assert msg_count.get("retrieved") == 8
+    assert msg_count.get("unparsed") == 8
