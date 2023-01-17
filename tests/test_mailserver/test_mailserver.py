@@ -22,8 +22,8 @@ def test_sending_single_email(send_email):
     assert success is True
 
 
-def test_getting_emails(total_emails):
+def test_getting_emails(inbox_count):
     """
     Test if emails can be retrieved via IMAP.
     """
-    assert len(total_emails) != 0
+    assert len(inbox_count) != 0
