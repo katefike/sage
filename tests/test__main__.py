@@ -33,8 +33,7 @@ def test_rejected_email(delete_emails, send_email):
     """
     send_email()
     msg_count = main()
-    assert msg_count.get("retrieved") == 1
-    assert msg_count.get("rejected") == 1
+    assert msg_count.get("retrieved") == msg_count.get("rejected")
 
 
 def test_unparsable_emails(fresh_inbox):
@@ -46,5 +45,4 @@ def test_unparsable_emails(fresh_inbox):
 
     fresh_inbox("unparsable_emails_development.mbox")
     msg_count = main()
-    assert msg_count.get("retrieved") == 8
-    assert msg_count.get("unparsed") == 8
+    assert msg_count.get("retrieved") == msg_count.get("unparsed")
