@@ -22,9 +22,6 @@ FORWARDING_EMAIL = os.environ.get("FORWARDING_EMAIL")
 RECEIVING_EMAIL_USER = os.environ.get("RECEIVING_EMAIL_USER")
 RECEIVING_EMAIL_PASSWORD = os.environ.get("RECEIVING_EMAIL_PASSWORD")
 
-# Use uid provided as command line argument
-input_uid = sys.argv[1]
-
 count = 0
 try:
     with imap_tools.MailBoxUnencrypted(IMAP4_FQDN).login(
