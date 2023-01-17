@@ -64,8 +64,7 @@ def main():
                 transaction = email_parser.main(msg)
                 if not transaction.amount:
                     logger.info(
-                        f"UID {msg.uid} was not parsed into a \
-                        transaction."
+                        f"UID {msg.uid} was not parsed into a transaction."
                     )
                     msg_count["unparsed"] = msg_count.get("unparsed", 0) + 1
                     continue
@@ -87,8 +86,7 @@ def main():
         if deduced_msg_count != msg_count.get("retrieved"):
             logger.critical("FAILED")
             logger.critical(
-                f"ERROR-HANDLING ERROR: {retrieved_msg_count} msgs retrieved \
-                but {deduced_msg_count} were accounted for."
+                f"ERROR-HANDLING ERROR: {retrieved_msg_count} msgs retrieved but {deduced_msg_count} were accounted for."
             )
         logger.info(f"Total Messages in Batch = {retrieved_msg_count}")
         logger.info(f"{msg_count}")
@@ -99,8 +97,7 @@ def main():
         receiving_email_user = ENV["RECEIVING_EMAIL_USER"]
         logger.critical("FAILED")
         logger.critical(
-            f"MAILSERVER ERROR: Failed to connect via IMAP to the \
-            inbox of user {receiving_email_user}: {error}"
+            f"MAILSERVER ERROR: Failed to connect via IMAP to the inbox of user {receiving_email_user}: {error}"
         )
         return
 
