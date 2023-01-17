@@ -79,6 +79,26 @@ def fresh_conn(conn):
 
 
 @pytest.fixture
+def create_inbox(env: Dict):
+    def _create_inbox(mbox_name: str):
+        """Reads a directory containing an Mbox format mailbox and creates a Maildir format mailbox"""
+        try:
+            print(
+                f"docker exec sage-mailserver-1 mb2md -s /home/{env['RECEIVING_EMAIL_USER']}/test_data/example_data/{mbox_name} -d /home/{env['RECEIVING_EMAIL_USER']}/Maildir/"
+            )
+            subprocess.call(
+                f"docker exec sage-mailserver-1 mb2md -s /home/{env['RECEIVING_EMAIL_USER']}/test_data/example_data/{mbox_name} -d /home/{env['RECEIVING_EMAIL_USER']}/Maildir/",
+                shell=True,
+            )
+            print("Successfully loaded emails from mbox file.")
+        except Exception as error:
+            print(f"CRITICAL: Failed to create an inbox from an mbox: {error}")
+
+    return _create_inbox
+
+
+# docker exec sage-mailserver-1 mb2md -s /home/incoming/test_data/example_data/unparsable_emails_development.mbox -d /home/incoming/Maildir/
+@pytest.fixture
 def send_email(env: Dict):
     def _send_email(html_body: Optional[str] = None, sender: Optional[str] = None):
         """
