@@ -79,27 +79,39 @@ def fresh_conn(conn):
 
 
 @pytest.fixture
-def create_inbox(env: Dict):
-    def _create_inbox(mbox_name: str):
+def fresh_inbox(env: Dict):
+    def _fresh_inbox(mbox_name: str):
         """
-        Deletes all emails from the mailbox. Then reads a directory
+        Re-create the user's Maildir. Then reads a directory
         containing an Mbox format mailbox and creates a Maildir format mailbox.
+
+        The command doveadm mailbox delete -u {env['RECEIVING_EMAIL_USER']} -r
+        is insufficient because it does not restart incrementing of the UIDs
+        at 1.
         """
+        container = "docker exec sage-mailserver-1"
+        maildir_path = f"/home/{env['RECEIVING_EMAIL_USER']}/Maildir/"
+        mbox_path = f"/home/{env['RECEIVING_EMAIL_USER']}/test_data/example_data"
         try:
             subprocess.call(
-                f"docker exec sage-mailserver-1 doveadm expunge -u {env['RECEIVING_EMAIL_USER']} mailbox 'INBOX' all",
+                f"{container} rm -r {maildir_path} && mkdir {maildir_path}",
                 shell=True,
             )
-            print("Successfully deleted all emails.")
+            print("Recreated Maildir/.")
             subprocess.call(
-                f"docker exec sage-mailserver-1 mb2md -s /home/{env['RECEIVING_EMAIL_USER']}/test_data/example_data/{mbox_name} -d /home/{env['RECEIVING_EMAIL_USER']}/Maildir/",
+                f"{container} mb2md -s {mbox_path}/{mbox_name} -d {maildir_path}",
                 shell=True,
             )
+            subprocess.call(
+                f"{container} chmod -R 777 {maildir_path}",
+                shell=True,
+            )
+            print(f"{container} chmod -R 777 {maildir_path}")
             print("Successfully loaded emails from mbox file.")
         except Exception as error:
             print(f"CRITICAL: Failed to create an inbox from an mbox: {error}")
 
-    return _create_inbox
+    return _fresh_inbox
 
 
 @pytest.fixture
