@@ -100,7 +100,11 @@ quit
 ## Testing with pytest
 Run the full test suite, stop after the first failure.
 ```
-pytest -xv
+(venv) $ pytest -xv
+```
+See cosde coverage of the Tests
+```
+(venv) $ coverage run --source=sage -m pytest -v tests/ && coverage report -m
 ```
 
 ### Getting mbox files
