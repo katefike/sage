@@ -106,7 +106,6 @@ def fresh_inbox(env: Dict):
                 f"{container} chmod -R 777 {maildir_path}",
                 shell=True,
             )
-            print(f"{container} chmod -R 777 {maildir_path}")
             print("Successfully loaded emails from mbox file.")
         except Exception as error:
             print(f"CRITICAL: Failed to create an inbox from an mbox: {error}")
