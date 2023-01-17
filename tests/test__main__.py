@@ -5,7 +5,7 @@ Tests the entrypoint of the program, __main__.py
 """
 
 
-def test_unretrieved_email(delete_all_emails, send_email):
+def test_unretrieved_email(delete_emails, send_email):
     """
     Send an email that isn't from the forwarding email.
     It should not be retrieved from the inbox.
@@ -26,7 +26,7 @@ def test_unretrieved_email(delete_all_emails, send_email):
     assert msg_count.get("retrieved") == 0
 
 
-def test_rejected_email(delete_all_emails, send_email):
+def test_rejected_email(delete_emails, send_email):
     """
     Send an email that is from the forwarding email but doesn't have a body.
     It should be retrieved from the inbox, but then rejected.
@@ -37,14 +37,14 @@ def test_rejected_email(delete_all_emails, send_email):
     assert msg_count.get("rejected") == 1
 
 
-def test_unparsable_emails(delete_all_emails, create_inbox):
+def test_unparsable_emails(delete_emails, fresh_inbox):
     """
     Send unparasble emails that are from the forwarding email and have bodies,
     but the contents are not transactions.
     They should be retrieved from the inbox and left unparsed.
     """
 
-    create_inbox("unparsable_emails_development.mbox")
+    fresh_inbox("unparsable_emails_development.mbox")
     msg_count = main()
     assert msg_count.get("retrieved") == 1
     assert msg_count.get("rejected") == 1

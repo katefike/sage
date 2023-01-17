@@ -85,7 +85,7 @@ def fresh_inbox(env: Dict):
         Re-create the user's Maildir. Then reads a directory
         containing an Mbox format mailbox and creates a Maildir format mailbox.
 
-        The command doveadm mailbox delete -u {env['RECEIVING_EMAIL_USER']} -r
+        The command doveadm expunge -u {env['RECEIVING_EMAIL_USER']} mailbox 'INBOX' all
         is insufficient because it does not restart incrementing of the UIDs
         at 1.
         """
@@ -148,6 +148,19 @@ def send_email(env: Dict):
             return
 
     return _send_email
+
+
+@pytest.fixture
+def delete_emails(env: Dict):
+    try:
+        container = "docker exec sage-mailserver-1"
+        subprocess.call(
+            f"{container} doveadm expunge -u {env['RECEIVING_EMAIL_USER']} mailbox 'INBOX' all",
+            shell=True,
+        )
+        print("Successfully deleted all emails in the inbox.")
+    except Exception as error:
+        print(f"CRITICAL: Failed to delete emails: {error}")
 
 
 @pytest.fixture()
