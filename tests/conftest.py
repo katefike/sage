@@ -78,7 +78,6 @@ def fresh_conn(conn):
     truncate_tables(conn)
 
 
-@pytest.fixture
 def fresh_inbox(env: Dict):
     def _fresh_inbox(mbox_name: str):
         """
