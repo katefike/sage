@@ -1,5 +1,7 @@
 from sage.__main__ import main
 
+from . import utils
+
 """
 Tests the entrypoint of the program, __main__.py
 """
@@ -36,13 +38,13 @@ def test_rejected_email(delete_emails, send_email):
     assert msg_count.get("retrieved") == msg_count.get("rejected")
 
 
-def test_unparsable_emails(fresh_inbox):
+def test_unparsable_emails():
     """
     Send unparasble emails that are from the forwarding email and have bodies,
     but the contents are not transactions.
     They should be retrieved from the inbox and left unparsed.
     """
 
-    fresh_inbox("unparsable_emails_development.mbox")
+    utils.fresh_inbox("unparsable_emails_development.mbox")
     msg_count = main()
     assert msg_count.get("retrieved") == msg_count.get("unparsed")
