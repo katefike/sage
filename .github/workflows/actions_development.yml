@@ -46,6 +46,6 @@ jobs:
     - name: Dump Docker logs on failure
       uses: jwalton/gh-docker-logs@v2.2.0
       if: failure()
-    - name: Stop docker contaienrs and remove volumes
+    - name: Stop docker containers and remove volumes
       run: docker-compose down -v
       if: always()
