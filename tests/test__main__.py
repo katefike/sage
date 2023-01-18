@@ -7,11 +7,12 @@ Tests the entrypoint of the program, __main__.py
 """
 
 
-def test_unretrieved_email(delete_emails, send_email):
+def test_unretrieved_email(send_email):
     """
     Send an email that isn't from the forwarding email.
     It should not be retrieved from the inbox.
     """
+    utils.delete_emails()
     html_body = """\
     <html>
     <head></head>
@@ -28,11 +29,12 @@ def test_unretrieved_email(delete_emails, send_email):
     assert msg_count.get("retrieved") == 0
 
 
-def test_rejected_email(delete_emails, send_email):
+def test_rejected_email(send_email):
     """
     Send an email that is from the forwarding email but doesn't have a body.
     It should be retrieved from the inbox, but then rejected.
     """
+    utils.delete_emails()
     send_email()
     msg_count = main()
     assert msg_count.get("retrieved") == msg_count.get("rejected")

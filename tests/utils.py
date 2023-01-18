@@ -32,3 +32,15 @@ def fresh_inbox(mbox_name: str):
         print("Successfully loaded emails from mbox file.")
     except Exception as error:
         print(f"CRITICAL: Failed to create an inbox from an mbox: {error}")
+
+
+def delete_emails():
+    try:
+        container = "docker exec sage-mailserver-1"
+        subprocess.call(
+            f"{container} doveadm expunge -u {ENV['RECEIVING_EMAIL_USER']} mailbox 'INBOX' all",
+            shell=True,
+        )
+        print("Successfully deleted all emails in the inbox.")
+    except Exception as error:
+        print(f"CRITICAL: Failed to delete emails: {error}")
