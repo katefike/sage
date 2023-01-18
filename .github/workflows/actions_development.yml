@@ -44,8 +44,8 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\
     - name: Dump Docker logs on failure
+      uses: jwalton/gh-docker-logs@v2.2.0
       if: failure()
     - name: Stop docker contaienrs and remove volumes
       run: docker-compose down -v
       if: always()
-      uses: jwalton/gh-docker-logs@v2.2.0
