@@ -3,7 +3,7 @@ import smtplib
 import subprocess
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from typing import Optional
+from typing import Generator, Optional
 
 import imap_tools
 
@@ -53,18 +53,15 @@ def delete_emails():
         print(f"CRITICAL: Failed to delete emails: {error}")
 
 
-def email_count():
-    """
-    Get all emails from the mail server via IMAP
-    """
-    msgs = []
+def get_mailmessages(input_uid: Optional[int] = None):
     try:
         with imap_tools.MailBoxUnencrypted(ENV["IMAP4_FQDN"]).login(
             ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
         ) as mailbox:
-            for msg in mailbox.fetch():
-                msgs.append(msg)
-            return msgs
+            if input_uid:
+                yield mailbox.fetch(imap_tools.AND(uid=[input_uid]))
+            else:
+                yield mailbox.fetch()
     except imap_tools.MailboxLoginError as error:
         print(f"CRITICAL: Failed to login to the mailbox: {error}")
 

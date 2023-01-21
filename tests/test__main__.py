@@ -1,10 +1,9 @@
-from sage.__main__ import main
-
-from . import utils
-
 """
 Tests the entrypoint of the program, __main__.py
 """
+from sage.__main__ import main
+
+from . import utils
 
 
 def test_unretrieved_email():

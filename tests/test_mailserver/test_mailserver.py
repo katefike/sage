@@ -1,8 +1,7 @@
-from tests import utils
-
 """
 Tests the mailserver container called sage-mailserver-1.
 """
+from tests import utils
 
 
 def test_sending_single_email():
@@ -28,5 +27,7 @@ def test_getting_emails():
     """
     Test if emails can be retrieved via IMAP.
     """
-    msgs = utils.email_count()
+    msgs = []
+    for msg in utils.get_mailmessages():
+        msgs.append(msg)
     assert len(msgs) != 0
