@@ -3,7 +3,7 @@ import smtplib
 import subprocess
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from typing import Generator, Optional
+from typing import List, Optional
 
 import imap_tools
 
@@ -41,29 +41,34 @@ def fresh_inbox(mbox_name: str):
         print(f"CRITICAL: Failed to create an inbox from an mbox: {error}")
 
 
-def delete_emails():
-    try:
-        container = "docker exec sage-mailserver-1"
-        subprocess.call(
-            f"{container} doveadm expunge -u {ENV['RECEIVING_EMAIL_USER']} mailbox 'INBOX' all",
-            shell=True,
-        )
-        print("Successfully deleted all emails in the inbox.")
-    except Exception as error:
-        print(f"CRITICAL: Failed to delete emails: {error}")
-
-
-def get_mailmessages(input_uid: Optional[int] = None):
+def get_emails(input_uid: Optional[int] = None) -> List:
+    msgs = []
     try:
         with imap_tools.MailBoxUnencrypted(ENV["IMAP4_FQDN"]).login(
             ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
         ) as mailbox:
             if input_uid:
-                yield mailbox.fetch(imap_tools.AND(uid=[input_uid]))
+                for msg in mailbox.fetch(imap_tools.AND(uid=[input_uid])):
+                    msgs.append(msg)
             else:
-                yield mailbox.fetch()
+                for msg in mailbox.fetch():
+                    msgs.append(msg)
+        return msgs
     except imap_tools.MailboxLoginError as error:
         print(f"CRITICAL: Failed to login to the mailbox: {error}")
+
+
+def delete_emails():
+    container = "docker exec sage-mailserver-1"
+    subprocess.call(
+        f"{container} doveadm expunge -u {ENV['RECEIVING_EMAIL_USER']} mailbox 'INBOX' all",
+        shell=True,
+    )
+    msgs = get_emails()
+    if len(msgs) == 0:
+        print("Successfully deleted all emails in the inbox.")
+    else:
+        print("CRITICAL: Failed to delete emails.")
 
 
 def send_email(html_body: Optional[str] = None, sender: Optional[str] = None) -> bool:

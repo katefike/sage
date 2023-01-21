@@ -27,7 +27,5 @@ def test_getting_emails():
     """
     Test if emails can be retrieved via IMAP.
     """
-    msgs = []
-    for msg in utils.get_mailmessages():
-        msgs.append(msg)
+    msgs = utils.get_emails()
     assert len(msgs) != 0

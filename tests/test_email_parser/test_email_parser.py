@@ -14,13 +14,10 @@ viewed.
 The expected expected_output is the transaction object defined in
 sage/email_data/transaction.py
 """
-import imap_tools
 import pytest
 
 from sage.email_parser import email_parser
 from tests import utils
-
-from .. import ENV
 
 
 def get_test_data():
@@ -180,22 +177,14 @@ def get_test_data():
     ]
 
     # Retrieve the email corresponding to the UID
-    try:
-        with imap_tools.MailBoxUnencrypted(ENV["IMAP4_FQDN"]).login(
-            ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
-        ) as mailbox:
-            for email in data:
-                input = email[0]
-                input_uid = input.get("uid")
-                try:
-                    for msg in mailbox.fetch(imap_tools.AND(uid=[input_uid])):
-                        input["msg"] = msg
-                except Exception as error:
-                    print(
-                        f"WARNING: No email having UID {input_uid} was found: {error}"
-                    )
-    except imap_tools.MailboxLoginError as error:
-        print(f"CRITICAL: Failed to login to the mailbox: {error}")
+    for email in data:
+        input = email[0]
+        input_uid = input.get("uid")
+        msgs = utils.get_emails(input_uid)
+        if len(msgs) == 0:
+            print(f"CRITICAL: No email having UID {input_uid} was found.")
+        for msg in msgs:
+            input["msg"] = msg
     return data
 
 
