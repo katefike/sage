@@ -32,7 +32,7 @@ jobs:
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Check if SQL files are in the postgres container
-      run: docker exec sage_db_1 ls -l /docker-entrypoint-initdb.d/
+      run: docker exec sage-db ls -l /docker-entrypoint-initdb.d/
     - name: Test with pytest
       env:
           QA_ENV_FILE: ${{ secrets.QA_ENV_FILE }}
