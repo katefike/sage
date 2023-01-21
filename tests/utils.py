@@ -1,4 +1,11 @@
+import datetime
+import smtplib
 import subprocess
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from typing import Optional
+
+import imap_tools
 
 from . import ENV
 
@@ -44,3 +51,56 @@ def delete_emails():
         print("Successfully deleted all emails in the inbox.")
     except Exception as error:
         print(f"CRITICAL: Failed to delete emails: {error}")
+
+
+def get_mailbox():
+    with imap_tools.MailBoxUnencrypted(ENV["IMAP4_FQDN"]).login(
+        ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
+    ) as mailbox:
+        return mailbox
+
+
+def send_email():
+    def _send_email(html_body: Optional[str] = None, sender: Optional[str] = None):
+        """
+        Send a single pre-defined email to the mail server.
+        """
+        if not sender:
+            sender = ENV["FORWARDING_EMAIL"]
+
+        receivers = f"{ENV['RECEIVING_EMAIL_USER']}@{ENV['DOMAIN']}"
+        now = datetime.datetime.now()
+
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = f"Sent {now}"
+        msg["From"] = sender
+        msg["To"] = receivers
+
+        if html_body:
+            # Record the MIME type
+            part1 = MIMEText(html_body, "html")
+            # Attach the part to the message
+            msg.attach(part1)
+
+        try:
+            smtp_conn = smtplib.SMTP("localhost")
+            smtp_conn.sendmail(sender, receivers, msg.as_string())
+            print("Email successfully sent.")
+            success = True
+            return success
+        except smtplib.SMTPException as error:
+            print(f"Error sending email: {error}")
+            return
+
+    return _send_email
+
+
+def email_count():
+    """
+    Get all emails from the mail server via IMAP
+    """
+    msgs = []
+    mailbox = get_mailbox()
+    for msg in mailbox.fetch():
+        msgs.append(msg)
+    return msgs
