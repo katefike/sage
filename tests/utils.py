@@ -19,7 +19,7 @@ def fresh_inbox(mbox_name: str):
     is insufficient because it does not restart incrementing of the UIDs
     at 1.
     """
-    container = "docker exec sage-mailserver-1"
+    container = "docker exec sage-mailserver"
     maildir_path = f"/home/{ENV['RECEIVING_EMAIL_USER']}/Maildir/"
     mbox_path = f"/home/{ENV['RECEIVING_EMAIL_USER']}/test_data/example_data"
     try:
@@ -59,7 +59,7 @@ def get_emails(input_uid: Optional[int] = None) -> List:
 
 
 def delete_emails():
-    container = "docker exec sage-mailserver-1"
+    container = "docker exec sage-mailserver"
     try:
         subprocess.call(
             f"{container} doveadm expunge -u {ENV['RECEIVING_EMAIL_USER']} mailbox 'INBOX' all",
