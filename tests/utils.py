@@ -60,15 +60,21 @@ def get_emails(input_uid: Optional[int] = None) -> List:
 
 def delete_emails():
     container = "docker exec sage-mailserver-1"
-    subprocess.call(
-        f"{container} doveadm expunge -u {ENV['RECEIVING_EMAIL_USER']} mailbox 'INBOX' all",
-        shell=True,
-    )
+    try:
+        subprocess.call(
+            f"{container} doveadm expunge -u {ENV['RECEIVING_EMAIL_USER']} mailbox 'INBOX' all",
+            shell=True,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+        )
+    except subprocess.CalledProcessError as error:
+        print(f"CRITICAL: Failed to delete emails: {error.returncode}: {error.output}")
     msgs = get_emails()
-    if len(msgs) == 0:
+    email_count = len(msgs)
+    if email_count == 0:
         print("Successfully deleted all emails in the inbox.")
     else:
-        print("CRITICAL: Failed to delete emails.")
+        print(f"CRITICAL: Failed to delete emails, {email_count} emails were counted.")
 
 
 def send_email(html_body: Optional[str] = None, sender: Optional[str] = None) -> bool:
