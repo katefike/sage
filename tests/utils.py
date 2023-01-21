@@ -60,39 +60,34 @@ def get_mailbox():
         return mailbox
 
 
-def send_email():
-    def _send_email(html_body: Optional[str] = None, sender: Optional[str] = None):
-        """
-        Send a single pre-defined email to the mail server.
-        """
-        if not sender:
-            sender = ENV["FORWARDING_EMAIL"]
+def send_email(html_body: Optional[str] = None, sender: Optional[str] = None):
+    """
+    Send a single pre-defined email to the mail server.
+    """
+    if not sender:
+        sender = ENV["FORWARDING_EMAIL"]
 
-        receivers = f"{ENV['RECEIVING_EMAIL_USER']}@{ENV['DOMAIN']}"
-        now = datetime.datetime.now()
+    receivers = f"{ENV['RECEIVING_EMAIL_USER']}@{ENV['DOMAIN']}"
+    now = datetime.datetime.now()
 
-        msg = MIMEMultipart("alternative")
-        msg["Subject"] = f"Sent {now}"
-        msg["From"] = sender
-        msg["To"] = receivers
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = f"Sent {now}"
+    msg["From"] = sender
+    msg["To"] = receivers
 
-        if html_body:
-            # Record the MIME type
-            part1 = MIMEText(html_body, "html")
-            # Attach the part to the message
-            msg.attach(part1)
+    if html_body:
+        # Record the MIME type
+        part1 = MIMEText(html_body, "html")
+        # Attach the part to the message
+        msg.attach(part1)
 
-        try:
-            smtp_conn = smtplib.SMTP("localhost")
-            smtp_conn.sendmail(sender, receivers, msg.as_string())
-            print("Email successfully sent.")
-            success = True
-            return success
-        except smtplib.SMTPException as error:
-            print(f"Error sending email: {error}")
-            return
+    try:
+        smtp_conn = smtplib.SMTP("localhost")
+        smtp_conn.sendmail(sender, receivers, msg.as_string())
+        print("Email successfully sent.")
 
-    return _send_email
+    except smtplib.SMTPException as error:
+        print(f"Error sending email: {error}")
 
 
 def email_count():
