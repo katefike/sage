@@ -53,14 +53,29 @@ def delete_emails():
         print(f"CRITICAL: Failed to delete emails: {error}")
 
 
-def get_mailbox():
-    with imap_tools.MailBoxUnencrypted(ENV["IMAP4_FQDN"]).login(
-        ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
-    ) as mailbox:
-        return mailbox
+def mailbox_login():
+    try:
+        with imap_tools.MailBoxUnencrypted(ENV["IMAP4_FQDN"]).login(
+            ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
+        ) as mailbox:
+            print("Successfully logged into the mailbox.")
+            return mailbox
+    except imap_tools.MailboxLoginError as error:
+        print(f"CRITICAL: Failed to login to the mailbox: {error}")
 
 
-def send_email(html_body: Optional[str] = None, sender: Optional[str] = None):
+def email_count():
+    """
+    Get all emails from the mail server via IMAP
+    """
+    msgs = []
+    mailbox = mailbox_login()
+    for msg in mailbox.fetch():
+        msgs.append(msg)
+    return msgs
+
+
+def send_email(html_body: Optional[str] = None, sender: Optional[str] = None) -> bool:
     """
     Send a single pre-defined email to the mail server.
     """
@@ -85,17 +100,7 @@ def send_email(html_body: Optional[str] = None, sender: Optional[str] = None):
         smtp_conn = smtplib.SMTP("localhost")
         smtp_conn.sendmail(sender, receivers, msg.as_string())
         print("Email successfully sent.")
-
+        return True
     except smtplib.SMTPException as error:
         print(f"Error sending email: {error}")
-
-
-def email_count():
-    """
-    Get all emails from the mail server via IMAP
-    """
-    msgs = []
-    mailbox = get_mailbox()
-    for msg in mailbox.fetch():
-        msgs.append(msg)
-    return msgs
+        return False
