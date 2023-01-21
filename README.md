@@ -16,9 +16,9 @@ This app is like Mint, but better. It collects all of your personal financial da
 ## Docker
 Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
 ```
-docker cp sage-mailserver-1:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.conf \
-&& docker cp sage-mailserver-1:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
-&& docker cp sage-mailserver-1:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf \
+docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.conf \
+&& docker cp sage-mailserver:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
+&& docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf \
 ```
 Show the names of all docker containers (active and inactive)
 ```
@@ -42,12 +42,12 @@ docker rmi $(docker images -q)
 ```
 Access the postgres interactive CLI within the database container
 ```
-docker exec -it  sage-db-1 psql -U admin sage
+docker exec -it  sage-db psql -U admin sage
 ```
 ## Mailserver Container
 Enter the mailsserver container
 ```
-docker exec -it sage-mailserver-1 bash
+docker exec -it sage-mailserver bash
 ```
 
 ### Dovecot
@@ -63,7 +63,7 @@ doveadm expunge -u incoming mailbox 'INBOX' all
 ## Postgres
 Enter the database container and access the database.
 ```
-docker exec -it sage-db-1 psql -h localhost -U sage_admin sage
+docker exec -it sage-db psql -h localhost -U sage_admin sage
 ```
 Remove all containers and volumes after a schema change.
 ```
@@ -100,7 +100,11 @@ quit
 ## Testing with pytest
 Run the full test suite, stop after the first failure.
 ```
-pytest -xv
+(venv) $ pytest -xv
+```
+See cosde coverage of the Tests
+```
+(venv) $ coverage run --source=sage -m pytest -v tests/ && coverage report -m
 ```
 
 ### Getting mbox files

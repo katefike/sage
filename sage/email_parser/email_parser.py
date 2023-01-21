@@ -24,6 +24,8 @@ def main(msg: MailMessage) -> Transaction:
         body = msg.html
 
     # Identify who the bank is
+    if not get_bank(body):
+        return
     transaction.bank = get_bank(body)
     # Parse the email based on who the bank is
     if transaction.bank == "Chase":
@@ -90,12 +92,12 @@ def get_bank(body: str) -> str:
         To: <example.com>
     """
     if regex_search("(no.reply.alerts@chase.com)", body):
-        bank = "Chase"
+        return "Chase"
     elif regex_search("(discover@services.discover.com)", body):
-        bank = "Discover"
+        return "Discover"
     elif regex_search("(HuntingtonAlerts@email.huntington.com)", body):
-        bank = "Huntington"
-    return bank
+        return "Huntington"
+    return
 
 
 def parse_chase(subject: MailMessage.subject) -> str:

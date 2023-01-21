@@ -1,11 +1,9 @@
-import os
-import pathlib
-
 import imap_tools
 from db import transactions
-from dotenv import load_dotenv
 from email_parser import email_parser
 from loguru import logger
+
+from . import ENV
 
 logger.add(sink="debug.log", level="INFO")
 
@@ -31,88 +29,65 @@ def main():
         5b. Write the transaction data to the Postgres database.
     """
     logger.info("STARTING SAGE")
-    # Get all environment variables
-    app_root = str(pathlib.Path(__file__).parent.parent)
-    env_path = app_root + "/.env"
-    if not load_dotenv(env_path):
-        logger.critical(f"ENVIRONMENT ERROR: .env failed to load from {env_path}")
-    IMAP4_FQDN = os.environ.get("IMAP4_FQDN")
-    FORWARDING_EMAIL = os.environ.get("FORWARDING_EMAIL")
-    RECEIVING_EMAIL_USER = os.environ.get("RECEIVING_EMAIL_USER")
-    RECEIVING_EMAIL_PASSWORD = os.environ.get("RECEIVING_EMAIL_PASSWORD")
-
     # Log into the receiving mailbox on the mail server and retrieve emails
     # that have a UID that is greater than the maximum UID in the database.
     max_uid = transactions.get_maximum_uid()
-    try:
-        with imap_tools.MailBoxUnencrypted(IMAP4_FQDN).login(
-            RECEIVING_EMAIL_USER, RECEIVING_EMAIL_PASSWORD
-        ) as mailbox:
-            total_messages_count = 0
-            rejected_messages_count = 0
-            unparsed_messages_count = 0
-            unwritten_transactions_count = 0
-            processed_transactions_count = 0
-            # Retrieve emails that are greater than the maximum UID
-            # and are from the forwarding email
-            for msg in mailbox.fetch(
-                imap_tools.A(
-                    uid=imap_tools.U(f"{max_uid + 1}", "*"), from_=FORWARDING_EMAIL
-                )
-            ):
-                total_messages_count = total_messages_count + 1
-                # Ignore emails that don't have a text or html body
-                # This seems unlikely but who knows
-                if not msg.text or not msg.html:
-                    logger.warning(
-                        f"Rejecting email from {msg.from_} because it doesn't have a message body."
-                    )
-                    rejected_messages_count = rejected_messages_count + 1
-                    continue
-                # Parse a email message into the transaction data
-                transaction = email_parser.main(msg)
-                if not transaction.amount:
-                    logger.info(
-                        f"UID {msg.uid} was not parsed into a \
-                        transaction."
-                    )
-                    unparsed_messages_count = unparsed_messages_count + 1
-                    continue
-                row_count = transactions.insert_transaction(transaction)
-                if row_count != 1:
-                    unwritten_transactions_count = unwritten_transactions_count + 1
-                    continue
-
-                # One down!
-                processed_transactions_count = processed_transactions_count + 1
-
-            deduced_total_messages_count = (
-                rejected_messages_count
-                + unparsed_messages_count
-                + unwritten_transactions_count
-                + processed_transactions_count
+    # Connect to the mailbox containing transaction alert emails
+    with imap_tools.MailBoxUnencrypted(ENV["IMAP4_FQDN"]).login(
+        ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
+    ) as mailbox:
+        msg_count = {
+            "retrieved": 0,
+            "rejected": 0,
+            "unparsed": 0,
+            "processed": 0,
+        }
+        # Retrieve emails that are greater than the maximum UID
+        # and are from the forwarding email
+        for msg in mailbox.fetch(
+            imap_tools.A(
+                uid=imap_tools.U(f"{max_uid + 1}", "*"),
+                from_=ENV["FORWARDING_EMAIL"],
             )
-            if deduced_total_messages_count != total_messages_count:
-                logger.critical("FAILED")
-                logger.critical(
-                    f"ERROR-HANDLING ERROR: {total_messages_count} total messages \
-                    but only {deduced_total_messages_count} were accounted for."
+        ):
+            msg_count["retrieved"] = msg_count.get("retrieved", 0) + 1
+            # Ignore emails that don't have a text or html body
+            # This seems unlikely but who knows
+            if not msg.text or not msg.html:
+                logger.warning(
+                    f"Rejecting email from {msg.from_} because it doesn't have a message body."
                 )
-            logger.info(f"Total Messages in Batch = {total_messages_count}")
-            logger.info(f"Rejected Messages = {rejected_messages_count}")
-            logger.info(f"Unparsed Messages = {unparsed_messages_count}")
-            logger.info(f"Processed Transactions {processed_transactions_count}")
-            logger.info("DONE")
-            return
+                msg_count["rejected"] = msg_count.get("rejected", 0) + 1
+                continue
+            # Parse a email message into the transaction data
+            transaction = email_parser.main(msg)
+            if not transaction:
+                logger.info(f"UID {msg.uid} was not parsed into a transaction.")
+                msg_count["unparsed"] = msg_count.get("unparsed", 0) + 1
+                continue
 
-    except Exception as error:
+            # Write the transaction to the database
+            transactions.insert_transaction(transaction)
+
+            # One down!
+            msg_count["processed"] = msg_count.get("processed", 0) + 1
+
+    deduced_msg_count = (
+        msg_count.get("rejected")
+        + msg_count.get("unparsed")
+        + msg_count.get("processed")
+    )
+    retrieved_msg_count = msg_count.get("retrieved")
+    if deduced_msg_count != msg_count.get("retrieved"):
         logger.critical("FAILED")
         logger.critical(
-            f"MAILSERVER ERROR: Failed to connect via IMAP to the \
-            inbox of user {RECEIVING_EMAIL_USER}: {error}"
+            f"ERROR-HANDLING ERROR: {retrieved_msg_count} msgs retrieved but {deduced_msg_count} were accounted for."
         )
-        return
+    logger.info(f"Total Messages in Batch = {retrieved_msg_count}")
+    logger.info(f"{msg_count}")
+    logger.info("DONE")
+    return msg_count
 
 
 if __name__ == "__main__":
-    main()
+    msg_count = main()

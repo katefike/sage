@@ -2,6 +2,7 @@ version: '3.8'
 services:
   db:
     image: postgres:14.4
+    container_name: sage-db
     restart: always
     env_file:
       - .env
@@ -16,6 +17,7 @@ services:
       - ./docker/postgres/init:/docker-entrypoint-initdb.d
   mailserver:
     image: sage_mailserver
+    container_name: sage-mailserver
     build: ./docker/mailserver/
     expose:
       - '25'
@@ -28,7 +30,7 @@ services:
     restart: always
     volumes:
       - ./docker/mailserver/scripts/postfix_config_development.sh:/configure.sh
-      - ./docker/mailserver/test_data/example_data/transaction_emails_development.mbox:/home/incoming/test_data/example_data/transaction_emails_development.mbox
+      - ./docker/mailserver/test_data/example_data/:/home/incoming/test_data/example_data/
 volumes:
   db:
     driver: local
