@@ -11,23 +11,6 @@ HOST=${HOST}
 DKIM_SELECTOR=${DKIM_SELECTOR:=mail}
 CRON_ENABLED=${LOGS_CLEANUP:=1}
 
-# For local development, the local machine's public IP and host name
-# is added to /etc/hosts because that file is used to resolve a name into an address
-# It fixes the docker error messages discussed in these issues:
-# "Warning: Hostname does not resolve to address"
-  # https://github.com/docker-mailserver/docker-mailserver/issues/802
-# "reject: RCPT from unknown[(Server's IP)]: 454 4.7.1 <user@gmail.com>: 
-# Relay access denied; from=<user1@example.com> to=<user@gmail.com> proto=SMTP"
-  # https://serverfault.com/questions/711588/postfix-relay-access-denied-how-to-fix-it
-# Another syptom is that tests will fail for having localhost send emails via SMTP 
-# and retrieving emails via IMAP.
-if [$ISDEV]
-then
-  PUBLIC_IP=${PUBLIC_IP}
-  LOCALHOST=${LOCALHOST}
-  echo "$PUBLIC_IP  $LOCALHOST" >> /etc/hosts
-fi
-
 # SUPERVISOR
 cat > /etc/supervisor/conf.d/supervisord.conf <<EOF
 [supervisord]
@@ -94,7 +77,6 @@ postconf -e maillog_file=/var/log/mail.log
 echo '0 0 * * * root echo "" > /var/log/mail.log' > /etc/cron.d/maillog
 
 # TLS
-
 CRT_FILE=/etc/postfix/certs/${HOST}.crt
 KEY_FILE=/etc/postfix/certs/${HOST}.key
 
@@ -113,7 +95,6 @@ postconf -P "submission/inet/smtpd_tls_security_level=encrypt"
 fi
 
 # DKIM
-
 KEY_FILES=$(find /etc/opendkim/domainkeys -iname *.private)
 if [[ -n "${KEY_FILES}" ]]; then
 
@@ -204,7 +185,6 @@ echo '0 0 * * * root echo "" > /var/log/syslog' > /etc/cron.d/syslog
 fi
 
 # Fail2ban
-
 if [[ -n "${FAIL2BAN}" ]]; then
 
 cat >> /etc/supervisor/conf.d/supervisord.conf <<EOF
@@ -233,11 +213,9 @@ echo '1 0 * * * root echo "Log truncated at $(date +\%s)" > /var/log/mail.log' >
 fi
 
 # Rsyslogd does not start fix
-
 rm -f /var/run/rsyslogd.pid
 
 # Custom configuration
-
 [[ -f "/configure.sh" ]] && bash /configure.sh
 
 # DOVECOT
@@ -265,7 +243,7 @@ service auth {
 }
 EOF
 
-# Initialize a user
+# Initialize an email user
 useradd -m -s /bin/bash $RECEIVING_EMAIL_USER
 { echo "$RECEIVING_EMAIL_PASSWORD"; echo "$RECEIVING_EMAIL_PASSWORD"; } | passwd $RECEIVING_EMAIL_USER
 
