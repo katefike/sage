@@ -77,7 +77,6 @@ postconf -e maillog_file=/var/log/mail.log
 echo '0 0 * * * root echo "" > /var/log/mail.log' > /etc/cron.d/maillog
 
 # TLS
-
 CRT_FILE=/etc/postfix/certs/${HOST}.crt
 KEY_FILE=/etc/postfix/certs/${HOST}.key
 
@@ -96,7 +95,6 @@ postconf -P "submission/inet/smtpd_tls_security_level=encrypt"
 fi
 
 # DKIM
-
 KEY_FILES=$(find /etc/opendkim/domainkeys -iname *.private)
 if [[ -n "${KEY_FILES}" ]]; then
 
@@ -187,7 +185,6 @@ echo '0 0 * * * root echo "" > /var/log/syslog' > /etc/cron.d/syslog
 fi
 
 # Fail2ban
-
 if [[ -n "${FAIL2BAN}" ]]; then
 
 cat >> /etc/supervisor/conf.d/supervisord.conf <<EOF
@@ -216,11 +213,9 @@ echo '1 0 * * * root echo "Log truncated at $(date +\%s)" > /var/log/mail.log' >
 fi
 
 # Rsyslogd does not start fix
-
 rm -f /var/run/rsyslogd.pid
 
 # Custom configuration
-
 [[ -f "/configure.sh" ]] && bash /configure.sh
 
 # DOVECOT
@@ -248,7 +243,7 @@ service auth {
 }
 EOF
 
-# Initialize a user
+# Initialize an email user
 useradd -m -s /bin/bash $RECEIVING_EMAIL_USER
 { echo "$RECEIVING_EMAIL_PASSWORD"; echo "$RECEIVING_EMAIL_PASSWORD"; } | passwd $RECEIVING_EMAIL_USER
 
