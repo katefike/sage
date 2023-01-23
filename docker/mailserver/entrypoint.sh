@@ -11,23 +11,6 @@ HOST=${HOST}
 DKIM_SELECTOR=${DKIM_SELECTOR:=mail}
 CRON_ENABLED=${LOGS_CLEANUP:=1}
 
-# For local development, the local machine's public IP and host name
-# is added to /etc/hosts because that file is used to resolve a name into an address
-# It fixes the docker error messages discussed in these issues:
-# "Warning: Hostname does not resolve to address"
-  # https://github.com/docker-mailserver/docker-mailserver/issues/802
-# "reject: RCPT from unknown[(Server's IP)]: 454 4.7.1 <user@gmail.com>: 
-# Relay access denied; from=<user1@example.com> to=<user@gmail.com> proto=SMTP"
-  # https://serverfault.com/questions/711588/postfix-relay-access-denied-how-to-fix-it
-# Another syptom is that tests will fail for having localhost send emails via SMTP 
-# and retrieving emails via IMAP.
-if [$ISDEV]
-then
-  PUBLIC_IP=${PUBLIC_IP}
-  LOCALHOST=${LOCALHOST}
-  echo "$PUBLIC_IP  $LOCALHOST" >> /etc/hosts
-fi
-
 # SUPERVISOR
 cat > /etc/supervisor/conf.d/supervisord.conf <<EOF
 [supervisord]
