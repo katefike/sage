@@ -1,0 +1,14 @@
+# This file is for production. 
+# Run this in conjunction with the base file docker-compose.yml.
+services:
+  mailserver:
+    
+    # More information about the mail-server ports:
+    # https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/
+    # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
+    ports:
+      - '465:465'  # ESMTP (implicit TLS)
+      - '587:587'  # ESMTP (explicit TLS => STARTTLS)
+      - '993:993'  # IMAP4 (implicit TLS)
+    volumes:
+    - ./docker/mailserver/scripts/postfix_config_production.sh:/configure.sh

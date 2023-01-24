@@ -1,3 +1,6 @@
+# This is the base docker-compose.yml file,
+# used in conjunction with docker-compose.override.yml in development
+# or docker-compose.prod.yml in production
 version: '3.8'
 services:
   db:
@@ -14,6 +17,7 @@ services:
         max-file: "3"
     volumes: 
       - db:/var/lib/postgresql/data
+      # TODO: Separate the schema and the init data like banks
       - ./docker/postgres/init:/docker-entrypoint-initdb.d
   mailserver:
     image: sage_mailserver
@@ -23,14 +27,11 @@ services:
       - '25'
       - '143'
     ports:
-      - '25:25'
-      - '143:143'
+      - '25:25'    # SMTP  (explicit TLS => STARTTLS)
+      - '143:143'  # IMAP4 (explicit TLS => STARTTLS)
     env_file:
       - .env
     restart: always
-    volumes:
-      - ./docker/mailserver/scripts/postfix_config_development.sh:/configure.sh
-      - ./docker/mailserver/test_data/example_data/:/home/incoming/test_data/example_data/
 volumes:
   db:
     driver: local
