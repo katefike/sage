@@ -4,27 +4,22 @@ This app is like Mint, but better. It collects all of your personal financial da
 
 ## Usage
 *This app is actively under development. It isn't ready to be used.*
-1. Run the production setup script. This will create a .env file using .env-example as a template. 
+1. Run the production setup script. This will create a .env file using the file .env-example as a template.
+`bash scripts/production_setup.sh`
 2. Buy a domain name. Add it to the .env file.
 3. Create a Digital Ocean API Key. Add it to the .env file.
 4. Create SSH keys for the production server. Add it to the .env file.
-5. Set up the email account that received the transaction alert emails to forward all emails to the receiving email address specified in the .env file.
+5. Set up the email account that receives the transaction alert emails to forward all emails to the receiving email address specified in the .env file.
 6. Add the forwarding email address to the .env file.
-7. Change the app logic to reflect the bank email addresses and regex searches needed to parse your personal transaction data.
+8. Change the app logic to reflect the bank email addresses and regex searches needed to parse your personal transaction data.
 
 # Useful Commands
 ## Docker
-Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
-```
-docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.conf \
-&& docker cp sage-mailserver:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
-&& docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf \
-```
 Show the names of all docker containers (active and inactive)
 ```
 docker ps -a --format '{{.Names}}'
 ```
-Clean restart of Docker
+Stop the docker containers
 ```
 docker compose down
 ```
@@ -48,6 +43,12 @@ docker exec -it  sage-db psql -U admin sage
 Enter the mailsserver container
 ```
 docker exec -it sage-mailserver bash
+```
+Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
+```
+docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.conf \
+&& docker cp sage-mailserver:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
+&& docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf \
 ```
 
 ### Dovecot
@@ -77,7 +78,13 @@ docker rm -f $(docker ps -a -q) && docker volume rm $(docker volume ls -q)
   - Use [these instructions](https://docs.docker.com/engine/install/) to install 
 - Python 3.7 or higher
 
-## Dependencies
+## Setting up the Development Environment
+1. Run the development setup script.
+`bash scripts/setup_development.sh`
+2. Start docker
+`docker compose -f docker-compose.yml -f docker-compose.override.yml up -d` 
+
+## Python Dependencies
 ```
 (venv) $ python3 -m pip install -r requirements.txt
 ```
