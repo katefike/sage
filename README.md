@@ -4,71 +4,55 @@ This app is like Mint, but better. It collects all of your personal financial da
 
 ## Usage
 *This app is actively under development. It isn't ready to be used.*
-1. Run the production setup script. This will create a .env file using .env-example as a template. 
+1. Run the production setup script. This will create a .env file using the file .env-example as a template.
+`bash scripts/production_setup.sh`
 2. Buy a domain name. Add it to the .env file.
 3. Create a Digital Ocean API Key. Add it to the .env file.
 4. Create SSH keys for the production server. Add it to the .env file.
-5. Set up the email account that received the transaction alert emails to forward all emails to the receiving email address specified in the .env file.
+5. Set up the email account that receives the transaction alert emails to forward all emails to the receiving email address specified in the .env file.
 6. Add the forwarding email address to the .env file.
-7. Change the app logic to reflect the bank email addresses and regex searches needed to parse your personal transaction data.
+8. Change the app logic to reflect the bank email addresses and regex searches needed to parse your personal transaction data.
 
 # Useful Commands
 ## Docker
+Start the docker containers for the development environment
+`docker compose -f docker-compose.yml -f docker-compose.dev.yml up`
+Start the docker containers for production
+`docker compose -f docker-compose.yml -f docker-compose.prod.yml up`
+Show the names of all docker containers (active and inactive)
+`docker ps -a --format '{{.Names}}'`
+Stop the docker containers
+`docker compose down`
+Remove all containers
+`docker rm -f $(docker ps -a -q)`
+Remove all volumes
+`docker volume rm $(docker volume ls -q)`
+Remove all images
+`docker rmi $(docker images -q)`
+Access the postgres interactive CLI within the database container
+`docker exec -it  sage-db psql -U admin sage`
+
+## Mailserver Container
+Enter the mailsserver container
+`docker exec -it sage-mailserver bash`
 Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
 ```
 docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.conf \
 && docker cp sage-mailserver:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
 && docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf \
 ```
-Show the names of all docker containers (active and inactive)
-```
-docker ps -a --format '{{.Names}}'
-```
-Clean restart of Docker
-```
-docker compose down
-```
-Removes all containers
-```
-docker rm -f $(docker ps -a -q)
-```
-Removes all volumes
-```
-docker volume rm $(docker volume ls -q)
-```
-Removes all images
-```
-docker rmi $(docker images -q)
-```
-Access the postgres interactive CLI within the database container
-```
-docker exec -it  sage-db psql -U admin sage
-```
-## Mailserver Container
-Enter the mailsserver container
-```
-docker exec -it sage-mailserver bash
-```
 
 ### Dovecot
 Show dovecot errors
-```
-doveadm log errors
-```
+`doveadm log errors`
 Delete all emails from a mailbox
-```
-doveadm expunge -u incoming mailbox 'INBOX' all
-```
+`doveadm expunge -u incoming mailbox 'INBOX' all`
 
 ## Postgres
 Enter the database container and access the database.
-```
-docker exec -it sage-db psql -h localhost -U sage_admin sage
-```
+`docker exec -it sage-db psql -h localhost -U sage_admin sage`
 Remove all containers and volumes after a schema change.
-```
-docker rm -f $(docker ps -a -q) && docker volume rm $(docker volume ls -q)
-```
+`docker rm -f $(docker ps -a -q) && docker volume rm $(docker volume ls -q)`
 
 # Local Development
 
@@ -77,10 +61,14 @@ docker rm -f $(docker ps -a -q) && docker volume rm $(docker volume ls -q)
   - Use [these instructions](https://docs.docker.com/engine/install/) to install 
 - Python 3.7 or higher
 
-## Dependencies
-```
-(venv) $ python3 -m pip install -r requirements.txt
-```
+## Setting up the Development Environment
+1. Run the development setup script.
+`bash scripts/setup_development.sh`
+2. Start docker
+`docker compose -f docker-compose.yml -f docker-compose.override.yml up -d` 
+
+## Python Dependencies
+`(venv) $ python3 -m pip install -r requirements.txt`
 
 ## Send Emails Locally
 Test that the dockerized email server works by sending an email locally (i.e. from outside of the container) via telnet.
@@ -99,13 +87,9 @@ quit
 
 ## Testing with pytest
 Run the full test suite, stop after the first failure.
-```
-(venv) $ pytest -xv
-```
+`(venv) $ pytest -xv`
 See cosde coverage of the Tests
-```
-(venv) $ coverage run --source=sage -m pytest -v tests/ && coverage report -m
-```
+`(venv) $ coverage run --source=sage -m pytest -v tests/ && coverage report -m`
 
 ### Getting mbox files
 For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. Here's how you get mbox files for a gmail account:

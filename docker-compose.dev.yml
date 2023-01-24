@@ -1,0 +1,7 @@
+# This is for development.
+# Run this in conjunction with the base file docker-compose.yml.
+services:
+  mailserver:
+    volumes:
+    - ./docker/mailserver/scripts/postfix_config_development.sh:/configure.sh
+    - ./docker/mailserver/test_data/example_data/:/home/incoming/test_data/example_data/
