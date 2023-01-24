@@ -23,12 +23,12 @@ services:
     image: sage_mailserver
     container_name: sage-mailserver
     build: ./docker/mailserver/
+    restart: always
+    env_file:
+      - .env
     ports:
       - '25:25'    # SMTP  (explicit TLS => STARTTLS)
       - '143:143'  # IMAP4 (explicit TLS => STARTTLS)
-    env_file:
-      - .env
-    restart: always
 volumes:
   db:
     driver: local

@@ -1,13 +1,8 @@
 #!/usr/bin/bash
 
-# TODO: For toggling between dev and prod, use ISDEV
-
-# TODO: Make more .env vars for dev and prod where you can- instead of ISDEV when you can
 ISDEV=${ISDEV}
 DOMAIN=${DOMAIN}
 HOST=${HOST}
-# TODO: Try removing DKM stuff
-# TODO: Find out what DKM is used for.
 DKIM_SELECTOR=${DKIM_SELECTOR:=mail}
 CRON_ENABLED=${LOGS_CLEANUP:=1}
 
