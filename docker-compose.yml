@@ -23,9 +23,6 @@ services:
     image: sage_mailserver
     container_name: sage-mailserver
     build: ./docker/mailserver/
-    expose:
-      - '25'
-      - '143'
     ports:
       - '25:25'    # SMTP  (explicit TLS => STARTTLS)
       - '143:143'  # IMAP4 (explicit TLS => STARTTLS)
