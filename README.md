@@ -37,9 +37,9 @@ Enter the mailsserver container
 `docker exec -it sage-mailserver bash`
 Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
 ```
-docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.conf \
+docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.cf \
 && docker cp sage-mailserver:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
-&& docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf \
+&& docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf
 ```
 
 ### Dovecot
