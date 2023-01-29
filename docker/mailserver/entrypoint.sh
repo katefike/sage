@@ -111,13 +111,14 @@ fi
 service postfix reload
 service dovecot restart
 
-mkdir /home/incoming/Maildir
-# For local development:
-# Convert mbox (mb) file to Maildir (md)
-# docs found out https://github.com/dovecot/tools/blob/main/mb2md.pl
-mb2md -s /home/$RECEIVING_EMAIL_USER/test_data/example_data/transaction_emails_development.mbox -d /home/incoming/Maildir/
-# TODO: Create an imap group
-chmod -R 777 /home/incoming/Maildir
+if [[ "$ISDEV" = "1" || "$ISDEV" = "yes" || "$ISDEV" = "true" ]]; then
+  mkdir /home/incoming/Maildir
+  # Convert mbox (mb) file to Maildir (md)
+  # docs found out https://github.com/dovecot/tools/blob/main/mb2md.pl
+  mb2md -s /home/$RECEIVING_EMAIL_USER/test_data/example_data/transaction_emails_development.mbox -d /home/incoming/Maildir/
+  # TODO: Create an imap group
+  chmod -R 777 /home/incoming/Maildir
+fi
 
 # DKIM and FAIL2BAN 
 [[ -f "/dkim_fail2ban.sh" ]] && bash /dkim_fail2ban.sh
