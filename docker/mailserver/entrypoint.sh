@@ -4,7 +4,6 @@ ISDEV=${ISDEV}
 DOMAIN=${DOMAIN}
 HOST=${HOST}
 DKIM_SELECTOR=${DKIM_SELECTOR:=mail}
-CRON_ENABLED=${LOGS_CLEANUP:=1}
 
 # SUPERVISOR
 cat > /etc/supervisor/conf.d/supervisord.conf <<EOF
@@ -14,7 +13,6 @@ user=root
 EOF
 
 # CRON: Supervisord
-if [[ "${CRON_ENABLED,,}" = "1" || "${CRON_ENABLED,,}" = "yes" || "${CRON_ENABLED,,}" = "true" ]]; then
 cat >> /etc/supervisor/conf.d/supervisord.conf <<EOF
 [program:cron]
 command=cron -f
@@ -26,7 +24,6 @@ EOF
 # CRON: Config
 rm -f /etc/cron.daily/*
 rm -f /etc/cron.d/*
-fi
 
 # POSTFIX: Supervisord
 cat >> /etc/supervisor/conf.d/supervisord.conf <<EOF
