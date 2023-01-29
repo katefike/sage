@@ -3,7 +3,6 @@
 ISDEV=${ISDEV}
 DOMAIN=${DOMAIN}
 HOST=${HOST}
-DKIM_SELECTOR=${DKIM_SELECTOR:=mail}
 
 # SUPERVISOR
 cat > /etc/supervisor/conf.d/supervisord.conf <<EOF
@@ -129,12 +128,12 @@ localhost
 192.168.0.0/16
 ${DOMAIN}
 EOF
-DKIM_FILE=/etc/opendkim/domainkeys/${DKIM_SELECTOR}.private
+DKIM_FILE=/etc/opendkim/domainkeys/mail.private
 cat > /etc/opendkim/KeyTable <<EOF
-${DKIM_SELECTOR}._domainkey.${DOMAIN} ${DOMAIN}:${DKIM_SELECTOR}:${DKIM_FILE}
+mail._domainkey.${DOMAIN} ${DOMAIN}:mail:${DKIM_FILE}
 EOF
 cat > /etc/opendkim/SigningTable <<EOF
-*@${DOMAIN} ${DKIM_SELECTOR}._domainkey.${DOMAIN}
+*@${DOMAIN} mail._domainkey.${DOMAIN}
 EOF
 for kf in ${KEY_FILES}; do
 if [[ "${kf}" != "${DKIM_FILE}" ]]; then
