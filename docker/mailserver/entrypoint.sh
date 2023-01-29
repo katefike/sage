@@ -78,6 +78,45 @@ fi
 # Custom configuration
 [[ -f "/configure.sh" ]] && bash /configure.sh
 
+# DOVECOT: Config
+# Clear the file contents
+:> /etc/dovecot/dovecot.conf
+cat >> /etc/dovecot/dovecot.conf <<EOF
+protocols = "imap"
+disable_plaintext_auth = no
+mail_privileged_group = mail
+mail_location = maildir:~/Maildir
+userdb {
+  driver = passwd
+}
+passdb {
+  driver = shadow
+}
+
+service auth {
+  unix_listener /var/spool/postfix/private/auth {
+    group = postfix
+    mode = 0660
+    user = postfix
+  }
+}
+EOF
+
+# Initialize an email user
+useradd -m -s /bin/bash $RECEIVING_EMAIL_USER
+{ echo "$RECEIVING_EMAIL_PASSWORD"; echo "$RECEIVING_EMAIL_PASSWORD"; } | passwd $RECEIVING_EMAIL_USER
+
+service postfix reload
+service dovecot restart
+
+mkdir /home/incoming/Maildir
+# For local development:
+# Convert mbox (mb) file to Maildir (md)
+# docs found out https://github.com/dovecot/tools/blob/main/mb2md.pl
+mb2md -s /home/$RECEIVING_EMAIL_USER/test_data/example_data/transaction_emails_development.mbox -d /home/incoming/Maildir/
+# TODO: Create an imap group
+chmod -R 777 /home/incoming/Maildir
+
 # DKIM: Supervisord
 KEY_FILES=$(find /etc/opendkim/domainkeys -iname *.private)
 if [[ -n "${KEY_FILES}" ]]; then
@@ -180,44 +219,5 @@ echo '1 0 * * * root echo "Log truncated at $(date +\%s)" > /var/log/mail.log' >
 fi
 # Rsyslogd does not start fix
 rm -f /var/run/rsyslogd.pid
-
-# DOVECOT: Config
-# Clear the file contents
-:> /etc/dovecot/dovecot.conf
-cat >> /etc/dovecot/dovecot.conf <<EOF
-protocols = "imap"
-disable_plaintext_auth = no
-mail_privileged_group = mail
-mail_location = maildir:~/Maildir
-userdb {
-  driver = passwd
-}
-passdb {
-  driver = shadow
-}
-
-service auth {
-  unix_listener /var/spool/postfix/private/auth {
-    group = postfix
-    mode = 0660
-    user = postfix
-  }
-}
-EOF
-
-# Initialize an email user
-useradd -m -s /bin/bash $RECEIVING_EMAIL_USER
-{ echo "$RECEIVING_EMAIL_PASSWORD"; echo "$RECEIVING_EMAIL_PASSWORD"; } | passwd $RECEIVING_EMAIL_USER
-
-service postfix reload
-service dovecot restart
-
-mkdir /home/incoming/Maildir
-# For local development:
-# Convert mbox (mb) file to Maildir (md)
-# docs found out https://github.com/dovecot/tools/blob/main/mb2md.pl
-mb2md -s /home/$RECEIVING_EMAIL_USER/test_data/example_data/transaction_emails_development.mbox -d /home/incoming/Maildir/
-# TODO: Create an imap group
-chmod -R 777 /home/incoming/Maildir
 
 exec "$@"
