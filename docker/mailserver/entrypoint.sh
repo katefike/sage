@@ -51,7 +51,6 @@ while kill -0 "$(cat /var/spool/postfix/pid/master.pid)"; do
 done
 EOF
 chmod +x /postfix.sh
-
 # POSTFIX: Config
 postconf -e myhostname=${HOST}
 postconf -e myorigin=${DOMAIN}
@@ -60,19 +59,24 @@ echo "$DOMAIN" > /etc/mailname
 postconf -e maillog_file=/var/log/mail.log
 echo '0 0 * * * root echo "" > /var/log/mail.log' > /etc/cron.d/maillog
 # POSTFIX: TLS
-CRT_FILE=/etc/postfix/certs/${HOST}.crt
-KEY_FILE=/etc/postfix/certs/${HOST}.key
-if [[ -f "${CRT_FILE}" && -f "${KEY_FILE}" ]]; then
-# POSTFIX: TLS in /etc/postfix/main.cf
-postconf -e smtpd_tls_cert_file=${CRT_FILE}
-postconf -e smtpd_tls_key_file=${KEY_FILE}
-postconf -e smtpd_tls_security_level=may
-postconf -e smtp_tls_security_level=may
-# POSTFIX: TLS in /etc/postfix/master.cf
-postconf -M submission/inet="submission   inet   n   -   n   -   -   smtpd"
-postconf -P "submission/inet/syslog_name=postfix/submission"
-postconf -P "submission/inet/smtpd_tls_security_level=encrypt"
+if [[ "${ISDEV}" = "1" || "${ISDEV}" = "yes" || "${ISDEV}" = "true" ]]; then
+  CRT_FILE=/etc/postfix/certs/${HOST}.crt
+  KEY_FILE=/etc/postfix/certs/${HOST}.key
+  if [[ -f "${CRT_FILE}" && -f "${KEY_FILE}" ]]; then
+    # POSTFIX: TLS in /etc/postfix/main.cf
+    postconf -e smtpd_tls_cert_file=${CRT_FILE}
+    postconf -e smtpd_tls_key_file=${KEY_FILE}
+    postconf -e smtpd_tls_security_level=may
+    postconf -e smtp_tls_security_level=may
+    # POSTFIX: TLS in /etc/postfix/master.cf
+    postconf -M submission/inet="submission   inet   n   -   n   -   -   smtpd"
+    postconf -P "submission/inet/syslog_name=postfix/submission"
+    postconf -P "submission/inet/smtpd_tls_security_level=encrypt"
+  fi
 fi
+# POSTFIX: Config
+# Custom configuration
+[[ -f "/configure.sh" ]] && bash /configure.sh
 
 # DKIM: Supervisord
 KEY_FILES=$(find /etc/opendkim/domainkeys -iname *.private)
@@ -89,6 +93,7 @@ stdout_logfile_maxbytes=0
 stderr_logfile=/dev/stderr
 stderr_logfile_maxbytes=0
 EOF
+
 # DKIM: Postfix filter config in /etc/postfix/main.cf
 postconf -e milter_protocol=2
 postconf -e milter_default_action=accept
@@ -137,13 +142,13 @@ cat > /etc/opendkim/SigningTable <<EOF
 EOF
 for kf in ${KEY_FILES}; do
 if [[ "${kf}" != "${DKIM_FILE}" ]]; then
-kfn="${kf##*._domainkey.}"
-DKIM_DOMAIN="${kfn%.private}"
-kfs="${kf%%._domainkey.*}"
-DKIM_SELECTOR="${kfs##*/}"
-echo "${DKIM_DOMAIN}" >> /etc/opendkim/TrustedHosts
-echo "${DKIM_SELECTOR}._domainkey.${DKIM_DOMAIN} ${DKIM_DOMAIN#\*.}:${DKIM_SELECTOR}:${kf}" >> /etc/opendkim/KeyTable
-echo "*@${DKIM_DOMAIN} ${DKIM_SELECTOR}._domainkey.${DKIM_DOMAIN}" >> /etc/opendkim/SigningTable
+  kfn="${kf##*._domainkey.}"
+  DKIM_DOMAIN="${kfn%.private}"
+  kfs="${kf%%._domainkey.*}"
+  DKIM_SELECTOR="${kfs##*/}"
+  echo "${DKIM_DOMAIN}" >> /etc/opendkim/TrustedHosts
+  echo "${DKIM_SELECTOR}._domainkey.${DKIM_DOMAIN} ${DKIM_DOMAIN#\*.}:${DKIM_SELECTOR}:${kf}" >> /etc/opendkim/KeyTable
+  echo "*@${DKIM_DOMAIN} ${DKIM_SELECTOR}._domainkey.${DKIM_DOMAIN}" >> /etc/opendkim/SigningTable
 fi
 done
 chown opendkim:opendkim /etc/opendkim/domainkeys
@@ -175,10 +180,6 @@ echo '1 0 * * * root echo "Log truncated at $(date +\%s)" > /var/log/mail.log' >
 fi
 # Rsyslogd does not start fix
 rm -f /var/run/rsyslogd.pid
-
-# POSTFIX: Config
-# Custom configuration
-[[ -f "/configure.sh" ]] && bash /configure.sh
 
 # DOVECOT: Config
 # Clear the file contents
