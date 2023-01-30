@@ -63,6 +63,9 @@ postconf -e "home_mailbox = Maildir/"
 # POSTFIX/DOVECOT: Config specific to the dev or prod environment
 [[ -f "/postfix_dovecot_config.sh" ]] && bash /postfix_dovecot_config.sh
 
+# Set up DKIM and FAIL2BAN (prod only)
+[[ -f "/dkim_fail2ban.sh" ]] && bash /dkim_fail2ban.sh
+
 # Initialize an email user
 useradd -m -s /bin/bash $RECEIVING_EMAIL_USER
 { echo "$RECEIVING_EMAIL_PASSWORD"; echo "$RECEIVING_EMAIL_PASSWORD"; } | passwd $RECEIVING_EMAIL_USER
@@ -78,8 +81,5 @@ if [[ -f /home/$RECEIVING_EMAIL_USER/test_data/example_data/transaction_emails.m
 fi
 # TODO: Create an imap group
 chmod -R 777 /home/incoming/Maildir
-
-# DKIM and FAIL2BAN (prod only)
-[[ -f "/dkim_fail2ban.sh" ]] && bash /dkim_fail2ban.sh
 
 exec "$@"
