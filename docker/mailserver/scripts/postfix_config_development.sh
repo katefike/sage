@@ -2,25 +2,12 @@
 # This script configures /etc/postfix/main.conf and /etc/postfix/master.cf
 # Here are the docs on the postconf arguments: https://www.postfix.org/postconf.1.html
 
-# Comment out TLS/SMTP/SMTPD parameters
-postconf -# "smtpd_tls_cert_file"
-postconf -# "smtpd_tls_key_file"
-postconf -# "smtpd_tls_security_level"
+# Diable TLS for delivering mail (Inbound/SMTP)
 postconf -# "smtp_tls_CApath"
 postconf -# "smtp_tls_security_level"
 postconf -# "smtp_tls_session_cache_database"
+# Diable TLS/SASL for  for receiving mail (Outbound/SMTPD)
+postconf -# "smtpd_tls_cert_file"
+postconf -# "smtpd_tls_key_file"
+postconf -# "smtpd_tls_security_level"
 postconf -# "smtpd_relay_restrictions"
-
-postconf -e "alias_maps = hash:/etc/aliases"
-postconf -e "alias_database = hash:/etc/aliases"
-postconf -e "mydestination = $HOST.$DOMAIN, $DOMAIN, localhost.$DOMAIN, localhost.localdomain, localhost"
-postconf -e "relayhost = "
-postconf -e "mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128"
-postconf -e "mailbox_size_limit = 0"
-postconf -e "recipient_delimiter = +"
-postconf -e "inet_interfaces = all"
-postconf -e "inet_protocols = all"
-postconf -# "smtpd_sasl_auth_enable"
-postconf -# "broken_sasl_auth_clients"
-postconf -# "smtpd_recipient_restrictions"
-postconf -e "home_mailbox = Maildir/"

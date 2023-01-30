@@ -51,9 +51,13 @@ while kill -0 "$(cat /var/spool/postfix/pid/master.pid)"; do
 done
 EOF
 chmod +x /postfix.sh
-# POSTFIX: Config
+
+# POSTFIX: Config common to the dev and prod environments
 postconf -e myhostname=${HOST}
 postconf -e myorigin=${DOMAIN}
+postconf -e "mydestination = $HOST.$DOMAIN, $DOMAIN, localhost.$DOMAIN, localhost.localdomain, localhost"
+postconf -e "home_mailbox = Maildir/"
+
 postconf -F '*/*/chroot = n'
 echo "$DOMAIN" > /etc/mailname
 postconf -e maillog_file=/var/log/mail.log
