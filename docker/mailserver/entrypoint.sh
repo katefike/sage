@@ -58,28 +58,13 @@ postconf -e myorigin=${DOMAIN}
 postconf -e "mydestination = $HOST.$DOMAIN, $DOMAIN, localhost.$DOMAIN, localhost.localdomain, localhost"
 postconf -e "home_mailbox = Maildir/"
 
+# POSTFIX: Send Postfix logs to stdout
 postconf -F '*/*/chroot = n'
 echo "$DOMAIN" > /etc/mailname
 postconf -e maillog_file=/var/log/mail.log
 echo '0 0 * * * root echo "" > /var/log/mail.log' > /etc/cron.d/maillog
-# POSTFIX: TLS
-if [[ "${ISDEV}" = "0" || "${ISDEV,,}" = "no" || "${ISDEV,,}" = "false" ]]; then
-  CRT_FILE=/etc/postfix/certs/${HOST}.crt
-  KEY_FILE=/etc/postfix/certs/${HOST}.key
-  if [[ -f "${CRT_FILE}" && -f "${KEY_FILE}" ]]; then
-    # POSTFIX: TLS in /etc/postfix/main.cf
-    postconf -e smtpd_tls_cert_file=${CRT_FILE}
-    postconf -e smtpd_tls_key_file=${KEY_FILE}
-    postconf -e smtpd_tls_security_level=may
-    postconf -e smtp_tls_security_level=may
-    # POSTFIX: TLS in /etc/postfix/master.cf
-    postconf -M submission/inet="submission   inet   n   -   n   -   -   smtpd"
-    postconf -P "submission/inet/syslog_name=postfix/submission"
-    postconf -P "submission/inet/smtpd_tls_security_level=encrypt"
-  fi
-fi
-# POSTFIX: Config
-# Custom configuration
+
+# POSTFIX: Config specific to the dev or prod environment
 [[ -f "/postfix_config.sh" ]] && bash /postfix_config.sh
 
 # DOVECOT: Config
