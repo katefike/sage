@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-ISDEV=$ISDEV
+ISDEV=${ISDEV}
 DOMAIN=${DOMAIN}
 HOST=${HOST}
 
@@ -59,7 +59,7 @@ echo "$DOMAIN" > /etc/mailname
 postconf -e maillog_file=/var/log/mail.log
 echo '0 0 * * * root echo "" > /var/log/mail.log' > /etc/cron.d/maillog
 # POSTFIX: TLS
-if [[ "$ISDEV" = "1" || "$ISDEV" = "yes" || "$ISDEV" = "true" ]]; then
+if [[ "${ISDEV}" = "1" || "${ISDEV,,}" = "yes" || "${ISDEV,,}" = "true" ]]; then
   CRT_FILE=/etc/postfix/certs/${HOST}.crt
   KEY_FILE=/etc/postfix/certs/${HOST}.key
   if [[ -f "${CRT_FILE}" && -f "${KEY_FILE}" ]]; then
@@ -111,7 +111,7 @@ fi
 service postfix reload
 service dovecot restart
 
-if [[ "$ISDEV" = "1" || "$ISDEV" = "yes" || "$ISDEV" = "true" ]]; then
+if [[ "${ISDEV}" = "1" || "${ISDEV,,}" = "yes" || "${ISDEV,,}" = "true" ]]; then
   mkdir /home/incoming/Maildir
   # Convert mbox (mb) file to Maildir (md)
   # docs found out https://github.com/dovecot/tools/blob/main/mb2md.pl
