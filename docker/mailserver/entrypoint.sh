@@ -52,44 +52,20 @@ done
 EOF
 chmod +x /postfix.sh
 
-# POSTFIX: Config common to the dev and prod environments
-postconf -e myhostname=${HOST}
-postconf -e myorigin=${DOMAIN}
-postconf -e "mydestination = $HOST.$DOMAIN, $DOMAIN, localhost.$DOMAIN, localhost.localdomain, localhost"
-postconf -e "home_mailbox = Maildir/"
-
 # POSTFIX: Send Postfix logs to stdout
 postconf -F '*/*/chroot = n'
 echo "$DOMAIN" > /etc/mailname
 postconf -e maillog_file=/var/log/mail.log
 echo '0 0 * * * root echo "" > /var/log/mail.log' > /etc/cron.d/maillog
 
-# POSTFIX: Config specific to the dev or prod environment
-[[ -f "/postfix_config.sh" ]] && bash /postfix_config.sh
+# POSTFIX: Config common to the dev and prod environments
+postconf -e myhostname=${HOST}
+postconf -e myorigin=${DOMAIN}
+postconf -e "mydestination = $HOST.$DOMAIN, $DOMAIN, localhost.$DOMAIN, localhost.localdomain, localhost"
+postconf -e "home_mailbox = Maildir/"
 
-# DOVECOT: Config
-# Clear the file contents
-:> /etc/dovecot/dovecot.conf
-cat >> /etc/dovecot/dovecot.conf <<EOF
-protocols = "imap"
-disable_plaintext_auth = no
-mail_privileged_group = mail
-mail_location = maildir:~/Maildir
-userdb {
-  driver = passwd
-}
-passdb {
-  driver = shadow
-}
-
-service auth {
-  unix_listener /var/spool/postfix/private/auth {
-    group = postfix
-    mode = 0660
-    user = postfix
-  }
-}
-EOF
+# POSTFIX/DOVECOT: Config specific to the dev or prod environment
+[[ -f "/postfix_dovecot_config.sh" ]] && bash /postfix_dovecot_config.sh
 
 # Initialize an email user
 useradd -m -s /bin/bash $RECEIVING_EMAIL_USER
@@ -106,7 +82,7 @@ if [[ "${ISDEV}" = "1" || "${ISDEV,,}" = "yes" || "${ISDEV,,}" = "true" ]]; then
   chmod -R 777 /home/incoming/Maildir
 fi
 
-# DKIM and FAIL2BAN 
+# DKIM and FAIL2BAN (prod only)
 [[ -f "/dkim_fail2ban.sh" ]] && bash /dkim_fail2ban.sh
 
 exec "$@"
