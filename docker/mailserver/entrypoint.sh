@@ -103,11 +103,8 @@ service auth {
 EOF
 
 # Initialize an email user
-if ! id -u $RECEIVING_EMAIL_USER >/dev/null 2>&1; then
-  useradd -m -s /bin/bash $RECEIVING_EMAIL_USER
-  { echo "$RECEIVING_EMAIL_PASSWORD"; echo "$RECEIVING_EMAIL_PASSWORD"; } | passwd $RECEIVING_EMAIL_USER
-fi
-
+useradd -m -s /bin/bash $RECEIVING_EMAIL_USER
+{ echo "$RECEIVING_EMAIL_PASSWORD"; echo "$RECEIVING_EMAIL_PASSWORD"; } | passwd $RECEIVING_EMAIL_USER
 service postfix reload
 service dovecot restart
 
