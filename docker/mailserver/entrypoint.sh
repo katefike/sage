@@ -59,7 +59,7 @@ echo "$DOMAIN" > /etc/mailname
 postconf -e maillog_file=/var/log/mail.log
 echo '0 0 * * * root echo "" > /var/log/mail.log' > /etc/cron.d/maillog
 # POSTFIX: TLS
-if [[ "${ISDEV}" = "1" || "${ISDEV,,}" = "yes" || "${ISDEV,,}" = "true" ]]; then
+if [[ "${ISDEV}" = "0" || "${ISDEV,,}" = "no" || "${ISDEV,,}" = "false" ]]; then
   CRT_FILE=/etc/postfix/certs/${HOST}.crt
   KEY_FILE=/etc/postfix/certs/${HOST}.key
   if [[ -f "${CRT_FILE}" && -f "${KEY_FILE}" ]]; then
