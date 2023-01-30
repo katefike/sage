@@ -5,7 +5,7 @@ correctly parses an  email into transaction data.
 The input is the UID of the email, which maps to an email that was loaded
 into the mail server when the docker container was created. These emails
 are contained within the file
-docker/mailserver/test_data/example_data/transaction_emails_development.mbox
+docker/mailserver/test_data/example_data/transaction_emails.mbox
 
 They're also listed as separate files in
 tests/test_email_parser/test_data/example_data so they can be more easily
@@ -188,7 +188,7 @@ def get_test_data():
     return data
 
 
-utils.fresh_inbox("transaction_emails_development.mbox")
+utils.fresh_inbox("transaction_emails.mbox")
 DATA = get_test_data()
 
 
