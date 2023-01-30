@@ -2,20 +2,15 @@
 # This script configures /etc/postfix/main.conf and /etc/postfix/master.cf
 # Here are the docs on the postconf arguments: https://www.postfix.org/postconf.1.html
 
-# TODO: Use a TLS cert for staging and production
-# postconf -e "smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem"
-# postconf -e "smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key"
+# Comment out TLS/SMTP/SMTPD parameters
 postconf -# "smtpd_tls_cert_file"
 postconf -# "smtpd_tls_key_file"
 postconf -# "smtpd_tls_security_level"
-
 postconf -# "smtp_tls_CApath"
 postconf -# "smtp_tls_security_level"
 postconf -# "smtp_tls_session_cache_database"
-
-
 postconf -# "smtpd_relay_restrictions"
-postconf -e "myhostname = $DOMAIN"
+
 postconf -e "alias_maps = hash:/etc/aliases"
 postconf -e "alias_database = hash:/etc/aliases"
 postconf -e "mydestination = $HOST.$DOMAIN, $DOMAIN, localhost.$DOMAIN, localhost.localdomain, localhost"
