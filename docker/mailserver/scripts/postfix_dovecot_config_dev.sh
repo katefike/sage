@@ -1,7 +1,8 @@
 #!/bin/bash
-# This script configures /etc/postfix/main.conf and /etc/postfix/master.cf
-# Here are the docs on the postconf arguments: https://www.postfix.org/postconf.1.html
+# Configures /etc/postfix/main.conf, /etc/postfix/master.cf,
+# and /etc/dovecot/dovecot.conf for development
 
+# Here are the docs on the postconf arguments: https://www.postfix.org/postconf.1.html
 # Diable TLS for delivering mail (Inbound/SMTP)
 postconf -# "smtp_tls_CApath"
 postconf -# "smtp_tls_security_level"
