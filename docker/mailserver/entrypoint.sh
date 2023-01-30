@@ -1,9 +1,5 @@
 #!/usr/bin/bash
 
-ISDEV=${ISDEV}
-DOMAIN=${DOMAIN}
-HOST=${HOST}
-
 # SUPERVISOR
 cat > /etc/supervisor/conf.d/supervisord.conf <<EOF
 [supervisord]
@@ -59,8 +55,8 @@ postconf -e maillog_file=/var/log/mail.log
 echo '0 0 * * * root echo "" > /var/log/mail.log' > /etc/cron.d/maillog
 
 # POSTFIX: Config common to the dev and prod environments
-postconf -e myhostname=${HOST}
-postconf -e myorigin=${DOMAIN}
+postconf -e myhostname=$HOST
+postconf -e myorigin=$DOMAIN
 postconf -e "mydestination = $HOST.$DOMAIN, $DOMAIN, localhost.$DOMAIN, localhost.localdomain, localhost"
 postconf -e "home_mailbox = Maildir/"
 
@@ -73,14 +69,15 @@ useradd -m -s /bin/bash $RECEIVING_EMAIL_USER
 service postfix reload
 service dovecot restart
 
-if [[ "${ISDEV}" = "1" || "${ISDEV,,}" = "yes" || "${ISDEV,,}" = "true" ]]; then
-  mkdir /home/incoming/Maildir
+# Create the Maildir mailbox
+mkdir /home/incoming/Maildir
+if [[ -f /home/$RECEIVING_EMAIL_USER/test_data/example_data/transaction_emails.mbox ]]; then
   # Convert mbox (mb) file to Maildir (md)
   # docs found out https://github.com/dovecot/tools/blob/main/mb2md.pl
   mb2md -s /home/$RECEIVING_EMAIL_USER/test_data/example_data/transaction_emails.mbox -d /home/incoming/Maildir/
-  # TODO: Create an imap group
-  chmod -R 777 /home/incoming/Maildir
 fi
+# TODO: Create an imap group
+chmod -R 777 /home/incoming/Maildir
 
 # DKIM and FAIL2BAN (prod only)
 [[ -f "/dkim_fail2ban.sh" ]] && bash /dkim_fail2ban.sh
