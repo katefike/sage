@@ -1,16 +1,18 @@
 #!/usr/bin/bash
 
 # TLS CERTS: Only run in production
-[[ -f "/letsencrypt.sh" ]] && bash /letsencrypt.sh
-
-if [[ -f "${CRT_FILE}" && -f "${KEY_FILE}" ]]; then
-  if ![[ openssl s_client -connect ${HOST}.${DOMAIN}:587 -starttls smtp ${HOST}.${DOMAIN} | grep -q 'CONNECTED']]; then
-    'CRITICAL ERROR: Failed to connect using TLS.'
+if [[ -f "/letsencrypt.sh" ]]; then
+  bash /letsencrypt.sh
+  if [[ -f "${CRT_FILE}" && -f "${KEY_FILE}" ]]; then
+    if ![[ openssl s_client -connect ${HOST}.${DOMAIN}:993 -starttls smtp | grep -q 'CONNECTED']]; then
+      'CRITICAL ERROR: Failed to connect using TLS.'
+      exit
+    fi
+  else
+    'CRITICAL ERROR: Failed to find TLS cert files.'
     exit
   fi
-else
-  'CRITICAL ERROR: Failed to find TLS cert files.'
-  exit
+  ufw deny 80
 fi
 
 # SUPERVISOR
