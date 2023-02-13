@@ -5,7 +5,7 @@ This app is like Mint, but better. It collects all of your personal financial da
 ## Usage
 *This app is actively under development. It isn't ready to be used.*
 1. Run the production setup script. This will create a .env file using the file .env-example as a template.
-`bash scripts/production_setup.sh`
+`bash scripts/setup_production.sh`
 2. Buy a domain name. Add it to the .env file.
 3. Create a Digital Ocean API Key. Add it to the .env file.
 4. Create SSH keys for the production server. Add it to the .env file.
