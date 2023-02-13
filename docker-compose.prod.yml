@@ -10,5 +10,5 @@ services:
       - '587:587'  # ESMTP (explicit TLS => STARTTLS)
       - '993:993'  # IMAP4 (implicit TLS)
     volumes:
-    - ./docker/mailserver/scripts/postfix_config_production.sh:/postfix_config.sh
-    - ./docker/mailserver/scripts/dkim_fail2ban_production.sh:/dkim_fail2ban.sh
+    - ./docker/mailserver/scripts/postfix_config_prod.sh:/postfix_dovecot_config.sh
+    - ./docker/mailserver/scripts/dkim_fail2ban_prod.sh:/dkim_fail2ban.sh
