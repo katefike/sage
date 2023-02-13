@@ -16,43 +16,79 @@ This app is like Mint, but better. It collects all of your personal financial da
 # Useful Commands
 ## Docker
 Start the docker containers for the development environment
+
 `docker compose -f docker-compose.yml -f docker-compose.dev.yml up`
+
+
 Start the docker containers for production
+
 `docker compose -f docker-compose.yml -f docker-compose.prod.yml up`
+
+
 Show the names of all docker containers (active and inactive)
+
 `docker ps -a --format '{{.Names}}'`
+
+
 Stop the docker containers
+
 `docker compose down`
+
+
 Remove all containers
+
 `docker rm -f $(docker ps -a -q)`
+
+
 Remove all volumes
+
 `docker volume rm $(docker volume ls -q)`
+
+
 Remove all images
+
 `docker rmi $(docker images -q)`
+
+
 Access the postgres interactive CLI within the database container
+
 `docker exec -it  sage-db psql -U admin sage`
+
 
 ## Mailserver Container
 Enter the mailsserver container
+
 `docker exec -it sage-mailserver bash`
+
 Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
 ```
-docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.conf \
+docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.cf \
 && docker cp sage-mailserver:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
-&& docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf \
+&& docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf
 ```
 
 ### Dovecot
 Show dovecot errors
+
 `doveadm log errors`
+
+
 Delete all emails from a mailbox
+
 `doveadm expunge -u incoming mailbox 'INBOX' all`
+
+
 
 ## Postgres
 Enter the database container and access the database.
+
 `docker exec -it sage-db psql -h localhost -U sage_admin sage`
+
+
 Remove all containers and volumes after a schema change.
+
 `docker rm -f $(docker ps -a -q) && docker volume rm $(docker volume ls -q)`
+
 
 # Local Development
 
@@ -87,9 +123,14 @@ quit
 
 ## Testing with pytest
 Run the full test suite, stop after the first failure.
+
 `(venv) $ pytest -xv`
+
+
 See cosde coverage of the Tests
+
 `(venv) $ coverage run --source=sage -m pytest -v tests/ && coverage report -m`
+
 
 ### Getting mbox files
 For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. Here's how you get mbox files for a gmail account:

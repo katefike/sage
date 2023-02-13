@@ -3,5 +3,5 @@
 services:
   mailserver:
     volumes:
-    - ./docker/mailserver/scripts/postfix_config_development.sh:/configure.sh
+    - ./docker/mailserver/scripts/postfix_dovecot_config_dev.sh:/postfix_dovecot_config.sh
     - ./docker/mailserver/test_data/example_data/:/home/incoming/test_data/example_data/

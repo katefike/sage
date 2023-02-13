@@ -33,15 +33,8 @@ def get_id(bank_name: str, account: Optional[str]) -> int:
             """
     bank_id_result = execute_statements.select(query, params)
     if bank_id_result:
-        if len(bank_id_result) == 1:
-            bank_id = bank_id_result[0]
-            print(bank_id)
-            return bank_id
-        else:
-            logger.error(
-                f"{len(bank_id_result)} bank IDs were returned.\
-                     BANK: {bank_name} ACCOUNT: {account}."
-            )
+        bank_id = bank_id_result[0]
+        return bank_id
     else:
         logger.error(
             f"No bank IDs were returned. BANK: {bank_name} ACCOUNT: {account}."
