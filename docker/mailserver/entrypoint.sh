@@ -1,5 +1,13 @@
 #!/usr/bin/bash
 
+# TLS CERTS: Only run in production
+[[ -f "/letsencrypt.sh" ]] && bash /letsencrypt.sh
+
+if ![[ -f "${CRT_FILE}" && -f "${KEY_FILE}" ]]; then
+  'CRITICAL ERROR: Failed to find TLS cert files.'
+  exit
+fi
+
 # SUPERVISOR
 cat > /etc/supervisor/conf.d/supervisord.conf <<EOF
 [supervisord]
