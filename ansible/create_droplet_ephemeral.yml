@@ -16,6 +16,28 @@
       state: present
     register: sshkey_result
 
+  - name: Add Droplet to firewall
+    community.digitalocean.digital_ocean_firewall:
+      name: "sage.test"
+      inbound_rules:
+        - protocol: "tcp"
+          ports: "22"
+          sources:
+            addresses: ["40.142.183.33"]
+      #   - protocol: "tcp"
+      #     ports: "80"
+      #     sources:
+      #       addresses: ["0.0.0.0/0", "::/0"]
+      #   - protocol: "tcp"
+      #     ports: "443"
+      #     sources:
+      #       addresses: ["0.0.0.0/0", "::/0"]
+      outbound_rules: 
+        - protocol: "tcp"
+          ports: "587"
+          destinations:
+            addresses: ["0.0.0.0/0", "::/0"]
+
   - name: Create a new Droplet
     digital_ocean_droplet:
       name: sage.ephemeral
@@ -23,6 +45,7 @@
       size: "{{ droplet_size }}"
       region: "{{ droplet_region }}"
       image: "{{ droplet_image }}"
+      # firewall: ["sage.test"]
       wait_timeout: 600
       unique_name: yes
       ssh_keys: ["{{ sshkey_result.data.ssh_key.id }}"]      
@@ -30,6 +53,25 @@
     with_inventory_hostnames:
       - web
     register: droplet_result
+
+  # - debug:
+  #     msg: "ID is {{ item.data.droplet.networks.v4[0].ip_address }}"
+  #     with_items: "{{ droplet_result.results }}"
+    
+  # - debug:
+  #     msg: "IP is {{ item.data.droplet.id }}"
+  #     with_items: "{{ droplet_result.results }}"
+
+
+  - name: Show all Droplet info
+    ansible.builtin.debug:
+      msg: |
+        {{ droplet_result }}
+
+  - name: Show some specific Droplet info
+    ansible.builtin.debug:
+      msg: |
+        {{ droplet_result.results[0].data.droplet.id }}
 
   # TODO: Abstract the file path or do something different to show the IP address
   - name: Save IP and host name to ./ansible/droplet_hosts
