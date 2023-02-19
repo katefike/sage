@@ -16,7 +16,7 @@
       state: present
     register: sshkey_result
 
-  - name: Add Droplet to firewall
+  - name: Create firewall named "sage.test"
     community.digitalocean.digital_ocean_firewall:
       name: "sage.test"
       inbound_rules:
@@ -45,7 +45,7 @@
       size: "{{ droplet_size }}"
       region: "{{ droplet_region }}"
       image: "{{ droplet_image }}"
-      # firewall: ["sage.test"]
+      firewall: ["sage.test"]
       wait_timeout: 600
       unique_name: yes
       ssh_keys: ["{{ sshkey_result.data.ssh_key.id }}"]      
@@ -54,24 +54,15 @@
       - web
     register: droplet_result
 
-  # - debug:
-  #     msg: "ID is {{ item.data.droplet.networks.v4[0].ip_address }}"
-  #     with_items: "{{ droplet_result.results }}"
-    
-  # - debug:
-  #     msg: "IP is {{ item.data.droplet.id }}"
-  #     with_items: "{{ droplet_result.results }}"
+  # - name: Show all Droplet info
+  #   ansible.builtin.debug:
+  #     msg: |
+  #       {{ droplet_result }}
 
-
-  - name: Show all Droplet info
-    ansible.builtin.debug:
-      msg: |
-        {{ droplet_result }}
-
-  - name: Show some specific Droplet info
-    ansible.builtin.debug:
-      msg: |
-        {{ droplet_result.results[0].data.droplet.id }}
+  # - name: Show some specific Droplet info
+  #   ansible.builtin.debug:
+  #     msg: |
+  #       {{ droplet_result.results[0].data.droplet.id }}
 
   # TODO: Abstract the file path or do something different to show the IP address
   - name: Save IP and host name to ./ansible/droplet_hosts
