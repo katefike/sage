@@ -8,7 +8,7 @@
     droplet_image: ubuntu-22-04-x64
   tasks:
   
-  - name: add public ssh key to digitalocean account
+  - name: Add public ssh key to Digital Ocean account
     digital_ocean_sshkey:
       name: "Personal Projects - Local"
       oauth_token: "{{ digital_ocean_token }}"
@@ -16,7 +16,7 @@
       state: present
     register: sshkey_result
 
-  - name: create a new droplet assigning the key
+  - name: Create a new Droplet
     digital_ocean_droplet:
       name: sage.ephemeral
       oauth_token: "{{ digital_ocean_token }}"
@@ -31,7 +31,8 @@
       - web
     register: droplet_result
 
-  - name: save ip and hostname to local hosts file
+  # TODO: Abstract the file path or do something different to show the IP address
+  - name: Save IP and host name to ./ansible/droplet_hosts
     become: yes
     lineinfile:
       path: /home/kfike/Projects/sage/ansible/droplet_hosts
@@ -39,7 +40,7 @@
       line: "{{ item.data.droplet.networks.v4[0].ip_address }}  {{ item.data.droplet.name }}"
     with_items: "{{ droplet_result.results }}"
 
-  - name: delete the new droplet
+  - name: Delete the new droplet
     digital_ocean_droplet:
       state: absent
       name: sage.ephemeral
