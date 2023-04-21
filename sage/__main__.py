@@ -53,7 +53,8 @@ def main():
             msg_count["retrieved"] = msg_count.get("retrieved", 0) + 1
             # Ignore emails that don't have a text or html body
             # This seems unlikely but who knows
-            if not msg.text or not msg.html:
+            # Change from or to and
+            if not msg.text and not msg.html:
                 logger.warning(
                     f"Rejecting email from {msg.from_} because it doesn't have a message body."
                 )

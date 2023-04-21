@@ -12,5 +12,5 @@ source ".env"
 set +o allexport
 
 # Run Ansible Playbook for creating an ephemeral DO Droplet server
-cd ansible/
-exec ansible-playbook -i inventory_ephemoral.yml create_droplet_ephemeral.yml --ask-become-pass
+cd server
+exec ansible-playbook -i ansible/inventory_ephem.yml ansible/create_droplet_ephem.yml --ask-become-pass
