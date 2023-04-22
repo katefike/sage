@@ -5,6 +5,9 @@ from . import ENV
 
 logger.add(sink="debug.log", level="INFO")
 
+DO_API_BASE_URL = ENV["DO_API_BASE_URL"]
+DO_API_TOKEN = ENV["DO_API_TOKEN"]
+
 
 def main():
     response = get_list_all_droplets()
@@ -15,7 +18,7 @@ def main():
 
 
 def get_list_all_droplets():
-    pass
+    requests.get("https://api.github.com")
 
 
 def post_add_droplet_to_firewall():
