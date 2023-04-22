@@ -8,7 +8,10 @@ from . import ENV
 logger.add(sink="debug.log", level="INFO")
 
 DO_API_BASE_URL = ENV["DO_API_BASE_URL"]
-HEADERS = {"Authorization": f"Bearer {ENV['DO_API_TOKEN']}"}
+HEADERS = {
+    "Authorization": f"Bearer {ENV['DO_API_TOKEN']}",
+    "Content-Type": "application/json",
+}
 
 
 def main():
@@ -55,8 +58,20 @@ def get_firewall_id() -> str:
 
 
 def add_droplet_to_firewall(droplet_id: int, firewall_id: str):
-    print(droplet_id)
-    print(firewall_id)
+    try:
+        url = DO_API_BASE_URL + f"firewalls/{firewall_id}/droplets"
+        body = {"droplet_ids": [droplet_id]}
+        print(body)
+        response = requests.post(url, headers=HEADERS, json=body)
+        # If the response was successful, no Exception will be raised
+        response.raise_for_status()
+    except HTTPError as http_err:
+        logger.critical(f"HTTP error occurred: {http_err}")
+    except Exception as err:
+        logger.critical(f"Other error occurred: {err}")
+    else:
+        json_response = response.json()
+        print(json_response)
 
 
 if __name__ == "__main__":  # pragma: no cover
