@@ -1,8 +1,10 @@
 - hosts: localhost
   vars:
     digital_ocean_token: '{{ lookup("env", "DO_API_TOKEN") }}'
+    ephem_name: '{{ lookup("env", "EPHEM_NAME") }}'
     ephem_ssh_key_pub: '{{ lookup("env", "EPHEM_SSH_KEY_PUB") }}'
     ephem_ssh_private_key_file: '{{ lookup("env", "EPHEM_SSHPRIVATE_KEY_FILE") }}'
+
     droplet_size: s-1vcpu-1gb
     droplet_region: nyc1
     droplet_image: ubuntu-22-04-x64
@@ -16,22 +18,22 @@
       state: present
     register: sshkey_result
 
-  - name: Create firewall named "sage.test"
+  - name: Create firewall
     community.digitalocean.digital_ocean_firewall:
-      name: "sage.test"
+      name: "{{ ephem_name }}"
       inbound_rules:
         - protocol: "tcp"
           ports: "22"
           sources:
             addresses: ["40.142.183.33"]
-      #   - protocol: "tcp"
-      #     ports: "80"
-      #     sources:
-      #       addresses: ["0.0.0.0/0", "::/0"]
-      #   - protocol: "tcp"
-      #     ports: "443"
-      #     sources:
-      #       addresses: ["0.0.0.0/0", "::/0"]
+        - protocol: "tcp"
+          ports: "80"
+          sources:
+            addresses: ["0.0.0.0/0", "::/0"]
+        - protocol: "tcp"
+          ports: "143"
+          sources:
+            addresses: ["0.0.0.0/0", "::/0"]
       outbound_rules: 
         - protocol: "tcp"
           ports: "587"
@@ -40,12 +42,11 @@
 
   - name: Create a new Droplet
     digital_ocean_droplet:
-      name: sage.ephem
+      name: "{{ ephem_name }}"
       oauth_token: "{{ digital_ocean_token }}"
       size: "{{ droplet_size }}"
       region: "{{ droplet_region }}"
       image: "{{ droplet_image }}"
-      firewall: ["sage.test"]
       wait_timeout: 600
       unique_name: yes
       ssh_keys: ["{{ sshkey_result.data.ssh_key.id }}"]      
@@ -54,36 +55,11 @@
       - web
     register: droplet_result
 
-  # - name: Show all Droplet info
-  #   ansible.builtin.debug:
-  #     msg: |
-  #       {{ droplet_result }}
-
-  # - name: Show some specific Droplet info
-  #   ansible.builtin.debug:
-  #     msg: |
-  #       {{ droplet_result.results[0].data.droplet.id }}
-
   # TODO: Abstract the file path or do something different to show the IP address
   - name: Save IP and host name to ./ansible/droplet_hosts
     become: yes
     lineinfile:
-      path: /home/kfike/Projects/sage/ansible/droplet_hosts
+      path: /home/kfike/Projects/sage/server/ansible/droplet_hosts
       regexp: '.*{{ item.data.droplet.name }}$'
       line: "{{ item.data.droplet.networks.v4[0].ip_address }}  {{ item.data.droplet.name }}"
     with_items: "{{ droplet_result.results }}"
-
-  - name: Delete the new droplet
-    digital_ocean_droplet:
-      state: absent
-      name: sage.ephem
-      oauth_token: "{{ digital_ocean_token }}"
-      size: "{{ droplet_size }}"
-      region: "{{ droplet_region }}"
-      image: "{{ droplet_image }}"
-      wait_timeout: 600
-      unique_name: yes
-      ssh_keys: ["{{ sshkey_result.data.ssh_key.id }}"]
-    with_inventory_hostnames:
-      - web
-    register: droplet_result
