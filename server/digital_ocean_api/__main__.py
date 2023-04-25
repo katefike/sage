@@ -1,7 +1,6 @@
 import requests
-from requests.exceptions import HTTPError
-
 from loguru import logger
+from requests.exceptions import HTTPError
 
 from . import ENV
 
@@ -19,7 +18,7 @@ def main():
     # TODO: Get droplet with target name
     # droplet name and firewall name needs parameratized
     firewall_id = get_firewall_id()
-    response = add_droplet_to_firewall(droplet_id, firewall_id)
+    add_droplet_to_firewall(droplet_id, firewall_id)
 
 
 def get_droplet_id() -> int:
@@ -28,10 +27,10 @@ def get_droplet_id() -> int:
         response = requests.get(url, headers=HEADERS)
         # If the response was successful, no Exception will be raised
         response.raise_for_status()
-    except HTTPError as http_err:
-        logger.critical(f"HTTP error occurred: {http_err}")
-    except Exception as err:
-        logger.critical(f"Other error occurred: {err}")
+    except HTTPError as e:
+        logger.critical(f"HTTP error occurred: {e}")
+    except Exception as e:
+        logger.critical(f"Other error occurred: {e}")
     else:
         json_response = response.json()
         droplets = json_response.get("droplets")
@@ -45,10 +44,10 @@ def get_firewall_id() -> str:
         response = requests.get(url, headers=HEADERS)
         # If the response was successful, no Exception will be raised
         response.raise_for_status()
-    except HTTPError as http_err:
-        logger.critical(f"HTTP error occurred: {http_err}")
-    except Exception as err:
-        logger.critical(f"Other error occurred: {err}")
+    except HTTPError as e:
+        logger.critical(f"HTTP error occurred: {e}")
+    except Exception as e:
+        logger.critical(f"Other error occurred: {e}")
     else:
         json_response = response.json()
         firewalls = json_response.get("firewalls")
@@ -65,13 +64,15 @@ def add_droplet_to_firewall(droplet_id: int, firewall_id: str):
         response = requests.post(url, headers=HEADERS, json=body)
         # If the response was successful, no Exception will be raised
         response.raise_for_status()
-    except HTTPError as http_err:
-        logger.critical(f"HTTP error occurred: {http_err}")
-    except Exception as err:
-        logger.critical(f"Other error occurred: {err}")
+    except HTTPError as e:
+        logger.critical(f"HTTP error occurred: {e}")
+    except Exception as e:
+        logger.critical(f"Other error occurred: {e}")
     else:
-        json_response = response.json()
-        print(json_response)
+        if response.status_code != 204:
+            logger.critical(
+                f"Response code other than 204 was returned: {response.status_code}"
+            )
 
 
 if __name__ == "__main__":  # pragma: no cover
