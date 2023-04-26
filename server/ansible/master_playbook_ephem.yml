@@ -1,0 +1,12 @@
+- hosts: localhost
+  tasks:
+    - ansible.builtin.debug:
+        msg: Create and destory an ephemeral DO droplet
+
+- name: Create a DO droplet and firewall
+  ansible.builtin.import_playbook: create_droplet_ephem.yml
+
+- name: Delete the DO droplet and firewall
+  ansible.builtin.import_playbook: delete_droplet_ephem.yml
+  vars:
+    unused: unused
