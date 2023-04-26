@@ -11,6 +11,7 @@ HEADERS = {
     "Authorization": f"Bearer {ENV['DO_API_TOKEN']}",
     "Content-Type": "application/json",
 }
+NAME = ENV["EPHEM_NAME"]
 
 
 def main():
@@ -23,7 +24,7 @@ def main():
 
 def get_droplet_id() -> int:
     try:
-        url = DO_API_BASE_URL + "droplets?name=sage.ephem"
+        url = DO_API_BASE_URL + f"droplets?name={NAME}"
         response = requests.get(url, headers=HEADERS)
         # If the response was successful, no Exception will be raised
         response.raise_for_status()
@@ -52,7 +53,7 @@ def get_firewall_id() -> str:
         json_response = response.json()
         firewalls = json_response.get("firewalls")
         for firewall in firewalls:
-            if firewall.get("name") == "sage.test":
+            if firewall.get("name") == NAME:
                 return firewall.get("id")
 
 
@@ -60,7 +61,6 @@ def add_droplet_to_firewall(droplet_id: int, firewall_id: str):
     try:
         url = DO_API_BASE_URL + f"firewalls/{firewall_id}/droplets"
         body = {"droplet_ids": [droplet_id]}
-        print(body)
         response = requests.post(url, headers=HEADERS, json=body)
         # If the response was successful, no Exception will be raised
         response.raise_for_status()
