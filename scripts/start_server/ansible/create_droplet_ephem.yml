@@ -9,7 +9,15 @@
     droplet_region: nyc1
     droplet_image: ubuntu-22-04-x64
   tasks:
-  
+
+  - name: Load .env
+    shell: bash create_droplet_ephem.sh
+
+  - name: CHECK EPHEM_NAME
+    ansible.builtin.debug:
+      msg: '{{ lookup("env", "EPHEM_NAME") }}'
+
+
   - name: Add public ssh key to Digital Ocean account
     digital_ocean_sshkey:
       name: "Personal Projects - Local"

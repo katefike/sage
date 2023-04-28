@@ -1,3 +1,8 @@
+import os
+import pathlib
+import subprocess
+
+import ansible_runner
 import requests
 from loguru import logger
 from requests.exceptions import HTTPError
@@ -12,14 +17,27 @@ HEADERS = {
     "Content-Type": "application/json",
 }
 NAME = ENV["EPHEM_NAME"]
+APP_ROOT = str(pathlib.Path(__file__).parent.parent.parent)
 
 
 def main():
+    # FIXME: The playbooks work independently,
+    # but they don't work when executed in this script because the .env vars
+    # aren't loading
+    run_playbook("create_droplet_ephem.yml")
     droplet_id = get_droplet_id()
     # TODO: Get droplet with target name
     # droplet name and firewall name needs parameratized
     firewall_id = get_firewall_id()
     add_droplet_to_firewall(droplet_id, firewall_id)
+    run_playbook("delete_droplet_ephem.yml")
+
+
+def run_playbook(playbook: str):
+    r = ansible_runner.run(
+        playbook=f"{APP_ROOT}/scripts/start_server/ansible/{playbook}",
+    )
+    print("{}: {}".format(r.status, r.rc))
 
 
 def get_droplet_id() -> int:
