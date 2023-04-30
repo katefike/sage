@@ -33,20 +33,20 @@
         - protocol: "tcp"
           ports: "22"
           sources:
-            addresses: ["40.142.183.33"]
+            addresses: ["0.0.0.0/0"]
         - protocol: "tcp"
           ports: "80"
           sources:
-            addresses: ["0.0.0.0/0", "::/0"]
+            addresses: ["0.0.0.0/0"]
         - protocol: "tcp"
           ports: "143"
           sources:
-            addresses: ["0.0.0.0/0", "::/0"]
+            addresses: ["0.0.0.0/0"]
       outbound_rules: 
         - protocol: "tcp"
           ports: "587"
           destinations:
-            addresses: ["0.0.0.0/0", "::/0"]
+            addresses: ["0.0.0.0/0"]
 
   - name: Create a new Droplet
     digital_ocean_droplet:
