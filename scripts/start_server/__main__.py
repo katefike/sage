@@ -14,23 +14,23 @@ HEADERS = {
     "Content-Type": "application/json",
 }
 NAME = ENV["EPHEM_NAME"]
-DO_PUBLIC_SSH_KEY = ENV["DO_PUBLIC_SSH_KEY"]
+EPHEM_SSH_KEY_PUB = ENV["EPHEM_SSH_KEY_PUB"]
 APP_ROOT = str(pathlib.Path(__file__).parent.parent.parent)
 
 
 def main():
-    # create_new_account_ssh_keys()
-    # droplet_id = get_droplet_id()
-    # # TODO: Get droplet with target name
-    # # droplet name and firewall name needs parameratized
-    # firewall_id = get_firewall_id()
-    # add_droplet_to_firewall(droplet_id, firewall_id)
+    # create_account_ssh_keys()
+    droplet_id = create_droplet()
+    firewall_id = get_firewall_id()
+    add_droplet_to_firewall(droplet_id, firewall_id)
 
 
-def create_new_account_ssh_keys():
+def create_account_ssh_keys():
+    # FIXME: This is broken. Returns 422 HTTP error
     try:
         url = DO_API_BASE_URL + "account/keys"
-        body = {"public_key": DO_PUBLIC_SSH_KEY, "name": "Sage Local"}
+        body = {"public_key": f"{EPHEM_SSH_KEY_PUB}", "name": "Sage Local"}
+        print(HEADERS)
         print(body)
         response = requests.post(url, headers=HEADERS, json=body)
         # If the response was successful, no Exception will be raised
@@ -41,14 +41,44 @@ def create_new_account_ssh_keys():
         logger.critical(f"Other error occurred: {e}")
     else:
         json_response = response.json()
-        droplets = json_response.get("droplets")
-        droplet = droplets[0]
+
+
+def create_droplet() -> int:
+    try:
+        url = DO_API_BASE_URL + "droplets"
+        body = {
+            "name": NAME,
+            "region": "nyc1",
+            "size": "s-1vcpu-1gb",
+            "image": "ubuntu-22-04-x64",
+            # "ssh_keys": [289794, "3b:16:e4:bf:8b:00:8b:b8:59:8c:a9:d3:f0:19:fa:45"],
+        }
+        response = requests.post(url, headers=HEADERS, json=body)
+        # If the response was successful, no Exception will be raised
+        response.raise_for_status()
+    except HTTPError as e:
+        logger.critical(f"HTTP error occurred: {e}")
+    except Exception as e:
+        logger.critical(f"Other error occurred: {e}")
+    else:
+        if response.status_code != 202:
+            logger.critical(
+                f"Response code other than 202 was returned: {response.status_code}"
+            )
+        json_response = response.json()
+        droplet = json_response.get("droplet")
         return droplet.get("id")
+
 
 def create_firewall():
     try:
-        url = DO_API_BASE_URL + f"firewalls"
-        body = {"name": "firewall", "inbound_rules": [], "outbound_rules":[], "droplet_ids": [8043964]}
+        url = DO_API_BASE_URL + "firewalls"
+        body = {
+            "name": "firewall",
+            "inbound_rules": [],
+            "outbound_rules": [],
+            "droplet_ids": [8043964],
+        }
         response = requests.post(url, headers=HEADERS, json=body)
         # If the response was successful, no Exception will be raised
         response.raise_for_status()
@@ -64,6 +94,7 @@ def create_firewall():
 
 
 def get_droplet_id() -> int:
+    # This isn't being used and can probably be deleted
     try:
         url = DO_API_BASE_URL + f"droplets?name={NAME}"
         response = requests.get(url, headers=HEADERS)
