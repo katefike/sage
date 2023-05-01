@@ -8,15 +8,15 @@
     droplet_image: ubuntu-22-04-x64
   tasks:
 
-  - name: Add public ssh key to Digital Ocean account
+  - name: Add public ssh key to Digital Ocean account named {{ ephem_name }}
     digital_ocean_sshkey:
-      name: '{{ lookup("env", "EPHEM_NAME") }}'
+      name: '{{ ephem_name }}'
       oauth_token: "{{ digital_ocean_token }}"
       ssh_pub_key: "{{ ephem_ssh_key_pub }}"
       state: present
     register: sshkey_result
 
-  - name: Create a new Droplet
+  - name: Create a new Droplet named {{ ephem_name }}
     digital_ocean_droplet:
       name: "{{ ephem_name }}"
       oauth_token: "{{ digital_ocean_token }}"
@@ -39,7 +39,7 @@
       line: "{{ item.data.droplet.networks.v4[0].ip_address }}  {{ item.data.droplet.name }}"
     with_items: "{{ droplet_result.results }}"
   
-  - name: Create firewall and assign the droplet to it
+  - name: Create firewall named {{ ephem_name }} and assign the droplet named {{ ephem_name }} to it
     uri:
         url: "https://api.digitalocean.com/v2/firewalls"
         method: POST
