@@ -8,10 +8,6 @@
     droplet_image: ubuntu-22-04-x64
   tasks:
 
-  - name: CHECK EPHEM_NAME
-    ansible.builtin.debug:
-      msg: '{{ lookup("env", "EPHEM_NAME") }}'
-
   - name: Add public ssh key to Digital Ocean account
     digital_ocean_sshkey:
       name: '{{ lookup("env", "EPHEM_NAME") }}'
@@ -19,29 +15,6 @@
       ssh_pub_key: "{{ ephem_ssh_key_pub }}"
       state: present
     register: sshkey_result
-
-  - name: Create firewall
-    community.digitalocean.digital_ocean_firewall:
-      name: "{{ ephem_name }}"
-      inbound_rules:
-        - protocol: "tcp"
-          ports: "22"
-          sources:
-            addresses: ["0.0.0.0/0"]
-        - protocol: "tcp"
-          ports: "80"
-          sources:
-            addresses: ["0.0.0.0/0"]
-        - protocol: "tcp"
-          ports: "143"
-          sources:
-            addresses: ["0.0.0.0/0"]
-      outbound_rules: 
-        - protocol: "tcp"
-          ports: "587"
-          destinations:
-            addresses: ["0.0.0.0/0"]
-    register: firewall_result
 
   - name: Create a new Droplet
     digital_ocean_droplet:
@@ -58,11 +31,42 @@
       - web
     register: droplet_result
 
-  # TODO: Abstract the file path or do something different to show the IP address
-  - name: Save IP and host name to ./ansible/droplet_hosts
+  - name: Save IP and host name to droplet_hosts
     become: yes
     lineinfile:
-      path: /home/kfike/Projects/sage/server/ansible/droplet_hosts
-      regexp: '.*{{ item.data.droplet.name }}$'
+      path: "{{  playbook_dir  }}/droplet_hosts"
+      regexp: ".*{{ item.data.droplet.name }}$"
       line: "{{ item.data.droplet.networks.v4[0].ip_address }}  {{ item.data.droplet.name }}"
     with_items: "{{ droplet_result.results }}"
+  
+  - name: Create firewall and assign the droplet to it
+    uri:
+        url: "https://api.digitalocean.com/v2/firewalls"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+          Authorization: "Bearer {{ digital_ocean_token }}"
+        body:
+          name: "{{ ephem_name }}"
+          inbound_rules:
+            - protocol: "tcp"
+              ports: "22"
+              sources:
+                addresses: ["0.0.0.0/0"]
+            - protocol: "tcp"
+              ports: "80"
+              sources:
+                addresses: ["0.0.0.0/0"]
+            - protocol: "tcp"
+              ports: "143"
+              sources:
+                addresses: ["0.0.0.0/0"]
+          outbound_rules: 
+            - protocol: "tcp"
+              ports: "587"
+              destinations:
+                addresses: ["0.0.0.0/0"]
+          droplet_ids: ["{{  droplet_result.results[0].data.droplet.id  }}"]
+        status_code: 202
+    register: firewall_result
