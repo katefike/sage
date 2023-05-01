@@ -1,7 +1,0 @@
-- hosts: localhost
-  tasks:
-    - ansible.builtin.debug:
-        msg: Create and destory an ephemeral DO droplet
-
-- name: Create a DO droplet and firewall
-  ansible.builtin.import_playbook: create_droplet_ephem.yml

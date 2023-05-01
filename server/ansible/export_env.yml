@@ -1,4 +1,0 @@
-- hosts: localhost
-  tasks:
-  - name: Export .env vars
-    shell: bash export_env.sh
