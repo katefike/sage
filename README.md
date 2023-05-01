@@ -5,8 +5,8 @@ This app is like Mint, but better. It collects all of your personal financial da
 ## Production Setup Insturctions
 *This app is actively under development. It isn't ready to be used.*
 
-1. Run the production setup script. This will create a .env file using the file .env-example as a template. <br>
-`bash scripts/inital_setup.py`
+1. Run the production setup script. This will create the python virutal environment, install the python dependencies, and create a .env file using the file .env-example as a template. <br>
+`bash scripts/inital_setup.sh`
 2. Define the following environment variables in the .env file:
   <br> `ISDEV`: Change to "False"
   <br> `HOST`:
