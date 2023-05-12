@@ -39,7 +39,7 @@
           Content-Type: application/json
           Authorization: "Bearer {{ digital_ocean_token }}"
         body:
-          name: "{{ prod_name }}2"
+          name: "  {{ prod_name }}  "
           inbound_rules:
             - protocol: "tcp"
               ports: "22"
@@ -58,20 +58,20 @@
               ports: "587"
               destinations:
                 addresses: ["0.0.0.0/0"]
-          droplet_ids: ["{{  droplet_result.results[0].data.droplet.id  }}"]
+          droplet_ids: ["{{ droplet_result.results[0].data.droplet.id }}"]
         status_code: 202
       register: firewall_result
 
     - name: Create a reserved IP and assign a droplet to it
       digital_ocean_floating_ip:
-        oauth_token: "{{ digital_ocean_token }}"
-        droplet_id: "{{  droplet_result.results[0].data.droplet.id  }}"
+        oauth_token: "{{ digital_ocean_token }}  "
+        droplet_id: "{{ droplet_result.results[0].data.droplet.id }}"
         state: present
       register: floating_ip_result
 
     - name: Save IP and host name to droplet_hosts
       become: yes
       lineinfile:
-        path: "{{  playbook_dir  }}/droplet_hosts"
+        path: "{{ playbook_dir }}/droplet_hosts"
         regexp: ".*{{ droplet_result.results[0].data.droplet.name }}$"
         line: "{{ floating_ip_result.data.floating_ip.ip }}  {{ droplet_result.results[0].data.droplet.name }}"
