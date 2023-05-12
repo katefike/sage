@@ -7,15 +7,6 @@
     droplet_region: nyc1
     droplet_image: ubuntu-22-04-x64
   tasks:
-
-  - name: Add public ssh key to Digital Ocean account named {{ ephem_name }}
-    digital_ocean_sshkey:
-      name: '{{ ephem_name }}'
-      oauth_token: "{{ digital_ocean_token }}"
-      ssh_pub_key: "{{ ephem_ssh_key_pub }}"
-      state: present
-    register: sshkey_result
-
   - name: Create a new Droplet named {{ ephem_name }}
     digital_ocean_droplet:
       name: "{{ ephem_name }}"
