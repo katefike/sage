@@ -14,6 +14,7 @@ This app is like Mint, but better. It collects all of your personal financial da
   <br> `FORWARDING_EMAIL`: Set up the email account that receives the transaction alert emails to forward all emails to the receiving email address in the mailserver. The default receiving email address is incoming@DOMAIN. So if you purchased the domain example.com, the receiving email address would me incoming@example.com
   <br> `DO_API_TOKEN`: Create a Digital Ocean API Key. It's located in the "API" portion of their menu.
   <br> `PROD_SSH_KEY_PUB`: Create SSH keys for the production server. Copy/paste the public key here.
+  <br> `PROD_SSH_KEY_FILE_PRIV`: Private key path and file name.
   <br> `SSH_ALLOWED_PUBLIC_IPS`: A comma separated string of public IPv4 addresses. The default is to make port 22 public.
 3. Run the script to create a Digital Ocean Droplet server. 
 <br>**WARNING: THIS THIS STEP CAUSES DIGITAL OCEAN TO START CHARGING YOU FOR A SERVER ON A MONTHLY BASIS.** 
