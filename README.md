@@ -13,15 +13,21 @@ This app is like Mint, but better. It collects all of your personal financial da
   <br> `DOMAIN`: Buy a domain name.
   <br> `FORWARDING_EMAIL`: Set up the email account that receives the transaction alert emails to forward all emails to the receiving email address in the mailserver. The default receiving email address is incoming@DOMAIN. So if you purchased the domain example.com, the receiving email address would me incoming@example.com
   <br> `DO_API_TOKEN`: Create a Digital Ocean API Key. It's located in the "API" portion of their menu.
-  <br> `PROD_DO_SSH_KEY_ID`: Add the ID (AKA fingerprint)
   <br> `PROD_SSH_KEY_PUB`: Create SSH keys for the production server. Copy/paste the public key here.
-  TODO: Create env vars for the port IP addresses.
-3. Go to Digital Ocean and define a WAF
-n. **WARNING: THIS THIS STEP CAUSES DIGITAL OCEAN TO START CHARGING YOU FOR A SERVER ON A MONTHLY BASIS.** Run the script to create a Digital Ocean Droplet server. 
+  <br> `SSH_ALLOWED_PUBLIC_IPS`: A comma separated string of public IPv4 addresses. The default is to make port 22 public.
+3. Run the script to create a Digital Ocean Droplet server. 
+<br>**WARNING: THIS THIS STEP CAUSES DIGITAL OCEAN TO START CHARGING YOU FOR A SERVER ON A MONTHLY BASIS.** 
+
 `bash scripts/ansible_create_droplet_prod.sh`
+
 It will prompt you for `BECOME password:`; enter your sudo password.
 
 # Useful Commands
+## Server
+SSH to the server
+
+`ssh root@<ipv4 address> -i ~/.ssh/<private key file>`
+
 ## Docker
 Start the docker containers for the development environment
 
