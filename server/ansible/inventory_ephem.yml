@@ -1,6 +1,6 @@
 web:
   hosts:
-    sage.epehemeral:
+    sage.epehem:
   vars:
     ansible_user: root
     EPHEM_SSH_PRIVATE_KEY_FILE: EPHEM_SSH_KEY_PRIVATE_FILE
