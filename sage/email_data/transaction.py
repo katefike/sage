@@ -24,14 +24,18 @@ class Transaction:
     # or I deposited cash into this account
     type_: str = field(default=None)
     # Bank can be Huntington, Chase, Discover or cash
+    # Each bank has a specific regex to parse transaction data from its alert email
     bank: str = field(default=None)
     # Merchants perform withdrawals
     merchant: str = field(default=None)
     # Payers perform deposits
     payer: str = field(default=None)
     amount: str = field(default=None)
-    # Not all banks have accounts. If there is no account listed that means
-    # there is only one account associated with the bank.
-    account: str = field(default=None)
-    # Not all transactions list the account balance.
-    balance: str = field(default=None)
+
+    class Bank:
+        name: str = field(default=None)
+        # Not all banks have accounts. If there is no account listed that means
+        # there is only one account associated with the bank.
+        account: str = field(default=None)
+        # Not all transactions list the account balance.
+        balance: str = field(default=None)

@@ -7,7 +7,8 @@ from loguru import logger
 
 logger.add(sink="debug.log")
 
-
+# Have parse_email be its own class that has methods like:
+# - parse an email body, accepts a body and a regex string
 def main(msg: MailMessage) -> Transaction:
     """
     Parse the transaction data from the email.
