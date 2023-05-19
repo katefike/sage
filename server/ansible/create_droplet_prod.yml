@@ -74,6 +74,8 @@
     - name: Save IP and host name to droplet_hosts
       become: yes
       lineinfile:
-        path: "{{ playbook_dir }}/droplet_hosts"
-        regexp: ".*{{ droplet_result.results[0].data.droplet.name }}$"
-        line: "{{ floating_ip_result.data.floating_ip.ip }}  {{ droplet_result.results[0].data.droplet.name }}"
+        path: "{{  playbook_dir  }}/droplet_hosts"
+        regexp: ".*{{ item.data.droplet.name }}$"
+        # Floating IP: {{ floating_ip_result.data.floating_ip.ip }}
+        line: "{{ item.data.droplet.networks.v4[0].ip_address }}  {{ item.data.droplet.name }}"
+      with_items: "{{ droplet_result.results }}"
