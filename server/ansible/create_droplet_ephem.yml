@@ -7,7 +7,7 @@
     droplet_region: nyc1
     droplet_image: ubuntu-22-04-x64
   tasks:
-    - name: Add public ssh key to Digital Ocean account named {{ ephem_name }}
+    - name: Add public ssh key named "{{ ephem_name }}" to your Digital Ocean account
       digital_ocean_sshkey:
         name: "{{ ephem_name }}"
         oauth_token: "{{ digital_ocean_token }}"
@@ -15,7 +15,7 @@
         state: present
       register: sshkey_result
 
-    - name: Create a new Droplet named {{ ephem_name }}
+    - name: Create a new Droplet named "{{ ephem_name }}"
       digital_ocean_droplet:
         name: "{{ ephem_name }}"
         oauth_token: "{{ digital_ocean_token }}"
@@ -33,51 +33,62 @@
     - name: Setting host facts using key=value pairs, this format can only create strings or booleans
       ansible.builtin.set_fact: public_ip="{{ droplet_result.results[0].data.droplet.networks.v4[0].ip_address }}"
     
-    # - name: Create firewall named {{ ephem_name }} and assign the droplet named {{ ephem_name }} to it
-    #   uri:
-    #       url: "https://api.digitalocean.com/v2/firewalls"
-    #       method: POST
-    #       body_format: json
-    #       headers:
-    #         Content-Type: application/json
-    #         Authorization: "Bearer {{ digital_ocean_token }}"
-    #       body:
-    #         name: "{{ ephem_name }}"
-    #         inbound_rules:
-    #           - protocol: "tcp"
-    #             ports: "22"
-    #             sources:
-    #               addresses: ["0.0.0.0/0"]
-    #           - protocol: "tcp"
-    #             ports: "80"
-    #             sources:
-    #               addresses: ["0.0.0.0/0"]
-    #           - protocol: "tcp"
-    #             ports: "143"
-    #             sources:
-    #               addresses: ["0.0.0.0/0"]
-    #         outbound_rules: 
-    #           - protocol: "tcp"
-    #             ports: "587"
-    #             destinations:
-    #               addresses: ["0.0.0.0/0"]
-    #         droplet_ids: ["{{  droplet_result.results[0].data.droplet.id  }}"]
-    #       status_code: 202
-    #   register: firewall_result
+    - name: Create firewall named {{ ephem_name }} and assign the droplet named {{ ephem_name }} to it
+      uri:
+          url: "https://api.digitalocean.com/v2/firewalls"
+          method: POST
+          body_format: json
+          headers:
+            Content-Type: application/json
+            Authorization: "Bearer {{ digital_ocean_token }}"
+          body:
+            name: "{{ ephem_name }}"
+            inbound_rules:
+              - protocol: "tcp"
+                ports: "22"
+                sources:
+                  addresses: ["0.0.0.0/0"]
+              - protocol: "tcp"
+                ports: "80"
+                sources:
+                  addresses: ["0.0.0.0/0"]
+              - protocol: "tcp"
+                ports: "143"
+                sources:
+                  addresses: ["0.0.0.0/0"]
+            outbound_rules: 
+              - protocol: "tcp"
+                ports: "587"
+                destinations:
+                  addresses: ["0.0.0.0/0"]
+            droplet_ids: ["{{  droplet_result.results[0].data.droplet.id  }}"]
+          status_code: 202
+      register: firewall_result
 
     - name: Save IP and host name to droplet_hosts
       become: yes
       lineinfile:
         path: "{{  playbook_dir  }}/droplet_hosts"
         regexp: ".*{{ item.data.droplet.name }}$"
-        line: "{{ public_ip }}  {{ item.data.droplet.name }}"
+        line: "{{ public_ip }}"
       with_items: "{{ droplet_result.results }}"
 
 
-- hosts: "{{ public_ip }}"
+# FIXME: Use the inventory file for the host vars or delete the inventory
+- hosts: droplet_server
   vars:
     ansible_ssh_private_key_file: '{{ lookup("env", "EPHEM_SSH_KEY_FILE_PRIV") }}'
+    ansible_user: root
   tasks:
-    - name: DEBUG
-      ansible.builtin.debug:
-        msg: "{{ public_ip }}"
+    - name: Install git on the droplet server
+      become: yes
+      ansible.builtin.apt:
+        name: git
+        state: present
+      delegate_to: "{{ public_ip }}"
+
+    - name: Clone the GitLab repository
+      ansible.builtin.git:
+        repo: 'https://github.com/katefike/sage.git'
+        dest: '/home/sage/'
+      delegate_to: "{{ public_ip }}"
