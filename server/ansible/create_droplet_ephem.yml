@@ -73,11 +73,7 @@
         line: "{{ public_ip }}"
       with_items: "{{ droplet_result.results }}"
 
-# [WARNING]: Invalid characters were found in group names but not replaced, use -vvvv to see details
-# [WARNING]: Found both group and host with same name: sage.epehem
-# fatal: [sage.epehem]: UNREACHABLE! => {"changed": false, 
-# "msg": "Failed to connect to the host via ssh: ssh: Could not resolve hostname sage.epehem: Name or service not known", "unreachable": true}
-- hosts: sage.ephem
+- hosts: sageEphem
   vars:
     ansible_ssh_private_key_file: '{{ lookup("env", "EPHEM_SSH_KEY_FILE_PRIV") }}'
     ansible_user: root
