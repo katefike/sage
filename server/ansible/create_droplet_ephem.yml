@@ -26,13 +26,13 @@
         ssh_keys: ["{{ sshkey_result.data.ssh_key.id }}"]      
         state: present
       with_inventory_hostnames:
-        - web
+        - sage
       register: droplet_result
 
     - name: Setting host facts using key=value pairs, this format can only create strings or booleans
       ansible.builtin.set_fact: public_ip="{{ droplet_result.results[0].data.droplet.networks.v4[0].ip_address }}"
     
-    - name: Create firewall named {{ ephem_name }} and assign the droplet named {{ ephem_name }} to it
+    - name: Create firewall named "sageEphem" and assign the droplet named "sageEphem" to it
       uri:
           url: "https://api.digitalocean.com/v2/firewalls"
           method: POST

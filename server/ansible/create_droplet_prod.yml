@@ -9,17 +9,17 @@
     droplet_region: nyc1
     droplet_image: ubuntu-22-04-x64
   tasks:
-    - name: Add public ssh key named "{{ prod_name }}" to your Digital Ocean account
+    - name: Add public ssh key named "sageProd" to your Digital Ocean account
       digital_ocean_sshkey:
-        name: "{{ prod_name }}"
+        name: "sageProd"
         oauth_token: "{{ digital_ocean_token }}"
         ssh_pub_key: "{{ prod_ssh_key_pub }}"
         state: present
       register: sshkey_result
 
-    - name: Create a new Droplet named "{{ prod_name }}"
+    - name: Create a new Droplet named "sageProd"
       digital_ocean_droplet:
-        name: "{{ prod_name }}"
+        name: "sageProd"
         oauth_token: "{{ digital_ocean_token }}"
         size: "{{ droplet_size }}"
         region: "{{ droplet_region }}"
@@ -32,7 +32,7 @@
         - web
       register: droplet_result
 
-    - name: Create firewall named "{{ prod_name }}" and assign the droplet named {{ prod_name }} to it
+    - name: Create firewall named "sageProd" and assign the droplet named "sageProd" to it
       uri:
         url: "https://api.digitalocean.com/v2/firewalls"
         method: POST
@@ -41,7 +41,7 @@
           Content-Type: application/json
           Authorization: "Bearer {{ digital_ocean_token }}"
         body:
-          name: "{{ prod_name }}-2"
+          name: "sageProd"
           inbound_rules:
             - protocol: "tcp"
               ports: "22"

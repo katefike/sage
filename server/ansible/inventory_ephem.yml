@@ -1,4 +1,4 @@
-web:
+sage:
   hosts:
     sageEphem:
   vars:
