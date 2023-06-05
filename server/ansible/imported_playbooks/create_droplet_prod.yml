@@ -26,7 +26,7 @@
         image: "{{ droplet_image }}"
         wait_timeout: 600
         unique_name: yes
-        ssh_keys: ["{{ sshkey_result.data.ssh_key.id }}"]
+        ssh_keys: ["{{ sshkey_result.data.ssh_key.fingerprint }}"]
         state: present
       with_inventory_hostnames:
         - web
