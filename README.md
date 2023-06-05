@@ -2,7 +2,7 @@
 
 This app is like Mint, but better. It collects all of your personal financial data. The data is collected from alert emails sent from your financial institutions. The bank alert emails can be directed to your personal email account, such as a Gmail account. Then setup your account to forward the alert emails to a self-hosted email server. The financial data in the emails is extracted, stored, and made viewable. 
 
-## Production Setup Insturctions
+## Production Setup Instructions
 *This app is actively under development. It isn't ready to be used.*
 
 1. Run the production setup script. This will create the python virutal environment, install the python dependencies, and create a .env file using the file .env-example as a template. <br>
@@ -16,10 +16,10 @@ This app is like Mint, but better. It collects all of your personal financial da
   <br> `PROD_DO_SSH_KEY_ID`: Add the ID (AKA fingerprint)
   <br> `PROD_SSH_KEY_PUB`: Create SSH keys for the production server. Copy/paste the public key here.
   TODO: Create env vars for the port IP addresses.
-3. Go to Digital Ocean and define a WAF
-n. **WARNING: THIS THIS STEP CAUSES DIGITAL OCEAN TO START CHARGING YOU FOR A SERVER ON A MONTHLY BASIS.** Run the script to create a Digital Ocean Droplet server. 
-`bash scripts/ansible_create_droplet_prod.sh`
-It will prompt you for `BECOME password:`; enter your sudo password.
+3. **WARNING: THIS THIS STEP CAUSES DIGITAL OCEAN TO START CHARGING YOU FOR A SERVER ON A MONTHLY BASIS.**
+<br> Run the script to create a Digital Ocean Droplet server.
+<br> `bash scripts/ansible_create_droplet_prod.sh`
+<br> It will prompt you for `BECOME password:`; enter your sudo password.
 
 # Useful Commands
 ## Docker
@@ -99,13 +99,13 @@ Remove all containers and volumes after a schema change.
 
 
 # Local Development
-
 ## Globally Installed Software
+Install the following software on your local machine:
 - Docker
   - Use [these instructions](https://docs.docker.com/engine/install/) to install 
 - Python 3.7 or higher
 
-## Setting up the Development Environment
+## Setup Instructions
 1. Run the development setup script.
 `bash scripts/setup_development.sh`
 2. Start docker
