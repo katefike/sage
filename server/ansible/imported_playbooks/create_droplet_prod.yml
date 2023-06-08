@@ -58,10 +58,6 @@
               sources:
                 addresses: ["0.0.0.0/0"]
             - protocol: "tcp"
-              ports: "143"
-              sources:
-                addresses: ["0.0.0.0/0"]
-            - protocol: "tcp"
               ports: "443"
               sources:
                 addresses: ["0.0.0.0/0"]
