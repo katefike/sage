@@ -43,10 +43,17 @@
         body:
           name: "sageProd"
           inbound_rules:
+            - protocol: "icmp"
+              sources:
+                addresses: ["0.0.0.0/0"]
             - protocol: "tcp"
               ports: "22"
               sources:
                 addresses: "{{ ssh_allowed_public_ips_list }}"
+            - protocol: "tcp"
+              ports: "53"
+              sources:
+                addresses: ["0.0.0.0/0"]
             - protocol: "tcp"
               ports: "80"
               sources:
@@ -55,7 +62,30 @@
               ports: "143"
               sources:
                 addresses: ["0.0.0.0/0"]
+            - protocol: "tcp"
+              ports: "443"
+              sources:
+                addresses: ["0.0.0.0/0"]       
           outbound_rules:
+            - protocol: "icmp"
+              destinations:
+                addresses: ["0.0.0.0/0"]
+            - protocol: "tcp"
+              ports: "53"
+              destinations:
+                addresses: ["0.0.0.0/0"]
+            - protocol: "tcp"
+              ports: "80"
+              destinations:
+                addresses: ["0.0.0.0/0"]
+            - protocol: "tcp"
+              ports: "123"
+              destinations:
+                addresses: ["0.0.0.0/0"]
+            - protocol: "tcp"
+              ports: "443"
+              destinations:
+                addresses: ["0.0.0.0/0"]  
             - protocol: "tcp"
               ports: "587"
               destinations:
