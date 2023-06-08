@@ -7,6 +7,8 @@ from . import ENV
 
 logger.add(sink="debug.log", level="INFO")
 
+# TODO: Add more vertical linespace to separate concepts
+
 
 def main():
     """
@@ -29,9 +31,11 @@ def main():
         5b. Write the transaction data to the Postgres database.
     """
     logger.info("STARTING SAGE")
+
     # Log into the receiving mailbox on the mail server and retrieve emails
     # that have a UID that is greater than the maximum UID in the database.
     max_uid = transactions.get_maximum_uid()
+
     # Connect to the mailbox containing transaction alert emails
     with imap_tools.MailBoxUnencrypted(ENV["IMAP4_FQDN"]).login(
         ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
@@ -42,6 +46,7 @@ def main():
             "unparsed": 0,
             "processed": 0,
         }
+
         # Retrieve emails that are greater than the maximum UID
         # and are from the forwarding email
         for msg in mailbox.fetch(
@@ -51,6 +56,8 @@ def main():
             )
         ):
             msg_count["retrieved"] = msg_count.get("retrieved", 0) + 1
+
+            # TODO: Move to parsing module
             # Ignore emails that don't have a text or html body
             # This seems unlikely but who knows
             # Change from or to and
@@ -60,8 +67,10 @@ def main():
                 )
                 msg_count["rejected"] = msg_count.get("rejected", 0) + 1
                 continue
+
             # Parse a email message into the transaction data
             transaction = email_parser.main(msg)
+
             if not transaction:
                 logger.info(f"UID {msg.uid} was not parsed into a transaction.")
                 msg_count["unparsed"] = msg_count.get("unparsed", 0) + 1
