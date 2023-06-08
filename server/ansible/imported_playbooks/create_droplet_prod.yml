@@ -61,30 +61,6 @@
             - protocol: "tcp"
               ports: "443"
               sources:
-                addresses: ["0.0.0.0/0"]       
-          outbound_rules:
-            - protocol: "icmp"
-              destinations:
-                addresses: ["0.0.0.0/0"]
-            - protocol: "tcp"
-              ports: "53"
-              destinations:
-                addresses: ["0.0.0.0/0"]
-            - protocol: "tcp"
-              ports: "80"
-              destinations:
-                addresses: ["0.0.0.0/0"]
-            - protocol: "tcp"
-              ports: "123"
-              destinations:
-                addresses: ["0.0.0.0/0"]
-            - protocol: "tcp"
-              ports: "443"
-              destinations:
-                addresses: ["0.0.0.0/0"]  
-            - protocol: "tcp"
-              ports: "587"
-              destinations:
                 addresses: ["0.0.0.0/0"]
           droplet_ids: ["{{ droplet_result.results[0].data.droplet.id }}"]
         status_code: 202
