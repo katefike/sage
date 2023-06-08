@@ -51,10 +51,6 @@
               sources:
                 addresses: "{{ ssh_allowed_public_ips_list }}"
             - protocol: "tcp"
-              ports: "53"
-              sources:
-                addresses: ["0.0.0.0/0"]
-            - protocol: "tcp"
               ports: "80"
               sources:
                 addresses: ["0.0.0.0/0"]
