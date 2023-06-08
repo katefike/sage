@@ -4,15 +4,55 @@
     ansible_ssh_private_key_file: '{{ lookup("env", "EPHEM_SSH_KEY_FILE_PRIV") }}'
     ansible_user: root
   tasks:
-    - name: Install git on the droplet server
-      become: yes
-      ansible.builtin.apt:
-        name: git
+    - name: Install aptitude
+      apt:
+        name: aptitude
+        state: latest
+        update_cache: true
+    - name: Install required system packages
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+          - vim
+          - git
+        state: latest
+        update_cache: true
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
         state: present
-      delegate_to: "{{ public_ip }}"
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+    - name: Update apt and install docker-ce
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: true
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+        
+      # - name: Change permissions on /etc/apt/keyrings
+      #   file:
+      #     path: /etc/apt/keyrings
+      #     state: directory
+      #     mode: 0755
 
-    - name: Clone the GitLab repository
-      ansible.builtin.git:
-        repo: 'https://github.com/katefike/sage.git'
-        dest: '/home/sage/'
-      delegate_to: "{{ public_ip }}"
+      # - name: DEBUG
+      #   shell: which ca-certificates
+      #   register: ps
+      # - debug: var=ps.stdout_lines
+
+    # - name: Clone the GitLab repository
+    #   ansible.builtin.git:
+    #     repo: 'https://github.com/katefike/sage.git'
+    #     dest: '/home/sage/'
+    #   delegate_to: "{{ public_ip }}"
