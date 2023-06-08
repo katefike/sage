@@ -27,6 +27,18 @@ def main(msg: MailMessage) -> Transaction:
     # Identify who the bank is
     if not get_bank(body):
         return
+
+    # TODO: Use bank dispatcher that points to function to run given a bank name;
+    # https://betterprogramming.pub/dispatch-tables-in-python-d37bcc443b0b
+    # This could be a key: value mapping
+    # dispatch = {
+    #     "chase": parse_chase,
+    #     "huntington": parse_huntington
+    #     "wells_fargo": parse_wells_fargo
+    # }
+
+    # dispatch[transaction.bank()]()
+    # GraphQL may be of use; look into it
     transaction.bank = get_bank(body)
     # Parse the email based on who the bank is
     if transaction.bank == "Chase":
@@ -83,6 +95,16 @@ def get_date(body: str) -> str:
 
 
 def get_bank(body: str) -> str:
+    # TODO: See if you can get the email forwarded from Gmail with the bank email in "reply to";
+    # then replace regex with msg.reply_to attr
+
+    # TODO: Create mapping for bank: email
+    # my_bank_email_dict = {'key1': 'value1', 'key2': 'value2', 'key3': 'value3'}
+
+    # # Loop through all keys in the dictionary and retrieve values
+    # for key in my_dict:
+    #     value = my_bank_email_dict [key]
+    #     print(value)
     """
     Identify the bank using the bank's email
     I.e.
@@ -92,6 +114,7 @@ def get_bank(body: str) -> str:
         Subject: Withdrawal or Purchase
         To: <example.com>
     """
+    # TODO: Parameterize the bank email out
     if regex_search("(no.reply.alerts@chase.com)", body):
         return "Chase"
     elif regex_search("(discover@services.discover.com)", body):

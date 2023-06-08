@@ -76,6 +76,7 @@ def main():
                 msg_count["unparsed"] = msg_count.get("unparsed", 0) + 1
                 continue
 
+            # TODO: Generate array of transactions and batch insert into DB
             # Write the transaction to the database
             transactions.insert_transaction(transaction)  # pragma: no cover
 
