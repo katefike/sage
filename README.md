@@ -15,6 +15,7 @@ This app is like Mint, but better. It collects all of your personal financial da
   <br> `DO_API_TOKEN`: Create a Digital Ocean API Key. It's located in the "API" portion of their menu.
   <br> `PROD_SSH_KEY_PUB`: Create SSH key for the production server. Copy/paste the public key here.
   <br> `SERVER_USER`: Your user the production server.
+  <br> `SERVER_USER_PASSWORD`: Your user's password on the production server.
   <br> `SSH_ALLOWED_PUBLIC_IPS`: List the public IPs that can access to the production server.
 3. **WARNING: THIS THIS STEP CAUSES DIGITAL OCEAN TO START CHARGING YOU FOR A SERVER ON A MONTHLY BASIS.**
 <br> Run the script to create a Digital Ocean Droplet server.
