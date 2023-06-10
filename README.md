@@ -21,6 +21,9 @@ This app is like Mint, but better. It collects all of your personal financial da
 <br> Run the script to create a Digital Ocean Droplet server.
 <br> `bash scripts/ansible_create_droplet_prod.sh`
 <br> It will prompt you for `BECOME password:`; enter your sudo password.
+4. Try to SSH to the server
+<br> The public IP of the server is located in the file `droplet_hosts`. Specify your private key.
+<br> `ssh root@<public IP> -i ~/.ssh/sage_ephem`
 
 # Useful Commands
 ## Server
