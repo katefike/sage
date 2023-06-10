@@ -50,17 +50,6 @@
               ports: "22"
               sources:
                 addresses: "{{ ssh_allowed_public_ips_list }}"
-            # Use telnet to see if you can get a handshake
-            # If you can't get a response on telnet then they don't need to be open
-            # If you add grafana and/or a web server, add a reverse proxy to route traffic to port 443
-            - protocol: "tcp"
-              ports: "80"
-              sources:
-                addresses: ["0.0.0.0/0"]
-            - protocol: "tcp"
-              ports: "443"
-              sources:
-                addresses: ["0.0.0.0/0"]
           droplet_ids: ["{{ droplet_result.results[0].data.droplet.id }}"]
         status_code: 202
       register: firewall_result
