@@ -29,18 +29,18 @@
       #     append: true
       #     create_home: true
 
-      - name: Set authorized key for user {{ server_user }}
-        ansible.posix.authorized_key:
-          user: "{{ server_user }}"
-          state: present
-          key: "{{ ephem_ssh_key_pub }}"
-
-      # - name: Disable password authentication for root
-      #   lineinfile:
-      #     path: /etc/ssh/sshd_config
+      # - name: Set authorized key for user {{ server_user }}
+      #   ansible.posix.authorized_key:
+      #     user: "{{ server_user }}"
       #     state: present
-      #     regexp: '^#?PermitRootLogin'
-      #     line: 'PermitRootLogin prohibit-password'
+      #     key: "{{ ephem_ssh_key_pub }}"
+
+      - name: Disable password authentication for root
+        lineinfile:
+          path: /etc/ssh/sshd_config
+          state: present
+          regexp: '^#?PermitRootLogin'
+          line: 'PermitRootLogin prohibit-password'
 
     # - name: Install required system packages
     #   apt:
