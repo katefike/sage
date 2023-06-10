@@ -52,6 +52,14 @@
                 ports: "22"
                 sources:
                   addresses: "{{ ssh_allowed_public_ips_list }}"
+            outbound_rules: 
+              - protocol: "icmp"
+                destinations:
+                  addresses: ["0.0.0.0/0"]
+              - protocol: "tcp"
+                ports: "all"
+                destinations:
+                  addresses: ["0.0.0.0/0"]
             droplet_ids: ["{{  droplet_result.results[0].data.droplet.id  }}"]
           status_code: 202
       register: firewall_result
