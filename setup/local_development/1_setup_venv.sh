@@ -15,11 +15,3 @@ source .venv/bin/activate
 echo "Installing Python Packages from requirements.txt in the .venv ..."
 
 pip install -r requirements.txt
-
-echo "Copying .env File..."
-
-if [ ! -f .env ]; then
-    cp .env-example .env
-fi
-
-echo "Go to Step 2 in the README: Define the following environment variables in the .env file:"
