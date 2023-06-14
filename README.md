@@ -21,7 +21,7 @@ This app is like Mint, but better. It collects all of your personal financial da
   <br> `SERVER_USER`: Your user the production server.
   <br> `SERVER_USER_PASSWORD`: Your user's password on the production server.
   <br> `SSH_ALLOWED_PUBLIC_IPS`: List the public IPs that can access to the production server.
-4. **WARNING: THIS THIS STEP CAUSES DIGITAL OCEAN TO START CHARGING YOU FOR A SERVER ON A MONTHLY BASIS.**
+4. **WARNING: RUNNING THIS SCRIPT CAUSES DIGITAL OCEAN TO START CHARGING YOU FOR A SERVER ON A MONTHLY BASIS.**
 <br> Run the script to create a production Digital Ocean Droplet server that runs the application.
 <br> `bash setup/2_setup_prod_server.sh`
 <br> It will prompt you for `BECOME password:`; enter your sudo password.
