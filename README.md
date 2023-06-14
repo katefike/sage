@@ -2,7 +2,7 @@
 
 This app is like Mint, but better. It collects all of your personal financial data. The data is collected from alert emails sent from your financial institutions. The bank alert emails can be directed to your personal email account, such as a Gmail account. Then setup your account to forward the alert emails to a self-hosted email server. The financial data in the emails is extracted, stored, and made viewable. 
 
-Thank you @nkopkinson and @whosgonna for their ongoing feedback on this project.
+Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 
 ## Production Setup Instructions
 *This app is actively under development. It isn't ready to be used.*
