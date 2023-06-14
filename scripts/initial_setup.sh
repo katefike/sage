@@ -22,4 +22,4 @@ if [ ! -f .env ]; then
     cp .env-example .env
 fi
 
-echo "Copying .env File..."
+echo "Go to Step 2 in the README: Define the following environment variables in the .env file:"
