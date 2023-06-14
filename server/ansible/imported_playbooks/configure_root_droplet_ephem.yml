@@ -21,11 +21,13 @@
           line: '%sudo ALL=(ALL) NOPASSWD: ALL'
           validate: '/usr/sbin/visudo -cf %s'
 
-      - name: Create a new regular user named {{ server_user }} with sudo privileges
+      - name: Create a new regular user named {{ server_user }} with sudo privileges.
         user:
           name: "{{ server_user }}"
           state: present
           groups: sudo
+          # Default shell is bash.
+          shell: /bin/bash
           append: true
           create_home: true
 
