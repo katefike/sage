@@ -7,14 +7,9 @@
     server_user_password: '{{ lookup("env", "SERVER_USER_PASSWORD") }}'
     ansible_user: '{{ server_user }}'
   tasks:
-      - name: DEBUG
-        script: ls -a 
-        register: out
-
-      - debug: var=out.stdout_lines
-    # - name: Clone the GitLab repository
-    #   git:
-    #     repo: 'https://github.com/katefike/sage.git'
-    #     dest: '/home/sage/'
-    #     clone: yes
-    #     update: yes
+      - name: Clone the GitLab repository
+        git:
+          repo: 'https://github.com/katefike/sage.git'
+          dest: '/home/kfike/sage/'
+          clone: yes
+          update: yes
