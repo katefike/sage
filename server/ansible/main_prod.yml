@@ -1,0 +1,8 @@
+- name: Create a droplet named "sageProd"
+  import_playbook: imported_playbooks/create_droplet_prod.yml
+
+- name: Configure the droplet "sageDroplet" as root
+  import_playbook: imported_playbooks/configure_droplet_as_root.yml
+
+- name: Configure the droplet "sageDroplet" as user 
+  import_playbook: imported_playbooks/configure_droplet_as_user.yml

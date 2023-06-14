@@ -2,7 +2,7 @@
   import_playbook: imported_playbooks/create_droplet_ephem.yml
 
 - name: Configure the droplet "sageEphem" as root
-  import_playbook: imported_playbooks/configure_root_droplet_ephem.yml
+  import_playbook: imported_playbooks/configure_droplet_as_root.yml
 
 - name: Configure the droplet "sageEphem" as user 
-  import_playbook: imported_playbooks/configure_user_droplet_ephem.yml
+  import_playbook: imported_playbooks/configure_droplet_as_user.yml

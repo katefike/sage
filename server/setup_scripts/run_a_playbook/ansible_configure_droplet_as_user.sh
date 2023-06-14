@@ -13,4 +13,4 @@ set +o allexport
 
 # Run Ansible Playbook for configuration as the regular user with sudo privileges on the DO Droplet server. The username is defined in the .env.
 cd server/
-exec ansible-playbook -i ansible/inventory_ephem.yml -i ansible/imported_playbooks/droplet_hosts ansible/imported_playbooks/configure_user_droplet_ephem.yml
+exec ansible-playbook -i ansible/inventory_ephem.yml -i ansible/imported_playbooks/droplet_hosts ansible/imported_playbooks/configure_droplet_as_user.yml
