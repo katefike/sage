@@ -31,7 +31,7 @@
         - sage
       register: droplet_result
 
-    - name: Setting host facts using key=value pairs, this format can only create strings or booleans
+    - name: Setting host fact public_ip
       ansible.builtin.set_fact: public_ip="{{ droplet_result.results[0].data.droplet.networks.v4[0].ip_address }}"
     
     - name: Create firewall named "sageEphem" and assign the droplet named "sageEphem" to it
