@@ -2,7 +2,7 @@
 
 # Make the project root pwd
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd $__dir/..
+cd $__dir/../..
 
 set -o nounset -o pipefail -o errexit
 
