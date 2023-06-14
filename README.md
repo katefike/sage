@@ -5,9 +5,13 @@ This app is like Mint, but better. It collects all of your personal financial da
 ## Production Setup Instructions
 *This app is actively under development. It isn't ready to be used.*
 
-1. Run the production setup script. This will create the python virutal environment, install the python dependencies, and create a .env file using the file .env-example as a template. <br>
-`bash scripts/inital_setup.sh`
-2. Define the following environment variables in the .env file:
+1. Globally install the following software:
+  <br> Docker
+  <br> Use [these instructions](https://docs.docker.com/engine/install/) to install
+  <br> Python 3.7 or higher
+2. Run the first setup script. This will create a .env file using the file .env-example as a template. 
+  <br>`bash setup/1_setup_sage_directory.sh`
+3. Define the following environment variables in the .env file:
   <br> `ISDEV`: Change to "False"
   <br> `HOST`:
   <br> `DOMAIN`: Buy a domain name.
@@ -17,13 +21,27 @@ This app is like Mint, but better. It collects all of your personal financial da
   <br> `SERVER_USER`: Your user the production server.
   <br> `SERVER_USER_PASSWORD`: Your user's password on the production server.
   <br> `SSH_ALLOWED_PUBLIC_IPS`: List the public IPs that can access to the production server.
-3. **WARNING: THIS THIS STEP CAUSES DIGITAL OCEAN TO START CHARGING YOU FOR A SERVER ON A MONTHLY BASIS.**
-<br> Run the script to create a Digital Ocean Droplet server.
-<br> `bash scripts/ansible_create_droplet_prod.sh`
+4. **WARNING: THIS THIS STEP CAUSES DIGITAL OCEAN TO START CHARGING YOU FOR A SERVER ON A MONTHLY BASIS.**
+<br> Run the script to create a production Digital Ocean Droplet server that runs the application.
+<br> `bash setup/2_setup_prod_server.sh`
 <br> It will prompt you for `BECOME password:`; enter your sudo password.
-4. Try to SSH to the server
+5. Try to SSH to the server
 <br> The public IP of the server is located in the file `droplet_hosts`. Specify your private key.
 <br> `ssh root@<public IP> -i ~/.ssh/sage_ephem`
+
+# Local Development
+
+## Globally Installed Software
+Install the following software on your local machine:
+- Docker
+  - Use [these instructions](https://docs.docker.com/engine/install/) to install 
+- Python 3.7 or higher
+
+## Setup Instructions
+1. Run the development setup script.
+`bash install/local_development.sh`
+2. Start docker
+`docker compose -f docker-compose.yml -f docker-compose.override.yml up -d`
 
 # Useful Commands
 ## Server
@@ -106,19 +124,6 @@ Remove all containers and volumes after a schema change.
 
 `docker rm -f $(docker ps -a -q) && docker volume rm $(docker volume ls -q)`
 
-
-# Local Development
-## Globally Installed Software
-Install the following software on your local machine:
-- Docker
-  - Use [these instructions](https://docs.docker.com/engine/install/) to install 
-- Python 3.7 or higher
-
-## Setup Instructions
-1. Run the development setup script.
-`bash scripts/setup_development.sh`
-2. Start docker
-`docker compose -f docker-compose.yml -f docker-compose.override.yml up -d` 
 
 ## Python Dependencies
 `(venv) $ python3 -m pip install -r requirements.txt`
