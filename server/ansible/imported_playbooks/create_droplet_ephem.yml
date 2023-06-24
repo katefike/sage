@@ -69,5 +69,5 @@
       lineinfile:
         path: "{{  playbook_dir  }}/droplet_hosts"
         regexp: ".*sageEphem$"
-        line: "sageEphem ansible_host={{ public_ip }}"
+        line: "sageEphem ansible_host={{ public_ip }} ansible_user=root"
       with_items: "{{ droplet_result.results }}"
