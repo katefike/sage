@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
 echo "**WARNING: RUNNING THIS SCRIPT CAUSES DIGITAL OCEAN TO START CHARGING YOU FOR A SERVER ON A MONTHLY BASIS.**"
+read -r -p "Are you sure? [y/N] " response
+if ! [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+    exit
+fi
 
 # Make the project root pwd
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -14,4 +19,4 @@ set +o allexport
 
 # Runs Ansible Playbook for creating a ephemeral DO Droplet server. The server runs the application Sage.
 cd server/ansible/
-exec ansible-playbook -i inventory_prod.yml main_ephem.yml --ask-become-pass
+exec ansible-playbook -i inventory_ephem.yml main_ephem.yml --ask-become-pass

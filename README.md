@@ -23,11 +23,11 @@ This app is like Mint, but better. It collects all of your personal financial da
   <br> `SSH_ALLOWED_PUBLIC_IPS`: List the public IPs that can access to the production server.
 4. **WARNING: RUNNING THIS SCRIPT CAUSES DIGITAL OCEAN TO START CHARGING YOU FOR A SERVER ON A MONTHLY BASIS.**
 <br> Run the script to create a production Digital Ocean Droplet server that runs the application.
-<br> `bash setup/2_setup_prod_server.sh`
+<br> `bash setup/2_create_SageProd_server.sh`
 <br> It will prompt you for `BECOME password:`; enter your sudo password.
 5. Try to SSH to the server
 <br> The public IP of the server is located in the file `droplet_hosts`. Specify your private key.
-<br> `ssh root@<public IP> -i ~/.ssh/sage_ephem`
+<br> `ssh root@< public IP > -i ~/.ssh/< private_key >`
 
 # Local Development
 
