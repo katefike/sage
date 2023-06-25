@@ -19,7 +19,7 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
   <br> `DOMAIN`: Buy a domain name.
   <br> `FORWARDING_EMAIL`: Set up the email account that receives the transaction alert emails to forward all emails to the receiving email address in the mailserver. The default receiving email address is incoming@DOMAIN. So if you purchased the domain example.com, the receiving email address would me incoming@example.com
   <br> `DO_API_TOKEN`: Create a Digital Ocean API Key. It's located in the "API" portion of their menu.
-  <br> `PROD_SSH_PUBLIC_KEY`: Create SSH keys for the production server. Copy/paste the public key here.
+  <br> `PROD_SSH_PUBLIC_KEY`: Create SSH keys for the production server. Ensure the private key permissions are restricted.For help see the section "Production Setup Troubleshooting." Copy/paste the public key here.
   <br> `PROD_SSH_PRIVATE_KEY_FILE_PATH`: Copy/paste the path to the private key file here.
   <br> `SERVER_USER`: Your user the production server.
   <br> `SERVER_USER_PASSWORD`: Your user's password on the production server.
@@ -28,9 +28,25 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 <br> Run the script to create a production Digital Ocean Droplet server that runs the application.
 <br> `bash setup/2_create_SageProd_server.sh`
 <br> It will prompt you for `BECOME password:`; enter your sudo password.
-5. Try to SSH to the server
-<br> The public IP of the server is located in the file `droplet_hosts`. Specify your private key.
-<br> `ssh root@< public IP > -i ~/.ssh/< private_key >`
+
+## Production Setup Troubleshooting
+### "Ansible won't connect to my production server sageProd!"
+- Ensure the permissions are correct. Typically the permissions are:
+  - `700` on the `.ssh` directory
+  - `644` on the public key file (.pub)
+  - `600` on the private key file.
+- Try to `ssh` from command line. Fill in the public IP from the file `server/ansible/imported_playbooks/droplet_hosts`. Below is the error message given when the permissions on the private key file are too open. 
+```
+(.venv) kfike@cutie:~/.ssh$ ssh root@< public ip >  -i ~/.ssh/sage_prod
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions 0664 for '/home/kfike/.ssh/sage_prod' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Load key "/home/kfike/.ssh/sage_prod": bad permissions
+root@< public ip >: Permission denied (publickey).
+```
 
 # Local Development
 
