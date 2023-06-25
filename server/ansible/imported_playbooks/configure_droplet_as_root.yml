@@ -1,9 +1,7 @@
-- hosts: sageEphem
+- hosts: '{{ host_name }}'
   gather_facts: no
   vars:
     digital_ocean_token: '{{ lookup("env", "DO_API_TOKEN") }}'
-    ansible_ssh_private_key_file: '{{ lookup("env", "EPHEM_SSH_KEY_FILE_PRIV") }}'
-    ephem_ssh_key_pub: '{{ lookup("env", "EPHEM_SSH_KEY_PUB") }}'
     server_user: '{{ lookup("env", "SERVER_USER") }}'
     server_user_password: '{{ lookup("env", "SERVER_USER_PASSWORD") }}'
     ansible_user: root
