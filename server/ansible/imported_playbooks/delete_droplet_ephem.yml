@@ -23,7 +23,7 @@
       oauth_token: "{{ digital_ocean_token }}"
       fingerprint: "{{ ephem_sshkey.fingerprint }}"
       state: absent
-    register: sshkey_result
+    when: ephem_sshkey.fingerprint is defined
 
   - name: Delete the Droplet named "sageEphem"
     digital_ocean_droplet:
@@ -32,10 +32,15 @@
       unique_name: true
       wait_timeout: 600
       state: absent
-    register: droplet_result
 
   - name: Delete the firewall named "sageEphem"
     community.digitalocean.digital_ocean_firewall:
       oauth_token: "{{ digital_ocean_token }}"
       name: "sageEphem"
+      state: absent
+
+  - name: Delete the Droplet from the droplet_hosts file
+    ansible.builtin.lineinfile:
+      path: "{{  playbook_dir  }}/droplet_hosts"
+      regexp: '(sageEphem(.*))'
       state: absent
