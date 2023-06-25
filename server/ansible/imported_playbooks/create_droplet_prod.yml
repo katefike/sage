@@ -77,5 +77,5 @@
         line: "{{ item.data.droplet.networks.v4[0].ip_address }}  {{ item.data.droplet.name }}"
       with_items: "{{ droplet_result.results }}"
 
-    - name: Refresh inventory to ensure new instances exist in inventory
+    - name: Refresh inventory to ensure the new host exist in inventory
       ansible.builtin.meta: refresh_inventory

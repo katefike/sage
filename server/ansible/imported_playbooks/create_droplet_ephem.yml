@@ -72,5 +72,5 @@
         line: "sageEphem ansible_host={{ public_ip }}"
       with_items: "{{ droplet_result.results }}"
 
-    - name: Refresh inventory to ensure new instances exist in inventory
+    - name: Refresh inventory to ensure the new host exist in inventory
       ansible.builtin.meta: refresh_inventory
