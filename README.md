@@ -7,23 +7,67 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 ## Production Setup Instructions
 *This app is actively under development. It isn't ready to be used.*
 
-1. Run the production setup script. This will create the python virutal environment, install the python dependencies, and create a .env file using the file .env-example as a template. <br>
-`bash scripts/inital_setup.sh`
-2. Define the following environment variables in the .env file:
+1. Globally install the following software:
+  <br> Docker
+  <br> Use [these instructions](https://docs.docker.com/engine/install/) to install
+  <br> Python 3.7 or higher
+2. Run the first setup script. This will create a .env file using the file .env-example as a template. 
+  <br>`bash setup/1_setup_sage_directory.sh`
+3. Define the following environment variables in the .env file:
   <br> `ISDEV`: Change to "False"
   <br> `HOST`:
   <br> `DOMAIN`: Buy a domain name.
   <br> `FORWARDING_EMAIL`: Set up the email account that receives the transaction alert emails to forward all emails to the receiving email address in the mailserver. The default receiving email address is incoming@DOMAIN. So if you purchased the domain example.com, the receiving email address would me incoming@example.com
   <br> `DO_API_TOKEN`: Create a Digital Ocean API Key. It's located in the "API" portion of their menu.
-  <br> `PROD_DO_SSH_KEY_ID`: Add the ID (AKA fingerprint)
-  <br> `PROD_SSH_KEY_PUB`: Create SSH keys for the production server. Copy/paste the public key here.
-  TODO: Create env vars for the port IP addresses.
-3. **WARNING: THIS THIS STEP CAUSES DIGITAL OCEAN TO START CHARGING YOU FOR A SERVER ON A MONTHLY BASIS.**
-<br> Run the script to create a Digital Ocean Droplet server.
-<br> `bash scripts/ansible_create_droplet_prod.sh`
+  <br> `PROD_SSH_PUBLIC_KEY`: Create SSH keys for the production server. Ensure the private key permissions are restricted.For help see the section "Production Setup Troubleshooting." Copy/paste the public key here.
+  <br> `PROD_SSH_PRIVATE_KEY_FILE_PATH`: Copy/paste the path to the private key file here.
+  <br> `SERVER_USER`: Your user the production server.
+  <br> `SERVER_USER_PASSWORD`: Your user's password on the production server.
+  <br> `SSH_ALLOWED_PUBLIC_IPS`: List the public IPs that can access to the production server.
+4. **WARNING: RUNNING THIS SCRIPT CAUSES DIGITAL OCEAN TO START CHARGING YOU FOR A SERVER ON A MONTHLY BASIS.**
+<br> Run the script to create a production Digital Ocean Droplet server that runs the application.
+<br> `bash setup/2_create_SageProd_server.sh`
 <br> It will prompt you for `BECOME password:`; enter your sudo password.
 
+## Production Setup Troubleshooting
+### "Ansible won't connect to my production server sageProd!"
+- Ensure the permissions are correct. Typically the permissions are:
+  - `700` on the `.ssh` directory
+  - `644` on the public key file (.pub)
+  - `600` on the private key file.
+- Try to `ssh` from command line. Fill in the public IP from the file `server/ansible/imported_playbooks/droplet_hosts`. Below is the error message given when the permissions on the private key file are too open. 
+```
+(.venv) kfike@cutie:~/.ssh$ ssh root@< public ip >  -i ~/.ssh/sage_prod
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions 0664 for '/home/kfike/.ssh/sage_prod' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Load key "/home/kfike/.ssh/sage_prod": bad permissions
+root@< public ip >: Permission denied (publickey).
+```
+
+# Local Development
+
+## Globally Installed Software
+Install the following software on your local machine:
+- Docker
+  - Use [these instructions](https://docs.docker.com/engine/install/) to install 
+- Python 3.7 or higher
+
+## Setup Instructions
+1. Run the development setup script.
+`bash install/local_development.sh`
+2. Start docker
+`docker compose -f docker-compose.yml -f docker-compose.override.yml up -d`
+
 # Useful Commands
+## Server
+SSH to the server
+
+`ssh root@<ipv4 address> -i ~/.ssh/<private key file>`
+
 ## Docker
 Start the docker containers for the development environment
 
@@ -99,19 +143,6 @@ Remove all containers and volumes after a schema change.
 
 `docker rm -f $(docker ps -a -q) && docker volume rm $(docker volume ls -q)`
 
-
-# Local Development
-## Globally Installed Software
-Install the following software on your local machine:
-- Docker
-  - Use [these instructions](https://docs.docker.com/engine/install/) to install 
-- Python 3.7 or higher
-
-## Setup Instructions
-1. Run the development setup script.
-`bash scripts/setup_development.sh`
-2. Start docker
-`docker compose -f docker-compose.yml -f docker-compose.override.yml up -d` 
 
 ## Python Dependencies
 `(venv) $ python3 -m pip install -r requirements.txt`
