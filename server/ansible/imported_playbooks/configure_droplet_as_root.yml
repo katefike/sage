@@ -6,13 +6,15 @@
     server_user_password: '{{ lookup("env", "SERVER_USER_PASSWORD") }}'
     ansible_user: root
   tasks:
-      - name: Refresh inventory to ensure new host exists in inventory
+      - name: Refresh inventory to ensure the new host exists in inventory
         ansible.builtin.meta: refresh_inventory
 
-      - name: Wait for the droplet to become reachable. This could take up to 5 minutes.
+      - name: Pausing while Digital Ocean creates the droplet...
+        pause:
+          seconds: 60
+
+      - name: Wait for the droplet to become reachable. This could take up to 4 minutes.
         ansible.builtin.wait_for_connection:
-          delay: 60
-          # Waits 4 minutes
           timeout: 240
 
       - name: Install aptitude
