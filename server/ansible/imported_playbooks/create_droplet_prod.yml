@@ -68,7 +68,7 @@
         state: present
       register: floating_ip_result
 
-    - name: Save IP and host name to droplet_hosts
+    - name: Save IP and host name to droplet_hosts file
       become: yes
       lineinfile:
         path: "{{  playbook_dir  }}/droplet_hosts"
@@ -76,3 +76,6 @@
         # Floating IP: {{ floating_ip_result.data.floating_ip.ip }}
         line: "{{ item.data.droplet.networks.v4[0].ip_address }}  {{ item.data.droplet.name }}"
       with_items: "{{ droplet_result.results }}"
+
+    - name: Refresh inventory to ensure new instances exist in inventory
+      ansible.builtin.meta: refresh_inventory
