@@ -64,10 +64,13 @@
           status_code: 202
       register: firewall_result
 
-    - name: Save IP and host name to droplet_hosts
+    - name: Save IP and host name to droplet_hosts file
       become: yes
       lineinfile:
         path: "{{  playbook_dir  }}/droplet_hosts"
         regexp: ".*sageEphem$"
-        line: "sageEphem ansible_host={{ public_ip }} ansible_user=root"
+        line: "sageEphem ansible_host={{ public_ip }}"
       with_items: "{{ droplet_result.results }}"
+
+    - name: Refresh inventory to ensure new instances exist in inventory
+      ansible.builtin.meta: refresh_inventory

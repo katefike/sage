@@ -8,6 +8,9 @@
     server_user_password: '{{ lookup("env", "SERVER_USER_PASSWORD") }}'
     ansible_user: root
   tasks:
+      - name: Refresh inventory to ensure new instances exist in inventory
+        ansible.builtin.meta: refresh_inventory
+
       - name: Wait for the droplet to become reachable. This could take up to 5 minutes.
         ansible.builtin.wait_for_connection:
           delay: 60
