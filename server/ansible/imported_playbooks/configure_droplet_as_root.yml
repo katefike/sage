@@ -43,7 +43,7 @@
         ansible.posix.authorized_key:
           user: "{{ server_user }}"
           state: present
-          key: "{{ ephem_ssh_key_pub }}"
+          key: "{{ ssh_public_key }}"
 
       - name: Disable password authentication for root
         lineinfile:
