@@ -31,6 +31,9 @@
         - web
       register: droplet_result
 
+    - name: Setting host fact public_ip
+      ansible.builtin.set_fact: public_ip="{{ droplet_result.results[0].data.droplet.networks.v4[0].ip_address }}"
+
     - name: Create firewall named "sageProd" and assign the droplet named "sageProd" to it
       uri:
         url: "https://api.digitalocean.com/v2/firewalls"
@@ -72,10 +75,11 @@
       become: yes
       lineinfile:
         path: "{{  playbook_dir  }}/droplet_hosts"
-        regexp: ".*{{ item.data.droplet.name }}$"
-        # Floating IP: {{ floating_ip_result.data.floating_ip.ip }}
-        line: "{{ item.data.droplet.networks.v4[0].ip_address }}  {{ item.data.droplet.name }}"
-      with_items: "{{ droplet_result.results }}"
+        regexp: ".*sageProd$"
+        line: "sageProd ansible_host={{ public_ip }}"
+        # The public IP is needed to SSH to the droplet; the floating IP is different
+        # The floating IP could be accessed if needed using the line below:
+        # {{ floating_ip_result.data.floating_ip.ip }}
 
     - name: Refresh inventory to ensure the new host exist in inventory
       ansible.builtin.meta: refresh_inventory
