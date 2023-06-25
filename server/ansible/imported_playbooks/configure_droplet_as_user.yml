@@ -1,9 +1,7 @@
 - hosts: sageEphem
   vars:
     digital_ocean_token: '{{ lookup("env", "DO_API_TOKEN") }}'
-    server_user: '{{ lookup("env", "SERVER_USER") }}'
-    server_user_password: '{{ lookup("env", "SERVER_USER_PASSWORD") }}'
-    ansible_user: '{{ server_user }}'
+    ansible_user: '{{ lookup("env", "SERVER_USER") }}'
   tasks:
       - name: Clone the GitLab repository
         git:
