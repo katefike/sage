@@ -6,6 +6,6 @@
       - name: Clone the GitLab repository
         git:
           repo: 'https://github.com/katefike/sage.git'
-          dest: '/home/kfike/sage/'
+          dest: '/home/{{ ansible_user }}/sage/'
           clone: yes
           update: yes
