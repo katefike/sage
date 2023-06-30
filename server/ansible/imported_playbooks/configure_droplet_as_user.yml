@@ -4,13 +4,13 @@
     ansible_user: '{{ lookup("env", "SERVER_USER") }}'
     project_root_path: '{{ lookup("env", "PROJECT_ROOT_PATH") }}'
   tasks:
-      - name: Clone the GitLab repository
-        git:
-          repo: 'https://github.com/katefike/sage.git'
-          dest: '/home/{{ ansible_user }}/sage/'
-          clone: yes
-          update: yes
-    - name: Copy .env file to remote server
+    - name: Clone the GitLab repository
+      git:
+        repo: 'https://github.com/katefike/sage.git'
+        dest: '/home/{{ ansible_user }}/sage/'
+        clone: yes
+        update: yes
+    - name: Copy .env file to {{ host_name }}
       copy:
         src: '{{ project_root_path }}/.env'
         dest: ~/sage/.env
