@@ -9,11 +9,11 @@
       - name: Refresh inventory to ensure the new host exists in inventory
         ansible.builtin.meta: refresh_inventory
 
-      - name: Pausing while Digital Ocean creates the droplet...
+      - name: Pause while Digital Ocean creates the droplet
         pause:
           seconds: 60
 
-      - name: Wait for the droplet to become reachable. This could take up to 4 minutes.
+      - name: Wait for the droplet to become reachable. This could take up to 4 minutes
         ansible.builtin.wait_for_connection:
           timeout: 240
 
@@ -31,9 +31,9 @@
           line: '%sudo ALL=(ALL) NOPASSWD: ALL'
           validate: '/usr/sbin/visudo -cf %s'
 
-      - name: Create a new regular user named {{ server_user }} with sudo privileges.
+      - name: Create a new regular user named {{ server_user }} with sudo privileges
         user:
-          name: "{{ server_user }}"
+          name: '{{ server_user }}'
           state: present
           groups: sudo
           # Default shell is bash.
@@ -43,9 +43,9 @@
 
       - name: Set authorized key for user {{ server_user }}
         ansible.posix.authorized_key:
-          user: "{{ server_user }}"
+          user: '{{ server_user }}'
           state: present
-          key: "{{ ssh_public_key }}"
+          key: '{{ ssh_public_key }}'
 
       - name: Disable password authentication for root
         lineinfile:
@@ -70,7 +70,7 @@
           update_cache: true
 
       - name: Add Docker GPG apt key
-        shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
+        shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -'
 
       - name: Pause until the previous task's process has completed. Fixes failure 'Failed to lock directory /var/lib/apt/lists/:E:Could not get lock /var/lib/apt/lists/lock. It is held by process 10464 (apt-get)''
         pause:
