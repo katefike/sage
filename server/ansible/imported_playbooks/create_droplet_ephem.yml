@@ -60,6 +60,10 @@
                 ports: 'all'
                 destinations:
                   addresses: ['0.0.0.0/0']
+              - protocol: 'udp'
+                ports: '53'
+                destinations:
+                  addresses: ['0.0.0.0/0']
             droplet_ids: ['{{  droplet_result.results[0].data.droplet.id  }}']
           status_code: 202
       register: firewall_result
