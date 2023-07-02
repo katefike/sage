@@ -6,83 +6,109 @@
     server_user_password: '{{ lookup("env", "SERVER_USER_PASSWORD") }}'
     ansible_user: root
   tasks:
-      - name: Refresh inventory to ensure the new host exists in inventory
-        ansible.builtin.meta: refresh_inventory
+    - name: Refresh inventory to ensure the new host exists in inventory
+      ansible.builtin.meta: refresh_inventory
 
-      - name: Pausing while Digital Ocean creates the droplet...
-        pause:
-          seconds: 60
+    - name: Pause while Digital Ocean creates the droplet
+      pause:
+        seconds: 60
 
-      - name: Wait for the droplet to become reachable. This could take up to 4 minutes.
-        ansible.builtin.wait_for_connection:
-          timeout: 240
+    - name: Wait for the droplet to become reachable. This could take up to 4 minutes
+      ansible.builtin.wait_for_connection:
+        timeout: 240
 
-      - name: Install aptitude
-        apt:
-          name: aptitude
-          state: latest
-          update_cache: true
+    - name: Pause again...
+      pause:
+        seconds: 60
 
-      - name: Setup passwordless sudo
-        lineinfile:
-          path: /etc/sudoers
-          state: present
-          regexp: '^%sudo'
-          line: '%sudo ALL=(ALL) NOPASSWD: ALL'
-          validate: '/usr/sbin/visudo -cf %s'
+    - name: Install aptitude
+      apt:
+        name: aptitude
+        state: latest
+        update_cache: true
 
-      - name: Create a new regular user named {{ server_user }} with sudo privileges.
-        user:
-          name: "{{ server_user }}"
-          state: present
-          groups: sudo
-          # Default shell is bash.
-          shell: /bin/bash
-          append: true
-          create_home: true
+    - name: Setup passwordless sudo
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^%sudo'
+        line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+        validate: '/usr/sbin/visudo -cf %s'
 
-      - name: Set authorized key for user {{ server_user }}
-        ansible.posix.authorized_key:
-          user: "{{ server_user }}"
-          state: present
-          key: "{{ ssh_public_key }}"
+    - name: Create a new regular user named {{ server_user }} with sudo privileges
+      user:
+        name: '{{ server_user }}'
+        state: present
+        groups: sudo
+        # Default shell is bash.
+        shell: /bin/bash
+        append: true
+        create_home: true
 
-      - name: Disable password authentication for root
-        lineinfile:
-          path: /etc/ssh/sshd_config
-          state: present
-          regexp: '^#?PermitRootLogin'
-          line: 'PermitRootLogin prohibit-password'
+    - name: Set authorized key for user {{ server_user }}
+      ansible.posix.authorized_key:
+        user: '{{ server_user }}'
+        state: present
+        key: '{{ ssh_public_key }}'
 
-      - name: Install required system packages
-        apt:
-          pkg:
-            - apt-transport-https
-            - ca-certificates
-            - curl
-            - software-properties-common
-            - python3-pip
-            - virtualenv
-            - python3-setuptools
-            - vim
-            - git
-          state: latest
-          update_cache: true
+    - name: Disable password authentication for root
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^#?PermitRootLogin'
+        line: 'PermitRootLogin prohibit-password'
 
-      - name: Add Docker GPG apt key
-        shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
+    - name: Install required system packages
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+          - vim
+          - git
+        state: latest
+        update_cache: true
 
-      - name: Pause until the previous task's process has completed. Fixes failure 'Failed to lock directory /var/lib/apt/lists/:E:Could not get lock /var/lib/apt/lists/lock. It is held by process 10464 (apt-get)''
-        pause:
-          seconds: 30
+    - name: Add Docker GPG apt key
+      shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -'
 
-      - name: Add Docker Repository
-        apt_repository:
-          repo: deb https://download.docker.com/linux/ubuntu jammy stable
-          state: present
+    - name: Pause until the previous task's process has completed. Fixes failure 'Failed to lock directory /var/lib/apt/lists/:E:Could not get lock /var/lib/apt/lists/lock. It is held by process 10464 (apt-get)''
+      pause:
+        seconds: 30
 
-      - name: Update apt and install docker-ce
-        apt:
-          name: docker-ce
-          state: latest
-          update_cache: true
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu jammy stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: true
+
+    - name: Add the docker group
+      group:
+        name: docker
+        state: present
+
+    - name: Add the user {{ server_user }} to the docker group
+      user:
+        name: '{{ server_user }}'
+        groups: docker
+        append: yes
+ 
+    # - name: Add docker group to /etc/group
+    #   shell:
+    #     cmd: "getent group docker | grep -q '^docker:' || echo 'docker:x:999:' >> /etc/group"
+    #     warn: false
+         
+    - name: Restart Docker service
+      service:
+        name: docker
+        state: restarted
+ 

@@ -10,8 +10,8 @@
   tasks:
     - name: Add public ssh key named "sageEphem" to your Digital Ocean account
       digital_ocean_sshkey:
-        name: "sageEphem"
-        oauth_token: "{{ digital_ocean_token }}"
+        name: 'sageEphem'
+        oauth_token: '{{ digital_ocean_token }}'
         ssh_pub_key: "{{ ssh_public_key }}"
         state: present
       register: sshkey_result
@@ -19,58 +19,62 @@
     - name: Create a new Droplet named "sageEphem"
       digital_ocean_droplet:
         name: "sageEphem"
-        oauth_token: "{{ digital_ocean_token }}"
+        oauth_token: '{{ digital_ocean_token }}'
         size: "{{ droplet_size }}"
         region: "{{ droplet_region }}"
         image: "{{ droplet_image }}"
         wait_timeout: 600
         unique_name: yes
-        ssh_keys: ["{{ sshkey_result.data.ssh_key.fingerprint }}"]      
+        ssh_keys: ['{{ sshkey_result.data.ssh_key.fingerprint }}']      
         state: present
       with_inventory_hostnames:
         - sage
       register: droplet_result
 
     - name: Setting host fact public_ip
-      ansible.builtin.set_fact: public_ip="{{ droplet_result.results[0].data.droplet.networks.v4[0].ip_address }}"
+      ansible.builtin.set_fact: public_ip='{{ droplet_result.results[0].data.droplet.networks.v4[0].ip_address }}'
     
     - name: Create firewall named "sageEphem" and assign the droplet named "sageEphem" to it
       uri:
-          url: "https://api.digitalocean.com/v2/firewalls"
+          url: 'https://api.digitalocean.com/v2/firewalls'
           method: POST
           body_format: json
           headers:
             Content-Type: application/json
-            Authorization: "Bearer {{ digital_ocean_token }}"
+            Authorization: 'Bearer {{ digital_ocean_token }}'
           body:
-            name: "sageEphem"
+            name: 'sageEphem'
             inbound_rules:
-              - protocol: "icmp"
+              - protocol: 'icmp'
                 sources:
-                  addresses: ["0.0.0.0/0"]
-              - protocol: "tcp"
-                ports: "22"
+                  addresses: ['0.0.0.0/0']
+              - protocol: 'tcp'
+                ports: '22'
                 sources:
-                  addresses: "{{ ssh_allowed_public_ips_list }}"
+                  addresses: '{{ ssh_allowed_public_ips_list }}'
             outbound_rules: 
-              - protocol: "icmp"
+              - protocol: 'icmp'
                 destinations:
-                  addresses: ["0.0.0.0/0"]
-              - protocol: "tcp"
-                ports: "all"
+                  addresses: ['0.0.0.0/0']
+              - protocol: 'tcp'
+                ports: 'all'
                 destinations:
-                  addresses: ["0.0.0.0/0"]
-            droplet_ids: ["{{  droplet_result.results[0].data.droplet.id  }}"]
+                  addresses: ['0.0.0.0/0']
+              - protocol: 'udp'
+                ports: '53'
+                destinations:
+                  addresses: ['0.0.0.0/0']
+            droplet_ids: ['{{  droplet_result.results[0].data.droplet.id  }}']
           status_code: 202
       register: firewall_result
 
     - name: Save IP and host name to droplet_hosts file
       become: yes
       lineinfile:
-        path: "{{  playbook_dir  }}/droplet_hosts"
-        regexp: ".*sageEphem$"
-        line: "sageEphem ansible_host={{ public_ip }}"
-      with_items: "{{ droplet_result.results }}"
+        path: '{{  playbook_dir  }}/droplet_hosts'
+        regexp: '.*sageEphem$"'
+        line: 'sageEphem ansible_host={{ public_ip }}'
+      with_items: '{{ droplet_result.results }}'
 
     - name: Refresh inventory to ensure the new host exist in inventory
       ansible.builtin.meta: refresh_inventory
