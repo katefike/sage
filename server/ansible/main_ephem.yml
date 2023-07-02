@@ -15,3 +15,4 @@
   vars:
     host_name: 'sageEphem'
     ansible_ssh_private_key_file: '{{ lookup("env", "EPHEM_SSH_PRIVATE_KEY_FILE_PATH") }}'
+    docker_compose_file: 'docker-compose.dev.yml'
