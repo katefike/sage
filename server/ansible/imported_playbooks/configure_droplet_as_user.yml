@@ -10,8 +10,26 @@
         dest: '/home/{{ ansible_user }}/sage/'
         clone: yes
         update: yes
+
     - name: Copy .env file to {{ host_name }}
       copy:
         src: '{{ project_root_path }}/.env'
         dest: ~/sage/.env
         mode: '0600'
+
+    - name: Install Docker package
+      pip:
+        name: docker-compose
+        state: present
+
+    - name: Start Docker
+      community.docker.docker_compose:
+        project_src: ~/sage/
+        files:
+        - docker-compose.yml
+        - docker-compose.prod.yml
+      register: output
+
+    - name: Show results
+      ansible.builtin.debug:
+        var: output
