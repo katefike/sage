@@ -79,8 +79,7 @@ See code coverage of the tests
 
 
 ### Getting mbox files
-For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. Here's how you get mbox files for a gmail account:
-https://support.google.com/accounts/answer/3024190
+For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. [Google has instructions on how to get the mbox files from your gmail account.](https://support.google.com/accounts/answer/3024190)
 
 If mbox files are changed, don't forget to restart the mailserver docker container; the mbox file's emails are loaded into the server on docker compose up when docker/mailserver/entrypoint.sh runs.
 
@@ -170,4 +169,6 @@ Access the postgres interactive CLI within the database container
 `docker exec -it  sage-db psql -U admin sage`
 
 ## Python Dependencies
+Install dependencies
+
 `(venv) $ python3 -m pip install -r requirements.txt`
