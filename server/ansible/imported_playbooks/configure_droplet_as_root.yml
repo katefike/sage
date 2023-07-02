@@ -17,6 +17,10 @@
       ansible.builtin.wait_for_connection:
         timeout: 240
 
+    - name: Pause again...
+      pause:
+        seconds: 60
+
     - name: Install aptitude
       apt:
         name: aptitude
@@ -86,3 +90,25 @@
         name: docker-ce
         state: latest
         update_cache: true
+
+    - name: Add the docker group
+      group:
+        name: docker
+        state: present
+
+    - name: Add the user {{ server_user }} to the docker group
+      user:
+        name: '{{ server_user }}'
+        groups: docker
+        append: yes
+ 
+    # - name: Add docker group to /etc/group
+    #   shell:
+    #     cmd: "getent group docker | grep -q '^docker:' || echo 'docker:x:999:' >> /etc/group"
+    #     warn: false
+         
+    - name: Restart Docker service
+      service:
+        name: docker
+        state: restarted
+ 
