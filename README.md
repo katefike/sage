@@ -57,7 +57,7 @@ Install the following software on your local machine:
 1. Run the development setup script.
 `bash install/local_development.sh`
 2. Start docker
-`docker compose -f docker-compose.yml -f docker-compose.override.yml up -d`
+`docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d`
 
 # Useful Commands
 ## Server
