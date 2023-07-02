@@ -17,9 +17,26 @@
         dest: ~/sage/.env
         mode: '0600'
 
+    - name: Create the Python virtual environment
+      shell: 
+        cmd: 'python3 -m venv ~/sage/.venv'
+        creates: '~/sage/.venv/bin/activate'
+
+    - name: Activate the Python virtual environment
+      shell: 
+        cmd: 'source ~/sage/.venv/bin/activate'
+        executable: /bin/bash
+
+    - name: Install requirements so we have pytest
+      pip:
+        requirements: ~/sage/requirements.txt
+        virtualenv: ~/sage/.venv
+
+    # Delete when latest requirements.txt is in the main branch
     - name: Install Docker package
       pip:
         name: docker-compose
+        virtualenv: ~/sage/.venv
         state: present
 
     - name: Start Docker
@@ -27,9 +44,24 @@
         project_src: ~/sage/
         files:
         - docker-compose.yml
-        - docker-compose.prod.yml
-      register: output
+        - '{{ docker_compose_file }}'
+      register: docker_result
 
-    - name: Show results
+    - name: Pause while Digital Ocean creates the droplet
+      pause:
+        seconds: 60
+
+    - name: Show results of starting Docker
       ansible.builtin.debug:
-        var: output
+        var: docker_result
+
+    - name: Run pytest and ensure all tests pass
+      shell: 
+        cmd: ~/sage/.venv/bin/pytest ~/sage/tests -xv
+        executable: /bin/bash   
+      register: pytest_result
+
+    - name: Show results of pytest
+      ansible.builtin.debug:
+        var: pytest_result.stdout_lines
+
