@@ -27,33 +27,20 @@
         cmd: 'source ~/sage/.venv/bin/activate'
         executable: /bin/bash
 
-    - name: Install requirements so we have pytest
+    - name: Install python requirements
       pip:
         requirements: ~/sage/requirements.txt
         virtualenv: ~/sage/.venv
 
-    # Delete when latest requirements.txt is in the main branch
-    - name: Install Docker package
-      pip:
-        name: docker-compose
-        virtualenv: ~/sage/.venv
-        state: present
-
     - name: Start Docker
-      community.docker.docker_compose:
-        project_src: ~/sage/
-        files:
-        - docker-compose.yml
-        - '{{ docker_compose_file }}'
+      shell: 
+        cmd: 'docker compose -f ~/sage/docker-compose.yml -f ~/sage/{{ docker_compose_file }} up -d'
+        executable: /bin/bash  
       register: docker_result
 
     - name: Pause while Digital Ocean creates the droplet
       pause:
         seconds: 60
-
-    - name: Show results of starting Docker
-      ansible.builtin.debug:
-        var: docker_result
 
     - name: Run pytest and ensure all tests pass
       shell: 
