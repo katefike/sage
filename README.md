@@ -46,18 +46,42 @@ root@< public ip >: Permission denied (publickey).
 ```
 
 # Local Development
-
-## Globally Installed Software
-Install the following software on your local machine:
-- Docker
-  - Use [these instructions](https://docs.docker.com/engine/install/) to install 
-- Python 3.7 or higher
-
 ## Setup Instructions
-1. Run the development setup script.
-`bash install/local_development.sh`
-2. Start docker
+1. Globally install the following software:
+  - Docker
+    - Use [these instructions](https://docs.docker.com/engine/install/) to install 
+  - Python 3.7 or higher
+2. Run the first setup script. This will create a .env file using the file .env-example as a template. 
+  <br>`bash setup/1_setup_sage_directory.sh`
+3. Run a setup script for setting up the virtual environment and Python dependencies.
+  <br>`bash setup/local_development/1_setup_venv.sh`
+4. Start Docker
 `docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d`
+
+## Testing Methods
+### Creating/Deleting an ephemeral server instance
+1. **WARNING: RUNNING THIS SCRIPT CAUSES DIGITAL OCEAN TO START CHARGING YOU MONEY ON A MONTHLY BASIS (IF YOU DON'T DELETE THE SERVER).**
+<br> Run the script to create a production Digital Ocean Droplet server that runs the application.
+<br> `bash setup/local_development/2_create_sageEphem_server.sh`
+<br> It will prompt you for `BECOME password:`; enter your sudo password.
+2. Run the script to delete the server.
+<br> `bash server/setup_scripts/ansible_delete_droplet_ephem.sh`
+
+### Pytest
+Run the full test suite, stop after the first failure.
+
+`(venv) $ pytest -xv`
+
+
+See code coverage of the tests
+
+`(venv) $ coverage run --source=sage -m pytest -v tests/ && coverage report -m`
+
+
+### Getting mbox files
+For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. [Google has instructions on how to get the mbox files from your gmail account.](https://support.google.com/accounts/answer/3024190)
+
+If mbox files are changed, don't forget to restart the mailserver docker container; the mbox file's emails are loaded into the server on docker compose up when docker/mailserver/entrypoint.sh runs.
 
 # Useful Commands
 ## Server
@@ -65,17 +89,56 @@ SSH to the server
 
 `ssh root@<ipv4 address> -i ~/.ssh/<private key file>`
 
+## Send Emails Locally
+Test that the dockerized email server works by sending an email locally (i.e. from outside of the container) via telnet.
+```
+telnet localhost 25
+
+ehlo mail.localdomain
+mail from: root@localhost
+rcpt to: incoming@example.com
+data
+Subject: Test email 
+This is a test email.
+.
+quit
+```
+
+## Mailserver Container
+Enter the mailsserver container
+
+`docker exec -it sage-mailserver bash`
+
+Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
+```
+docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.cf \
+&& docker cp sage-mailserver:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
+&& docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf
+```
+
+### Dovecot
+Show dovecot errors
+
+`doveadm log errors`
+
+
+Delete all emails from a mailbox
+
+`doveadm expunge -u incoming mailbox 'INBOX' all`
+
+
+
+## Postgres Container
+Enter the database container and access the database.
+
+`docker exec -it sage-db psql -h localhost -U sage_admin sage`
+
+
+Remove all containers and volumes after a schema change.
+
+`docker rm -f $(docker ps -a -q) && docker volume rm $(docker volume ls -q)`
+
 ## Docker
-Start the docker containers for the development environment
-
-`docker compose -f docker-compose.yml -f docker-compose.dev.yml up`
-
-
-Start the docker containers for production
-
-`docker compose -f docker-compose.yml -f docker-compose.prod.yml up`
-
-
 Show the names of all docker containers (active and inactive)
 
 `docker ps -a --format '{{.Names}}'`
@@ -105,73 +168,7 @@ Access the postgres interactive CLI within the database container
 
 `docker exec -it  sage-db psql -U admin sage`
 
-
-## Mailserver Container
-Enter the mailsserver container
-
-`docker exec -it sage-mailserver bash`
-
-Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
-```
-docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.cf \
-&& docker cp sage-mailserver:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
-&& docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf
-```
-
-### Dovecot
-Show dovecot errors
-
-`doveadm log errors`
-
-
-Delete all emails from a mailbox
-
-`doveadm expunge -u incoming mailbox 'INBOX' all`
-
-
-
-## Postgres
-Enter the database container and access the database.
-
-`docker exec -it sage-db psql -h localhost -U sage_admin sage`
-
-
-Remove all containers and volumes after a schema change.
-
-`docker rm -f $(docker ps -a -q) && docker volume rm $(docker volume ls -q)`
-
-
 ## Python Dependencies
+Install dependencies
+
 `(venv) $ python3 -m pip install -r requirements.txt`
-
-## Send Emails Locally
-Test that the dockerized email server works by sending an email locally (i.e. from outside of the container) via telnet.
-```
-telnet localhost 25
-
-ehlo mail.localdomain
-mail from: root@localhost
-rcpt to: incoming@example.com
-data
-Subject: Test email 
-This is a test email.
-.
-quit
-```
-
-## Testing with pytest
-Run the full test suite, stop after the first failure.
-
-`(venv) $ pytest -xv`
-
-
-See cosde coverage of the Tests
-
-`(venv) $ coverage run --source=sage -m pytest -v tests/ && coverage report -m`
-
-
-### Getting mbox files
-For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. Here's how you get mbox files for a gmail account:
-https://support.google.com/accounts/answer/3024190
-
-If mbox files are changed, don't forget to restart the mailserver docker container; the mbox file's emails are loaded into the server on docker compose up when docker/mailserver/entrypoint.sh runs.
