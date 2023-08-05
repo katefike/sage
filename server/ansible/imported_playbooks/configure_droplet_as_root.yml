@@ -106,6 +106,16 @@
     #   shell:
     #     cmd: "getent group docker | grep -q '^docker:' || echo 'docker:x:999:' >> /etc/group"
     #     warn: false
+
+    - name: Creates an entry in crontab for batch process transaction emails
+      ansible.builtin.cron:
+        name: 'Batch transaction email processing'
+        weekday: '*'
+        minute: '0'
+        hour: '12'
+        user: '{{ server_user }}'
+        job: '/home/{{ server_user }}/Projects/sage/.venv/bin/python3 /home/{{ server_user }}/sage/sage/__main__.py > /tmp/cronlog.txt 2>&1'
+        cron_file: sage_tranaction_email_processing
          
     - name: Restart Docker service
       service:
