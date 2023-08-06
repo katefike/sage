@@ -27,6 +27,10 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 <br> It will prompt you for `BECOME password:`; enter your sudo password.
 
 ## Production Setup Troubleshooting
+### "Ansible gives the error [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all' or [WARNING]: Could not match supplied host pattern"
+- Ensure that the setup script `1_setup_sage_directory.sh` was run using the command `bash setup/1_setup_sage_directory.sh`. 
+  - This script creates the populated file `droplet_hosts`, which is read by the ansible playbook.
+
 ### "Ansible won't connect to my production server sageProd!"
 - Ensure the permissions are correct. Typically the permissions are:
   - `700` on the `.ssh` directory
