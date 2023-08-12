@@ -65,11 +65,11 @@
       ansible.builtin.debug:
         var: pytest_result.stdout_lines
 
-      - name: Create a cron job for parsing transactions from emails
-        ansible.builtin.cron:
-          name: Parse transactions from emails
-          weekday: '*'
-          minute: '*'
-          hour: '*'
-          job: '/usr/bin/env bash -c "cd ~/sage/ && .venv/bin/python3 -m sage >> ~/sage/cron.log 2>&1"' 
-          user: '{{ ansible_user }}'
+    - name: Create a cron job for parsing transactions from emails
+      ansible.builtin.cron:
+        name: Parse transactions from emails
+        weekday: '*'
+        minute: '*'
+        hour: '*'
+        job: '/usr/bin/env bash -c "cd ~/sage/ && .venv/bin/python3 -m sage >> ~/sage/cron.log 2>&1"' 
+        user: '{{ ansible_user }}'
