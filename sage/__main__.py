@@ -1,6 +1,6 @@
 import imap_tools
-from db import transactions
-from email_parser import email_parser
+from sage.db import transactions
+from sage.email_parser import email_parser
 from loguru import logger
 
 from . import ENV
