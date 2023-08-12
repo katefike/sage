@@ -67,9 +67,9 @@
 
       - name: Create a cron job for parsing transactions from emails
         ansible.builtin.cron:
-          name: yum autoupdate
+          name: Parse transactions from emails
           weekday: '*'
           minute: '*'
           hour: '*'
-          job: '/usr/bin/env bash -c "cd /home/{{ ansible_user }}/sage/ && .venv/bin/python3 -m sage >> /var/log/sage_main.log 2>&1"' 
-
+          job: '/usr/bin/env bash -c "cd ~/sage/ && .venv/bin/python3 -m sage >> ~/sage/cron.log 2>&1"' 
+          user: '{{ ansible_user }}'
