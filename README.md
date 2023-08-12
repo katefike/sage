@@ -68,7 +68,7 @@ root@< public ip >: Permission denied (publickey).
 <br> `bash server/setup_scripts/ansible_delete_droplet_ephem.sh`
 
 ### Pytest
-Run the full test suite, stop after the first failure.
+Run the full test suite, stop after the first failure. Docker must be started for pytests to be successful.
 
 `(venv) $ pytest -xv`
 
