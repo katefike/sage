@@ -3,7 +3,7 @@ CRUD methods for the banks table.
 """
 from typing import Optional
 
-from db import execute_statements
+from sage.db import execute_statements
 from loguru import logger
 
 logger.add(sink="debug.log")
