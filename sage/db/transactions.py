@@ -2,8 +2,8 @@
 Insert a transaction into the transactions table.
 """
 
-from db import banks, entities, execute_statements
-from email_data.transaction import Transaction
+from sage.db import banks, entities, execute_statements
+from sage.email_data.transaction import Transaction
 from loguru import logger
 
 logger.add(sink="debug.log")
