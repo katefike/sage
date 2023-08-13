@@ -5,7 +5,7 @@ from loguru import logger
 
 from . import ENV
 
-logger.add(sink="debug.log")
+logger.add(sink="sage_main.log")
 
 # TODO: Consider making a database class with methods
 # https://hackersandslackers.com/psycopg2-postgres-python/

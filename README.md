@@ -1,6 +1,6 @@
 # sage
 
-This app is like Mint, but better. It collects all of your personal financial data. The data is collected from alert emails sent from your financial institutions. The bank alert emails can be directed to your personal email account, such as a Gmail account. Then setup your account to forward the alert emails to a self-hosted email server. The financial data in the emails is extracted, stored, and made viewable. 
+This app is like Mint, but better. It collects all of your personal financial data. The data is collected from alert emails sent from your financial institutions. The bank alert emails can be directed to your personal email account, such as a Gmail account. Then setup your account to forward the alert emails to a self-hosted mail server. The financial data in the emails is extracted, stored, and made viewable. 
 
 Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 
@@ -14,7 +14,7 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 3. Define the following environment variables in the .env file:
   <br> `ISDEV`: Change to "False"
   <br> `DOMAIN`: Buy a domain name.
-  <br> `FORWARDING_EMAIL`: Set up the email account that receives the transaction alert emails. This account needs to forward all emails to the receiving email address on the mailserver. The default receiving email address is incoming@DOMAIN. So if you purchased the domain example.com, the receiving email address would me incoming@example.com
+  <br> `FORWARDING_EMAIL`: Set up the email account that receives the transaction alert emails. This account needs to forward all emails to the receiving email address on the mail server. The default receiving email address is incoming@DOMAIN. So if you purchased the domain example.com, the receiving email address would me incoming@example.com
   <br> `DO_API_TOKEN`: Create a Digital Ocean API Key. It's located in the "API" portion of their menu.
   <br> `PROD_SSH_PUBLIC_KEY`: Create SSH keys for the production server. Ensure the private key permissions are restricted.For help see the section "Production Setup Troubleshooting." Copy/paste the public key here.
   <br> `PROD_SSH_PRIVATE_KEY_FILE_PATH`: Copy/paste the path to the private key file here.
@@ -26,13 +26,34 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 <br> `bash setup/2_create_SageProd_server.sh`
 <br> It will prompt you for `BECOME password:`; enter your sudo password.
 
-## Production Setup Troubleshooting
+
+# Troubleshooting
+## Logging
+Shows email parsing info and errors.
+
+`~/sage/sage_main.log`
+
+Shows cron job info errors.
+
+`~/sage/cron.log`
+
+
+Shows cron errors in the case that it fails to execute a job.
+
+`sudo tail /var/log/syslog`
+
+
+## Scenarios
+### "Ansible gives the error [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all' or [WARNING]: Could not match supplied host pattern"
+- Ensure that the setup script `1_setup_sage_directory.sh` was run using the command `bash setup/1_setup_sage_directory.sh`. 
+  - This script creates the populated file `droplet_hosts`, which is read by the ansible playbook.
+
 ### "Ansible won't connect to my production server sageProd!"
 - Ensure the permissions are correct. Typically the permissions are:
   - `700` on the `.ssh` directory
   - `644` on the public key file (.pub)
   - `600` on the private key file.
-- Try to `ssh` from command line. Fill in the public IP from the file `server/ansible/imported_playbooks/droplet_hosts`. Below is the error message given when the permissions on the private key file are too open. 
+- Try to `ssh` from command line. Fill in the public IP from the file `ansible/imported_playbooks/droplet_hosts`. Below is the error message given when the permissions on the private key file are too open. 
 ```
 (.venv) kfike@cutie:~/.ssh$ ssh root@< public ip >  -i ~/.ssh/sage_prod
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -44,6 +65,7 @@ This private key will be ignored.
 Load key "/home/kfike/.ssh/sage_prod": bad permissions
 root@< public ip >: Permission denied (publickey).
 ```
+
 
 # Local Development
 ## Setup Instructions
@@ -59,7 +81,7 @@ root@< public ip >: Permission denied (publickey).
 `docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d`
 5. Manually kick off the script to parse transactions from emails. Execute the command from the project root. For example, if the project is located in `/home/kfike/Projects/` then execute `(.venv) kfike@pop-os:~/Projects/sage$ python3 -m sage`. 
 
-## Testing Methods
+
 ### Creating/Deleting an ephemeral server instance
 1. **WARNING: RUNNING THIS SCRIPT CAUSES DIGITAL OCEAN TO START CHARGING YOU MONEY ON A MONTHLY BASIS (IF YOU DON'T DELETE THE SERVER).**
 <br> Run the script to create a production Digital Ocean Droplet server that runs the application.
@@ -78,20 +100,20 @@ See code coverage of the tests
 
 `(venv) $ coverage run --source=sage -m pytest -v tests/ && coverage report -m`
 
+## Mailserver Container
+Enter the mailserver container
 
-### Getting mbox files
-For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. [Google has instructions on how to get the mbox files from your gmail account.](https://support.google.com/accounts/answer/3024190)
+`docker exec -it sage-mailserver bash`
 
-If mbox files are changed, don't forget to restart the mailserver docker container; the mbox file's emails are loaded into the server on docker compose up when docker/mailserver/entrypoint.sh runs.
-
-# Useful Commands
-## Server
-SSH to the server
-
-`ssh root@<ipv4 address> -i ~/.ssh/<private key file>`
+Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
+```
+docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.cf \
+&& docker cp sage-mailserver:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
+&& docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf
+```
 
 ## Send Emails Locally
-Test that the dockerized email server works by sending an email locally (i.e. from outside of the container) via telnet.
+Test that the dockerized mail server works by sending an email locally (i.e. from outside of the mail server container) via telnet.
 ```
 telnet localhost 25
 
@@ -105,17 +127,17 @@ This is a test email.
 quit
 ```
 
-## Mailserver Container
-Enter the mailsserver container
+### Getting mbox files
+For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. [Google has instructions on how to get the mbox files from your gmail account.](https://support.google.com/accounts/answer/3024190)
 
-`docker exec -it sage-mailserver bash`
+If mbox files are changed, don't forget to restart the mail server docker container; the mbox file's emails are loaded into the server on docker compose up when docker/mailserver/entrypoint.sh runs.
 
-Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
-```
-docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.cf \
-&& docker cp sage-mailserver:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
-&& docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf
-```
+# Useful Commands
+## Server
+SSH to the server
+
+`ssh root@<ipv4 address> -i ~/.ssh/<private key file>`
+
 
 ### Dovecot
 Show dovecot errors
@@ -169,7 +191,7 @@ Access the postgres interactive CLI within the database container
 
 `docker exec -it  sage-db psql -U admin sage`
 
-## Python Dependencies
+## Python
 Install dependencies
 
 `(venv) $ python3 -m pip install -r requirements.txt`
