@@ -22,7 +22,7 @@ set +o allexport
 
 # Runs Ansible Playbook for creating an production DO Droplet server. The server runs the application Sage.
 cd ansible/
-exec ansible-playbook -i inventory_prod.yml -i imported_playbooks/droplet_hosts main_prod.yml --ask-become-pass
+exec ansible-playbook -i imported_playbooks/droplet_hosts main_prod.yml --ask-become-pass
 
 
 
