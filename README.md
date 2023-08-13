@@ -24,9 +24,11 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 4. **WARNING: RUNNING THIS SCRIPT CAUSES DIGITAL OCEAN TO START CHARGING YOU MONEY ON A MONTHLY BASIS FOR YOUR PRODUCTION SERVER.**
 <br> Run the script to create a production Digital Ocean Droplet server that runs the application.
 <br> `bash setup/2_create_SageProd_server.sh`
+<br> If an error occurs, go to Digital Ocean and delete the Droplet and firewall before running the script again.
 <br> It will prompt you for `BECOME password:`; enter your sudo password.
 4. Run the script to configure the production Digital Ocean Droplet server.
 <br> `bash setup/3_configure_SageProd_server.sh`
+<br> This script is idempotent: no matter how many times you run it, the result will be the same. So if an error occurs, simply troubleshoot and run the script again until the error is resolved.
 
 
 # Troubleshooting
