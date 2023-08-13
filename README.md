@@ -1,6 +1,6 @@
 # sage
 
-This app is like Mint, but better. It collects all of your personal financial data. The data is collected from alert emails sent from your financial institutions. The bank alert emails can be directed to your personal email account, such as a Gmail account. Then setup your account to forward the alert emails to a self-hosted email server. The financial data in the emails is extracted, stored, and made viewable. 
+This app is like Mint, but better. It collects all of your personal financial data. The data is collected from alert emails sent from your financial institutions. The bank alert emails can be directed to your personal email account, such as a Gmail account. Then setup your account to forward the alert emails to a self-hosted mail server. The financial data in the emails is extracted, stored, and made viewable. 
 
 Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 
@@ -14,7 +14,7 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 3. Define the following environment variables in the .env file:
   <br> `ISDEV`: Change to "False"
   <br> `DOMAIN`: Buy a domain name.
-  <br> `FORWARDING_EMAIL`: Set up the email account that receives the transaction alert emails. This account needs to forward all emails to the receiving email address on the mailserver. The default receiving email address is incoming@DOMAIN. So if you purchased the domain example.com, the receiving email address would me incoming@example.com
+  <br> `FORWARDING_EMAIL`: Set up the email account that receives the transaction alert emails. This account needs to forward all emails to the receiving email address on the mail server. The default receiving email address is incoming@DOMAIN. So if you purchased the domain example.com, the receiving email address would me incoming@example.com
   <br> `DO_API_TOKEN`: Create a Digital Ocean API Key. It's located in the "API" portion of their menu.
   <br> `PROD_SSH_PUBLIC_KEY`: Create SSH keys for the production server. Ensure the private key permissions are restricted.For help see the section "Production Setup Troubleshooting." Copy/paste the public key here.
   <br> `PROD_SSH_PRIVATE_KEY_FILE_PATH`: Copy/paste the path to the private key file here.
@@ -29,11 +29,11 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 
 # Troubleshooting
 ## Logging
-Shows email parsing errors.
+Shows email parsing info and errors.
 
 `~/sage/sage_main.log`
 
-Shows cron job errors.
+Shows cron job info errors.
 
 `~/sage/cron.log`
 
@@ -113,7 +113,7 @@ docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postf
 ```
 
 ## Send Emails Locally
-Test that the dockerized email server works by sending an email locally (i.e. from outside of the mail server container) via telnet.
+Test that the dockerized mail server works by sending an email locally (i.e. from outside of the mail server container) via telnet.
 ```
 telnet localhost 25
 
@@ -130,7 +130,7 @@ quit
 ### Getting mbox files
 For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. [Google has instructions on how to get the mbox files from your gmail account.](https://support.google.com/accounts/answer/3024190)
 
-If mbox files are changed, don't forget to restart the mailserver docker container; the mbox file's emails are loaded into the server on docker compose up when docker/mailserver/entrypoint.sh runs.
+If mbox files are changed, don't forget to restart the mail server docker container; the mbox file's emails are loaded into the server on docker compose up when docker/mailserver/entrypoint.sh runs.
 
 # Useful Commands
 ## Server
