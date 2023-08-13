@@ -82,6 +82,18 @@ See code coverage of the tests
 
 `(venv) $ coverage run --source=sage -m pytest -v tests/ && coverage report -m`
 
+## Mailserver Container
+Enter the mailsserver container
+
+`docker exec -it sage-mailserver bash`
+
+Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
+```
+docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.cf \
+&& docker cp sage-mailserver:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
+&& docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf
+```
+
 
 ### Getting mbox files
 For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. [Google has instructions on how to get the mbox files from your gmail account.](https://support.google.com/accounts/answer/3024190)
@@ -93,6 +105,7 @@ If mbox files are changed, don't forget to restart the mailserver docker contain
 SSH to the server
 
 `ssh root@<ipv4 address> -i ~/.ssh/<private key file>`
+
 
 ## Send Emails Locally
 Test that the dockerized email server works by sending an email locally (i.e. from outside of the container) via telnet.
@@ -109,17 +122,6 @@ This is a test email.
 quit
 ```
 
-## Mailserver Container
-Enter the mailsserver container
-
-`docker exec -it sage-mailserver bash`
-
-Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
-```
-docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.cf \
-&& docker cp sage-mailserver:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
-&& docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf
-```
 
 ### Dovecot
 Show dovecot errors
@@ -173,7 +175,7 @@ Access the postgres interactive CLI within the database container
 
 `docker exec -it  sage-db psql -U admin sage`
 
-## Python Dependencies
+## Python
 Install dependencies
 
 `(venv) $ python3 -m pip install -r requirements.txt`
