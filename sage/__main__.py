@@ -5,7 +5,7 @@ from loguru import logger
 
 from . import ENV
 
-logger.add(sink="debug.log", level="INFO")
+logger.add(sink="sage_main.log", level="INFO")
 
 
 def main():

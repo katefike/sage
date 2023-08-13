@@ -5,7 +5,7 @@ from sage.email_data.transaction import Transaction
 from imap_tools import MailMessage
 from loguru import logger
 
-logger.add(sink="debug.log")
+logger.add(sink="sage_main.log")
 
 
 def main(msg: MailMessage) -> Transaction:

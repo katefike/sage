@@ -4,7 +4,13 @@
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd $__dir/..
 
-echo "Copying .env File..."
+echo "Creating the Digital Droplet hosts file..."
+if [ ! -f ansible/imported_playbooks/droplet_hosts ]; then
+    cp ansible/imported_playbooks/droplet_hosts_example \
+    ansible/imported_playbooks/droplet_hosts
+fi
+
+echo "Copying .env file..."
 
 if [ ! -f .env ]; then
     cp .env-example .env

@@ -6,7 +6,7 @@ from sage.db import banks, entities, execute_statements
 from sage.email_data.transaction import Transaction
 from loguru import logger
 
-logger.add(sink="debug.log")
+logger.add(sink="sage_main.log")
 
 
 def get_maximum_uid() -> int:
