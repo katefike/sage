@@ -64,7 +64,6 @@
           - apt-transport-https
           - ca-certificates
           - curl
-          - docker-compose
           - software-properties-common
           - python3-pip
           - python3-setuptools
