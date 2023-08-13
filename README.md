@@ -26,7 +26,24 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 <br> `bash setup/2_create_SageProd_server.sh`
 <br> It will prompt you for `BECOME password:`; enter your sudo password.
 
-## Production Setup Troubleshooting
+
+# Troubleshooting
+## Logging
+Shows email parsing errors.
+
+`~/sage/sage_main.log`
+
+Shows cron job errors.
+
+`~/sage/cron.log`
+
+
+Shows cron errors in the case that it fails to execute a job.
+
+`sudo tail /var/log/syslog`
+
+
+## Scenarios
 ### "Ansible gives the error [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all' or [WARNING]: Could not match supplied host pattern"
 - Ensure that the setup script `1_setup_sage_directory.sh` was run using the command `bash setup/1_setup_sage_directory.sh`. 
   - This script creates the populated file `droplet_hosts`, which is read by the ansible playbook.
@@ -49,6 +66,7 @@ Load key "/home/kfike/.ssh/sage_prod": bad permissions
 root@< public ip >: Permission denied (publickey).
 ```
 
+
 # Local Development
 ## Setup Instructions
 1. Globally install the following software:
@@ -63,7 +81,7 @@ root@< public ip >: Permission denied (publickey).
 `docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d`
 5. Manually kick off the script to parse transactions from emails. Execute the command from the project root. For example, if the project is located in `/home/kfike/Projects/` then execute `(.venv) kfike@pop-os:~/Projects/sage$ python3 -m sage`. 
 
-## Testing Methods
+
 ### Creating/Deleting an ephemeral server instance
 1. **WARNING: RUNNING THIS SCRIPT CAUSES DIGITAL OCEAN TO START CHARGING YOU MONEY ON A MONTHLY BASIS (IF YOU DON'T DELETE THE SERVER).**
 <br> Run the script to create a production Digital Ocean Droplet server that runs the application.
@@ -83,7 +101,7 @@ See code coverage of the tests
 `(venv) $ coverage run --source=sage -m pytest -v tests/ && coverage report -m`
 
 ## Mailserver Container
-Enter the mailsserver container
+Enter the mailserver container
 
 `docker exec -it sage-mailserver bash`
 
@@ -94,21 +112,8 @@ docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postf
 && docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf
 ```
 
-
-### Getting mbox files
-For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. [Google has instructions on how to get the mbox files from your gmail account.](https://support.google.com/accounts/answer/3024190)
-
-If mbox files are changed, don't forget to restart the mailserver docker container; the mbox file's emails are loaded into the server on docker compose up when docker/mailserver/entrypoint.sh runs.
-
-# Useful Commands
-## Server
-SSH to the server
-
-`ssh root@<ipv4 address> -i ~/.ssh/<private key file>`
-
-
 ## Send Emails Locally
-Test that the dockerized email server works by sending an email locally (i.e. from outside of the container) via telnet.
+Test that the dockerized email server works by sending an email locally (i.e. from outside of the mail server container) via telnet.
 ```
 telnet localhost 25
 
@@ -121,6 +126,17 @@ This is a test email.
 .
 quit
 ```
+
+### Getting mbox files
+For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. [Google has instructions on how to get the mbox files from your gmail account.](https://support.google.com/accounts/answer/3024190)
+
+If mbox files are changed, don't forget to restart the mailserver docker container; the mbox file's emails are loaded into the server on docker compose up when docker/mailserver/entrypoint.sh runs.
+
+# Useful Commands
+## Server
+SSH to the server
+
+`ssh root@<ipv4 address> -i ~/.ssh/<private key file>`
 
 
 ### Dovecot
