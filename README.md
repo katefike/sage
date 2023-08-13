@@ -53,7 +53,7 @@ Shows cron errors in the case that it fails to execute a job.
   - `700` on the `.ssh` directory
   - `644` on the public key file (.pub)
   - `600` on the private key file.
-- Try to `ssh` from command line. Fill in the public IP from the file `server/ansible/imported_playbooks/droplet_hosts`. Below is the error message given when the permissions on the private key file are too open. 
+- Try to `ssh` from command line. Fill in the public IP from the file `ansible/imported_playbooks/droplet_hosts`. Below is the error message given when the permissions on the private key file are too open. 
 ```
 (.venv) kfike@cutie:~/.ssh$ ssh root@< public ip >  -i ~/.ssh/sage_prod
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

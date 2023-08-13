@@ -14,5 +14,5 @@ source ".env"
 set +o allexport
 
 # Run Ansible Playbook for deleting an ephemeral DO Droplet server
-cd server/ansible/
+cd ansible/
 exec ansible-playbook imported_playbooks/delete_droplet_ephem.yml
