@@ -1,7 +1,8 @@
 import imap_tools
+from loguru import logger
+
 from sage.db import transactions
 from sage.email_parser import email_parser
-from loguru import logger
 
 from . import ENV
 
@@ -30,8 +31,7 @@ def main():
     """
     logger.info("STARTING SAGE")
     # Log into the receiving mailbox on the mail server and retrieve emails
-    # that have a UID that is greater than the maximum UID in the database.
-    max_uid = transactions.get_maximum_uid()
+    # that are from the forwarding email
     # Connect to the mailbox containing transaction alert emails
     with imap_tools.MailBoxUnencrypted(ENV["IMAP4_FQDN"]).login(
         ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
@@ -42,11 +42,9 @@ def main():
             "unparsed": 0,
             "processed": 0,
         }
-        # Retrieve emails that are greater than the maximum UID
-        # and are from the forwarding email
+        # Retrieve all emails in the inbox from the forwarding email
         for msg in mailbox.fetch(
             imap_tools.A(
-                uid=imap_tools.U(f"{max_uid + 1}", "*"),
                 from_=ENV["FORWARDING_EMAIL"],
             )
         ):
