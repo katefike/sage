@@ -10,10 +10,11 @@ SET check_function_bodies = FALSE;
 SET xmloption = CONTENT;
 SET client_min_messages = warning;
 SET row_security = OFF;
+SET TIME ZONE = 'UTC';
 CREATE TABLE IF NOT EXISTS public.emails(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     uid INT NOT NULL,
-    batch_date DATE NOT NULL,
+    batch_time TIMESTAMPTZ NOT NULL,
     forwarded_date DATE NOT NULL,
     from_ TEXT NOT NULL,
     origin TEXT NOT NULL,
