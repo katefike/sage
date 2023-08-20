@@ -15,19 +15,12 @@ def main():
     tasks:
 
     1. Load the environment variables.
-    2. Query the database to retrieve the maximum UID. According to RFC9051:
-    "Unique identifiers are assigned in a strictly ascending fashion in the
-    mailbox; as each message is added to the mailbox, it is assigned a
-    higher UID than those of all message(s) that are already in the
-    mailbox.  Unlike message sequence numbers, unique identifiers are not
-    necessarily contiguous."
-    3. Log into the email account on the mail server that is receiving the
-    forwarded alert emails. Retrieve emails that have a UID greater than the
-    maximum UID in the database.
-    4. Skip emails that are not from the forwarding email or don't have a body.
-    5. Process the transaction data contained in the email message:
-        5a. Parse the transaction data from the email message.
-        5b. Write the transaction data to the Postgres database.
+    2. Log into the email account on the mail server that is receiving the
+    forwarded alert emails. Retrieve emails that are from the forwarding email.
+    3. Store all retrieved emails in the database's emails table.
+    4. Process the transaction data contained in the email message:
+        4a. Parse the transaction data from the email message.
+        4b. Write the transaction data to the Postgres database.
     """
     logger.info("STARTING SAGE")
     # Log into the receiving mailbox on the mail server and retrieve emails
@@ -49,15 +42,6 @@ def main():
             )
         ):
             msg_count["retrieved"] = msg_count.get("retrieved", 0) + 1
-            # Ignore emails that don't have a text or html body
-            # This seems unlikely but who knows
-            # Change from or to and
-            if not msg.text and not msg.html:
-                logger.warning(
-                    f"Rejecting email from {msg.from_} because it doesn't have a message body."
-                )
-                msg_count["rejected"] = msg_count.get("rejected", 0) + 1
-                continue
             # Parse a email message into the transaction data
             transaction = email_parser.main(msg)
             if not transaction:
@@ -73,11 +57,7 @@ def main():
                 msg_count.get("processed", 0) + 1
             )  # pragma: no cover
 
-    deduced_msg_count = (
-        msg_count.get("rejected")
-        + msg_count.get("unparsed")
-        + msg_count.get("processed")
-    )
+    deduced_msg_count = msg_count.get("unparsed") + msg_count.get("processed")
     retrieved_msg_count = msg_count.get("retrieved")
     if deduced_msg_count != msg_count.get("retrieved"):  # pragma: no cover
         logger.critical("FAILED")
