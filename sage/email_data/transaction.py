@@ -9,6 +9,7 @@ class Transaction:
 
     # pylint: disable=too-many-instance-attributes
 
+    email_id: int = field(default=None)
     # Date the transaction was made; based on the day the email was
     # originally sent by the institution;
     # not based on the day the email was forwarded.
