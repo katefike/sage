@@ -23,4 +23,6 @@ def test_email_insert(conn):
         )
         for result in cursor.fetchall():
             inserted_count = result[0]
+    print(f"CHECK: {inserted_count}")
+    assert 1 == 2
     assert msg_count.get("retrieved") == inserted_count

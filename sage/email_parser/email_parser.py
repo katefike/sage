@@ -1,21 +1,23 @@
 import re
 from datetime import datetime
 
-from sage.email_data.transaction import Transaction
 from imap_tools import MailMessage
 from loguru import logger
+
+from sage.email_data.transaction import Transaction
 
 logger.add(sink="sage_main.log")
 
 
-def main(msg: MailMessage) -> Transaction:
+def main(msg: MailMessage, email_id: int) -> Transaction:
     """
     Parse the transaction data from the email.
 
     :param msg: this is an an email
+    :param email_id: the ID in the database's emails table for this email
     :returns: this is a transaction object defined by the program
     """
-    transaction = Transaction(int(msg.uid))
+    transaction = Transaction(email_id)
 
     # Get the email body
     if msg.text:
