@@ -1,3 +1,15 @@
+"""
+This is starting point of the program. It steps through the following
+tasks:
+
+1. Load the environment variables.
+2. Log into the email account on the mail server that is receiving the
+forwarded alert emails. Retrieve emails that are from the forwarding email.
+3. Store all retrieved emails in the database's emails table.
+4. Process the transaction data contained in the email message:
+    4a. Parse the transaction data from the email message.
+    4b. Write the transaction data to the Postgres database.
+"""
 from datetime import datetime
 
 import imap_tools
@@ -13,18 +25,6 @@ logger.add(sink="sage_main.log", level="INFO")
 
 
 def main():
-    """
-    This is starting point of the program. It steps through the following
-    tasks:
-
-    1. Load the environment variables.
-    2. Log into the email account on the mail server that is receiving the
-    forwarded alert emails. Retrieve emails that are from the forwarding email.
-    3. Store all retrieved emails in the database's emails table.
-    4. Process the transaction data contained in the email message:
-        4a. Parse the transaction data from the email message.
-        4b. Write the transaction data to the Postgres database.
-    """
     logger.info("STARTING SAGE")
 
     # Set the time the batch started
