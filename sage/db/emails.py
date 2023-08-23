@@ -14,7 +14,8 @@ def insert_email(email: Email) -> int:
     INSERT INTO
         emails (uid, batch_time, forwarded_date, from_, origin, subject, html, body)
     VALUES
-        (%s, %s, %s, %s, %s, %s, %s, %s);
+        (%s, %s, %s, %s, %s, %s, %s, %s)
+    RETURNING id;
     """
     email_data = (
         email.uid,
