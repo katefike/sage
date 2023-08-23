@@ -26,7 +26,6 @@ def get_test_data():
             (dict(uid="3")),
             (
                 dict(
-                    uid=3,
                     date="2022-10-06",
                     type_="transfer withdrawal",
                     bank="Huntington",
@@ -42,7 +41,6 @@ def get_test_data():
             (dict(uid="14")),
             (
                 dict(
-                    uid=14,
                     date="2022-10-06",
                     type_="transfer deposit",
                     bank="Huntington",
@@ -58,7 +56,6 @@ def get_test_data():
             (dict(uid="5")),
             (
                 dict(
-                    uid=5,
                     date="2022-09-13",
                     type_="withdrawal",
                     bank="Huntington",
@@ -71,14 +68,9 @@ def get_test_data():
             ),
         ),
         (
+            (dict(uid="7")),
             (
                 dict(
-                    uid="7",
-                )
-            ),
-            (
-                dict(
-                    uid=7,
                     date="2022-08-08",
                     type_="withdrawal",
                     bank="Huntington",
@@ -94,7 +86,6 @@ def get_test_data():
             (dict(uid="9")),
             (
                 dict(
-                    uid=9,
                     date="2022-10-06",
                     type_="withdrawal",
                     bank="Chase",
@@ -107,14 +98,9 @@ def get_test_data():
             ),
         ),
         (
+            (dict(uid="11")),
             (
                 dict(
-                    uid="11",
-                )
-            ),
-            (
-                dict(
-                    uid=11,
                     date="2022-08-24",
                     type_="transfer withdrawal",
                     bank="Huntington",
@@ -130,7 +116,6 @@ def get_test_data():
             (dict(uid="17")),
             (
                 dict(
-                    uid=17,
                     date="2022-10-05",
                     type_="withdrawal",
                     bank="Discover",
@@ -146,7 +131,6 @@ def get_test_data():
             (dict(uid="19")),
             (
                 dict(
-                    uid=19,
                     date="2022-08-24",
                     type_="transfer deposit",
                     bank="Huntington",
@@ -162,7 +146,6 @@ def get_test_data():
             (dict(uid="21")),
             (
                 dict(
-                    uid=21,
                     date="2022-08-24",
                     type_="deposit",
                     bank="Huntington",
@@ -190,17 +173,6 @@ def get_test_data():
 
 utils.fresh_inbox("transaction_emails.mbox")
 DATA = get_test_data()
-
-
-@pytest.mark.parametrize("input,expected_output", DATA)
-def test_email_uid_parsing(input, expected_output):
-    """
-    Ensure the UID is correct and that it's an integer and not a string.
-    """
-    # Pass the msg object to the email parser
-    transaction = email_parser.main(input.get("msg"))
-    # Compare the transaction object to the expected expected_output
-    assert expected_output.get("uid") == transaction.uid
 
 
 # TODO: Add test emails for cash transactions

@@ -18,7 +18,6 @@ from sage.email_data.transaction import Transaction
 data = [
     (
         dict(
-            uid=3,
             date="2022-10-06",
             type_="transfer withdrawal",
             bank="Huntington",
@@ -31,7 +30,6 @@ data = [
     ),
     (
         dict(
-            uid=14,
             date="2022-10-06",
             type_="transfer deposit",
             bank="Huntington",
@@ -44,7 +42,6 @@ data = [
     ),
     (
         dict(
-            uid=5,
             date="2022-09-13",
             type_="withdrawal",
             bank="Huntington",
@@ -57,7 +54,6 @@ data = [
     ),
     (
         dict(
-            uid=7,
             date="2022-08-08",
             type_="withdrawal",
             bank="Huntington",
@@ -70,7 +66,6 @@ data = [
     ),
     (
         dict(
-            uid=9,
             date="2022-10-06",
             type_="withdrawal",
             bank="Chase",
@@ -83,7 +78,6 @@ data = [
     ),
     (
         dict(
-            uid=11,
             date="2022-08-24",
             type_="transfer withdrawal",
             bank="Huntington",
@@ -96,7 +90,6 @@ data = [
     ),
     (
         dict(
-            uid=17,
             date="2022-10-05",
             type_="withdrawal",
             bank="Discover",
@@ -109,7 +102,6 @@ data = [
     ),
     (
         dict(
-            uid=19,
             date="2022-08-24",
             type_="transfer deposit",
             bank="Huntington",
@@ -122,7 +114,6 @@ data = [
     ),
     (
         dict(
-            uid=21,
             date="2022-08-24",
             type_="deposit",
             bank="Huntington",
@@ -140,7 +131,6 @@ def create_transaction_objects():
     input = []
     for transaction_dict in data:
         transaction_obj = Transaction(
-            transaction_dict.get("uid"),
             transaction_dict.get("date"),
             transaction_dict.get("type_"),
             transaction_dict.get("bank"),

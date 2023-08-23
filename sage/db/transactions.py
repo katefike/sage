@@ -2,24 +2,12 @@
 Insert a transaction into the transactions table.
 """
 
-from sage.db import banks, entities, execute_statements
-from sage.email_data.transaction import Transaction
 from loguru import logger
 
+from sage.db import banks, entities, execute_statements
+from sage.email_data.transaction import Transaction
+
 logger.add(sink="sage_main.log")
-
-
-def get_maximum_uid() -> int:
-    stmt = """
-        SELECT MAX(uid) FROM transactions;
-        """
-    results = execute_statements.select(stmt)
-    max_uid = results[0][0]
-    # Upon starting the program for the first time, get UIDs greater than zero
-    # Zero is not a valid UID; they start with 1.
-    if not max_uid:
-        max_uid = 0
-    return max_uid
 
 
 def insert_transaction(transaction: Transaction) -> bool:
@@ -27,7 +15,6 @@ def insert_transaction(transaction: Transaction) -> bool:
     # Transfers don't have entities
     if "transfer" in transaction.type_:
         transaction_data = (
-            transaction.uid,
             transaction.date,
             bank_id,
             transaction.type_,
@@ -35,14 +22,13 @@ def insert_transaction(transaction: Transaction) -> bool:
         )
         stmt = """
         INSERT INTO
-            transactions (uid, date, bank_id, type, amount)
+            transactions (date, bank_id, type, amount)
         VALUES
-            (%s, %s, %s, %s, %s);
+            (%s, %s, %s, %s);
         """
     else:
         entity_id = entities.get_id(transaction.merchant, transaction.payer)
         transaction_data = (
-            transaction.uid,
             transaction.date,
             bank_id,
             transaction.type_,
@@ -51,9 +37,9 @@ def insert_transaction(transaction: Transaction) -> bool:
         )
         stmt = """
         INSERT INTO
-            transactions (uid, date, bank_id, type, amount, entity_id)
+            transactions (date, bank_id, type, amount, entity_id)
         VALUES
-            (%s, %s, %s, %s, %s, %s);
+            (%s, %s, %s, %s, %s);
         """
     row_count = execute_statements.insert(stmt, transaction_data)
     return row_count

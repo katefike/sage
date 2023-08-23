@@ -142,6 +142,7 @@ def get_huntington_transaction_type(body: str) -> str:
         type_ = "withdrawal"
     elif regex_search("(deposit)", body):
         type_ = "deposit"
+    breakpoint()
     return type_
 
 
