@@ -1,6 +1,7 @@
 import re
 from datetime import datetime
 
+from bs4 import BeautifulSoup
 from imap_tools import MailMessage
 from loguru import logger
 
@@ -23,7 +24,8 @@ def main(msg: MailMessage, email_id: int) -> Transaction:
     if msg.text:
         body = msg.text
     elif msg.html:
-        body = msg.html
+        soup = BeautifulSoup(msg.html, "html.parser")
+        body = soup.get_text(" ")
 
     # Identify who the bank is
     if not get_bank(body):
