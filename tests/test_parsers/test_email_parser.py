@@ -1,5 +1,5 @@
 """
-Tests the email parser (module sage/email_parser/email_parser.py) to ensure it
+Tests the email parser (module sage/parsers/email_parser.py) to ensure it
 correctly parses an  email into transaction data.
 
 The input is the UID of the email, which maps to an email that was loaded
@@ -8,11 +8,11 @@ are contained within the file
 docker/mailserver/test_data/example_data/transaction_emails.mbox
 
 They're also listed as separate files in
-tests/test_email_parser/test_data/example_data so they can be more easily
+tests/test_parsers/test_data/example_data so they can be more easily
 viewed.
 
 The expected expected_output is the transaction object defined in
-sage/email_data/transaction.py
+sage/models/transaction.py
 """
 import pytest
 

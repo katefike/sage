@@ -4,16 +4,16 @@ Tests inserting transactions (module sage/db/transactions.py).
 The input is a transaction class object.
 
 They're also listed as separate files in
-tests/test_email_parser/test_data/example_data so they can be more easily
+tests/test_parsers/test_data/example_data so they can be more easily
 viewed.
 
 The expected expected_output is the transaction object defined in
-sage/email_data/transaction.py
+sage/models/transaction.py
 """
 import pytest
 
 from sage.db import transactions
-from sage.email_data.transaction import Transaction
+from sage.models.transaction import Transaction
 
 data = [
     (
