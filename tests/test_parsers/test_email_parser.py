@@ -16,7 +16,7 @@ sage/models/transaction.py
 """
 import pytest
 
-from sage.email_parser import email_parser
+from sage.parsers import email_parser
 from tests import utils
 
 
