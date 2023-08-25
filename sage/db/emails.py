@@ -4,7 +4,7 @@ CRUD methods for the emails table.
 from loguru import logger
 
 from sage.db import execute_statements
-from sage.email_data.email import Email
+from sage.models.email import Email
 
 logger.add(sink="sage_main.log")
 
