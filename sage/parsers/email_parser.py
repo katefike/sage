@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from imap_tools import MailMessage
 from loguru import logger
 
-from sage.email_data.transaction import Transaction
+from sage.models.transaction import Transaction
 
 logger.add(sink="sage_main.log")
 
