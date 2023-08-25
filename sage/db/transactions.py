@@ -5,7 +5,7 @@ Insert a transaction into the transactions table.
 from loguru import logger
 
 from sage.db import banks, entities, execute_statements
-from sage.email_data.transaction import Transaction
+from sage.models.transaction import Transaction
 
 logger.add(sink="sage_main.log")
 

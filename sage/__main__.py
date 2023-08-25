@@ -16,8 +16,8 @@ import imap_tools
 from loguru import logger
 
 from sage.db import emails, transactions
-from sage.email_data.email import Email
-from sage.email_parser import email_parser
+from sage.models.email import Email
+from sage.parsers import email_parser
 
 from . import ENV
 
