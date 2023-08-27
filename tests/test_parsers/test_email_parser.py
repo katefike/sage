@@ -172,7 +172,9 @@ def get_test_data():
         # but we're only expecting a single email message in the object.
         for msg in msgs:
             input["msg"] = msg
+
         input["email_id"] = input.get("email_id")
+
     return data
 
 

@@ -19,7 +19,6 @@ def main(msg: MailMessage, email_id: int) -> Transaction:
     :returns: this is a transaction object defined by the program
     """
     transaction = Transaction(email_id)
-
     # Get the email body
     if msg.text:
         body = msg.text
