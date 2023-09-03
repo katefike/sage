@@ -12,7 +12,8 @@ sage/models/transaction.py
 """
 import pytest
 
-from sage.db import transactions
+from sage.db import emails, transactions
+from sage.models.email import Email
 from sage.models.transaction import Transaction
 
 data = [
@@ -130,7 +131,20 @@ data = [
 def create_transaction_objects():
     input = []
     for transaction_dict in data:
-        transaction_obj = Transaction(
+        email = Email(
+            1,
+            "2023-08-31 15:22:40",
+            "2023-08-31",
+            "outgoing@gmail.com",
+            "bank@example.com",
+            "Example Transaction Email",
+            "f",
+            "Hello world!",
+        )
+        email_id = emails.insert_email(email)
+        # email_id = 1
+        transaction = Transaction(
+            email_id,
             transaction_dict.get("date"),
             transaction_dict.get("type_"),
             transaction_dict.get("bank"),
@@ -140,7 +154,7 @@ def create_transaction_objects():
             transaction_dict.get("account"),
             transaction_dict.get("balance"),
         )
-        input.append(transaction_obj)
+        input.append(transaction)
     return input
 
 
@@ -149,6 +163,8 @@ def test_insert_transaction(input):
     """
     Ensure that a transaction can be inserted into the transaction table.
     """
+    # input.email_id = email_id
+    breakpoint()
     row_count = transactions.insert_transaction(input)
     # The number of rows inserted will be returned if the insert was successful
     assert 1 == row_count

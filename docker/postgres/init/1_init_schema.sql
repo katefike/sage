@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS public.transactions(
     TYPE TEXT NOT NULL,
     bank_id INTEGER NOT NULL,
     amount NUMERIC NOT NULL,
-    entity_id INT NOT NULL,
+    entity_id INT,
     FOREIGN KEY (email_id) REFERENCES public.emails(id),
     FOREIGN KEY (bank_id) REFERENCES public.banks(id),
     FOREIGN KEY (entity_id) REFERENCES public.entities(id)

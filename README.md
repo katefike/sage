@@ -160,7 +160,7 @@ Delete all emails from a mailbox
 ## Postgres Container
 Enter the database container and access the database.
 
-`docker exec -it sage-db psql -h localhost -U sage_admin sage`
+`docker exec -it sage-db psql -h localhost -U postgres sage`
 
 
 Remove all containers and volumes after a schema change.
