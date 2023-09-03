@@ -47,6 +47,15 @@
       ansible.builtin.debug:
         var: docker_result
 
+    - name: Create a cron job for parsing transactions from emails
+      ansible.builtin.cron:
+        name: Parse transactions from emails
+        weekday: '*'
+        minute: '0'
+        hour: '12'
+        job: '/usr/bin/env bash -c "cd ~/sage/ && .venv/bin/python3 -m sage >> ~/sage/cron.log 2>&1"' 
+        user: '{{ ansible_user }}'
+
     - name: Run pytest and ensure all tests pass
       shell: 
         cmd: ~/sage/.venv/bin/pytest ~/sage/tests -xv
@@ -56,12 +65,3 @@
     - name: Show results of pytest
       ansible.builtin.debug:
         var: pytest_result.stdout_lines
-
-    - name: Create a cron job for parsing transactions from emails
-      ansible.builtin.cron:
-        name: Parse transactions from emails
-        weekday: '*'
-        minute: '0'
-        hour: '12'
-        job: '/usr/bin/env bash -c "cd ~/sage/ && .venv/bin/python3 -m sage >> ~/sage/cron.log 2>&1"' 
-        user: '{{ ansible_user }}'
