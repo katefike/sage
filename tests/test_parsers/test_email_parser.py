@@ -163,7 +163,7 @@ def get_test_data():
     for email in data:
         input = email[0]
         uid = input.get("uid")
-        msgs = utils.get_inbox_euidut_uid)
+        msgs = utils.get_inbox_emails(uid)
         if len(msgs) == 0:
             print(f"CRITICAL: No email having UID {uid} was found.")
         if len(msgs) > 1:

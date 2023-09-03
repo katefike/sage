@@ -123,5 +123,5 @@ def insert_db_email(email: Optional[Email] = None) -> int:
             "f",
             "Hello world!",
         )
-    email_id = emails.insert_db_email(email)
+    email_id = emails.insert_email(email)
     return email_id

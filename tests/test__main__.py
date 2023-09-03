@@ -11,7 +11,7 @@ def test_unretrieved_email():
     Send an email that isn't from the forwarding email.
     It should not be retrieved from the inbox.
     """
-    utils.delete_emails()
+    utils.delete_inbox_emails()
     html_body = """\
     <html>
     <head></head>

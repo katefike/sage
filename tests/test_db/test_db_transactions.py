@@ -151,7 +151,7 @@ def test_insert_transaction(input):
     """
     Ensure that a transaction can be inserted into the transaction table.
     """
-    email_id = utils.insert_email()
+    email_id = utils.insert_db_email()
     input.email_id = email_id
     row_count = transactions.insert_transaction(input)
     # The number of rows inserted will be returned if the insert was successful
