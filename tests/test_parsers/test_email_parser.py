@@ -162,12 +162,12 @@ def get_test_data():
     # Retrieve the email corresponding to the UID
     for email in data:
         input = email[0]
-        input_uid = input.get("uid")
-        msgs = utils.get_emails(input_uid)
+        uid = input.get("uid")
+        msgs = utils.get_inbox_euidut_uid)
         if len(msgs) == 0:
-            print(f"CRITICAL: No email having UID {input_uid} was found.")
+            print(f"CRITICAL: No email having UID {uid} was found.")
         if len(msgs) > 1:
-            print(f"CRITICAL: More than one email having UID {input_uid} was found.")
+            print(f"CRITICAL: More than one email having UID {uid} was found.")
         # Iterate over messages,
         # but we're only expecting a single email message in the object.
         for msg in msgs:
