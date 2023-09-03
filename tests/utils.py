@@ -7,6 +7,9 @@ from typing import List, Optional
 
 import imap_tools
 
+from sage.db import emails
+from sage.models.email import Email
+
 from . import ENV
 
 
@@ -41,7 +44,7 @@ def fresh_inbox(mbox_name: str):
         print(f"CRITICAL: Failed to create an inbox from an mbox: {error}")
 
 
-def get_emails(input_uid: Optional[int] = None) -> List:
+def get_inbox_emails(input_uid: Optional[int] = None) -> List:
     msgs = []
     try:
         with imap_tools.MailBoxUnencrypted(ENV["IMAP4_FQDN"]).login(
@@ -58,7 +61,7 @@ def get_emails(input_uid: Optional[int] = None) -> List:
         print(f"CRITICAL: Failed to login to the mailbox: {error}")
 
 
-def delete_emails():
+def delete_inbox_emails():
     container = "docker exec sage-mailserver"
     try:
         subprocess.call(
@@ -69,7 +72,7 @@ def delete_emails():
         )
     except subprocess.CalledProcessError as error:
         print(f"CRITICAL: Failed to delete emails: {error.returncode}: {error.output}")
-    msgs = get_emails()
+    msgs = get_inbox_emails()
     email_count = len(msgs)
     if email_count == 0:
         print("Successfully deleted all emails in the inbox.")
@@ -106,3 +109,19 @@ def send_email(html_body: Optional[str] = None, sender: Optional[str] = None) ->
     except smtplib.SMTPException as error:
         print(f"Error sending email: {error}")
         return False
+
+
+def insert_db_email(email: Optional[Email] = None) -> int:
+    if not email:
+        email = Email(
+            1,
+            "2023-08-31 15:22:40",
+            "2023-08-31",
+            "outgoing@gmail.com",
+            "bank@example.com",
+            "Example Transaction Email",
+            "f",
+            "Hello world!",
+        )
+    email_id = emails.insert_email(email)
+    return email_id

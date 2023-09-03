@@ -20,6 +20,6 @@ set -o allexport
 source ".env"
 set +o allexport
 
-# Runs Ansible Playbook for creating a ephemeral DO Droplet server. The server runs the application Sage.
+# Runs Ansible Playbook for configuring the ephemeral DO Droplet server.
 cd ansible/
-exec ansible-playbook -i imported_playbooks/droplet_hosts main_create_ephem.yml --ask-become-pass
+exec ansible-playbook -i imported_playbooks/droplet_hosts main_configure_ephem.yml --ask-become-pass

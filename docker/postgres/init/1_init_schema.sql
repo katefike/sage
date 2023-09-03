@@ -10,6 +10,18 @@ SET check_function_bodies = FALSE;
 SET xmloption = CONTENT;
 SET client_min_messages = warning;
 SET row_security = OFF;
+SET TIME ZONE 'UTC';
+CREATE TABLE IF NOT EXISTS public.emails(
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    uid INT NOT NULL,
+    batch_time TIMESTAMPTZ NOT NULL,
+    forwarded_date DATE NOT NULL,
+    from_ TEXT NOT NULL,
+    origin TEXT NOT NULL,
+    subject TEXT NOT NULL,
+    html bool NOT NULL,
+    body TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS public.banks(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     NAME TEXT NOT NULL,
@@ -41,16 +53,19 @@ CREATE TABLE IF NOT EXISTS public.entity_tag_mapping(
     FOREIGN KEY (entity_tag_id) REFERENCES public.entity_tags(id)
 );
 CREATE TABLE IF NOT EXISTS public.transactions(
-    uid INT PRIMARY KEY,
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    email_id INT NOT NULL, 
     date DATE NOT NULL,
     -- TODO: Replace with enum (withdrawal, deposit, transfer withdrawal, transfer deposit)
     TYPE TEXT NOT NULL,
     bank_id INTEGER NOT NULL,
     amount NUMERIC NOT NULL,
     entity_id INT,
+    FOREIGN KEY (email_id) REFERENCES public.emails(id),
     FOREIGN KEY (bank_id) REFERENCES public.banks(id),
     FOREIGN KEY (entity_id) REFERENCES public.entities(id)
 );
+
 CREATE TABLE IF NOT EXISTS public.transaction_tags(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     NAME TEXT NOT NULL,
@@ -58,8 +73,8 @@ CREATE TABLE IF NOT EXISTS public.transaction_tags(
 );
 CREATE TABLE IF NOT EXISTS public.transaction_tag_mapping(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    transaction_uid INT NOT NULL,
+    transaction_id INT NOT NULL,
     transaction_tag_id INT NOT NULL,
-    FOREIGN KEY (transaction_uid) REFERENCES public.transactions(uid),
+    FOREIGN KEY (transaction_id) REFERENCES public.transactions(id),
     FOREIGN KEY (transaction_tag_id) REFERENCES public.transaction_tags(id)
 );
