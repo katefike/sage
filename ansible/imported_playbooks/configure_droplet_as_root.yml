@@ -101,11 +101,6 @@
         name: '{{ server_user }}'
         groups: docker
         append: yes
- 
-    # - name: Add docker group to /etc/group
-    #   shell:
-    #     cmd: "getent group docker | grep -q '^docker:' || echo 'docker:x:999:' >> /etc/group"
-    #     warn: false
          
     - name: Restart Docker service
       service:

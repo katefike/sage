@@ -4,21 +4,21 @@ Tests inserting transactions (module sage/db/transactions.py).
 The input is a transaction class object.
 
 They're also listed as separate files in
-tests/test_email_parser/test_data/example_data so they can be more easily
+tests/test_parsers/test_data/example_data so they can be more easily
 viewed.
 
 The expected expected_output is the transaction object defined in
-sage/email_data/transaction.py
+sage/models/transaction.py
 """
 import pytest
 
 from sage.db import transactions
-from sage.email_data.transaction import Transaction
+from sage.models.transaction import Transaction
+from tests import utils
 
 data = [
     (
         dict(
-            uid=3,
             date="2022-10-06",
             type_="transfer withdrawal",
             bank="Huntington",
@@ -31,7 +31,6 @@ data = [
     ),
     (
         dict(
-            uid=14,
             date="2022-10-06",
             type_="transfer deposit",
             bank="Huntington",
@@ -44,7 +43,6 @@ data = [
     ),
     (
         dict(
-            uid=5,
             date="2022-09-13",
             type_="withdrawal",
             bank="Huntington",
@@ -57,7 +55,6 @@ data = [
     ),
     (
         dict(
-            uid=7,
             date="2022-08-08",
             type_="withdrawal",
             bank="Huntington",
@@ -70,7 +67,6 @@ data = [
     ),
     (
         dict(
-            uid=9,
             date="2022-10-06",
             type_="withdrawal",
             bank="Chase",
@@ -83,7 +79,6 @@ data = [
     ),
     (
         dict(
-            uid=11,
             date="2022-08-24",
             type_="transfer withdrawal",
             bank="Huntington",
@@ -96,7 +91,6 @@ data = [
     ),
     (
         dict(
-            uid=17,
             date="2022-10-05",
             type_="withdrawal",
             bank="Discover",
@@ -109,7 +103,6 @@ data = [
     ),
     (
         dict(
-            uid=19,
             date="2022-08-24",
             type_="transfer deposit",
             bank="Huntington",
@@ -122,7 +115,6 @@ data = [
     ),
     (
         dict(
-            uid=21,
             date="2022-08-24",
             type_="deposit",
             bank="Huntington",
@@ -139,8 +131,8 @@ data = [
 def create_transaction_objects():
     input = []
     for transaction_dict in data:
-        transaction_obj = Transaction(
-            transaction_dict.get("uid"),
+        transaction = Transaction(
+            0,
             transaction_dict.get("date"),
             transaction_dict.get("type_"),
             transaction_dict.get("bank"),
@@ -150,7 +142,7 @@ def create_transaction_objects():
             transaction_dict.get("account"),
             transaction_dict.get("balance"),
         )
-        input.append(transaction_obj)
+        input.append(transaction)
     return input
 
 
@@ -159,6 +151,8 @@ def test_insert_transaction(input):
     """
     Ensure that a transaction can be inserted into the transaction table.
     """
+    email_id = utils.insert_db_email()
+    input.email_id = email_id
     row_count = transactions.insert_transaction(input)
     # The number of rows inserted will be returned if the insert was successful
     assert 1 == row_count

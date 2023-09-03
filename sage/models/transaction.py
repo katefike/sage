@@ -9,10 +9,12 @@ class Transaction:
 
     # pylint: disable=too-many-instance-attributes
 
-    # Unique identifier; defined by Dovecot. Increments sequentially
-    uid: int
+    # The ID of the email in the emails table
+    # that this transaction was parsed from
+    email_id: int = field(default=None)
     # Date the transaction was made; based on the day the email was
-    # originally received; not based on the day the email was forwarded.
+    # originally sent by the institution;
+    # not based on the day the email was forwarded.
     # ISO 8601 format; 1999-01-08. No time is included.
     date: str = field(default=None)
     # Transaction type can be one of the following
