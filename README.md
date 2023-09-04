@@ -25,6 +25,8 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
   <br> `SSH_ALLOWED_PUBLIC_IPS`: List the public IPs that can access to the production server.
 4. **WARNING: RUNNING THIS SCRIPT CAUSES DIGITAL OCEAN TO START CHARGING YOU MONEY ON A MONTHLY BASIS FOR YOUR PRODUCTION SERVER.**
 <br> Run the script to create a production Digital Ocean Droplet server that runs the application.
+<br> `bash setup/2_create_SageProd_server.sh`
+<br> If an error occurs, go to Digital Ocean and delete the Droplet and firewall before running the script again.
 <br> `bash setup/2_create_sageProd_server.sh`
 <br> If an error occurs, go to Digital Ocean and delete the Droplet and firewall before running the script again.
 <br> It will prompt you for `BECOME password:`; enter your sudo password.
