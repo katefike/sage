@@ -1,6 +1,3 @@
-- name: Create a droplet named "sageEphem"
-  import_playbook: imported_playbooks/create_droplet_ephem.yml
-
 - name: Configure the droplet "sageEphem" as root
   import_playbook: imported_playbooks/configure_droplet_as_root.yml
   vars:

@@ -1,5 +1,5 @@
 """
-Tests the email parser (module sage/email_parser/email_parser.py) to ensure it
+Tests the email parser (module sage/parsers/email_parser.py) to ensure it
 correctly parses an  email into transaction data.
 
 The input is the UID of the email, which maps to an email that was loaded
@@ -8,25 +8,24 @@ are contained within the file
 docker/mailserver/test_data/example_data/transaction_emails.mbox
 
 They're also listed as separate files in
-tests/test_email_parser/test_data/example_data so they can be more easily
+tests/test_parsers/test_data/example_data so they can be more easily
 viewed.
 
 The expected expected_output is the transaction object defined in
-sage/email_data/transaction.py
+sage/models/transaction.py
 """
 import pytest
 
-from sage.email_parser import email_parser
+from sage.parsers import email_parser
 from tests import utils
 
 
 def get_test_data():
     data = [
         (
-            (dict(uid="3")),
+            (dict(uid="3", email_id=1)),
             (
                 dict(
-                    uid=3,
                     date="2022-10-06",
                     type_="transfer withdrawal",
                     bank="Huntington",
@@ -39,10 +38,9 @@ def get_test_data():
             ),
         ),
         (
-            (dict(uid="14")),
+            (dict(uid="14", email_id=2)),
             (
                 dict(
-                    uid=14,
                     date="2022-10-06",
                     type_="transfer deposit",
                     bank="Huntington",
@@ -55,10 +53,9 @@ def get_test_data():
             ),
         ),
         (
-            (dict(uid="5")),
+            (dict(uid="5", email_id=3)),
             (
                 dict(
-                    uid=5,
                     date="2022-09-13",
                     type_="withdrawal",
                     bank="Huntington",
@@ -71,14 +68,9 @@ def get_test_data():
             ),
         ),
         (
+            (dict(uid="7", email_id=4)),
             (
                 dict(
-                    uid="7",
-                )
-            ),
-            (
-                dict(
-                    uid=7,
                     date="2022-08-08",
                     type_="withdrawal",
                     bank="Huntington",
@@ -91,10 +83,9 @@ def get_test_data():
             ),
         ),
         (
-            (dict(uid="9")),
+            (dict(uid="9", email_id=5)),
             (
                 dict(
-                    uid=9,
                     date="2022-10-06",
                     type_="withdrawal",
                     bank="Chase",
@@ -107,14 +98,9 @@ def get_test_data():
             ),
         ),
         (
+            (dict(uid="11", email_id=6)),
             (
                 dict(
-                    uid="11",
-                )
-            ),
-            (
-                dict(
-                    uid=11,
                     date="2022-08-24",
                     type_="transfer withdrawal",
                     bank="Huntington",
@@ -127,10 +113,9 @@ def get_test_data():
             ),
         ),
         (
-            (dict(uid="17")),
+            (dict(uid="17", email_id=7)),
             (
                 dict(
-                    uid=17,
                     date="2022-10-05",
                     type_="withdrawal",
                     bank="Discover",
@@ -143,10 +128,9 @@ def get_test_data():
             ),
         ),
         (
-            (dict(uid="19")),
+            (dict(uid="19", email_id=8)),
             (
                 dict(
-                    uid=19,
                     date="2022-08-24",
                     type_="transfer deposit",
                     bank="Huntington",
@@ -159,10 +143,9 @@ def get_test_data():
             ),
         ),
         (
-            (dict(uid="21")),
+            (dict(uid="21", email_id=9)),
             (
                 dict(
-                    uid=21,
                     date="2022-08-24",
                     type_="deposit",
                     bank="Huntington",
@@ -179,28 +162,24 @@ def get_test_data():
     # Retrieve the email corresponding to the UID
     for email in data:
         input = email[0]
-        input_uid = input.get("uid")
-        msgs = utils.get_emails(input_uid)
+        uid = input.get("uid")
+        msgs = utils.get_inbox_emails(uid)
         if len(msgs) == 0:
-            print(f"CRITICAL: No email having UID {input_uid} was found.")
+            print(f"CRITICAL: No email having UID {uid} was found.")
+        if len(msgs) > 1:
+            print(f"CRITICAL: More than one email having UID {uid} was found.")
+        # Iterate over messages,
+        # but we're only expecting a single email message in the object.
         for msg in msgs:
             input["msg"] = msg
+
+        input["email_id"] = input.get("email_id")
+
     return data
 
 
 utils.fresh_inbox("transaction_emails.mbox")
 DATA = get_test_data()
-
-
-@pytest.mark.parametrize("input,expected_output", DATA)
-def test_email_uid_parsing(input, expected_output):
-    """
-    Ensure the UID is correct and that it's an integer and not a string.
-    """
-    # Pass the msg object to the email parser
-    transaction = email_parser.main(input.get("msg"))
-    # Compare the transaction object to the expected expected_output
-    assert expected_output.get("uid") == transaction.uid
 
 
 # TODO: Add test emails for cash transactions
@@ -210,7 +189,7 @@ def test_transaction_bank_parsing(input, expected_output):
     Ensure the right bank was identified. The bank can be
     Huntington, Chase, Discover or cash.
     """
-    transaction = email_parser.main(input.get("msg"))
+    transaction = email_parser.main(input.get("msg"), input.get("email_id"))
     assert expected_output.get("bank") == transaction.bank
 
 
@@ -230,7 +209,7 @@ def test_transaction_type_parsing(input, expected_output):
         transfer deposit: I moved money into this account from another account
         or I deposited cash into this account
     """
-    transaction = email_parser.main(input.get("msg"))
+    transaction = email_parser.main(input.get("msg"), input.get("email_id"))
     assert expected_output.get("type_") == transaction.type_
 
 
@@ -241,7 +220,7 @@ def test_transaction_merchant_parsing(input, expected_output):
     identified. If the transaction is a deposit, ensure that no merchant is
     identified.
     """
-    transaction = email_parser.main(input.get("msg"))
+    transaction = email_parser.main(input.get("msg"), input.get("email_id"))
     assert expected_output.get("merchant") == transaction.merchant
 
 
@@ -252,7 +231,7 @@ def test_transaction_payer_parsing(input, expected_output):
     identified. If the transaction is a withdrawal, ensure that no payer is
     identified.
     """
-    transaction = email_parser.main(input.get("msg"))
+    transaction = email_parser.main(input.get("msg"), input.get("email_id"))
     assert expected_output.get("payer") == transaction.payer
 
 
@@ -262,7 +241,7 @@ def test_transaction_amount_parsing(input, expected_output):
     Ensure that the correct amount is identified from the email. Also ensure
     that the format is 00.00
     """
-    transaction = email_parser.main(input.get("msg"))
+    transaction = email_parser.main(input.get("msg"), input.get("email_id"))
     assert expected_output.get("amount") == transaction.amount
 
 
@@ -272,7 +251,7 @@ def test_transaction_account_parsing(input, expected_output):
     Ensure that the correct account is identified. The only bank that does not
     have multiple accounts is Chase.
     """
-    transaction = email_parser.main(input.get("msg"))
+    transaction = email_parser.main(input.get("msg"), input.get("email_id"))
     assert expected_output.get("account") == transaction.account
 
 
@@ -282,7 +261,7 @@ def test_transaction_balance_parsing(input, expected_output):
     Ensure that the balance was identified. Chase and Discover do not provide
     balance information.
     """
-    transaction = email_parser.main(input.get("msg"))
+    transaction = email_parser.main(input.get("msg"), input.get("email_id"))
     assert expected_output.get("balance") == transaction.balance
 
 
@@ -293,5 +272,5 @@ def test_date_parsing(input, expected_output):
     right. The time the email was forwarded to the mail server should not be
     recorded.
     """
-    transaction = email_parser.main(input.get("msg"))
+    transaction = email_parser.main(input.get("msg"), input.get("email_id"))
     assert expected_output.get("date") == transaction.date

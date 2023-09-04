@@ -28,7 +28,7 @@
         ssh_keys: ["{{ sshkey_result.data.ssh_key.fingerprint }}"]
         state: present
       with_inventory_hostnames:
-        - web
+        - sageProd
       register: droplet_result
 
     - name: Setting host fact public_ip
