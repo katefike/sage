@@ -52,6 +52,10 @@
               ports: "22"
               sources:
                 addresses: "{{ ssh_allowed_public_ips_list }}"
+            - protocol: "tcp"
+              ports: "80"
+              sources:
+                addresses: ["0.0.0.0/0"]
           outbound_rules: 
             - protocol: "icmp"
               destinations:
