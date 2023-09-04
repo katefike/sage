@@ -10,7 +10,6 @@ if [[ -f "/letsencrypt.sh" ]]; then
     fi
   else
     'CRITICAL ERROR: Failed to find TLS cert files.'
-    exit
   fi
   ufw deny 80
 fi
