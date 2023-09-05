@@ -12,6 +12,20 @@
 #   fi
 #   ufw deny 80
 # fi
+
+# Make the project root pwd and export the current working directory
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd $__dir/../..
+PROJECT_ROOT_PATH="$PWD"
+export PROJECT_ROOT_PATH
+
+set -o nounset -o pipefail -o errexit
+
+# Load all variables from .env and export them all
+set -o allexport
+source ".env"
+set +o allexport
+
 echo "VARS: ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}"
 # echo "Attempting to generate TLS certs in a dry run..."
 # certbot certonly --dry-run --non-interactive --standalone --agree-tos -m ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}
