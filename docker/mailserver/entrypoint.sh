@@ -1,17 +1,17 @@
 #!/usr/bin/bash
 
 # TLS CERTS: Only run in production
-if [[ -f "/letsencrypt.sh" ]]; then
-  bash /letsencrypt.sh
-  if [[ -f "${CRT_FILE}" && -f "${KEY_FILE}" ]]; then
-    if ![[ openssl s_client -connect ${HOST}.${DOMAIN}:993 -starttls smtp | grep -q 'CONNECTED']]; then
-      echo 'CRITICAL ERROR: Failed to connect using TLS.'
-    fi
-  else
-    echo 'CRITICAL ERROR: Failed to find TLS cert files.'
-  fi
-  ufw deny 80
-fi
+# if [[ -f "/letsencrypt.sh" ]]; then
+#   bash /letsencrypt.sh
+#   if [[ -f "${CRT_FILE}" && -f "${KEY_FILE}" ]]; then
+#     if ![[ openssl s_client -connect ${HOST}.${DOMAIN}:993 -starttls smtp | grep -q 'CONNECTED']]; then
+#       echo 'CRITICAL ERROR: Failed to connect using TLS.'
+#     fi
+#   else
+#     echo 'CRITICAL ERROR: Failed to find TLS cert files.'
+#   fi
+#   ufw deny 80
+# fi
 
 # SUPERVISOR
 cat > /etc/supervisor/conf.d/supervisord.conf <<EOF
