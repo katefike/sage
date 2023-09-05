@@ -26,6 +26,11 @@ set -o allexport
 source ".env"
 set +o allexport
 
-echo "VARS: ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}"
-# echo "Attempting to generate TLS certs in a dry run..."
-# certbot certonly --dry-run --non-interactive --standalone --agree-tos -m ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}
+echo "Attempting to generate TLS certs in a dry run..."
+certbot certonly --dry-run --non-interactive --standalone --agree-tos -m ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}
+
+# Check if dry run was successful
+
+# Check if certs exist
+# If no -> Check if certs are expired
+# If yes -> Check if certs are expired
