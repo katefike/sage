@@ -2,13 +2,15 @@
 
 # Make the project root pwd
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd $__dir/..
+cd $__dir/../..
 
 echo "Creating and activating Python virtrual environment (.venv) ..."
 
 if [ ! -d .venv ]; then
     python3 -m venv .venv
 fi
+
+echo "Activating the .venv ..."
 
 source .venv/bin/activate
 
