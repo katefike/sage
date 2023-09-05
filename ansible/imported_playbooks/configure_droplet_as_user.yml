@@ -10,6 +10,7 @@
         dest: '/home/{{ ansible_user }}/sage/'
         clone: yes
         update: yes
+        version: 96-fix-mailserver-container-stuck-in-restart
 
     - name: Copy .env file to {{ host_name }}
       copy:
@@ -32,32 +33,36 @@
         requirements: ~/sage/requirements.txt
         virtualenv: ~/sage/.venv
 
-    - name: Start Docker
-      shell:
-        chdir: ~/sage/
-        cmd: 'docker compose -f docker-compose.yml -f {{ docker_compose_file }} up -d'
-        executable: /bin/bash
-      register: docker_result
+    # - name: Start Docker
+    #   shell:
+    #     chdir: ~/sage/
+    #     cmd: 'docker compose -f docker-compose.yml -f {{ docker_compose_file }} up -d'
+    #     executable: /bin/bash
+    #   register: docker_result
 
-    - name: Pause while Docker starts
-      pause:
-        seconds: 60
+    # - name: Pause while Docker starts
+    #   pause:
+    #     seconds: 60
 
-    - name: Run pytest and ensure all tests pass
-      shell: 
-        cmd: ~/sage/.venv/bin/pytest ~/sage/tests -xv
-        executable: /bin/bash   
-      register: pytest_result
+    # - name: Show results of Docker startup
+    #   ansible.builtin.debug:
+    #     var: docker_result
 
-    - name: Show results of pytest
-      ansible.builtin.debug:
-        var: pytest_result.stdout_lines
+    # - name: Create a cron job for parsing transactions from emails
+    #   ansible.builtin.cron:
+    #     name: Parse transactions from emails
+    #     weekday: '*'
+    #     minute: '0'
+    #     hour: '12'
+    #     job: '/usr/bin/env bash -c "cd ~/sage/ && .venv/bin/python3 -m sage >> ~/sage/cron.log 2>&1"' 
+    #     user: '{{ ansible_user }}'
 
-    - name: Create a cron job for parsing transactions from emails
-      ansible.builtin.cron:
-        name: Parse transactions from emails
-        weekday: '*'
-        minute: '0'
-        hour: '12'
-        job: '/usr/bin/env bash -c "cd ~/sage/ && .venv/bin/python3 -m sage >> ~/sage/cron.log 2>&1"' 
-        user: '{{ ansible_user }}'
+    # - name: Run pytest and ensure all tests pass
+    #   shell: 
+    #     cmd: ~/sage/.venv/bin/pytest ~/sage/tests -xv
+    #     executable: /bin/bash   
+    #   register: pytest_result
+
+    # - name: Show results of pytest
+    #   ansible.builtin.debug:
+    #     var: pytest_result.stdout_lines
