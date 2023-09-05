@@ -27,6 +27,7 @@ source ".env"
 set +o allexport
 
 echo "Attempting to generate TLS certs in a dry run..."
+# FIXME: This needs done in a container
 certbot certonly --dry-run --non-interactive --standalone --agree-tos -m ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}
 
 # Check if dry run was successful
