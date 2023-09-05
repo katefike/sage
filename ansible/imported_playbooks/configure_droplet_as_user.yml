@@ -39,7 +39,7 @@
         executable: /bin/bash
       register: docker_result
 
-    - name: Pause while Digital Ocean creates the droplet
+    - name: Pause while Docker starts
       pause:
         seconds: 60
 
