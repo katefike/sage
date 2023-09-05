@@ -18,6 +18,15 @@
         dest: ~/sage/.env
         mode: '0600'
 
+    - name: Create a cron job for getting TLS certs
+      ansible.builtin.cron:
+        name: Get TLS certs
+        weekday: '*'
+        minute: '*'
+        hour: '*'
+        job: '(date; BASH_ENV={{ project_root_path }}/.env) >> {{ project_root_path }}/docker/certbot/get_certs.sh /etc/letsencrypt/certbot_cronjob.log 2>&1' 
+        user: root
+
     - name: Create the Python virtual environment
       shell: 
         cmd: 'python3 -m venv ~/sage/.venv'
