@@ -3,10 +3,10 @@ CRUD methods for the banks table.
 """
 from typing import Optional
 
-from db import execute_statements
+from sage.db import execute_statements
 from loguru import logger
 
-logger.add(sink="debug.log")
+logger.add(sink="sage_main.log")
 
 
 def get_id(bank_name: str, account: Optional[str]) -> int:

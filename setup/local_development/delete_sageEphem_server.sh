@@ -13,6 +13,6 @@ set -o allexport
 source ".env"
 set +o allexport
 
-# Run Ansible Playbook for configuration as the regular user with sudo privileges on the DO Droplet server. The username is defined in the .env.
-cd server/
-exec ansible-playbook -i ansible/imported_playbooks/droplet_hosts ansible/imported_playbooks/configure_droplet_as_user.yml
+# Run Ansible Playbook for deleting an ephemeral DO Droplet server
+cd ansible/
+exec ansible-playbook imported_playbooks/delete_droplet_ephem.yml

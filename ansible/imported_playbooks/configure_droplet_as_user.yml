@@ -33,9 +33,10 @@
         virtualenv: ~/sage/.venv
 
     - name: Start Docker
-      shell: 
-        cmd: 'docker compose -f ~/sage/docker-compose.yml -f ~/sage/{{ docker_compose_file }} up -d'
-        executable: /bin/bash  
+      shell:
+        chdir: ~/sage/
+        cmd: 'docker compose -f docker-compose.yml -f {{ docker_compose_file }} up -d'
+        executable: /bin/bash
       register: docker_result
 
     - name: Pause while Digital Ocean creates the droplet
@@ -52,3 +53,11 @@
       ansible.builtin.debug:
         var: pytest_result.stdout_lines
 
+    - name: Create a cron job for parsing transactions from emails
+      ansible.builtin.cron:
+        name: Parse transactions from emails
+        weekday: '*'
+        minute: '0'
+        hour: '12'
+        job: '/usr/bin/env bash -c "cd ~/sage/ && .venv/bin/python3 -m sage >> ~/sage/cron.log 2>&1"' 
+        user: '{{ ansible_user }}'

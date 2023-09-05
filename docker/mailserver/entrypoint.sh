@@ -5,12 +5,10 @@ if [[ -f "/letsencrypt.sh" ]]; then
   bash /letsencrypt.sh
   if [[ -f "${CRT_FILE}" && -f "${KEY_FILE}" ]]; then
     if ![[ openssl s_client -connect ${HOST}.${DOMAIN}:993 -starttls smtp | grep -q 'CONNECTED']]; then
-      'CRITICAL ERROR: Failed to connect using TLS.'
-      exit
+      echo 'CRITICAL ERROR: Failed to connect using TLS.'
     fi
   else
-    'CRITICAL ERROR: Failed to find TLS cert files.'
-    exit
+    echo 'CRITICAL ERROR: Failed to find TLS cert files.'
   fi
   ufw deny 80
 fi

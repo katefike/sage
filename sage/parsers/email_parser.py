@@ -1,27 +1,30 @@
 import re
 from datetime import datetime
 
-from email_data.transaction import Transaction
+from bs4 import BeautifulSoup
 from imap_tools import MailMessage
 from loguru import logger
 
-logger.add(sink="debug.log")
+from sage.models.transaction import Transaction
+
+logger.add(sink="sage_main.log")
 
 
-def main(msg: MailMessage) -> Transaction:
+def main(msg: MailMessage, email_id: int) -> Transaction:
     """
     Parse the transaction data from the email.
 
     :param msg: this is an an email
+    :param email_id: the ID in the database's emails table for this email
     :returns: this is a transaction object defined by the program
     """
-    transaction = Transaction(int(msg.uid))
-
+    transaction = Transaction(email_id)
     # Get the email body
     if msg.text:
         body = msg.text
     elif msg.html:
-        body = msg.html
+        soup = BeautifulSoup(msg.html, "html.parser")
+        body = soup.get_text(" ")
 
     # Identify who the bank is
     if not get_bank(body):

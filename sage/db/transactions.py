@@ -2,24 +2,13 @@
 Insert a transaction into the transactions table.
 """
 
-from db import banks, entities, execute_statements
-from email_data.transaction import Transaction
 from loguru import logger
 
-logger.add(sink="debug.log")
+from sage.db import banks, entities, execute_statements
+from sage.models.transaction import Transaction
+from sage.models.email import Email
 
-
-def get_maximum_uid() -> int:
-    stmt = """
-        SELECT MAX(uid) FROM transactions;
-        """
-    results = execute_statements.select(stmt)
-    max_uid = results[0][0]
-    # Upon starting the program for the first time, get UIDs greater than zero
-    # Zero is not a valid UID; they start with 1.
-    if not max_uid:
-        max_uid = 0
-    return max_uid
+logger.add(sink="sage_main.log")
 
 
 def insert_transaction(transaction: Transaction) -> bool:
@@ -27,7 +16,7 @@ def insert_transaction(transaction: Transaction) -> bool:
     # Transfers don't have entities
     if "transfer" in transaction.type_:
         transaction_data = (
-            transaction.uid,
+            transaction.email_id,
             transaction.date,
             bank_id,
             transaction.type_,
@@ -35,14 +24,14 @@ def insert_transaction(transaction: Transaction) -> bool:
         )
         stmt = """
         INSERT INTO
-            transactions (uid, date, bank_id, type, amount)
+            transactions (email_id, date, bank_id, type, amount)
         VALUES
             (%s, %s, %s, %s, %s);
         """
     else:
         entity_id = entities.get_id(transaction.merchant, transaction.payer)
         transaction_data = (
-            transaction.uid,
+            transaction.email_id,
             transaction.date,
             bank_id,
             transaction.type_,
@@ -51,7 +40,7 @@ def insert_transaction(transaction: Transaction) -> bool:
         )
         stmt = """
         INSERT INTO
-            transactions (uid, date, bank_id, type, amount, entity_id)
+            transactions (email_id, date, bank_id, type, amount, entity_id)
         VALUES
             (%s, %s, %s, %s, %s, %s);
         """

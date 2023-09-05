@@ -9,7 +9,7 @@ fi
 
 # Make the project root pwd and export the current working directory
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd $__dir/../..
+cd $__dir/..
 PROJECT_ROOT_PATH="$PWD"
 export PROJECT_ROOT_PATH
 
@@ -20,6 +20,8 @@ set -o allexport
 source ".env"
 set +o allexport
 
-# Runs Ansible Playbook for creating a ephemeral DO Droplet server. The server runs the application Sage.
+# Runs Ansible Playbook for configuring the production DO Droplet server.
 cd ansible/
-exec ansible-playbook -i imported_playbooks/droplet_hosts main_create_ephem.yml --ask-become-pass
+exec ansible-playbook -i imported_playbooks/droplet_hosts main_configure_prod.yml --ask-become-pass
+
+
