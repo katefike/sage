@@ -26,7 +26,7 @@ if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
     --name certbot \
     -v "/etc/letsencrypt:/etc/letsencrypt" \
     -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
-    certonly --agree-tos --dry-run --non-interactive -m ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}
+    certbot/certbot certonly --agree-tos --dry-run --non-interactive -m ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}
 
 else
     # If they exist, check if they're expired
@@ -41,15 +41,15 @@ else
         exit
     fi
 
-    echo 'The TLS cert is expired. Renewing...'
+    echo 'The TLS cert is expired on ${cert_expiration}. Renewing...'
     docker run --rm -it \
         --name certbot \
         -v "/etc/letsencrypt:/etc/letsencrypt" \
         -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
-        rewnew --agree-tos --dry-run --non-interactive -m ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}
+        certbot/certbot rewnew --agree-tos --dry-run --non-interactive -m ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}
 
     if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
-        echo 'CRITICAL ERROR: Failed to renew expired TLS certs.'
+        echo 'CRITICAL ERROR: Failed to renew expired TLS certs. Cert file not found at: ${certbot_cert}. Private key not found at: ${certbot_key}'
         exit
     fi
 fi
