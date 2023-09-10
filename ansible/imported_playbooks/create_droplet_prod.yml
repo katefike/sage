@@ -52,6 +52,14 @@
               ports: "22"
               sources:
                 addresses: "{{ ssh_allowed_public_ips_list }}"
+            - protocol: "tcp"
+              ports: "80"
+              sources:
+                addresses: "{{ ssh_allowed_public_ips_list }}"
+            - protocol: "tcp"
+              ports: "587"
+              sources:
+                addresses: "{{ ssh_allowed_public_ips_list }}"
           outbound_rules: 
             - protocol: "icmp"
               destinations:
@@ -68,12 +76,12 @@
         status_code: 202
       register: firewall_result
 
-    - name: Create a reserved IP and assign a droplet to it
-      digital_ocean_floating_ip:
-        oauth_token: "{{ digital_ocean_token }}  "
-        droplet_id: "{{ droplet_result.results[0].data.droplet.id }}"
-        state: present
-      register: floating_ip_result
+    # - name: Create a reserved IP and assign a droplet to it
+    #   digital_ocean_floating_ip:
+    #     oauth_token: "{{ digital_ocean_token }}  "
+    #     droplet_id: "{{ droplet_result.results[0].data.droplet.id }}"
+    #     state: present
+    #   register: floating_ip_result
 
     - name: Save IP and host name to droplet_hosts file
       become: yes
