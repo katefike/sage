@@ -24,6 +24,7 @@ if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
     echo 'Genererating TLS certs in a dry-run...'
     docker run --rm -it \
     --name certbot \
+    -p 80:80 \
     -v "/etc/letsencrypt:/etc/letsencrypt" \
     -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
     certbot/certbot certonly --standalone --agree-tos --dry-run --non-interactive -m ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}
@@ -44,6 +45,7 @@ else
     echo 'The TLS cert is expired on ${cert_expiration}. Renewing...'
     docker run --rm -it \
         --name certbot \
+        -p 80:80 \
         -v "/etc/letsencrypt:/etc/letsencrypt" \
         -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
         certbot/certbot rewnew --standalone --agree-tos --dry-run --non-interactive -m ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}
