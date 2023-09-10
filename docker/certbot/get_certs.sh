@@ -34,20 +34,22 @@ if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
 
 else
     # If they exist, check if they're expired
-    current_date=$(date +%s)
+    # Get current time in seconds since epoch
+    current_sec_since_epoch=$(date +%s)
 
     # Get the expiration date of the certificate
-    raw_cert_expiration=$(openssl x509 -enddate -noout -in ${certbot_cert} | cut -d= -f2)
-    cert_expiration=$(date -d "${raw_cert_expiration}" +%s)
-    echo "Raw expiration date: ${raw_cert_expiration}"
-    echo "Cert Expiration: ${cert_expiration}"
+    cert_expiration_date=$(openssl x509 -enddate -noout -in ${certbot_cert} | cut -d= -f2)
+    # Convert the date to seconds since epoch
+    cert_expiration_sec_since_epoch=$(date -d "${cert_expiration_date}" +%s)
+    echo "Expiration date: ${cert_expiration_date}"
+    echo "Cert expiration (epoch): ${cert_expiration_sec_since_epoch}"
 
     # Check if the certificate has passed the expiration date
-    if ! [[ ${current_date} -gt ${cert_expiration} ]]; then
+    if ! [[ ${current_sec_since_epoch} -gt ${cert_expiration_sec_since_epoch} ]]; then
         exit
     fi
 
-    echo "The TLS cert is expired on ${raw_cert_expiration}. Renewing in a dry-run..."
+    echo "The TLS cert is expired on ${cert_expiration_date}. Renewing in a dry-run..."
     docker run --rm \
         --name certbot \
         -p 80:80 \
