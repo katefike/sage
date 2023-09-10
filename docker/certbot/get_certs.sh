@@ -21,8 +21,10 @@ certbot_key=/etc/letsencrypt/live/${HOST,,}.${DOMAIN,,}/privkey.pem
 
 # Check if a cert and key exist or not
 if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
+    echo "Cert file not found at: ${certbot_cert}. Private key not found at: ${certbot_key}"
+
     # If they don't exist, create new certs (in a dry run during development)
-    echo 'Genererating TLS certs...'
+    echo "Genererating TLS certs..."
     docker run --rm \
     --name certbot \
     -p 80:80 \
@@ -35,18 +37,17 @@ else
     current_date=$(date +%s)
 
     # Get the expiration date of the certificate
-    raw_cert_expiration$(openssl x509 -enddate -noout -in ${certbot_cert} | cut -d= -f2)
+    raw_cert_expiration=$(openssl x509 -enddate -noout -in ${certbot_cert} | cut -d= -f2)
     cert_expiration=$(date -d "${raw_cert_expiration}" +%s)
-    echo 'Raw expiration date: ${raw_cert_expiration}'
-    echo 'Cert Expiration: ${cert_expiration}'
+    echo "Raw expiration date: ${raw_cert_expiration}"
+    echo "Cert Expiration: ${cert_expiration}"
 
-    echo 'The TLS cert is expired on ${cert_expiration}. Renewing in a dry-run...'
     # Check if the certificate has passed the expiration date
     if ! [[ ${current_date} -gt ${cert_expiration} ]]; then
         exit
     fi
 
-    echo 'The TLS cert is expired on ${cert_expiration}. Renewing...'
+    echo "The TLS cert is expired on ${raw_cert_expiration}. Renewing in a dry-run..."
     docker run --rm \
         --name certbot \
         -p 80:80 \
@@ -55,30 +56,30 @@ else
         certbot/certbot rewnew --standalone --agree-tos --dry-run --non-interactive -m ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}
 
     if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
-        echo 'CRITICAL ERROR: Failed to renew expired TLS certs. Cert file not found at: ${certbot_cert}. Private key not found at: ${certbot_key}'
+        echo "CRITICAL ERROR: Failed to renew expired TLS certs. Cert file not found at: ${certbot_cert}. Private key not found at: ${certbot_key}"
         exit
     fi
 fi
 
 if [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
-    echo 'Checking if a TLS connection can be made from the server...'
+    echo "Checking if a TLS connection can be made from the server..."
     if ! [[ openssl s_client -connect ${HOST}.${DOMAIN}:993 -starttls smtp | grep -q 'CONNECTED' ]]; then
-        echo 'CRITICAL ERROR: Failed to connect using TLS.'
+        echo "CRITICAL ERROR: Failed to connect using TLS."
         exit
     fi
-    echo 'Successfully made a TLS connection.'
+    echo "Successfully made a TLS connection."
 fi
 
-echo 'Copying TLS certs to sage-mailserver Docker container...'
+echo "Copying TLS certs to sage-mailserver Docker container..."
 docker cp ${certbot_cert} sage-mailserver:${certbot_cert}
 docker cp ${certbot_key} sage-mailserver:${certbot_key}
 
-echo 'Restarting the sage-mailserver Docker container...'
+echo "Restarting the sage-mailserver Docker container..."
 docker restart sage-mailserver
 
-echo 'Checking if a TLS connection can be made from inside the sage-mailserver Docker container...'
+echo "Checking if a TLS connection can be made from inside the sage-mailserver Docker container..."
 if ! [[ docker exec sage-mailserver openssl s_client -connect ${HOST}.${DOMAIN}:993 -starttls smtp | grep -q 'CONNECTED' ]]; then
-    echo 'CRITICAL ERROR: Failed to connect using TLS.'
+    echo "CRITICAL ERROR: Failed to connect using TLS."
     exit
 fi
-echo 'Successfully made a TLS connection.'
+echo "Successfully made a TLS connection."
