@@ -45,7 +45,7 @@ else
     echo "Cert expiration (epoch): ${cert_expiration_sec_since_epoch}"
 
     # Check if the certificate has passed the expiration date
-    if ! [[ ${current_sec_since_epoch} -gt ${cert_expiration_sec_since_epoch} ]]; then
+    if [[ ${current_sec_since_epoch} -lt ${cert_expiration_sec_since_epoch} ]]; then
         exit
     fi
 
