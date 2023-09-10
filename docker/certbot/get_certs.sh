@@ -15,8 +15,9 @@ set -o allexport
 source ".env"
 set +o allexport
 
-certbot_cert=/etc/letsencrypt/live/${HOST}.${DOMAIN}/fullchain.pem
-certbot_key=/etc/letsencrypt/live/${HOST}.${DOMAIN}/privkey.pem
+# Convert $HOST and $DOMAIN strings to lowercase using two commas
+certbot_cert=/etc/letsencrypt/live/${HOST,,}.${DOMAIN,,}/fullchain.pem
+certbot_key=/etc/letsencrypt/live/${HOST,,}.${DOMAIN,,}/privkey.pem
 
 # Check if a cert and key exist or not
 if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
