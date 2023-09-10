@@ -36,7 +36,10 @@ else
     # Get the expiration date of the certificate
     raw_cert_expiration$(openssl x509 -enddate -noout -in ${certbot_cert} | cut -d= -f2)
     cert_expiration=$(date -d "${raw_cert_expiration}" +%s)
+    echo 'Raw expiration date: ${raw_cert_expiration}'
+    echo 'Cert Expiration: ${cert_expiration}'
 
+    echo 'The TLS cert is expired on ${cert_expiration}. Renewing...'
     # Check if the certificate has passed the expiration date
     if ! [[ ${current_date} -gt ${cert_expiration} ]]; then
         exit
