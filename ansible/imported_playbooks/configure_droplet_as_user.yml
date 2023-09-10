@@ -18,15 +18,15 @@
         dest: ~/sage/.env
         mode: '0600'
 
-    - name: Create a cron job for getting TLS certs
-      ansible.builtin.cron:
-        name: Get TLS certs
-        weekday: '*'
-        minute: '*/5'
-        hour: '*'
-        job: '/usr/bin/env bash -c "date; . /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh >> /var/log/certbot_cronjob.log 2>&1"' 
-        user: root
-      become: yes
+    # - name: Create a cron job for getting TLS certs
+    #   ansible.builtin.cron:
+    #     name: Get TLS certs
+    #     weekday: '*'
+    #     minute: '*/5'
+    #     hour: '*'
+    #     job: '/usr/bin/env bash -c "date; . /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh >> /var/log/certbot_cronjob.log 2>&1"' 
+    #     user: root
+    #   become: yes
 
     - name: Add execute permissions for all on /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh
       shell: 
