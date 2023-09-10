@@ -55,7 +55,7 @@ else
         -p 80:80 \
         -v "/etc/letsencrypt:/etc/letsencrypt" \
         -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
-        certbot/certbot rewnew --standalone --agree-tos --dry-run --non-interactive -m ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}
+        certbot/certbot renew --standalone --agree-tos --dry-run --non-interactive -m ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}
 
     if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
         echo "CRITICAL ERROR: Failed to renew expired TLS certs. Cert file not found at: ${certbot_cert}. Private key not found at: ${certbot_key}"
