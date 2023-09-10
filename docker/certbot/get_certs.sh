@@ -27,7 +27,7 @@ if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
     -p 80:80 \
     -v "/etc/letsencrypt:/etc/letsencrypt" \
     -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
-    certbot/certbot certonly --standalone --agree-tos --dry-run --non-interactive -m ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}
+    certbot/certbot certonly --standalone --agree-tos --non-interactive -m ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}
 
 else
     # If they exist, check if they're expired
