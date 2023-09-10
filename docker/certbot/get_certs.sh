@@ -22,7 +22,7 @@ certbot_key=/etc/letsencrypt/live/${HOST}.${DOMAIN}/privkey.pem
 if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
     # If they don't exist, create new certs (in a dry run during development)
     echo 'Genererating TLS certs in a dry-run...'
-    docker run --rm -it \
+    docker run --rm \
     --name certbot \
     -p 80:80 \
     -v "/etc/letsencrypt:/etc/letsencrypt" \
@@ -43,7 +43,7 @@ else
     fi
 
     echo 'The TLS cert is expired on ${cert_expiration}. Renewing...'
-    docker run --rm -it \
+    docker run --rm \
         --name certbot \
         -p 80:80 \
         -v "/etc/letsencrypt:/etc/letsencrypt" \
