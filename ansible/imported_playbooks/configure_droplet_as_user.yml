@@ -29,6 +29,10 @@
         user: root
       become: yes
 
+    - name: Add execute permissions for all on /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh
+      shell: 
+        cmd: 'chmod +x /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh'
+
     - name: Create the Python virtual environment
       shell: 
         cmd: 'python3 -m venv ~/sage/.venv'
