@@ -65,7 +65,7 @@ fi
 
 if [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
     echo "Checking if a TLS connection can be made from the server..."
-    if ! [[ openssl s_client -connect ${HOST}.${DOMAIN}:993 -starttls smtp | grep -q 'CONNECTED' ]]; then
+    if ! openssl s_client -connect ${HOST}.${DOMAIN}:587 -starttls smtp | grep -q 'CONNECTED'; then
         echo "CRITICAL ERROR: Failed to connect using TLS."
         exit
     fi
