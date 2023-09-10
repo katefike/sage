@@ -25,7 +25,6 @@
         minute: '*'
         hour: '*'
         job: '/usr/bin/env bash -c "date; . /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh >> /var/log/certbot_cronjob.log 2>&1"' 
-        # job: '(date; . /home/{{ ansible_user }}/sage/.env) && bash /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh /var/log/certbot_cronjob.log 2>&1' 
         user: root
       become: yes
 
