@@ -16,8 +16,8 @@ source ".env"
 set +o allexport
 
 # Convert $HOST and $DOMAIN strings to lowercase using two commas
-certbot_cert=/etc/letsencrypt/live/${HOST,,}.${DOMAIN,,}/fullchain.pem
-certbot_key=/etc/letsencrypt/live/${HOST,,}.${DOMAIN,,}/privkey.pem
+certbot_cert=/etc/letsencrypt/live/prod.${DOMAIN,,}/fullchain.pem
+certbot_key=/etc/letsencrypt/live/prod.${DOMAIN,,}/privkey.pem
 
 # Check if a cert and key exist or not
 if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
@@ -30,7 +30,7 @@ if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
     -p 80:80 \
     -v "/etc/letsencrypt:/etc/letsencrypt" \
     -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
-    certbot/certbot certonly --standalone --dry-run --agree-tos --non-interactive -m ${FORWARDING_EMAIL} -d ${HOST}.${DOMAIN}
+    certbot/certbot certonly --standalone --dry-run --agree-tos --non-interactive -m ${FORWARDING_EMAIL} -d prod.${DOMAIN}
 
 else
     # If they exist, check if they're expired
@@ -65,7 +65,7 @@ fi
 
 if [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
     echo "Checking if a TLS connection can be made from the server..."
-    if ! openssl s_client -connect ${HOST}.${DOMAIN}:587 -starttls smtp | grep -q 'CONNECTED'; then
+    if ! openssl s_client -connect prod.${DOMAIN}:587 -starttls smtp | grep -q 'CONNECTED'; then
         echo "CRITICAL ERROR: Failed to connect using TLS."
         exit
     fi
@@ -80,7 +80,7 @@ echo "Restarting the sage-mailserver Docker container..."
 docker restart sage-mailserver
 
 echo "Checking if a TLS connection can be made from inside the sage-mailserver Docker container..."
-if ! [[ docker exec sage-mailserver openssl s_client -connect ${HOST}.${DOMAIN}:993 -starttls smtp | grep -q 'CONNECTED' ]]; then
+if ! [[ docker exec sage-mailserver openssl s_client -connect prod.${DOMAIN}:993 -starttls smtp | grep -q 'CONNECTED' ]]; then
     echo "CRITICAL ERROR: Failed to connect using TLS."
     exit
 fi
