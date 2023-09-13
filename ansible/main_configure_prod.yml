@@ -1,15 +1,15 @@
-- name: Configure the droplet "sageProd" as root
+- name: Configure the droplet named "prod" as root
   import_playbook: imported_playbooks/configure_droplet_as_root.yml
   vars:
-    host_name: 'sageProd'
+    host_name: 'prod'
     # Don't change the name of the var ansible_ssh_private_key_file! It provides the SSH identity file
     # https://docs.ansible.com/ansible/latest/inventory_guide/connection_details.html
     ansible_ssh_private_key_file: '{{ lookup("env", "PROD_SSH_PRIVATE_KEY_FILE_PATH") }}'
     ssh_public_key: '{{ lookup("env", "PROD_SSH_PUBLIC_KEY") }}'
 
-- name: Configure the droplet "sageProd" as user 
+- name: Configure the droplet named "prod" as user 
   import_playbook: imported_playbooks/configure_droplet_as_user.yml
   vars:
-    host_name: 'sageProd'
+    host_name: 'prod'
     ansible_ssh_private_key_file: '{{ lookup("env", "PROD_SSH_PRIVATE_KEY_FILE_PATH") }}'
     docker_compose_file: 'docker-compose.prod.yml'

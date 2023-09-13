@@ -17,9 +17,9 @@
         state: present
       register: sshkey_result
 
-    - name: Create a new Droplet named "sageProd"
+    - name: Create a new Droplet named "prod"
       digital_ocean_droplet:
-        name: "sageProd"
+        name: "prod"
         oauth_token: "{{ digital_ocean_token }}"
         size: "{{ droplet_size }}"
         region: "{{ droplet_region }}"
@@ -29,13 +29,13 @@
         ssh_keys: ["{{ sshkey_result.data.ssh_key.fingerprint }}"]
         state: present
       with_inventory_hostnames:
-        - sageProd
+        - prod
       register: droplet_result
 
     - name: Setting host fact public_ip
       ansible.builtin.set_fact: public_ip="{{ droplet_result.results[0].data.droplet.networks.v4[0].ip_address }}"
 
-    - name: Create firewall named "sageProd" and assign the droplet named "sageProd" to it
+    - name: Create firewall named "sageProd" and assign the droplet named "prod" to it
       uri:
         url: "https://api.digitalocean.com/v2/firewalls"
         method: POST
@@ -89,8 +89,8 @@
       become: yes
       lineinfile:
         path: "{{  playbook_dir  }}/droplet_hosts"
-        regexp: ".*sageProd$"
-        line: "sageProd ansible_host={{ public_ip }}"
+        regexp: ".*prod$"
+        line: "prod ansible_host={{ public_ip }}"
         # The public IP is needed to SSH to the droplet; the floating IP is different
         # The floating IP could be accessed if needed using the line below:
         # {{ floating_ip_result.data.floating_ip.ip }}
