@@ -55,9 +55,9 @@ postconf -e maillog_file=/var/log/mail.log
 echo '0 0 * * * root echo "" > /var/log/mail.log' > /etc/cron.d/maillog
 
 # POSTFIX: Config common to the dev and prod environments
-postconf -e myhostname=$HOST
+postconf -e myhostname=prod
 postconf -e myorigin=$DOMAIN
-postconf -e "mydestination = $HOST.$DOMAIN, $DOMAIN, localhost.$DOMAIN, localhost.localdomain, localhost"
+postconf -e "mydestination = prod.$DOMAIN, $DOMAIN, localhost.$DOMAIN, localhost.localdomain, localhost"
 postconf -e "home_mailbox = Maildir/"
 
 # POSTFIX/DOVECOT: Config specific to the dev or prod environment
