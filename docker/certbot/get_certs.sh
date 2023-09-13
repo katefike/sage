@@ -15,7 +15,7 @@ set -o allexport
 source ".env"
 set +o allexport
 
-# Convert $HOST and $DOMAIN strings to lowercase using two commas
+# Convert $DOMAIN string to lowercase using two commas
 certbot_cert=/etc/letsencrypt/live/prod.${DOMAIN,,}/fullchain.pem
 certbot_key=/etc/letsencrypt/live/prod.${DOMAIN,,}/privkey.pem
 
