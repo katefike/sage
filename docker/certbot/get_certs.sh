@@ -32,6 +32,11 @@ if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
     -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
     certbot/certbot certonly --standalone --dry-run --agree-tos --non-interactive -m ${FORWARDING_EMAIL} -d prod.${DOMAIN}
 
+    if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
+        echo "CRITICAL ERROR: Failed to generate TLS certs."
+        exit
+    fi
+
 else
     # If they exist, check if they're expired
     current_date=$(date)
@@ -43,8 +48,8 @@ else
     echo "Expiration date: ${cert_expiration_date}"
     echo "Renewal date: ${cert_renewal_date}"
 
-    # Check if the certificate has passed the expiration date
-    if [[ "${current_date}" >= "${cert_renewal_date}" ]]; then
+    # Check if the certificate has passed the renewal date
+    if [[ "${current_date}" > "${cert_renewal_date}" ]]; then
         exit
     fi
 
@@ -55,21 +60,23 @@ else
         -v "/etc/letsencrypt:/etc/letsencrypt" \
         -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
         certbot/certbot renew --dry-run
+        # TODO: Use --deploy-hook to load certs and restart mailserver container
 
-    if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
-        echo "CRITICAL ERROR: Failed to renew expired TLS certs. Cert file not found at: ${certbot_cert}. Private key not found at: ${certbot_key}"
+    # Get the new expiration date of the certificate
+    new_cert_expiration_date=$(openssl x509 -enddate -noout -in ${certbot_cert} | cut -d= -f2)
+    # Check if the renewal was successful
+    if [[ "${new_cert_expiration_date}" == "${cert_expiration_date}" ]]; then
+        echo "CRITICAL ERROR: Failed to renew TLS certs."
         exit
     fi
 fi
 
-if [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
-    echo "Checking if a TLS connection can be made from the server..."
-    if ! openssl s_client -connect prod.${DOMAIN}:587 -starttls smtp | grep -q 'CONNECTED'; then
-        echo "CRITICAL ERROR: Failed to connect using TLS."
-        exit
-    fi
-    echo "Successfully made a TLS connection."
+echo "Checking if a TLS connection can be made from the server..."
+if ! openssl s_client -connect prod.${DOMAIN}:587 -starttls smtp | grep -q 'CONNECTED'; then
+    echo "CRITICAL ERROR: Failed to connect using TLS."
+    exit
 fi
+echo "Successfully made a TLS connection."
 
 echo "Copying TLS certs to sage-mailserver Docker container..."
 docker cp ${certbot_cert} sage-mailserver:${certbot_cert}
