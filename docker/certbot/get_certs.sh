@@ -42,7 +42,8 @@ else
     current_date=$(date)
 
     # Get the expiration date of the certificate
-    cert_expiration_date=$(openssl x509 -enddate -noout -in ${certbot_cert} | cut -d= -f2)
+    raw_cert_expiration_date=$(openssl x509 -enddate -noout -in ${certbot_cert} | cut -d= -f2)
+    cert_expiration_date=$(date -d "${raw_cert_expiration_date}" +"%a %b %d %T %Z %Y")
     # Get the earliest date the certificate can be renewed (30 days before the expiration)
     cert_renewal_date=$(date -d "${cert_expiration_date} -30 days")
     echo "Expiration date: ${cert_expiration_date}"
