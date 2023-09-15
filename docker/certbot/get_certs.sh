@@ -72,13 +72,6 @@ else
     fi
 fi
 
-echo "Checking if a TLS connection can be made from the server..."
-if ! openssl s_client -connect prod.${DOMAIN}:587 -starttls smtp | grep -q 'CONNECTED'; then
-    echo "CRITICAL ERROR: Failed to connect using TLS."
-    exit
-fi
-echo "Successfully made a TLS connection."
-
 echo "Copying TLS certs to sage-mailserver Docker container..."
 docker cp ${certbot_cert} sage-mailserver:${certbot_cert}
 docker cp ${certbot_key} sage-mailserver:${certbot_key}
