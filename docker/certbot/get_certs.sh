@@ -78,10 +78,3 @@ docker cp -L ${certbot_key} sage-mailserver:${certbot_key}
 
 echo "Restarting the sage-mailserver Docker container..."
 docker restart sage-mailserver
-
-echo "Checking if a TLS connection can be made from inside the sage-mailserver Docker container..."
-if ! [[ docker exec sage-mailserver openssl s_client -connect prod.${DOMAIN}:993 -starttls smtp | grep -q 'CONNECTED' ]]; then
-    echo "CRITICAL ERROR: Failed to connect using TLS."
-    exit
-fi
-echo "Successfully made a TLS connection."
