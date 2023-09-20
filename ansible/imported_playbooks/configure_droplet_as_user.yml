@@ -10,12 +10,27 @@
         dest: '/home/{{ ansible_user }}/sage/'
         clone: yes
         update: yes
+        version: 96-fix-mailserver-container-stuck-in-restart
 
     - name: Copy .env file to {{ host_name }}
       copy:
         src: '{{ project_root_path }}/.env'
         dest: ~/sage/.env
         mode: '0600'
+
+    - name: Create a cron job for getting TLS certs
+      ansible.builtin.cron:
+        name: Get TLS certs
+        weekday: '*'
+        minute: '*/5'
+        hour: '*'
+        job: '/usr/bin/env bash -c "date; . /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh >> /var/log/certbot_cronjob.log 2>&1"' 
+        user: root
+      become: yes
+
+    - name: Add execute permissions for all on /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh
+      shell: 
+        cmd: 'chmod +x /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh'
 
     - name: Create the Python virtual environment
       shell: 
@@ -27,7 +42,7 @@
         cmd: 'source ~/sage/.venv/bin/activate'
         executable: /bin/bash
 
-    - name: Install requirements so we have pytest
+    - name: Install python requirements
       pip:
         requirements: ~/sage/requirements.txt
         virtualenv: ~/sage/.venv
@@ -39,13 +54,22 @@
         executable: /bin/bash
       register: docker_result
 
-    - name: Pause while Digital Ocean creates the droplet
+    - name: Pause while Docker starts
       pause:
         seconds: 60
 
-    - name: Show results of starting Docker
+    - name: Show results of Docker startup
       ansible.builtin.debug:
         var: docker_result
+
+    - name: Create a cron job for parsing transactions from emails
+      ansible.builtin.cron:
+        name: Parse transactions from emails
+        weekday: '*'
+        minute: '0'
+        hour: '12'
+        job: '/usr/bin/env bash -c "cd ~/sage/ && .venv/bin/python3 -m sage >> ~/sage/cron.log 2>&1"' 
+        user: '{{ ansible_user }}'
 
     - name: Run pytest and ensure all tests pass
       shell: 
@@ -56,12 +80,3 @@
     - name: Show results of pytest
       ansible.builtin.debug:
         var: pytest_result.stdout_lines
-
-    - name: Create a cron job for parsing transactions from emails
-      ansible.builtin.cron:
-        name: Parse transactions from emails
-        weekday: '*'
-        minute: '0'
-        hour: '12'
-        job: '/usr/bin/env bash -c "cd ~/sage/ && .venv/bin/python3 -m sage >> ~/sage/cron.log 2>&1"' 
-        user: '{{ ansible_user }}'

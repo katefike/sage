@@ -1,2 +1,2 @@
-- name: Create a droplet named "sageProd"
+- name: Create a droplet named "prod"
   import_playbook: imported_playbooks/create_droplet_prod.yml

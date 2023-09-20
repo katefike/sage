@@ -23,11 +23,11 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
   <br> `SSH_ALLOWED_PUBLIC_IPS`: List the public IPs that can access to the production server.
 4. **WARNING: RUNNING THIS SCRIPT CAUSES DIGITAL OCEAN TO START CHARGING YOU MONEY ON A MONTHLY BASIS FOR YOUR PRODUCTION SERVER.**
 <br> Run the script to create a production Digital Ocean Droplet server that runs the application.
-<br> `bash setup/2_create_SageProd_server.sh`
+<br> `bash setup/2_create_prod_server.sh`
 <br> If an error occurs, go to Digital Ocean and delete the Droplet and firewall before running the script again.
 <br> It will prompt you for `BECOME password:`; enter your sudo password.
 4. Run the script to configure the production Digital Ocean Droplet server.
-<br> `bash setup/3_configure_SageProd_server.sh`
+<br> `bash setup/3_configure_prod_server.sh`
 <br> This script is idempotent: no matter how many times you run it, the result will be the same. So if an error occurs, simply troubleshoot and run the script again until the error is resolved.
 
 
@@ -52,7 +52,7 @@ Shows cron errors in the case that it fails to execute a job.
 - Ensure that the setup script `1_setup_sage_directory.sh` was run using the command `bash setup/1_setup_sage_directory.sh`. 
   - This script creates the populated file `droplet_hosts`, which is read by the ansible playbook.
 
-### "Ansible won't connect to my production server sageProd!"
+### "Ansible won't connect to my production server prod!"
 - Ensure the permissions are correct. Typically the permissions are:
   - `700` on the `.ssh` directory
   - `644` on the public key file (.pub)
@@ -80,7 +80,7 @@ root@< public ip >: Permission denied (publickey).
 2. Run the first setup script. This will create a .env file using the file .env-example as a template. 
   <br>`bash setup/1_setup_sage_directory.sh`
 3. Run a setup script for setting up the virtual environment and Python dependencies.
-  <br>`bash setup/local_development/1_setup_venv.sh`
+  <br>`source setup/local_development/1_setup_venv.sh`
 4. Start Docker
 `docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d`
 5. Manually kick off the script to parse transactions from emails. Execute the command from the project root. For example, if the project is located in `/home/kfike/Projects/` then execute `(.venv) kfike@pop-os:~/Projects/sage$ python3 -m sage`. 
