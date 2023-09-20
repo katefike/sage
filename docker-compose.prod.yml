@@ -6,7 +6,6 @@ services:
     # https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/
     # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
     ports:
-      # - '80:80'    # Getting TLS certs
       - '587:587'  # ESMTP (explicit TLS => STARTTLS)
       - '993:993'  # IMAP4 (implicit TLS)
     volumes:
