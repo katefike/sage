@@ -63,6 +63,9 @@ postconf -e "home_mailbox = Maildir/"
 # POSTFIX/DOVECOT: Config specific to the dev or prod environment
 [[ -f "/postfix_dovecot_config.sh" ]] && bash /postfix_dovecot_config.sh
 
+# Create the directory the TLS certs will be copied to (prod only)
+mkdir -p /etc/letsencrypt/live/prod.$DOMAIN
+
 # Set up DKIM and FAIL2BAN (prod only)
 [[ -f "/dkim_fail2ban.sh" ]] && bash /dkim_fail2ban.sh
 
