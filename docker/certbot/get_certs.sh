@@ -73,8 +73,8 @@ else
 fi
 
 echo "Copying TLS certs to sage-mailserver Docker container..."
-docker cp ${certbot_cert} sage-mailserver:${certbot_cert}
-docker cp ${certbot_key} sage-mailserver:${certbot_key}
+docker cp -L ${certbot_cert} sage-mailserver:${certbot_cert}
+docker cp -L ${certbot_key} sage-mailserver:${certbot_key}
 
 echo "Restarting the sage-mailserver Docker container..."
 docker restart sage-mailserver
