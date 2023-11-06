@@ -21,6 +21,9 @@ rm -f /etc/cron.daily/*
 rm -f /etc/cron.d/*
 
 # POSTFIX: Supervisord
+if ! [ -f /var/log/mail.log ]; then
+  touch /var/log/mail.log
+fi
 cat >> /etc/supervisor/conf.d/supervisord.conf <<EOF
 [program:postfix]
 command=/postfix.sh
