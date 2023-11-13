@@ -1,5 +1,5 @@
 #!/bin/bash
-# Configures /etc/postfix/main.conf, /etc/postfix/master.cf,
+# Configures /etc/postfix/main.cf, /etc/postfix/master.cf,
 # and /etc/dovecot/dovecot.conf for development
 
 # Here are the docs on the postconf arguments: https://www.postfix.org/postconf.1.html
