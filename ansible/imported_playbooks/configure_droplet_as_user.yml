@@ -54,7 +54,7 @@
         executable: /bin/bash
       register: docker_result
 
-    - name: Pause while Docker starts
+    - name: Pause while Docker starts...
       pause:
         seconds: 60
 

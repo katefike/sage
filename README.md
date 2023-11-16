@@ -13,6 +13,8 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
   <br>`bash setup/1_setup_sage_directory.sh`
 3. Define the following environment variables in the .env file:
   <br> `ISDEV`: Change to "False"
+  <br> `DOMAIN`: Purchase a domain.
+  <br> `FORWARDING_EMAIL`: Set up the email account that receives the transaction alert emails. This account needs to forward all emails to the receiving email address on the mail server. The default receiving email address is incoming@DOMAIN. So if you purchased the domain example.com, the receiving email address would me incoming@example.com
   <br> `DOMAIN`: Buy a domain name.
   <br> `FORWARDING_EMAIL`: Set up the email account that receives the transaction alert emails. This account needs to forward all emails to the receiving email address on the mail server. The default receiving email address is incoming@DOMAIN. So if you purchased the domain example.com, the receiving email address would me incoming@example.com
   <br> `DO_API_TOKEN`: Create a Digital Ocean API Key. It's located in the "API" portion of their menu.
@@ -23,11 +25,13 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
   <br> `SSH_ALLOWED_PUBLIC_IPS`: List the public IPs that can access to the production server.
 4. **WARNING: RUNNING THIS SCRIPT CAUSES DIGITAL OCEAN TO START CHARGING YOU MONEY ON A MONTHLY BASIS FOR YOUR PRODUCTION SERVER.**
 <br> Run the script to create a production Digital Ocean Droplet server that runs the application.
-<br> `bash setup/2_create_prod_server.sh`
+<br> `bash setup/2_create_SageProd_server.sh`
+<br> If an error occurs, go to Digital Ocean and delete the Droplet and firewall before running the script again.
+<br> `bash setup/2_create_sageProd_server.sh`
 <br> If an error occurs, go to Digital Ocean and delete the Droplet and firewall before running the script again.
 <br> It will prompt you for `BECOME password:`; enter your sudo password.
 4. Run the script to configure the production Digital Ocean Droplet server.
-<br> `bash setup/3_configure_prod_server.sh`
+<br> `bash setup/3_configure_SageProd_server.sh`
 <br> This script is idempotent: no matter how many times you run it, the result will be the same. So if an error occurs, simply troubleshoot and run the script again until the error is resolved.
 
 
