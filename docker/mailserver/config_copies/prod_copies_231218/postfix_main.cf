@@ -25,9 +25,9 @@ compatibility_level = 2
 
 
 # TLS parameters for receiving mail (smptd)
-#smtpd_tls_cert_file=/etc/letsencrypt/live/prod.sagefinancial.dev/fullchain.pem
-#smtpd_tls_key_file=/etc/letsencrypt/live/prod.sagefinancial.dev/privkey.pem
-#smtpd_tls_security_level=may
+smtpd_tls_cert_file=/etc/letsencrypt/live/prod.sagefinancial.dev/fullchain.pem
+smtpd_tls_key_file=/etc/letsencrypt/live/prod.sagefinancial.dev/privkey.pem
+smtpd_tls_security_level=may
 
 # TLS parameters for delivering/sending mail (smtp)
 #smtp_tls_CApath=/etc/ssl/certs
