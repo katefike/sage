@@ -13,13 +13,7 @@ services:
       - --providers.docker.exposedbydefault=false
       # DMS ports you want to proxy:
       - --entryPoints.mail-smtp.address=:25
-      - --entryPoints.mail-submission.address=:587
       - --entryPoints.mail-submissions.address=:465
-      - --entryPoints.mail-imap.address=:143
-      - --entryPoints.mail-imaps.address=:993
-      - --entryPoints.mail-pop3.address=:110
-      - --entryPoints.mail-pop3s.address=:995
-      - --entryPoints.mail-managesieve.address=:4190
     # Publish external access ports mapped to traefik entrypoint ports:
     ports:
       - "465:465"
