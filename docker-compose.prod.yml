@@ -31,10 +31,6 @@ services:
     # More information about the mail-server ports:
     # https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/
     # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
-    ports:
-      - '25:25' # SMTP (temporarily opened for troubleshooting)
-      - '587:587'  # ESMTP (explicit TLS => STARTTLS)
-      - '993:993'  # IMAP4 (implicit TLS)
     volumes:
     # FIXME: Using dev postfix/dovecot config. Do I need separate configs anymore?
     - ./docker/mailserver/scripts/postfix_dovecot_config_dev.sh:/postfix_dovecot_config.sh
