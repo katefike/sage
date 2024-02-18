@@ -12,7 +12,7 @@ services:
     ports:
       - "25:25"
     networks:
-      default:
+      custom_network:
         ipv4_address:  172.16.42.2
   mailserver:
     # More information about the mail-server ports:
@@ -28,7 +28,7 @@ services:
     - ./docker/mailserver/scripts/dkim_fail2ban_prod.sh:/dkim_fail2ban.sh
     - /etc/letsencrypt/:/etc/letsencrypt/
     networks:
-      default:
+      custom_network:
         ipv4_address:  172.16.42.3
 
 networks:
