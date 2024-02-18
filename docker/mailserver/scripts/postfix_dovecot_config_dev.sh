@@ -12,6 +12,10 @@ postconf -# "smtpd_tls_cert_file"
 postconf -# "smtpd_tls_key_file"
 postconf -# "smtpd_tls_security_level"
 postconf -# "smtpd_relay_restrictions"
+# Configure reverse proxy
+postconf -e "smtp/inet/postscreen_upstream_proxy_protocol = haproxy"
+postconf -e "submission/inet/smtpd_upstream_proxy_protocol = haproxy"
+postconf -e "submissions/inet/smtpd_upstream_proxy_protocol = haproxy"
 
 # DOVECOT: Config
 # Clear the file contents
