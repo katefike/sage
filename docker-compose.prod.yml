@@ -11,9 +11,6 @@ services:
       - --entryPoints.mail-smtp.address=:25
     ports:
       - "25:25"
-    networks:
-      default:
-        ipv4_address:  172.16.42.2
   mailserver:
     # More information about the mail-server ports:
     # https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/
@@ -27,13 +24,3 @@ services:
     - ./docker/mailserver/scripts/postfix_dovecot_config_dev.sh:/postfix_dovecot_config.sh
     - ./docker/mailserver/scripts/dkim_fail2ban_prod.sh:/dkim_fail2ban.sh
     - /etc/letsencrypt/:/etc/letsencrypt/
-    networks:
-      default:
-        ipv4_address:  172.16.42.3
-
-networks:
-  default:
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.16.0.0/24"
