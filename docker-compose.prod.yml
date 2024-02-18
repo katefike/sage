@@ -2,6 +2,7 @@
 # Run this in conjunction with the base file docker-compose.yml.
 services:
   reverse-proxy:
+    container_name: reverse-proxy
     image: docker.io/traefik:latest # 2.10 / 3.0
     # CAUTION: In production you should configure the Docker API endpoint securely:
     # https://doc.traefik.io/traefik/providers/docker/#docker-api-access
