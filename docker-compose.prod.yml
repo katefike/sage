@@ -32,8 +32,8 @@ services:
         ipv4_address:  172.16.42.3
 
 networks:
-  reverse-proxy:
+  custom_network:
     ipam:
-      driver: default
+      driver: bridge
       config:
         - subnet: "172.16.42.0/24"
