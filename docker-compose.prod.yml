@@ -2,15 +2,31 @@
 # Run this in conjunction with the base file docker-compose.yml.
 services:
   reverse-proxy:
-    image: docker.io/traefik:latest
+    image: docker.io/traefik:latest # 2.10 / 3.0
+    # CAUTION: In production you should configure the Docker API endpoint securely:
+    # https://doc.traefik.io/traefik/providers/docker/#docker-api-access
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command:
+      # Docker provider config:
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
+      # DMS ports you want to proxy:
       - --entryPoints.mail-smtp.address=:25
+      - --entryPoints.mail-submission.address=:587
+      - --entryPoints.mail-submissions.address=:465
+      - --entryPoints.mail-imap.address=:143
+      - --entryPoints.mail-imaps.address=:993
+      - --entryPoints.mail-pop3.address=:110
+      - --entryPoints.mail-pop3s.address=:995
+      - --entryPoints.mail-managesieve.address=:4190
+    # Publish external access ports mapped to traefik entrypoint ports:
     ports:
-      - "25:25"
+      - "465:465"
+    # An IP is assigned here for other services (Dovecot) to trust for PROXY protocol:
+    networks:
+      default:
+        ipv4_address: 172.16.42.2
   mailserver:
     # More information about the mail-server ports:
     # https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/
@@ -24,3 +40,10 @@ services:
     - ./docker/mailserver/scripts/postfix_dovecot_config_dev.sh:/postfix_dovecot_config.sh
     - ./docker/mailserver/scripts/dkim_fail2ban_prod.sh:/dkim_fail2ban.sh
     - /etc/letsencrypt/:/etc/letsencrypt/
+
+networks:
+  default:
+    name: my-network
+    ipam:
+      config:
+        - subnet: "172.16.42.0/24"
