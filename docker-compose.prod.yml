@@ -7,7 +7,6 @@ services:
     # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
     ports:
       - '587:587'  # ESMTP (explicit TLS => STARTTLS)
-      - '993:993'  # IMAP4 (implicit TLS)
     volumes:
     - ./docker/mailserver/scripts/postfix_dovecot_config_prod.sh:/postfix_dovecot_config.sh
     - ./docker/mailserver/scripts/dkim_fail2ban_prod.sh:/dkim_fail2ban.sh
