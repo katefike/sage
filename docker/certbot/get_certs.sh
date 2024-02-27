@@ -39,20 +39,20 @@ if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
 
 else
     # If they exist, check if they're expired
-    current_date=$(date)
 
     # Get the expiration date of the certificate
     raw_cert_expiration_date=$(openssl x509 -enddate -noout -in ${certbot_cert} | cut -d= -f2)
     cert_expiration_date=$(date -d "${raw_cert_expiration_date}" +"%a %b %d %T %Z %Y")
     # Get the earliest date the certificate can be renewed (30 days before the expiration)
     cert_renewal_date=$(date -d "${cert_expiration_date} -30 days")
-    echo "Current date: ${current_date}"
     echo "Expiration date: ${cert_expiration_date}"
     echo "Renewal date: ${cert_renewal_date}"
 
     # Check if the certificate has passed the renewal date
-    # -ge is greater than or equal to
-    if [[ ${current_date} -ge ${cert_renewal_date} ]]; then
+    current_seconds=$(date +%s)
+    cert_renewal_seconds=$(date -d "${cert_renewal_date}" +%s)
+    # -ge is greater than or equal to; only works with integers
+    if [[ ${current_seconds} -ge ${cert_renewal_seconds} ]]; then
         echo "The TLS cert is expires on ${cert_expiration_date}. Renewing..."
         docker run --rm \
         --name certbot \
