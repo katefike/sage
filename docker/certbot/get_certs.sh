@@ -51,6 +51,7 @@ else
 
     # Check if the certificate has passed the renewal date
     if [[ "${current_date}" > "${cert_renewal_date}" ]]; then
+        echo "The TLS cert is expires on ${cert_expiration_date}. Renewing..."
         exit
     fi
 
