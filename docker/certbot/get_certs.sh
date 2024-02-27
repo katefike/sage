@@ -23,14 +23,14 @@ certbot_key=/etc/letsencrypt/live/prod.${DOMAIN,,}/privkey.pem
 if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
     echo "Cert file not found at: ${certbot_cert}. Private key not found at: ${certbot_key}"
 
-    # If they don't exist, create new certs (in a dry run during development)
+    # If they don't exist, create new certs
     echo "Genererating TLS certs..."
     docker run --rm \
     --name certbot \
     -p 80:80 \
     -v "/etc/letsencrypt:/etc/letsencrypt" \
     -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
-    certbot/certbot certonly --standalone --dry-run --agree-tos --non-interactive -m ${FORWARDING_EMAIL} -d prod.${DOMAIN}
+    certbot/certbot certonly --standalone --agree-tos --non-interactive -m ${FORWARDING_EMAIL} -d prod.${DOMAIN}
 
     if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
         echo "CRITICAL ERROR: Failed to generate TLS certs."
@@ -39,7 +39,6 @@ if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
 
 else
     # If they exist, check if they're expired
-    current_date=$(date)
 
     # Get the expiration date of the certificate
     raw_cert_expiration_date=$(openssl x509 -enddate -noout -in ${certbot_cert} | cut -d= -f2)
@@ -50,18 +49,20 @@ else
     echo "Renewal date: ${cert_renewal_date}"
 
     # Check if the certificate has passed the renewal date
-    if [[ "${current_date}" > "${cert_renewal_date}" ]]; then
-        exit
-    fi
-
-    echo "The TLS cert is expires on ${cert_expiration_date}. Renewing in a dry-run..."
-    docker run --rm \
+    current_seconds=$(date +%s)
+    cert_renewal_seconds=$(date -d "${cert_renewal_date}" +%s)
+    # -ge is greater than or equal to; only works with integers
+    if [[ ${current_seconds} -ge ${cert_renewal_seconds} ]]; then
+        echo "The TLS cert is expires on ${cert_expiration_date}. Renewing..."
+        docker run --rm \
         --name certbot \
         -p 80:80 \
         -v "/etc/letsencrypt:/etc/letsencrypt" \
         -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
-        certbot/certbot renew --dry-run
+        certbot/certbot renew
         # TODO: Use --deploy-hook to load certs and restart mailserver container
+    fi
+
 
     # Get the new expiration date of the certificate
     new_cert_expiration_date=$(openssl x509 -enddate -noout -in ${certbot_cert} | cut -d= -f2)
