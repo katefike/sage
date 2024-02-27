@@ -46,6 +46,7 @@ else
     cert_expiration_date=$(date -d "${raw_cert_expiration_date}" +"%a %b %d %T %Z %Y")
     # Get the earliest date the certificate can be renewed (30 days before the expiration)
     cert_renewal_date=$(date -d "${cert_expiration_date} -30 days")
+    echo "Current date: ${current_date}"
     echo "Expiration date: ${cert_expiration_date}"
     echo "Renewal date: ${cert_renewal_date}"
 
