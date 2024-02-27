@@ -57,7 +57,7 @@ else
         -p 80:80 \
         -v "/etc/letsencrypt:/etc/letsencrypt" \
         -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
-        certbot/certbot renew
+        certbot/certbot renew --dry-run
         # TODO: Use --deploy-hook to load certs and restart mailserver container
     fi
 
