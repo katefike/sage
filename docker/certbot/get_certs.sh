@@ -52,7 +52,7 @@ else
 
     # Check if the certificate has passed the renewal date
     # -ge is greater than or equal to
-    if [[ "${current_date}" -ge "${cert_renewal_date}" ]]; then
+    if [[ ${current_date} -ge ${cert_renewal_date} ]]; then
         echo "The TLS cert is expires on ${cert_expiration_date}. Renewing..."
         docker run --rm \
         --name certbot \
