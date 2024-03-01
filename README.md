@@ -118,8 +118,10 @@ docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postf
 && docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf
 ```
 
-## Send Emails Locally
-Test that the dockerized mail server works by sending an email locally (i.e. from outside of the mail server container) via telnet.
+## Send Emails Locally 
+Test that the dockerized mail server works by sending an email locally (i.e. from outside of the mail server container). Doing so is different depending on the environment. In production, send via openSSL `s_client` or an email service like Gmail. In development, send via `telnet`. TThe methods are dependent on environment because your production MX is configured with `smtpd_tls_security_level=encrypt`, which enforces TLS for incoming email (SMTPD).
+
+### Development
 ```
 telnet localhost 25
 
@@ -133,7 +135,64 @@ This is a test email.
 quit
 ```
 
-### Getting mbox files
+### Production
+```
+kfike@pop-os:~$ openssl s_client -starttls smtp -ign_eof -crlf -connect prod.example.dev:25
+CONNECTED(00000003)
+ehlo prod.example.devdepth=2 C = US, O = Internet Security Research Group, CN = ISRG Root X1
+verify return:1
+depth=1 C = US, O = Let's Encrypt, CN = R3
+[...]
+---
+SSL handshake has read 2945 bytes and written 437 bytes
+---
+New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384
+[...]
+---
+250 SMTPUTF8
+---
+Post-Handshake New Session Ticket arrived:
+SSL-Session:
+    Protocol  : TLSv1.3
+[...]
+---
+read R BLOCK
+[...]
+250-prod
+
+MAIL FROM: <support@port25.com>
+250 2.1.0 Ok
+RCPT TO: <kfike@prod.example.dev>
+250 2.1.5 Ok
+data
+354 End data with <CR><LF>.<CR><LF>
+Subject: Test email open_ssl 25
+Test email open_ssl 25             
+.
+250 2.0.0 Ok: queued as AA8B54047C
+quit
+```
+
+### Retrieving emails 
+Retrieve emails on your MX in development (locally) and production (on the DO droplet host). 
+```(.venv) kfike@prod:~/sage$ python3 scripts/get_all_emails.py 
+UID: 1
+Date: 1900-01-01 00:00:00
+To: ()
+From: 
+Text: Test email open_ssl 25
+
+UID: 2
+Date: 2024-03-01 09:45:23+07:00
+To: ('kfike@prod.example.dev',)
+From: example@gmail.com
+Text: Test email gmail 25
+
+2 emails were retrieved.
+
+```
+
+### Getting mbox files from your Gmail account
 For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. [Google has instructions on how to get the mbox files from your gmail account.](https://support.google.com/accounts/answer/3024190)
 
 If mbox files are changed, don't forget to restart the mail server docker container; the mbox file's emails are loaded into the server on docker compose up when docker/mailserver/entrypoint.sh runs.

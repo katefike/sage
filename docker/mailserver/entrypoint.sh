@@ -66,6 +66,30 @@ postconf -e "home_mailbox = Maildir/"
 # POSTFIX/DOVECOT: Config specific to the dev or prod environment
 [[ -f "/postfix_dovecot_config.sh" ]] && bash /postfix_dovecot_config.sh
 
+# DOVECOT: Configures /etc/dovecot/dovecot.conf for production
+# Clear the file contents
+:> /etc/dovecot/dovecot.conf
+cat >> /etc/dovecot/dovecot.conf <<EOF
+protocols = "imap"
+disable_plaintext_auth = no
+mail_privileged_group = mail
+mail_location = maildir:~/Maildir
+userdb {
+  driver = passwd
+}
+passdb {
+  driver = shadow
+}
+
+service auth {
+  unix_listener /var/spool/postfix/private/auth {
+    group = postfix
+    mode = 0660
+    user = postfix
+  }
+}
+EOF
+
 # Create the directory the TLS certs will be copied to (prod only)
 mkdir -p /etc/letsencrypt/live/prod.$DOMAIN
 
