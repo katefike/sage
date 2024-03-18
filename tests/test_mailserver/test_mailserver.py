@@ -1,17 +1,31 @@
 """
 Tests the mailserver container called sage-mailserver-1.
 """
+from tests import utils
 
 
-def test_sending_single_email(send_single_email):
+def test_sending_single_email():
     """
     Test if emails are successfully sent via SMTP
     """
-    assert send_single_email is True
+
+    html_body = """\
+    <html>
+    <head></head>
+    <body>
+        <p>Hi!<br>
+        This is a single test email.
+        </p>
+    </body>
+    </html>
+    """
+    success = utils.send_email(html_body)
+    assert success is True
 
 
-def test_getting_emails(get_all_emails):
+def test_getting_emails():
     """
     Test if emails can be retrieved via IMAP.
     """
-    assert len(get_all_emails) != 0
+    msgs = utils.get_inbox_emails()
+    assert len(msgs) != 0

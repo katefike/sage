@@ -1,0 +1,83 @@
+# TODO: Add task for generating github SSH key pair
+- hosts: '{{ host_name }}'
+  vars:
+    digital_ocean_token: '{{ lookup("env", "DO_API_TOKEN") }}'
+    ansible_user: '{{ lookup("env", "SERVER_USER") }}'
+    project_root_path: '{{ lookup("env", "PROJECT_ROOT_PATH") }}'
+  tasks:
+    - name: Clone the GitLab repository
+      git:
+        repo: 'https://github.com/katefike/sage.git'
+        dest: '/home/{{ ansible_user }}/sage/'
+        clone: yes
+        update: yes
+        version: 96-fix-mailserver-container-stuck-in-restart
+
+    - name: Copy .env file to {{ host_name }}
+      copy:
+        src: '{{ project_root_path }}/.env'
+        dest: ~/sage/.env
+        mode: '0600'
+
+    - name: Create a cron job for getting TLS certs
+      ansible.builtin.cron:
+        name: Get TLS certs
+        weekday: '*'
+        minute: '*/5'
+        hour: '*'
+        job: '/usr/bin/env bash -c "date; . /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh >> /var/log/certbot_cronjob.log 2>&1"' 
+        user: root
+      become: yes
+
+    - name: Add execute permissions for all on /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh
+      shell: 
+        cmd: 'chmod +x /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh'
+
+    - name: Create the Python virtual environment
+      shell: 
+        cmd: 'python3 -m venv ~/sage/.venv'
+        creates: '~/sage/.venv/bin/activate'
+
+    - name: Activate the Python virtual environment
+      shell: 
+        cmd: 'source ~/sage/.venv/bin/activate'
+        executable: /bin/bash
+
+    - name: Install python requirements
+      pip:
+        requirements: ~/sage/requirements.txt
+        virtualenv: ~/sage/.venv
+
+    - name: Start Docker
+      shell:
+        chdir: ~/sage/
+        cmd: 'docker compose -f docker-compose.yml -f {{ docker_compose_file }} up -d'
+        executable: /bin/bash
+      register: docker_result
+
+    - name: Pause while Docker starts
+      pause:
+        seconds: 60
+
+    - name: Show results of Docker startup
+      ansible.builtin.debug:
+        var: docker_result
+
+    - name: Create a cron job for parsing transactions from emails
+      ansible.builtin.cron:
+        name: Parse transactions from emails
+        weekday: '*'
+        minute: '0'
+        hour: '12'
+        job: '/usr/bin/env bash -c "cd ~/sage/ && .venv/bin/python3 -m sage >> ~/sage/cron.log 2>&1"' 
+        user: '{{ ansible_user }}'
+
+    - name: Run pytest and ensure all tests pass
+      shell: 
+        cmd: ~/sage/.venv/bin/pytest ~/sage/tests -xv
+        executable: /bin/bash   
+      register: pytest_result
+
+    - name: Show results of pytest
+      ansible.builtin.debug:
+        var: pytest_result.stdout_lines

@@ -1,0 +1,11 @@
+# This file is for production. 
+# Run this in conjunction with the base file docker-compose.yml.
+services:
+  mailserver:
+    # More information about the mail-server ports:
+    # https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/
+    # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
+    volumes:
+    - ./docker/mailserver/scripts/postfix_dovecot_config_prod.sh:/postfix_dovecot_config.sh
+    - ./docker/mailserver/scripts/dkim_fail2ban_prod.sh:/dkim_fail2ban.sh
+    - /etc/letsencrypt/:/etc/letsencrypt/

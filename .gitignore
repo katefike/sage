@@ -136,7 +136,7 @@ debug.sql
 docker/mailserver/configs/
 
 # Ansible
-ansible/droplet_hosts
+droplet_hosts
 
 # Real financial data used
 real_data/
@@ -144,3 +144,6 @@ real_data/
 # Files and folders made strictly troubleshooting
 *debug*
 *scratch*
+
+# Logs
+*.log
