@@ -24,8 +24,8 @@ rm -f /etc/cron.d/*
 if ! [ -f /var/log/mail.log ]; then
   touch /var/log/mail.log
 fi
-if ! [ -f /var/log/supervisord.log ]; then
-  touch /var/log/supervisord.log
+if ! [ -f /var/log/supervisor/supervisord.log ]; then
+  touch /var/log/supervisor/supervisord.log
 fi
 cat >> /etc/supervisor/conf.d/supervisord.conf <<EOF
 [program:postfix]
