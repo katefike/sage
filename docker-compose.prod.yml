@@ -3,7 +3,7 @@
 services:
   db:
     volumes:
-    - /mnt/sage_db:/var/lib/postgresql/data
+    - /mnt/sage_db/data:/var/lib/postgresql/data
   mailserver:
     # More information about the mail-server ports:
     # https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/
