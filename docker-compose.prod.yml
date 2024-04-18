@@ -11,5 +11,6 @@ services:
     volumes:
     - /mnt/sage_mailserver/home/:/home/
     - /mnt/sage_mailserver/var/log/:/var/log/
+    - /etc/letsencrypt/:/etc/letsencrypt/
     - ./docker/mailserver/scripts/postfix_dovecot_config_prod.sh:/postfix_dovecot_config.sh
     - ./docker/mailserver/scripts/dkim_fail2ban_prod.sh:/dkim_fail2ban.sh
