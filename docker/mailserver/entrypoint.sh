@@ -27,6 +27,7 @@ fi
 echo "CHECK"
 if ! [ -f /var/log/supervisor/supervisord.log ]; then
 echo "CREATING /var/log/supervisor/supervisord.log"
+  mkdir /var/log/supervisor/
   touch /var/log/supervisor/supervisord.log
 fi
 cat >> /etc/supervisor/conf.d/supervisord.conf <<EOF
