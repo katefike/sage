@@ -72,12 +72,13 @@
         job: '/usr/bin/env bash -c "cd ~/sage/ && .venv/bin/python3 -m sage >> ~/sage/cron.log 2>&1"' 
         user: '{{ ansible_user }}'
 
-    - name: Run pytest and ensure all tests pass
-      shell: 
-        cmd: ~/sage/.venv/bin/pytest ~/sage/tests -xv
-        executable: /bin/bash   
-      register: pytest_result
+# TODO: Issue #97 Run production-safe pytests on production server deployment
+    # - name: Run pytest and ensure all tests pass
+    #   shell: 
+    #     cmd: ~/sage/.venv/bin/pytest ~/sage/tests -xv
+    #     executable: /bin/bash   
+    #   register: pytest_result
 
-    - name: Show results of pytest
-      ansible.builtin.debug:
-        var: pytest_result.stdout_lines
+    # - name: Show results of pytest
+    #   ansible.builtin.debug:
+    #     var: pytest_result.stdout_lines
