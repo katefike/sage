@@ -11,7 +11,7 @@
         dest: '/home/{{ ansible_user }}/sage/'
         clone: yes
         update: yes
-        version: 96-fix-mailserver-container-stuck-in-restart
+        version: production
 
     - name: Copy .env file to {{ host_name }}
       copy:
