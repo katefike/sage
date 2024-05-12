@@ -24,7 +24,7 @@ rm -f /etc/cron.d/*
 if ! [ -f /var/log/mail.log ]; then
   touch /var/log/mail.log
 fi
-echo "CHECK"
+
 if ! [ -f /var/log/supervisor/supervisord.log ]; then
 echo "CREATING /var/log/supervisor/supervisord.log"
   mkdir /var/log/supervisor/
