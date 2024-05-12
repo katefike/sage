@@ -19,6 +19,9 @@ set +o allexport
 certbot_cert=/etc/letsencrypt/live/prod.${DOMAIN,,}/fullchain.pem
 certbot_key=/etc/letsencrypt/live/prod.${DOMAIN,,}/privkey.pem
 
+# Flag variable to track if certificates were created or renewed
+certs_created_or_renewed=false
+
 # Check if a cert and key exist or not
 if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
     echo "Cert file not found at: ${certbot_cert}. Private key not found at: ${certbot_key}"
@@ -37,6 +40,7 @@ if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
         exit
     fi
 
+    certs_created_or_renewed=true
 else
     # If they exist, check if they're expired
 
@@ -71,11 +75,18 @@ else
         echo "CRITICAL ERROR: Failed to renew TLS certs."
         exit
     fi
+
+    certs_created_or_renewed=true
 fi
 
-echo "Copying TLS certs to sage-mailserver Docker container..."
-docker cp -L ${certbot_cert} sage-mailserver:${certbot_cert}
-docker cp -L ${certbot_key} sage-mailserver:${certbot_key}
+if [[ $certificates_created_or_renewed = true ]]; then
+    echo "Copying TLS certs to sage-mailserver Docker container..."
+    docker cp -L ${certbot_cert} sage-mailserver:${certbot_cert}
+    docker cp -L ${certbot_key} sage-mailserver:${certbot_key}
 
-echo "Restarting the sage-mailserver Docker container..."
-docker restart sage-mailserver
+    echo "Restarting the sage-mailserver Docker container..."
+    docker restart sage-mailserver
+else
+    echo "TLS certs were not created or renewed."
+fi
+echo "Done"
