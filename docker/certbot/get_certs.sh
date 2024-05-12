@@ -79,7 +79,7 @@ else
     certs_created_or_renewed=true
 fi
 
-if [[ $certificates_created_or_renewed = true ]]; then
+if [[ $certs_created_or_renewed = true ]]; then
     echo "Copying TLS certs to sage-mailserver Docker container..."
     docker cp -L ${certbot_cert} sage-mailserver:${certbot_cert}
     docker cp -L ${certbot_key} sage-mailserver:${certbot_key}
