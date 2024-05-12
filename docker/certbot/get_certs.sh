@@ -2,6 +2,8 @@
 
 # This script is only run in production
 
+echo "$(date '+%Y-%m-%d %H:%M:%S.%3N %Z') Checking TLS certs..."
+
 # Make the project root pwd and export the current working directory
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd $__dir/../..
