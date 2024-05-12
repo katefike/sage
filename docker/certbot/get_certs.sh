@@ -65,18 +65,17 @@ else
         -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
         certbot/certbot renew
         # TODO: Use --deploy-hook to load certs and restart mailserver container
+
+        # Get the new expiration date of the certificate
+        new_cert_expiration_date=$(openssl x509 -enddate -noout -in ${certbot_cert} | cut -d= -f2)
+        # Check if the renewal was successful
+        if [[ "${new_cert_expiration_date}" == "${cert_expiration_date}" ]]; then
+            echo "CRITICAL ERROR: Failed to renew TLS certs."
+            exit
+        fi
+
+        certs_created_or_renewed=true
     fi
-
-
-    # Get the new expiration date of the certificate
-    new_cert_expiration_date=$(openssl x509 -enddate -noout -in ${certbot_cert} | cut -d= -f2)
-    # Check if the renewal was successful
-    if [[ "${new_cert_expiration_date}" == "${cert_expiration_date}" ]]; then
-        echo "CRITICAL ERROR: Failed to renew TLS certs."
-        exit
-    fi
-
-    certs_created_or_renewed=true
 fi
 
 if [[ $certs_created_or_renewed = true ]]; then
