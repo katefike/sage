@@ -1,6 +1,5 @@
 import os
 import pathlib
-import sys
 
 import imap_tools
 from dotenv import load_dotenv

@@ -2,6 +2,8 @@
 
 # This script is only run in production
 
+echo "$(date '+%Y-%m-%d %H:%M:%S.%3N %Z') Checking TLS certs..."
+
 # Make the project root pwd and export the current working directory
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd $__dir/../..
@@ -18,6 +20,9 @@ set +o allexport
 # Convert $DOMAIN string to lowercase using two commas
 certbot_cert=/etc/letsencrypt/live/prod.${DOMAIN,,}/fullchain.pem
 certbot_key=/etc/letsencrypt/live/prod.${DOMAIN,,}/privkey.pem
+
+# Flag variable to track if certificates were created or renewed
+certs_created_or_renewed=false
 
 # Check if a cert and key exist or not
 if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
@@ -37,6 +42,7 @@ if ! [[ -f ${certbot_cert} && -f ${certbot_key} ]]; then
         exit
     fi
 
+    certs_created_or_renewed=true
 else
     # If they exist, check if they're expired
 
@@ -61,21 +67,27 @@ else
         -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
         certbot/certbot renew
         # TODO: Use --deploy-hook to load certs and restart mailserver container
-    fi
 
+        # Get the new expiration date of the certificate
+        new_cert_expiration_date=$(openssl x509 -enddate -noout -in ${certbot_cert} | cut -d= -f2)
+        # Check if the renewal was successful
+        if [[ "${new_cert_expiration_date}" == "${cert_expiration_date}" ]]; then
+            echo "CRITICAL ERROR: Failed to renew TLS certs."
+            exit
+        fi
 
-    # Get the new expiration date of the certificate
-    new_cert_expiration_date=$(openssl x509 -enddate -noout -in ${certbot_cert} | cut -d= -f2)
-    # Check if the renewal was successful
-    if [[ "${new_cert_expiration_date}" == "${cert_expiration_date}" ]]; then
-        echo "CRITICAL ERROR: Failed to renew TLS certs."
-        exit
+        certs_created_or_renewed=true
     fi
 fi
 
-echo "Copying TLS certs to sage-mailserver Docker container..."
-docker cp -L ${certbot_cert} sage-mailserver:${certbot_cert}
-docker cp -L ${certbot_key} sage-mailserver:${certbot_key}
+if [[ $certs_created_or_renewed = true ]]; then
+    echo "Copying TLS certs to sage-mailserver Docker container..."
+    docker cp -L ${certbot_cert} sage-mailserver:${certbot_cert}
+    docker cp -L ${certbot_key} sage-mailserver:${certbot_key}
 
-echo "Restarting the sage-mailserver Docker container..."
-docker restart sage-mailserver
+    echo "Restarting the sage-mailserver Docker container..."
+    docker restart sage-mailserver
+else
+    echo "TLS certs were not created or renewed."
+fi
+echo "Done"

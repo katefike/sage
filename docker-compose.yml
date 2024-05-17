@@ -16,7 +16,6 @@ services:
         max-size: 10m
         max-file: "3"
     volumes: 
-      - db:/var/lib/postgresql/data
       # TODO: Separate the schema and the init data like banks
       - ./docker/postgres/init:/docker-entrypoint-initdb.d
   mailserver:
@@ -29,8 +28,3 @@ services:
     ports:
       - '25:25'    # SMTP
       - '143:143'  # IMAP4
-volumes:
-  db:
-    driver: local
-  mailserver:
-    driver: local
