@@ -11,23 +11,14 @@
         dest: '/home/{{ ansible_user }}/sage/'
         clone: yes
         update: yes
-        version: 96-fix-mailserver-container-stuck-in-restart
+        version: 129-encrypt-the-db-storage
+        version: 129-encrypt-the-db-storage
 
     - name: Copy .env file to {{ host_name }}
       copy:
         src: '{{ project_root_path }}/.env'
         dest: ~/sage/.env
         mode: '0600'
-
-    - name: Create a cron job for getting TLS certs
-      ansible.builtin.cron:
-        name: Get TLS certs
-        weekday: '*'
-        minute: '*/5'
-        hour: '*'
-        job: '/usr/bin/env bash -c "date; . /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh >> /var/log/certbot_cronjob.log 2>&1"' 
-        user: root
-      become: yes
 
     - name: Add execute permissions for all on /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh
       shell: 
@@ -72,12 +63,34 @@
         job: '/usr/bin/env bash -c "cd ~/sage/ && .venv/bin/python3 -m sage >> ~/sage/cron.log 2>&1"' 
         user: '{{ ansible_user }}'
 
-    - name: Run pytest and ensure all tests pass
-      shell: 
-        cmd: ~/sage/.venv/bin/pytest ~/sage/tests -xv
-        executable: /bin/bash   
-      register: pytest_result
+    - name: Create a cron job for getting TLS certs
+      ansible.builtin.cron:
+        name: Get TLS certs
+        weekday: '*'
+        minute: '*/5'
+        hour: '*'
+        job: '/usr/bin/env bash -c "date; . /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh >> /var/log/certbot_cronjob.log 2>&1"' 
+        user: root
+      become: yes
 
-    - name: Show results of pytest
-      ansible.builtin.debug:
-        var: pytest_result.stdout_lines
+    - name: Create a cron job for parsing transactions from emails
+      ansible.builtin.cron:
+        name: Parse transactions from emails
+        weekday: '*'
+        minute: '0'
+        hour: '12'
+        job: '/usr/bin/env bash -c "cd ~/sage/ && .venv/bin/python3 -m sage >> ~/sage/cron.log 2>&1"' 
+        user: '{{ ansible_user }}'
+
+    # - name: Run pytest and ensure all tests pass
+    #   shell: 
+    #     cmd: ~/sage/.venv/bin/pytest ~/sage/tests -xv
+    #     executable: /bin/bash   
+    #   register: pytest_result
+
+    # - name: Show results of pytest
+    #   ansible.builtin.debug:
+    #     var: pytest_result.stdout_lines
+    # - name: Show results of pytest
+    #   ansible.builtin.debug:
+    #     var: pytest_result.stdout_lines

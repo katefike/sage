@@ -1,7 +1,13 @@
 # This is for development.
 # Run this in conjunction with the base file docker-compose.yml.
 services:
+  db:
+    volumes: 
+      - db:/var/lib/postgresql/data
   mailserver:
     volumes:
-    - ./docker/mailserver/scripts/postfix_dovecot_config_dev.sh:/postfix_dovecot_config.sh
-    - ./docker/mailserver/test_data/example_data/:/home/${RECEIVING_EMAIL_USER}/test_data/example_data/
+      - ./docker/mailserver/scripts/postfix_dovecot_config_dev.sh:/postfix_dovecot_config.sh
+      - ./docker/mailserver/test_data/example_data/:/home/${RECEIVING_EMAIL_USER}/test_data/example_data/
+volumes:
+  db:
+    driver: local
