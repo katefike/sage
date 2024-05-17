@@ -58,7 +58,7 @@
               sources:
                 addresses: "{{ ssh_allowed_public_ips_list }}"
             - protocol: "tcp"
-              ports: "587"
+              ports: "25"
               sources:
                 addresses: "{{ ssh_allowed_public_ips_list }}"
           outbound_rules: 
