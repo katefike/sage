@@ -11,8 +11,7 @@
         dest: '/home/{{ ansible_user }}/sage/'
         clone: yes
         update: yes
-        version: 129-encrypt-the-db-storage
-        version: 129-encrypt-the-db-storage
+        version: production
 
     - name: Copy .env file to {{ host_name }}
       copy:
