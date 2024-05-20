@@ -1,16 +1,36 @@
 # This file is for production. 
 # Run this in conjunction with the base file docker-compose.yml.
+version: '3.8'
 services:
   db:
-    volumes:
-    - /mnt/sage_db/data:/var/lib/postgresql/data
+    image: postgres:14.4
+    container_name: sage-db
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - '5432:5432'
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    volumes: 
+      # TODO: Separate the schema and the init data like banks
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d
+      - /mnt/sage_db/data:/var/lib/postgresql/data
   mailserver:
-    # More information about the mail-server ports:
-    # https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/
-    # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
+    image: sage_mailserver
+    container_name: sage-mailserver
+    build: ./docker/mailserver/
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - '25:25'    # SMTP
+      - '143:143'  # IMAP4
     volumes:
-    - /mnt/sage_mailserver/home/:/home/
-    - /mnt/sage_mailserver/var/log/:/var/log/
-    - /etc/letsencrypt/:/etc/letsencrypt/
-    - ./docker/mailserver/scripts/postfix_dovecot_config_prod.sh:/postfix_dovecot_config.sh
-    - ./docker/mailserver/scripts/dkim_fail2ban_prod.sh:/dkim_fail2ban.sh
+      - /mnt/sage_mailserver/home/:/home/
+      - /mnt/sage_mailserver/var/log/:/var/log/
+      - /etc/letsencrypt/:/etc/letsencrypt/
+      - ./docker/mailserver/scripts/postfix_dovecot_config_prod.sh:/postfix_dovecot_config.sh
+      - ./docker/mailserver/scripts/dkim_fail2ban_prod.sh:/dkim_fail2ban.sh

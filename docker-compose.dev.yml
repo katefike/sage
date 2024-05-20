@@ -1,10 +1,31 @@
-# This is for development.
-# Run this in conjunction with the base file docker-compose.yml.
+version: '3.8'
 services:
   db:
+    image: postgres:14.4
+    container_name: sage-db
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - '5432:5432'
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
     volumes: 
+      # TODO: Separate the schema and the init data like banks
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d
       - db:/var/lib/postgresql/data
   mailserver:
+    image: sage_mailserver
+    container_name: sage-mailserver
+    build: ./docker/mailserver/
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - '25:25'    # SMTP
+      - '143:143'  # IMAP4
     volumes:
       - ./docker/mailserver/scripts/postfix_dovecot_config_dev.sh:/postfix_dovecot_config.sh
       - ./docker/mailserver/test_data/example_data/:/home/${RECEIVING_EMAIL_USER}/test_data/example_data/
