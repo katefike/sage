@@ -5,7 +5,7 @@ This app is like Mint, but better. It collects all of your personal financial da
 Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 
 ## Production Setup Instructions
-*This app is actively under development. It isn't ready to be used.*
+*This app is production ready! For questions, problems and enhancements, open a github issue.*
 
 1. Globally install the following software:
   <br> Python 3.7 or higher
