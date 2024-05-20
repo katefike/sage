@@ -41,7 +41,7 @@
     - name: Start Docker
       shell:
         chdir: ~/sage/
-        cmd: 'docker compose -f docker-compose.yml -f {{ docker_compose_file }} up -d'
+        cmd: 'docker compose -f {{ docker_compose_file }} up -d'
         executable: /bin/bash
       register: docker_result
 
