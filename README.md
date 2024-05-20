@@ -82,7 +82,7 @@ root@< public ip >: Permission denied (publickey).
 3. Run a setup script for setting up the virtual environment and Python dependencies.
   <br>`source setup/local_development/1_setup_venv.sh`
 4. Start Docker
-`docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d`
+`docker compose -f docker-compose.dev.yml up -d`
 5. Manually kick off the script to parse transactions from emails. Execute the command from the project root. For example, if the project is located in `/home/kfike/Projects/` then execute `(.venv) kfike@pop-os:~/Projects/sage$ python3 -m sage`. 
 
 
