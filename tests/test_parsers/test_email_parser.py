@@ -157,6 +157,21 @@ def get_test_data():
                 )
             ),
         ),
+        (
+            (dict(uid="22", email_id=10)),
+            (
+                dict(
+                    date="2024-05-22",
+                    type_="withdrawal",
+                    bank="Huntington",
+                    merchant="VENMO PAYMENT",
+                    payer=None,
+                    amount="50.00",
+                    account="checking",
+                    balance="866.27",
+                )
+            ),
+        ),
     ]
 
     # Retrieve the email corresponding to the UID
