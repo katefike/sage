@@ -6,4 +6,4 @@ The backfill directory is designed to load old emails into the MX (AKA backfill)
 
 # Instructions
 1. Create a `real_data/` directory in `backfill/`. `real_data/` is already in `.gitignore`, but be careful not to accidentally commit it. 
-2. Move the .mbox file to `backfill/readl_data`.
+2. Move the .mbox file to `backfill/real_data`.
