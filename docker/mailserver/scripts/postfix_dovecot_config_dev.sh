@@ -2,7 +2,7 @@
 
 # Loads test data into the mailbox
 # The if block is agnostic to the .mbox file name in order to mirror prod
-if [[ -f /home/$RECEIVING_EMAIL_USER/test_data/example_data/transaction_emails.mbox ]]; then
+if [[ -f "/home/$RECEIVING_EMAIL_USER/test_data/example_data/*.mbox" ]]; then
   # Convert mbox (mb) file to Maildir (md)
   # docs found out https://github.com/dovecot/tools/blob/main/mb2md.pl
   mb2md -s /home/$RECEIVING_EMAIL_USER/test_data/example_data/transaction_emails.mbox -d /home/$RECEIVING_EMAIL_USER/Maildir/
