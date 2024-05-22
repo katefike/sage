@@ -1,6 +1,4 @@
-# This file is for production. 
-# Run this in conjunction with the base file docker-compose.yml.
-version: '3.8'
+# Run this compose in production. 
 services:
   db:
     image: postgres:14.4
