@@ -34,7 +34,7 @@ def main():
     # Log into the receiving mailbox on the mail server and retrieve emails
     # that are from the forwarding email
     # Connect to the mailbox containing transaction alert emails
-    with imap_tools.MailBoxUnencrypted(ENV["IMAP4_FQDN"]).login(
+    with imap_tools.MailBoxUnencrypted("localhost").login(
         ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
     ) as mailbox:
 
