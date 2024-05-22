@@ -32,3 +32,4 @@ services:
       - /etc/letsencrypt/:/etc/letsencrypt/
       - ./docker/mailserver/scripts/postfix_dovecot_config_prod.sh:/postfix_dovecot_config.sh
       - ./docker/mailserver/scripts/dkim_fail2ban_prod.sh:/dkim_fail2ban.sh
+      - ./backfill/real_data:/home/${RECEIVING_EMAIL_USER}/backfill/real_data/
