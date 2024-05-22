@@ -1,4 +1,4 @@
-version: '3.8'
+# Run this compose for local development. 
 services:
   db:
     image: postgres:14.4
