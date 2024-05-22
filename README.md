@@ -192,10 +192,12 @@ Text: Test email gmail 25
 
 ```
 
-### Getting mbox files from your Gmail account
+### Getting an mbox file from your Gmail account
 For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. [Google has instructions on how to get the mbox files from your gmail account.](https://support.google.com/accounts/answer/3024190)
 
-If mbox files are changed, don't forget to restart the mail server docker container; the mbox file's emails are loaded into the server on docker compose up when docker/mailserver/entrypoint.sh runs.
+An mbox file containing your real, private data should go into `docker/mailserver/test_data/real-data/` (gitignored). Define the subdirectory and file name using the environment variable `PRE_LOAD_MBOX`. The MX only loads a single mbox file.
+
+If mbox file is changed, don't forget to rebuild the mail server docker container.
 
 # Useful Commands
 ## Server
