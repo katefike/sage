@@ -45,5 +45,5 @@ jobs:
       uses: jwalton/gh-docker-logs@v2.2.0
       if: failure()
     - name: Stop docker containers and remove volumes
-      run: docker-compose down -v
+      run: docker-compose -f docker-compose.dev.yml down -v
       if: always()
