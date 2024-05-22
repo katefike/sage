@@ -110,11 +110,6 @@ service dovecot restart
 
 # Create the Maildir mailbox
 mkdir /home/$RECEIVING_EMAIL_USER/Maildir
-if [[ -f /home/$RECEIVING_EMAIL_USER/test_data/example_data/transaction_emails.mbox ]]; then
-  # Convert mbox (mb) file to Maildir (md)
-  # docs found out https://github.com/dovecot/tools/blob/main/mb2md.pl
-  mb2md -s /home/$RECEIVING_EMAIL_USER/test_data/example_data/transaction_emails.mbox -d /home/$RECEIVING_EMAIL_USER/Maildir/
-fi
 # TODO: Create an imap group
 chmod -R 777 /home/$RECEIVING_EMAIL_USER/Maildir
 
