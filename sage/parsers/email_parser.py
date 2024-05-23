@@ -10,6 +10,12 @@ from sage.models.transaction import Transaction
 logger.add(sink="sage_main.log")
 
 
+class MatchError(Exception):
+    """Custom exception for indicating a regex match failure."""
+
+    pass
+
+
 def main(msg: MailMessage, email_id: int) -> Transaction:
     """
     Parse the transaction data from the email.
@@ -77,11 +83,14 @@ def get_date(body: str) -> str:
         r"(?<=Date: \w{3}, )(\w{3} [0-9]{1,2}, [0-9]{4})(?= at [0-9]{1,2}:[0-9]{2} \w{2} Subject: )",
         body,
     )
-    # Converts raw date to datetime object. I.e. "Oct 6, 2022"
-    datetime_raw_date = datetime.strptime(raw_date, "%b %d, %Y")
-    # Reformat the datetime object to ISO 8601 format
-    transformed_date = datetime.strftime(datetime_raw_date, "%Y-%m-%d")
-    return transformed_date
+    if raw_date is not None:
+        # Converts raw date to datetime object. I.e. "Oct 6, 2022"
+        datetime_raw_date = datetime.strptime(raw_date, "%b %d, %Y")
+        # Reformat the datetime object to ISO 8601 format
+        transformed_date = datetime.strftime(datetime_raw_date, "%Y-%m-%d")
+        return transformed_date
+    else:
+        raise MatchError("Regex failed to get the date from body: {body}")
 
 
 def get_bank(body: str) -> str:
