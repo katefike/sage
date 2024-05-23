@@ -17,4 +17,15 @@ sage/models/transaction.py
 import pytest
 
 from sage.parsers import email_parser
-from tests import utils
+
+
+def test_transaction_bank_parsing():
+    """
+    Handle error for no date can be parsed from the body.
+    """
+    body = "---------- Forwarded message ---------"
+    "D@te: Mondaaay, Jan 1"
+    with pytest.raises(
+        email_parser.MatchError, match="Regex failed to get the date from body: {body}"
+    ):
+        email_parser.get_date(body)
