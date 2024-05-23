@@ -10,7 +10,7 @@ from sage.models.transaction import Transaction
 logger.add(sink="sage_main.log")
 
 
-class MatchError(Exception):
+class RegexError(Exception):
     """Custom exception for indicating a regex match failure."""
 
     pass
@@ -90,7 +90,7 @@ def get_date(body: str) -> str:
         transformed_date = datetime.strftime(datetime_raw_date, "%Y-%m-%d")
         return transformed_date
     else:
-        raise MatchError("Regex failed to get the date from body: {body}")
+        raise RegexError("Regex failed to get the date from body: {body}")
 
 
 def get_bank(body: str) -> str:
@@ -119,7 +119,15 @@ def parse_chase(subject: MailMessage.subject) -> str:
     Your $1.00 transaction with DIGITALOCEAN.COM
     """
     merchant = regex_search(r"(?<=with )(.*)", subject)
+    if merchant is None:
+        raise RegexError(
+            "Regex failed to get the merchant from a Chase email subject: {subject}"
+        )
     raw_amount = regex_search(r"(?<=\$)(.*)(?= transaction)", subject)
+    if raw_amount is None:
+        raise RegexError(
+            "Regex failed to get the raw amount from a Chase email subject: {subject}"
+        )
     return merchant, raw_amount
 
 
