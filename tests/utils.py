@@ -47,7 +47,7 @@ def fresh_inbox(mbox_name: str):
 def get_inbox_emails(input_uid: Optional[int] = None) -> List:
     msgs = []
     try:
-        with imap_tools.MailBoxUnencrypted(ENV["IMAP4_FQDN"]).login(
+        with imap_tools.MailBoxUnencrypted("localhost").login(
             ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
         ) as mailbox:
             if input_uid:

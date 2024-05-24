@@ -34,7 +34,7 @@ def main():
     # Log into the receiving mailbox on the mail server and retrieve emails
     # that are from the forwarding email
     # Connect to the mailbox containing transaction alert emails
-    with imap_tools.MailBoxUnencrypted(ENV["IMAP4_FQDN"]).login(
+    with imap_tools.MailBoxUnencrypted("localhost").login(
         ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
     ) as mailbox:
 
@@ -73,13 +73,15 @@ def main():
 
             # Parse a email message into the transaction data
             transaction = email_parser.main(msg, email_id)
+            logger.info(f"Email UID {msg.uid} - attempting to parse...")
             if not transaction:
-                logger.info(f"UID {msg.uid} was not parsed into a transaction.")
+                logger.info(f"Email UID {msg.uid} - unparsed.")
                 msg_count["unparsed"] = msg_count.get("unparsed", 0) + 1
                 continue
 
             # Write the transaction to the database
             transactions.insert_transaction(transaction)  # pragma: no cover
+            logger.info(f"Email UID {msg.uid} - successfully parsed!")
 
             # One down!
             msg_count["processed"] = (
