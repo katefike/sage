@@ -114,3 +114,33 @@ def test_parse_huntington_transfer_deposit_regex_error():
         match="Regex failed to get the raw amount from a Huntington transfer deposit email body",
     ):
         email_parser.parse_huntington_transfer_deposit(body)
+
+
+def test_parse_huntington_withdrawal_merchant_regex_error():
+    """
+    Handle error for no merchant parsed from a Huntington
+    withdrawal transaction email body.
+    """
+    body = """
+    We've processed an ACH withdrawal for $10,000.00 at INVALID MERCHANT from yo acct nicknamed SAVE.
+    """
+    with pytest.raises(
+        email_parser.RegexError,
+        match="Regex failed to get the merchant from a Huntington withdrawal email body",
+    ):
+        email_parser.parse_huntington_withdrawal(body)
+
+
+def test_parse_huntington_withdrawal_raw_amount_regex_error():
+    """
+    Handle error for no raw amount parsed from a Huntington
+    withdrawal transaction email body.
+    """
+    body = """
+    We've processed an ACH withdrawal for foop at TREASURY DIRECT TREAS DRCT from your account nicknamed SAVE.
+    """
+    with pytest.raises(
+        email_parser.RegexError,
+        match="Regex failed to get the raw amount from a Huntington withdrawal email body",
+    ):
+        email_parser.parse_huntington_withdrawal(body)
