@@ -25,8 +25,7 @@ def test_get_date_regex_error():
     """
     Handle error for no date parsed from a body.
     """
-    body = "---------- Forwarded message ---------"
-    "D@te: Mondaaay, Jan 1"
+    body = "Invalid"
     with pytest.raises(
         email_parser.RegexError, match=f"Regex failed to get the date from body"
     ):
@@ -96,7 +95,7 @@ def test_parse_huntington_transfer_withdrawal_regex_error():
     Handle error for no raw amount parsed from a Huntington
     transfer withdrawal transaction email body.
     """
-    body = "We've been posessed by a toad!"
+    body = "Invalid"
     with pytest.raises(
         email_parser.RegexError,
         match="Regex failed to get the raw amount from a Huntington transfer withdrawal email body",
@@ -109,7 +108,7 @@ def test_parse_huntington_transfer_deposit_regex_error():
     Handle error for no raw amount parsed from a Huntington
     transfer deposit transaction email body.
     """
-    body = "We've processed nothing for you."
+    body = "Invalid"
     with pytest.raises(
         email_parser.RegexError,
         match="Regex failed to get the raw amount from a Huntington transfer deposit email body",
