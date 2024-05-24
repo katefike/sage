@@ -21,21 +21,21 @@ import pytest
 from sage.parsers import email_parser
 
 
-def test_date_regex_error():
+def test_get_date_regex_error():
     """
-    Handle error for when no date is parsed from the body.
+    Handle error for no date parsed from a body.
     """
     body = "---------- Forwarded message ---------"
     "D@te: Mondaaay, Jan 1"
     with pytest.raises(
-        email_parser.RegexError, match=f"Regex failed to get the date from body: {body}"
+        email_parser.RegexError, match=f"Regex failed to get the date from body"
     ):
         email_parser.get_date(body)
 
 
-def test_chase_merchant_regex_error():
+def test_parse_chase_merchant_regex_error():
     """
-    Handle error for no merchant can be parsed from a Chase transaction email
+    Handle error for no merchant parsed from a Chase transaction email
     subject.
     """
     subject = "Your $100 transaction con MI COMERCIANTE"
@@ -46,9 +46,9 @@ def test_chase_merchant_regex_error():
         email_parser.parse_chase(subject)
 
 
-def test_chase_raw_amount_regex_error():
+def test_parse_chase_raw_amount_regex_error():
     """
-    Handle error for no raw amount can be parsed from a Chase transaction email
+    Handle error for no raw amount parsed from a Chase transaction email
     subject.
     """
     subject = "Your $1oo.oo transacción with MI COMERCIANTE"
@@ -59,9 +59,9 @@ def test_chase_raw_amount_regex_error():
         email_parser.parse_chase(subject)
 
 
-def test_discover_merchant_regex_error():
+def test_parse_discover_merchant_regex_error():
     """
-    Handle error for no merchant can be parsed from a Discover transaction
+    Handle error for no merchant parsed from a Discover transaction
     email body.
     """
     body = """
@@ -75,9 +75,9 @@ def test_discover_merchant_regex_error():
         email_parser.parse_discover(body)
 
 
-def test_discover_raw_amount_regex_error():
+def test_parse_discover_raw_amount_regex_error():
     """
-    Handle error for no raw amount can be parsed from a Discover transaction
+    Handle error for no raw amount parsed from a Discover transaction
     email body.
     """
     body = """
@@ -89,3 +89,16 @@ def test_discover_raw_amount_regex_error():
         match="Regex failed to get the raw amount from a Discover email body",
     ):
         email_parser.parse_discover(body)
+
+
+def test_parse_huntington_transfer_withdrawal_regex_error():
+    """
+    Handle error for no raw amount parsed from a Huntington
+    transfer withdrawal transaction email body.
+    """
+    body = "We've been posessed by a toad!"
+    with pytest.raises(
+        email_parser.RegexError,
+        match="Regex failed to get the raw amount from a Huntington transfer withdrawal email body",
+    ):
+        email_parser.parse_huntington_transfer_withdrawal(body)
