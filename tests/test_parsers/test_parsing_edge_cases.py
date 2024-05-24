@@ -14,6 +14,8 @@ viewed.
 The expected expected_output is the transaction object defined in
 sage/models/transaction.py
 """
+import re
+
 import pytest
 
 from sage.parsers import email_parser
@@ -26,7 +28,7 @@ def test_date_regex_error():
     body = "---------- Forwarded message ---------"
     "D@te: Mondaaay, Jan 1"
     with pytest.raises(
-        email_parser.RegexError, match="Regex failed to get the date from body: {body}"
+        email_parser.RegexError, match=f"Regex failed to get the date from body: {body}"
     ):
         email_parser.get_date(body)
 
@@ -39,7 +41,7 @@ def test_chase_merchant_regex_error():
     subject = "Your $100 transaction con MI COMERCIANTE"
     with pytest.raises(
         email_parser.RegexError,
-        match="Regex failed to get the merchant from a Chase email subject: {subject}",
+        match="Regex failed to get the merchant from a Chase email subject",
     ):
         email_parser.parse_chase(subject)
 
@@ -52,6 +54,38 @@ def test_chase_raw_amount_regex_error():
     subject = "Your $1oo.oo transacción with MI COMERCIANTE"
     with pytest.raises(
         email_parser.RegexError,
-        match="Regex failed to get the raw amount from a Chase email subject: {subject}",
+        match="Regex failed to get the raw amount from a Chase email subject",
     ):
         email_parser.parse_chase(subject)
+
+
+def test_discover_merchant_regex_error():
+    """
+    Handle error for no merchant can be parsed from a Discover transaction
+    email body.
+    """
+    body = """
+    Comerciante: foop
+    Amount: $23.50
+    """
+    with pytest.raises(
+        email_parser.RegexError,
+        match="Regex failed to get the merchant from a Discover email body",
+    ):
+        email_parser.parse_discover(body)
+
+
+def test_discover_raw_amount_regex_error():
+    """
+    Handle error for no raw amount can be parsed from a Discover transaction
+    email body.
+    """
+    body = """
+    Merchant: SQ *EARTH BISTRO CAFE
+    Amount: bloop
+    """
+    with pytest.raises(
+        email_parser.RegexError,
+        match="Regex failed to get the raw amount from a Discover email body",
+    ):
+        email_parser.parse_discover(body)
