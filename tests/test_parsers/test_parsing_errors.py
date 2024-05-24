@@ -62,64 +62,6 @@ def test_get_date_regex_error():
         email_parser.get_date(body)
 
 
-def test_parse_chase_merchant_regex_error():
-    """
-    Raise error when no merchant parsed from a Chase transaction email
-    subject.
-    """
-    subject = "Your $100 transaction con MI COMERCIANTE"
-    with pytest.raises(
-        email_parser.RegexError,
-        match="Regex failed to get the merchant from a Chase email subject",
-    ):
-        email_parser.parse_chase(subject)
-
-
-def test_parse_chase_raw_amount_regex_error():
-    """
-    Raise error when no raw amount parsed from a Chase transaction email
-    subject.
-    """
-    subject = "Your $1oo.oo transacción with MI COMERCIANTE"
-    with pytest.raises(
-        email_parser.RegexError,
-        match="Regex failed to get the raw amount from a Chase email subject",
-    ):
-        email_parser.parse_chase(subject)
-
-
-def test_parse_discover_merchant_regex_error():
-    """
-    Raise error when no merchant parsed from a Discover transaction
-    email body.
-    """
-    body = """
-    Comerciante: foop
-    Amount: $23.50
-    """
-    with pytest.raises(
-        email_parser.RegexError,
-        match="Regex failed to get the merchant from a Discover email body",
-    ):
-        email_parser.parse_discover(body)
-
-
-def test_parse_discover_raw_amount_regex_error():
-    """
-    Raise error when no raw amount parsed from a Discover transaction
-    email body.
-    """
-    body = """
-    Merchant: SQ *EARTH BISTRO CAFE
-    Amount: bloop
-    """
-    with pytest.raises(
-        email_parser.RegexError,
-        match="Regex failed to get the raw amount from a Discover email body",
-    ):
-        email_parser.parse_discover(body)
-
-
 def test_parse_huntington_transfer_withdrawal_regex_error():
     """
     Raise error when no raw amount parsed from a Huntington

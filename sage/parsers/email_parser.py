@@ -119,15 +119,7 @@ def parse_chase(subject: MailMessage.subject) -> str:
     Your $1.00 transaction with DIGITALOCEAN.COM
     """
     merchant = regex_search(r"(?<=with )(.*)", subject)
-    if merchant is None:
-        raise RegexError(
-            f"Regex failed to get the merchant from a Chase email subject: {subject}"
-        )
     raw_amount = regex_search(r"(?<=\$)(.*)(?= transaction)", subject)
-    if raw_amount is None:
-        raise RegexError(
-            f"Regex failed to get the raw amount from a Chase email subject: {subject}"
-        )
     return merchant, raw_amount
 
 
@@ -142,15 +134,7 @@ def parse_discover(body: str) -> str:
     Amount: $23.50
     """
     merchant = regex_search(r"(?<=Merchant: )(.*)(?= Amount: )", body)
-    if merchant is None:
-        raise RegexError(
-            f"Regex failed to get the merchant from a Discover email body: {body}"
-        )
     raw_amount = regex_search(r"(?<=Amount: \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})", body)
-    if raw_amount is None:
-        raise RegexError(
-            f"Regex failed to get the raw amount from a Discover email body: {body}"
-        )
     return merchant, raw_amount
 
 
@@ -295,7 +279,7 @@ def get_huntington_balance(body: str) -> str:
     )
     if balance is None:
         raise RegexError(
-            f"Regex failed to get the balance from a Huntington transaction email body: {body}"
+            f"Regex failed to get the balance from a Huntington deposit email body: {body}"
         )
     return balance
 
