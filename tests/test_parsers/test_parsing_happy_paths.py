@@ -161,7 +161,7 @@ def get_test_data():
             (dict(uid="25", email_id=10)),
             (
                 dict(
-                    date="2024-05-22",
+                    date="2024-05-13",
                     type_="withdrawal",
                     bank="Huntington",
                     merchant="VENMO PAYMENT",
