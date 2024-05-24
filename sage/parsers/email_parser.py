@@ -184,6 +184,10 @@ def parse_huntington_transfer_withdrawal(body: str) -> str:
         r"(?:We've processed a transfer withdrawal for \$)(.*)(?= from your account nicknamed)",
         body,
     )
+    if raw_amount is None:
+        raise RegexError(
+            f"Regex failed to get the raw amount from a Huntington transfer withdrawal email body: {body}"
+        )
     return raw_amount
 
 
