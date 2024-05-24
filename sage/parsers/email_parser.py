@@ -279,7 +279,7 @@ def get_huntington_balance(body: str) -> str:
     )
     if balance is None:
         raise RegexError(
-            f"Regex failed to get the balance from a Huntington deposit email body: {body}"
+            f"Regex failed to get the balance from a Huntington transaction email body: {body}"
         )
     return balance
 
