@@ -102,3 +102,16 @@ def test_parse_huntington_transfer_withdrawal_regex_error():
         match="Regex failed to get the raw amount from a Huntington transfer withdrawal email body",
     ):
         email_parser.parse_huntington_transfer_withdrawal(body)
+
+
+def test_parse_huntington_transfer_deposit_regex_error():
+    """
+    Handle error for no raw amount parsed from a Huntington
+    transfer deposit transaction email body.
+    """
+    body = "We've processed nothing for you."
+    with pytest.raises(
+        email_parser.RegexError,
+        match="Regex failed to get the raw amount from a Huntington transfer deposit email body",
+    ):
+        email_parser.parse_huntington_transfer_deposit(body)
