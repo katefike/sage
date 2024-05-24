@@ -79,13 +79,25 @@ def get_date(body: str) -> str:
         Subject: Withdrawal or Purchase
         To: <example.com>
     """
-    raw_date = regex_search(
+    raw_date_month_day_year = regex_search(
         r"(?<=Date: \w{3}, )(\w{3} [0-9]{1,2}, [0-9]{4})(?= at [0-9]{1,2}:[0-9]{2} \w{2} Subject: )",
         body,
     )
-    if raw_date is not None:
+    if raw_date_month_day_year:
         # Converts raw date to datetime object. I.e. "Oct 6, 2022"
-        datetime_raw_date = datetime.strptime(raw_date, "%b %d, %Y")
+        datetime_raw_date = datetime.strptime(raw_date_month_day_year, "%b %d, %Y")
+        # Reformat the datetime object to ISO 8601 format
+        transformed_date = datetime.strftime(datetime_raw_date, "%Y-%m-%d")
+        return transformed_date
+
+    # The date may have inversed dd mm, i.e. 6 Oct 2022
+    # This is the date format for forwards by the third party Cloud HQ
+    raw_date_day_month_year = regex_search(
+        r"(?<=Date: \w{3}, )([0-9]{1,2} \w{3} [0-9]{4})(?= [0-9]{2}:[0-9]{2}:[0-9]{2} -[0-9]{4} Subject:)",
+        body,
+    )
+    if raw_date_day_month_year:
+        datetime_raw_date = datetime.strptime(raw_date_day_month_year, "%d %b %Y")
         # Reformat the datetime object to ISO 8601 format
         transformed_date = datetime.strftime(datetime_raw_date, "%Y-%m-%d")
         return transformed_date
