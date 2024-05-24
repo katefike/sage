@@ -44,7 +44,7 @@ def main(msg: MailMessage, email_id: int) -> Transaction:
         transaction.type_ = "withdrawal"
         transaction.merchant, raw_amount = parse_discover(body)
     if transaction.bank == "Huntington":
-        transaction.type_ = get_huntington_transaction_type(body)
+        transaction.type_ = get_huntington_transaction_type(body, transaction)
         # Parse the Huntington transaction based on the transaction type
         if transaction.type_ == "transfer withdrawal":
             raw_amount = parse_huntington_transfer_withdrawal(body)
@@ -154,7 +154,7 @@ def parse_discover(body: str) -> str:
     return merchant, raw_amount
 
 
-def get_huntington_transaction_type(body: str) -> str:
+def get_huntington_transaction_type(body: str, transaction: Transaction) -> str:
     """
     Identify the Huntington transaction type
     """
@@ -166,6 +166,10 @@ def get_huntington_transaction_type(body: str) -> str:
         type_ = "withdrawal"
     elif regex_search("(deposit)", body):
         type_ = "deposit"
+    else:
+        logger.info(
+            f"Email UID {transaction.email_id} - No transaction type identified"
+        )
     return type_
 
 
