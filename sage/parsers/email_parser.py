@@ -167,7 +167,7 @@ def get_huntington_transaction_type(body: str) -> str:
     elif regex_search("(deposit)", body):
         type_ = "deposit"
     else:
-        logger.info(f"No Huntington transaction type identified")
+        logger.info("No Huntington transaction type identified")
     return type_
 
 
@@ -242,14 +242,22 @@ def parse_huntington_deposit(body: str) -> str:
     We've processed an ACH deposit for $59.81
     from CHASE CREDIT CRD RWRD RDM to your account nicknamed CHECK.
     """
-    payer = regex_search(
-        r"(?: for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} from )(.*)(?= to your account nicknamed)",
-        body,
-    )
     raw_amount = regex_search(
         r"(?<= for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= from)",
         body,
     )
+    if raw_amount is None:
+        raise RegexError(
+            f"Regex failed to get the raw amount from a Huntington deposit email body: {body}"
+        )
+    payer = regex_search(
+        r"(?: for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} from )(.*)(?= to your account nicknamed)",
+        body,
+    )
+    if payer is None:
+        raise RegexError(
+            f"Regex failed to get the payer from a Huntington deposit email body: {body}"
+        )
     return payer, raw_amount
 
 
@@ -266,8 +274,12 @@ def get_huntington_account(body: str) -> str:
     )
     if account == "CHECK":
         account = "checking"
-    if account == "SAVE":
+    elif account == "SAVE":
         account = "savings"
+    else:
+        raise RegexError(
+            f"Regex failed to get the account from a Huntington transaction email body: {body}"
+        )
     return account
 
 
