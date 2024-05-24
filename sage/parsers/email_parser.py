@@ -216,14 +216,22 @@ def parse_huntington_withdrawal(body: str) -> str:
     I.e.
     We've processed an ACH withdrawal for $10,000.00 at TREASURY DIRECT TREAS DRCT from your account nicknamed SAVE.
     """
-    merchant = regex_search(
-        r"(?:for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} at )(.*)(?= from your account nicknamed)",
-        body,
-    )
     raw_amount = regex_search(
         r"(?<=for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= at)",
         body,
     )
+    if raw_amount is None:
+        raise RegexError(
+            f"Regex failed to get the raw amount from a Huntington withdrawal email body: {body}"
+        )
+    merchant = regex_search(
+        r"(?:for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} at )(.*)(?= from your account nicknamed)",
+        body,
+    )
+    if merchant is None:
+        raise RegexError(
+            f"Regex failed to get the merchant from a Huntington withdrawal email body: {body}"
+        )
     return merchant, raw_amount
 
 
