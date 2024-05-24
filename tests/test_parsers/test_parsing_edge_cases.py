@@ -202,3 +202,16 @@ def test_get_huntington_account_regex_error():
         match="Regex failed to get the account from a Huntington transaction email body",
     ):
         email_parser.get_huntington_account(body)
+
+
+def test_get_huntington_balance_regex_error():
+    """
+    Raise error when no balance parsed from a Huntington
+    transaction email body.
+    """
+    body = "Invalid"
+    with pytest.raises(
+        email_parser.RegexError,
+        match="Regex failed to get the balance from a Huntington transaction email body",
+    ):
+        email_parser.get_huntington_balance(body)
