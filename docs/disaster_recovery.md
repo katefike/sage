@@ -11,17 +11,17 @@ Use this disaster recovery guide to create a brand new Sage deployment without l
 
 ## Steps
 1. In Digital Ocean's console, turn off the droplet.
-1. In Digital Ocean's console, detach the two volumes from the original droplet.
-1. In Digital Ocean's console, detach the reserved IP from the original droplet.
-1. In Digital Ocean's console, take a final snapshot of the original droplet.
-1. In Digital Ocean's console, delete the droplet and the firewall.
-1. Locally, create a new droplet. Run `bash setup/2_create_prod_server.sh`
-1. You now have two reserved IPs in Digital Ocean. In Digital Ocean's console, unassign and delete the new one.
-1. In Digital Ocean's console, assign the existing reserved IP to the new droplet.
-1. In Digital Ocean's console, attach the volumes to the new droplet. IMPORTANT NOTE: when a volume is attached to a droplet, Digital Ocean provides steps for mounting the volumes. These steps can't be done until `setup/setup/3_configure_prod_server.sh` has been run.
-1. Verify that the local `.env` has the correct values for prod
-1. Run `bash setup/3_configure_prod_server.sh`
-1. Circle back to the instructions Digital Ocean provided for mounting each volume. SSH to the Droplet and execute the commands Digital Ocean provided. The commands should look similar to this:
+2. In Digital Ocean's console, detach the two volumes from the original droplet.
+3. In Digital Ocean's console, detach the reserved IP from the original droplet.
+4. In Digital Ocean's console, take a final snapshot of the original droplet.
+5. In Digital Ocean's console, delete the droplet and the firewall.
+6. Locally, create a new droplet. Run `bash setup/2_create_prod_server.sh`
+7. You now have two reserved IPs in Digital Ocean. In Digital Ocean's console, unassign and delete the new one.
+8. In Digital Ocean's console, assign the existing reserved IP to the new droplet.
+9. In Digital Ocean's console, attach the volumes to the new droplet. IMPORTANT NOTE: when a volume is attached to a droplet, Digital Ocean provides steps for mounting the volumes. These steps can't be done until `setup/setup/3_configure_prod_server.sh` has been run.
+10. Verify that the local `.env` has the correct values for prod
+11. Run `bash setup/3_configure_prod_server.sh`
+12. Circle back to the instructions Digital Ocean provided for mounting each volume. SSH to the Droplet and execute the commands Digital Ocean provided. The commands should look similar to this:
 Create a mount point for your volume:
 ```
 mkdir -p /mnt/sage_db
@@ -37,9 +37,9 @@ Change fstab so the volume will be mounted after a reboot
 echo '/dev/disk/by-id/scsi-0DO_Volume_sage-db /mnt/sage_db ext4 defaults,nofail,discard 0 0' | sudo tee -a /etc/fstab
 echo '/dev/disk/by-id/scsi-0DO_Volume_sage-mailserver /mnt/sage_mailserver ext4 defaults,nofail,discard 0 0' | sudo tee -a /etc/fstab
 ```
-1. Re-run `bash setup/3_configure_prod_server.sh` so that Sage is started using the mounts.
-1. Send a test email. Verify it was received and all your existing emails are still there by SSH'ing to the Droplet and running the script to get all emails: 
+13. Re-run `bash setup/3_configure_prod_server.sh` so that Sage is started using the mounts.
+14. Send a test email. Verify it was received and all your existing emails are still there by SSH'ing to the Droplet and running the script to get all emails: 
 ```
 (.venv) kfike@prod:~/sage$ python3 scripts/get_all_emails.py
 ```
-1. While SSH'd to the droplet, verify that all your existing transactions are there. Connect to the DB by running `docker exec -it  sage-db psql -U <POSTGRES_USER> sage` and executing the query `SELECT * FROM transactions;` `POSTGRES_USER` is an environment variable specified in your `.env`.
+15. While SSH'd to the droplet, verify that all your existing transactions are there. Connect to the DB by running `docker exec -it  sage-db psql -U <POSTGRES_USER> sage` and executing the query `SELECT * FROM transactions;` `POSTGRES_USER` is an environment variable specified in your `.env`.
