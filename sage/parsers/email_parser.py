@@ -255,7 +255,7 @@ def parse_huntington_deposit(body: str) -> str:
             body,
         )
         payer = "cash"
-    else:
+    if raw_amount is None:
         raise RegexError(
             f"Regex failed to get the raw amount from a Huntington deposit email body: {body}"
         )
