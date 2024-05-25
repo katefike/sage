@@ -237,19 +237,28 @@ def parse_huntington_deposit(body: str) -> str:
     I.e.
     We've processed an ACH deposit for $59.81
     from CHASE CREDIT CRD RWRD RDM to your account nicknamed CHECK.
+
+    If there isn't a merchant, mark the payer as cash.
+    I.e.
     """
     raw_amount = regex_search(
         r"(?<= for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= from)",
         body,
     )
-    if raw_amount is None:
-        raise RegexError(
-            f"Regex failed to get the raw amount from a Huntington deposit email body: {body}"
-        )
     payer = regex_search(
         r"(?: for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} from )(.*)(?= to your account nicknamed)",
         body,
     )
+    if raw_amount is None:
+        raw_amount = regex_search(
+            r"(?<= for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= to your account nicknamed)",
+            body,
+        )
+        payer = "cash"
+    else:
+        raise RegexError(
+            f"Regex failed to get the raw amount from a Huntington deposit email body: {body}"
+        )
     if payer is None:
         raise RegexError(
             f"Regex failed to get the payer from a Huntington deposit email body: {body}"
