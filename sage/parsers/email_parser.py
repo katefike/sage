@@ -80,7 +80,7 @@ def get_date(body: str) -> str:
         To: <example.com>
     """
     raw_date_month_day_year = regex_search(
-        r"(?<=Date: \w{3}, )(\w{3} [0-9]{1,2}, [0-9]{4})(?= at [0-9]{1,2}:[0-9]{2} \w{2} Subject: )",
+        r"(?<=Date: \w{3}, )(\w{3} [0-9]{1,2}, [0-9]{4})(?= at [0-9]{1,2}:[0-9]{2}?.\w{2} Subject: )",
         body,
     )
     if raw_date_month_day_year:
