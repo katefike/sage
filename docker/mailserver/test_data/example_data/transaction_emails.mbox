@@ -10303,3 +10303,118 @@ b922>
 This email was generated automatically. Please do not reply to this message
 
 --00000000000010b66806191115a5--
+
+From 1799787477619189558@xxx Wed May 22 20:51:32 +0000 2024
+X-GM-THRID: 1799787477619189558
+X-Gmail-Labels: Inbox,Category Personal,Unread,backfill/202405
+Delivered-To: shelovescacti@gmail.com
+Received: by 2002:a05:7010:734c:b0:3cc:117f:c77b with SMTP id i12csp544659mdc;
+        Wed, 22 May 2024 13:51:32 -0700 (PDT)
+X-Received: by 2002:a05:6102:32c6:b0:47b:d717:b689 with SMTP id ada2fe7eead31-48900936c50mr3715068137.4.1716411092489;
+        Wed, 22 May 2024 13:51:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1716411092; cv=none;
+        d=google.com; s=arc-20160816;
+        b=GvvOgTvJ6lf2KaFebCjWYbK8y6t4SFYhCSVn02eiCt8ZAz58qaEAysTET7hOQlXtRL
+         JJdjXS3SpgBKmnKoWwgSkINUogN9XFJ+B0MvVwqsE7tjYMv0PEQqI2ifCDvCJenUwT+f
+         5cOY2nXHh3QVp8agdyYQUokkjv4GOV7RFUXAuKTYxRYKcvf5ROXSfL9S/wb3Hpm+Bg6v
+         cThrMU3sdZDI2hJl9mmsEe2JCDt4jn2XTMYz8RwWH7NFY7sxYQMzz9tp7KXl52sl+Egn
+         2MWnx4DciB2VNVoHpxnpjXU9C8cmdSjycoHMGFnuWUAFJwm4GjAFzhhtw3lViMf09i8d
+         fvhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:subject:message-id:date:mime-version:from:references
+         :dkim-signature;
+        bh=HbYFKNDGAKUl0Jum70Q/61GfPMBlRCtN5UeZdT/2lMI=;
+        fh=uDCTqrjUuSN01MbuUJAXsMebbw+mvpbkL6i/yQe0nOU=;
+        b=txALVQRZK2KzBW+1Z3iOXbY+vbAZbAtLBBlW4Lhyo0LbUAPhcdO8D7ZtPwdO7TWEoV
+         av3dsO8vU0ZWxO2c8CiYSzTn+wk7oKp95DmrvltfElw1Oppaqn/caFI/pdNLfsVWhG+b
+         G5R+20I64rRrR13MMIJ0EE+Mf0LOn71/XLi54ksPqIyiljg2+Z3mVAMCA3eWfjWyySSr
+         5tw7G6dDaJJupjF0HzFxBpcr3o2cA6MqgK8DHjHsJXzudL4UQkt7f8PHaGooZp/xMkrv
+         IKyTiGIykOcV0EPkmGu1+LYpGzrURa8eX1RgAxHOAro3lrQPTd3etIgEpWa6mYk5O6s8
+         uLAw==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=EbAKIDGo;
+       spf=pass (google.com: domain of dev.kfike@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=dev.kfike@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Return-Path: <dev.kfike@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id a1e0cc1a2514c-80321302362sor355509241.2.2024.05.22.13.51.32
+        for <shelovescacti@gmail.com>
+        (Google Transport Security);
+        Wed, 22 May 2024 13:51:32 -0700 (PDT)
+Received-SPF: pass (google.com: domain of dev.kfike@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=EbAKIDGo;
+       spf=pass (google.com: domain of dev.kfike@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=dev.kfike@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716411092; x=1717015892; dara=google.com;
+        h=to:subject:message-id:date:mime-version:from:references:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HbYFKNDGAKUl0Jum70Q/61GfPMBlRCtN5UeZdT/2lMI=;
+        b=EbAKIDGo7ThcED7gZ8nG/wP/thlFvzfwMmGfiYkZY7ActjaUWJRh6kongRCYuQdhQQ
+         ApyMG1br3p6lpm6Qlr4DrPoxInt2uKOjoXrt8uyoB4eRa+ns8TA/xBqXiwaqYGyjlvCL
+         aLFEVjMCHPFdWdGzIZO7OU0x70m5iZ4c2SG6vCFXOkUPhNWTMDbuzfwQd2I+BqvCbSyk
+         mdiZmQSRvmCb6gX6Cd3yLs2dOYIYfYzBDTXP7137lFjmlDTI9IbEDm4yPtLjPaInFpGe
+         paWlyhj++zoBTQj47ejsEaCuiq6Lm8DjRzYUAbfpzZk0mWVvPhlEeTmbC9+ObvpCm0xJ
+         gXHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716411092; x=1717015892;
+        h=to:subject:message-id:date:mime-version:from:references
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HbYFKNDGAKUl0Jum70Q/61GfPMBlRCtN5UeZdT/2lMI=;
+        b=rgfHv5KRyb5qKmeW98INcmQ2aQnWFA4+JzCY/KpCBtx1ghOI0ZDqZusY0fJ94l7sy7
+         Tusy9kipJj/ooloCqtde1JpjfujuPaTou5LSHsug26a3TO5zTTa0Gr8Y9d4ZofuTLDq8
+         3e75nfl+TASactw3TKVMZVVWc93szVFWAN7Zvn63qZ39nAhX6rzmt8myye0XKJKdJtfX
+         9zG8vBEVv9Uu4ESGYWiahSSpfhdKMetfgDGSxRyqWDX5RdUIUjfFhwX6vfAPuO/qxuK4
+         YpM3eF70ZmBAPnDLuYb3UnaHBz95vim/91H3t88BJrC9ptEViZC4TD3xb6L52jTBOd0f
+         mxWg==
+X-Gm-Message-State: AOJu0Yz2X85ZqOd44Yg4tWPCsz5DtaBYaxJiaqHwqeK6TpowhtgqJO5p
+	HVjudfz9EYPWi8GXUfaxsb8Bbl35qVoq1klYZ1XYRdvHkb2FtilQdQ8KG0Zl55aMnbdU+xNP6MR
+	aJZPpwUr0O+KL4JxnjlJh84DNjUTVNQ==
+X-Google-Smtp-Source: AGHT+IHW772sRz9RrSuhjdr8kyKhfmC0UZLJDCkUJx61GgM/Gx8fxGwDJcu4g1Bq4Kwu4ROPKG6IveG39dj79eHjdh0=
+X-Received: by 2002:a05:6102:a50:b0:47e:ec9f:62f7 with SMTP id
+ ada2fe7eead31-4890224dd96mr3523274137.9.1716411091755; Wed, 22 May 2024
+ 13:51:31 -0700 (PDT)
+Received: from 125135905029 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 22 May 2024 13:51:31 -0700
+References: <18f8db0d44ba320bdev.kfike@gmail.com>
+From: dev.kfike@gmail.com
+MIME-Version: 1.0
+X-cloudHQ-Custom-Header-description: created via cloudHQ
+Date: Wed, 22 May 2024 13:51:31 -0700
+Message-ID: <CAHpjF2ohjNVucjaDdiDtEAC0zdysF6va2=fbmkz=LUqppJCgpw@mail.gmail.com>
+Subject: Fwd: Your $15.00 transaction with CONVENTION CTR GARAG
+To: shelovescacti@gmail.com
+Content-Type: multipart/alternative; boundary="00000000000069a98a06191119b9"
+
+--00000000000069a98a06191119b9
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Forwarded using cloudHQ's free email forwarding tool: Multi Email Forward
+For Gmail <https://www.multi-email-forward.com/>
+You might be also interested to try cloudHQ's Gmail Youtube
+<https://www.gmail-youtube.io>: *Embed YouTube=E2=84=A2 videos in Gmail*
+
+---------- Forwarded message ---------
+From: Chase <no.reply.alerts@chase.com>
+Date: Sat, 18 May 2024 21:52:06 +0000 (UTC)
+Subject: Your $15.00 transaction with CONVENTION CTR GARAG
+To: dev.kfike@gmail.com
+Date Sent: Sat, 18 May 2024 21:52:06 +0000 (UTC)
+Date Received: Sat, 18 May 2024 14:52:07 -0700 (PDT)
+
+This transaction is above the level you set, see more here.
+
+[image: Chase Logo]
+Transaction alert
+
+You made a $15.00 transaction
+Account Prime Visa (...6104)
+Date May 18, 2024 at 5:52 PM ET
+Merchant CONVENTION CTR GARAG
+Amount $15.00
+You are receiving this alert because your transaction was more than the
+$0.01 level you set. 
+--00000000000069a98a06191119b9--
