@@ -12,9 +12,33 @@ sage/models/transaction.py
 """
 import pytest
 
+from sage.__main__ import main
 from sage.db import transactions
 from sage.models.transaction import Transaction
 from tests import utils
+
+
+def test_email_insert(conn):
+    """
+    Ensure that all emails in the inbox are inserted into the transaction table.
+    All of the emails are really transactions.
+    """
+    utils.fresh_inbox("transaction_emails.mbox")
+    msg_count = main()
+    # Query to get the count of the emails table.
+    with conn, conn.cursor() as cursor:
+        cursor.execute(
+            """
+            SELECT
+                COUNT(*)
+            FROM
+                transactions
+            """
+        )
+        for result in cursor.fetchall():
+            inserted_count = result[0]
+    assert msg_count.get("retrieved") == inserted_count
+
 
 data = [
     (
