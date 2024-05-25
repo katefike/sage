@@ -2,11 +2,12 @@
 Insert a transaction into the transactions table.
 """
 
+from typing import List
+
 from loguru import logger
 
 from sage.db import banks, entities, execute_statements
 from sage.models.transaction import Transaction
-from sage.models.email import Email
 
 logger.add(sink="sage_main.log")
 
@@ -46,3 +47,18 @@ def insert_transaction(transaction: Transaction) -> bool:
         """
     row_count = execute_statements.insert(stmt, transaction_data)
     return row_count
+
+
+def get_transactions_by_daterange(start_date: str, stop_date: str) -> List[tuple]:
+    select_criteria = (start_date, stop_date)
+    stmt = """
+    SELECT
+        *
+    FROM
+        transactions
+    WHERE
+        date >= %s
+        AND date <= %s;
+    """
+    records = execute_statements.select(stmt, select_criteria)
+    return records
