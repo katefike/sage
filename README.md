@@ -32,7 +32,7 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 5. **WARNING: CREATING DIGITAL OCEAN VOLUMES ALSO COST MONEY, BUT THEY'RE HELPFUL FOR DISASTER RECOVERY. AT THIS TIME, THE VOLUMES ARE NOT OPTIONAL FOR THE DEPLOYMENT.** In the Digital Ocean console, go to the "Volumes Block Storage" tab and create two volumes: `sage-db` and `sage-mailserver`.
 6. In the Digital Ocean console, attach each volume to the Droplet. SSH to the Droplet and run the commands Digital Ocean provides to mount each volume.
 7. Re-run `bash setup/3_configure_prod_server.sh` to deploy Sage using the mounted volumes. 
-<br> TODO: Create and mount Digital Ocean volumes during automated production deployment [https://github.com/katefike/sage/issues/145]
+<br> TODO: Create and mount Digital Ocean volumes during automated production deployment https://github.com/katefike/sage/issues/145
 
 ## Additional Documentation
 All additional documentation can be found in the `docs/` directory.

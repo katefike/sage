@@ -37,7 +37,7 @@ Change fstab so the volume will be mounted after a reboot
 echo '/dev/disk/by-id/scsi-0DO_Volume_sage-db /mnt/sage_db ext4 defaults,nofail,discard 0 0' | sudo tee -a /etc/fstab
 echo '/dev/disk/by-id/scsi-0DO_Volume_sage-mailserver /mnt/sage_mailserver ext4 defaults,nofail,discard 0 0' | sudo tee -a /etc/fstab
 ```
-TODO: Create and mount Digital Ocean volumes during automated production deployment [https://github.com/katefike/sage/issues/145]
+TODO: Create and mount Digital Ocean volumes during automated production deployment https://github.com/katefike/sage/issues/145
 13. Re-run `bash setup/3_configure_prod_server.sh` so that Sage is started using the mounts.
 14. Send a test email. Verify it was received and all your existing emails are still there by SSH'ing to the Droplet and running the script to get all emails: 
 ```
