@@ -172,6 +172,21 @@ def get_test_data():
                 )
             ),
         ),
+        (
+            (dict(uid="26", email_id=11)),
+            (
+                dict(
+                    date="2024-05-18",
+                    type_="withdrawal",
+                    bank="Chase",
+                    merchant="CONVENTION CTR GARAG",
+                    payer=None,
+                    amount="15.00",
+                    account=None,
+                    balance=None,
+                )
+            ),
+        ),
     ]
 
     # Retrieve the email corresponding to the UID

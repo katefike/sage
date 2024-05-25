@@ -93,7 +93,7 @@ def get_date(body: str) -> str:
     # The date may have inversed dd mm, i.e. 6 Oct 2022
     # This is the date format for forwards by the third party Cloud HQ
     raw_date_day_month_year = regex_search(
-        r"(?<=Date: \w{3}, )([0-9]{1,2} \w{3} [0-9]{4})(?= [0-9]{2}:[0-9]{2}:[0-9]{2} -[0-9]{4} Subject:)",
+        r"(?<=Date: \w{3}, )([0-9]{1,2} \w{3} [0-9]{4})(?= [0-9]{2}:[0-9]{2}:[0-9]{2} )",
         body,
     )
     if raw_date_day_month_year:
