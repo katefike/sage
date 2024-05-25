@@ -6,14 +6,14 @@ from loguru import logger
 
 from sage.db import banks, entities, execute_statements
 from sage.models.transaction import Transaction
-from sage.models.email import Email
 
 logger.add(sink="sage_main.log")
 
 
 def insert_transaction(transaction: Transaction) -> bool:
     bank_id = banks.get_id(transaction.bank, transaction.account)
-    # Transfers don't have entities
+    # Transfers don't have entities; an entity is a merchant or payer
+    # Money was moved/transfered, not debited or credited
     if "transfer" in transaction.type_:
         transaction_data = (
             transaction.email_id,
