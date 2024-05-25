@@ -188,12 +188,27 @@ def get_test_data():
             ),
         ),
         (
-            (dict(uid="27", email_id=12)),
+            (dict(uid="27", email_id=11)),
+            (
+                dict(
+                    date="2024-05-21",
+                    type_="withdrawal",
+                    bank="Chase",
+                    merchant="CONVENTION CTR GARAG",
+                    payer=None,
+                    amount="15.00",
+                    account=None,
+                    balance=None,
+                )
+            ),
+        ),
+        (
+            (dict(uid="28", email_id=12)),
             (
                 dict(
                     date="2024-04-16",
                     type_="deposit",
-                    bank="Hintington",
+                    bank="Huntington",
                     merchant=None,
                     payer="cash",
                     amount="1500.00",
