@@ -47,9 +47,15 @@ def main(file: str, date: str):
     # transaction dates use ISO 8601 format; 1999-01-08.
     logger.info(f"{start_date}")
     logger.info(f"{stop_date}")
-    records = transactions.get_transactions_by_daterange(start_date, stop_date)
+    records, columns = transactions.get_transactions_by_daterange(start_date, stop_date)
+
+    total_records = 0
     for record in records:
-        logger.info(f"{records}")
+        total_records = total_records + 1
+        logger.info(f"{columns}")
+        logger.info(f"{record}")
+        
+    logger.info(f"Total DB records: {total_records}")
 
 
 def create_dates(date):
