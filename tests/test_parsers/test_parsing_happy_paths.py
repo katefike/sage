@@ -234,16 +234,15 @@ def get_test_data():
         ),
         (
             (dict(uid="29", email_id=13)),
-            (
-                dict(
-                    date="2024-04-16",
-                    type_="withdrawal",
-                    bank="Huntington",
-                    merchant="R.I.T.A. RITA EFILE",
-                    payer=None,
-                    amount="100.00",
-                    account="checking",
-                    balance="-10.92"
+            dict(
+                date="2024-04-16",
+                type_="withdrawal",
+                bank="Huntington",
+                merchant="R.I.T.A. RITA EFILE",
+                payer=None,
+                amount="100.00",
+                account="checking",
+                balance="-10.92",
             ),
         ),
     ]
