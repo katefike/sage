@@ -12,6 +12,8 @@ from typing import List
 
 from loguru import logger
 
+from sage.db import transactions
+
 from . import ENV
 
 logger.add(sink="validator.log", level="INFO")
@@ -23,7 +25,7 @@ FILE_PATH = APP_ROOT + "/validator/real_data/"
 def main(file: str, date: str):
     logger.info("STARTING VALIDATION")
 
-    dates = create_dates(date)
+    dates, start_date, stop_date = create_dates(date)
     logger.info(f"Dates to validate: {dates}")
     logger.info(f"Opening validation file: {file}")
 
@@ -38,13 +40,19 @@ def main(file: str, date: str):
         for row in reader:
             row_date = row[0]
             if row_date in dates:
-                logger.info(f"{row}")
                 total_rows = total_rows + 1
 
     logger.info(f"Total number of CSV rows: {total_rows}")
 
+    # transaction dates use ISO 8601 format; 1999-01-08.
+    logger.info(f"{start_date}")
+    logger.info(f"{stop_date}")
+    records = transactions.get_transactions_by_daterange(start_date, stop_date)
+    for record in records:
+        logger.info(f"{records}")
 
-def create_dates(date) -> List:
+
+def create_dates(date):
     raw_dates = []
 
     date_parts = date.split("-")
@@ -61,6 +69,9 @@ def create_dates(date) -> List:
         raw_date = datetime.strptime(f"{month}/{day}/{year}", "%m/%d/%Y")
         raw_dates.append(raw_date)
         dates = transform_zero_padded_dates(raw_dates)
+        start_date = raw_date.strftime("%Y-%m-%d")
+        # The start and stop date are the same
+        stop_date = start_date
 
     # Split month-year format
     if len(integer_date_parts) == 2:
@@ -78,8 +89,12 @@ def create_dates(date) -> List:
                 raw_date = datetime.strptime(f"{month}/{day}/{year}", "%m/%d/%Y")
                 raw_dates.append(raw_date)
                 dates = transform_zero_padded_dates(raw_dates)
+        raw_start_date = datetime.strptime(dates[0], "%m/%d/%Y")
+        start_date = raw_start_date.strftime("%Y-%m-%d")
+        raw_stop_date = datetime.strptime(dates[-1], "%m/%d/%Y")
+        stop_date = raw_stop_date.strftime("%Y-%m-%d")
 
-    return dates
+    return dates, start_date, stop_date
 
 
 def transform_zero_padded_dates(raw_dates: List) -> List:
