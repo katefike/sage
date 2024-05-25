@@ -10749,6 +10749,84 @@ This transaction is above the level you set, see more here.
 
 --000000000000c7ac6f06194cdd7a--
 
+From 1800056849999629103@xxx Sat May 25 20:13:05 +0000 2024
+X-GM-THRID: 1800056841623349562
+X-Gmail-Labels: Inbox,Category Personal,Unread,backfill/202404
+Delivered-To: shelovescacti@gmail.com
+Received: by 2002:a05:7010:734c:b0:3cc:117f:c77b with SMTP id i12csp2347185mdc;
+        Sat, 25 May 2024 13:13:06 -0700 (PDT)
+X-Received: by 2002:a05:6122:8c4:b0:4ca:80c5:7544 with SMTP id 71dfb90a1353d-4e4f022e980mr5728651e0c.4.1716667985462;
+        Sat, 25 May 2024 13:13:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1716667985; cv=none;
+        d=google.com; s=arc-20160816;
+        b=nQyJo2/xyGLsfVSZjwEyOG+9jAr6jaBsx+O2ebrxCFJIpp8d0+ovm6YbNmxDu8WCiC
+         yXFj9E/rYnLavb1pVA22mTAj98wpVt8urHm8h6PVFQl46gexlhX9+yaKzHxNngwhSY7q
+         RMvPvv7Scj46i6xuisln8+WcqspfgoEi5LqnqJdSwhFhpv4e7oZqR2Xxn0pj/OryFy4n
+         wCjfz1vt9BkDiP8Icm6Yu62IhWwS1Sln8xh8maAIVFzBEzH9jlAipTFNpx0Q0QblH7Of
+         HfVBlIVDTvGQQO40R0F95WXYWf0ipI+De2tVd+Na6saCt5Iql0bDMlo8vggBp34/Rjx8
+         2UDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:subject:message-id:date:mime-version:from:references
+         :dkim-signature;
+        bh=rwxzRdEmlejn0Ynf8LmbwR1N1HLQLpUmbamVAZ+nW+0=;
+        fh=uDCTqrjUuSN01MbuUJAXsMebbw+mvpbkL6i/yQe0nOU=;
+        b=hXK6i0QuORCFUqaGpjZa9945l3+IEkxNrhfbco2Dt13qqEZ3nGuK4Li9gtFl2LeQ10
+         3ZRmwZY8il3OxTfhHU2PYH4Ym14MKCqdIvXEyD0WtIlSURoR+kOPtUBK3FWPtVKTWZyR
+         Hc/+NVZ3IONm6DhXmwDuQgrBRori8kqC6h0S9JT/b7MqUjFHlnYdiruKPMFOvrsPq/w5
+         vYH+qop+U8KQy/Ab2Zqae+bxCTpEN/REs+WRbttzsRf7Vwa0zwz50jotjX2dDHmskyUV
+         J5wsoZL1H24GtSNIMOtUgmp+++fBzId1NZ/C3FwTrxbPbPLP9NeALEZsvYDJLAy+ow9T
+         qjkQ==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=DsjUeDSG;
+       spf=pass (google.com: domain of dev.kfike@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=dev.kfike@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Return-Path: <dev.kfike@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id 71dfb90a1353d-4e4f07bcdfcsor970909e0c.4.2024.05.25.13.13.05
+        for <shelovescacti@gmail.com>
+        (Google Transport Security);
+        Sat, 25 May 2024 13:13:05 -0700 (PDT)
+Received-SPF: pass (google.com: domain of dev.kfike@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=DsjUeDSG;
+       spf=pass (google.com: domain of dev.kfike@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=dev.kfike@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716667985; x=1717272785; dara=google.com;
+        h=to:subject:message-id:date:mime-version:from:references:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rwxzRdEmlejn0Ynf8LmbwR1N1HLQLpUmbamVAZ+nW+0=;
+        b=DsjUeDSGq5C+jmfCCZeKpt5lJzxzT9J0uqufV2w48AB4Yhvr5v4lFUd7iod6DwtV9P
+         7olVDaqARL+TK5ZcjBD/TYw9pvsSFAoEoIsx3uYkwjPSLobPqtla9OihuomSmJUscZ5d
+         elB40ndDmrDEaGfMY5fAo0v6BTfWoxWD77kZgQUdXsASG+6E8x4SKPV0mpL6M/XrB29d
+         kvPTTdMN+5nIzTHB3lEuRRR42DyHrbfyoh0cHbctVpv6oCjdt0k9ny4T5Od1UYDdNKoO
+         WTWy5GFBOGXJllT1kGUjzwD+ZpDyJmx4YTJ185X0em0mSuhsehqitQ9/F3ZVS353zNHM
+         txuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716667985; x=1717272785;
+        h=to:subject:message-id:date:mime-version:from:references
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rwxzRdEmlejn0Ynf8LmbwR1N1HLQLpUmbamVAZ+nW+0=;
+        b=diZJc8I8gQ1ThFBBuOA8OmrNOBxjJzX8Q0P2LKQK+qhIJ7jD3yeCa/wTALMfEbDEjC
+         V5D9Qx7IhJlRitIzouawzlfsrFQ+tdqR0VyQvN2ja6F+6FvIxXPJbhwqXsgIAkOgG6Vi
+         AxAHaqCAsFW/X5iqnZblN9EiNlmcQihXhjwA1kLHUSu6MeK+jic+gH4guM+qPUUGRIs+
+         FwqfIeecIQOdArHMenjZyzJGsgFWaztPaMZSpHZkQ+u9a9Ca491f1sG1cRxwfqsfEZSf
+         fEIpPORtKQsbMpFA8syV5HdQwXs7oG3wRKtlo/WjE/Hlj76/d0bsr9jhiJfTWgrkA7pJ
+         uhgg==
+X-Gm-Message-State: AOJu0YwmZRWmoaaWorsuw+AeGMOzIzS+oYSGgqsoupEI4o+5AaNP2gz5
+	Q0Ijmvb7fogXt0GSExW1JzK3pVx62T/DHNsQCwLCs3H3fkZpOXma435DbS2pVdE49tSxmTffZdw
+	dKOlNg+D6s3jU7/sM9NTYeEA1RYxZfw==
+X-Google-Smtp-Source: AGHT+IGCRd+wEaqTmNxVhReyd19/wBK7OIcUtTulfZtKcB0SWVGiOWsW8JSJ6IFCAJKyUIRDXfejiNcI1uQZ9cSAHLQ=
+X-Received: by 2002:a05:6122:318b:b0:4d4:1ec7:76e5 with SMTP id
+ 71dfb90a1353d-4e4f02f9a85mr5739812e0c.16.1716667984896; Sat, 25 May 2024
+ 13:13:04 -0700 (PDT)
+Received: from 125135905029 named unknown by gmailapi.google.com with
+ HTTPREST; Sat, 25 May 2024 16:13:04 -0400
+References: <18ee5cff9475c498dev.kfike@gmail.com>
+From: dev.kfike@gmail.com
+MIME-Version: 1.0
+X-cloudHQ-Custom-Header-description: created via cloudHQ
 Date: Sat, 25 May 2024 16:13:04 -0400
 Message-ID: <CAHpjF2pSpJC4mwT3M4WnN86e-vo6_srKfBLWPDrP8J1dr2giAg@mail.gmail.com>
 Subject: Fwd: Withdrawal or Purchase
