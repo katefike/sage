@@ -18,10 +18,9 @@ from sage.models.transaction import Transaction
 from tests import utils
 
 
-def test_email_insert(conn):
+def test_transaction_insert(conn):
     """
     Ensure that all emails in the inbox are inserted into the transaction table.
-    All of the emails are really transactions.
     """
     utils.fresh_inbox("transaction_emails.mbox")
     msg_count = main()
