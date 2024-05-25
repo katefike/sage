@@ -49,16 +49,24 @@ def insert_transaction(transaction: Transaction) -> bool:
     return row_count
 
 
-def get_transactions_by_daterange(start_date: str, stop_date: str) -> List[tuple]:
+def get_complete_transactions_by_daterange(
+    start_date: str, stop_date: str
+) -> List[tuple]:
     select_criteria = (start_date, stop_date)
     stmt = """
-    SELECT
-        *
-    FROM
-        transactions
-    WHERE
-        date >= %s
-        AND date <= %s;
+    SELECT t.id,
+        t.date,
+        b.name AS "bank_name",
+        e.name AS "entity_name",
+        CASE
+            WHEN t.type = 'withdrawal' THEN t.amount * -1
+            ELSE t.amount
+        END
+    FROM transactions t
+        JOIN banks b ON b.id = t.bank_id
+        JOIN entities e ON e.id = t.entity_id
+    WHERE t.date >= %s t.AND date <= %s
+    ORDER BY t.date ASC;
     """
     records = execute_statements.select(stmt, select_criteria)
     return records
