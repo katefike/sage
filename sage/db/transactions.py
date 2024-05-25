@@ -65,7 +65,7 @@ def get_complete_transactions_by_daterange(
     FROM transactions t
         JOIN banks b ON b.id = t.bank_id
         JOIN entities e ON e.id = t.entity_id
-    WHERE t.date >= %s t.AND date <= %s
+    WHERE t.date >= %s AND t.date <= %s
     ORDER BY t.date ASC;
     """
     records = execute_statements.select(stmt, select_criteria)
