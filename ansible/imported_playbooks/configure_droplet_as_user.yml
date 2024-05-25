@@ -5,12 +5,13 @@
     ansible_user: '{{ lookup("env", "SERVER_USER") }}'
     project_root_path: '{{ lookup("env", "PROJECT_ROOT_PATH") }}'
   tasks:
-    - name: Clone the GitLab repository
+    - name: Clone the GitLab repository. Local changes will be lost.
       git:
         repo: 'https://github.com/katefike/sage.git'
         dest: '/home/{{ ansible_user }}/sage/'
         clone: yes
         update: yes
+        force: true
         version: production
 
     - name: Copy .env file to {{ host_name }}
