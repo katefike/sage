@@ -57,6 +57,7 @@ def get_complete_transactions_by_daterange(
     SELECT t.id,
         t.date,
         b.name AS "bank_name",
+        b.account AS "bank_account",
         e.name AS "entity_name",
         CASE
             WHEN t.type = 'withdrawal' THEN t.amount * -1
