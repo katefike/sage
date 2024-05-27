@@ -28,7 +28,7 @@ def main(file: str, date: str):
         bank CSV file
         selected date in 4-2024 format or 1-4-2024 format
 
-    output:
+    output in logs:
         diff of DB transactions not in CSV
         diff of CSV transaction not in DB
         duplicate DB transactions
