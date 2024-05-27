@@ -49,9 +49,13 @@ def main(file: str, date: str):
         logger.info(f"Getting DB transaction data for {start_date}.")
     else:
         logger.info(f"Getting DB transaction data from {start_date} to {stop_date}.")
-    db_data = get_db_data(start_date, stop_date)
+    file_parts = file.split("_")
+    bank = file_parts[0]
+    account = file_parts[1]
+    db_data = get_db_data(start_date, stop_date, bank, account)
     total_db_records = len(db_data)
 
+    # Compare total CSV rows and total DB records
     logger.info(f"Total CSV rows: {total_csv_rows}")
     logger.info(f"Total DB records: {total_db_records}")
     if total_csv_rows != total_db_records:
@@ -124,20 +128,28 @@ def get_csv_data(file: str, dates: List) -> List:
     return csv_data
 
 
-def get_db_data(start_date: str, stop_date: str) -> List:
+def get_db_data(start_date: str, stop_date: str, bank: str, account: str) -> List:
     db_records = transactions.get_complete_transactions_by_daterange(
         start_date, stop_date
     )
     db_data = []
 
     for db_record in db_records:
+
+        # Skip rows that don't match the bank and account specified in the
+        # file name
+        db_record_bank = db_record[3]
+        db_record_account = db_record[4]
+        if db_record_bank != bank and db_record_account != account:
+            continue
+
         # TODO: Use SQLAlchemy #16
         # Instantiate Transaction object using email ID.
         transaction = Transaction(db_record[1])
         # Transform the date to Huntington's style
         transaction.date = datetime.strftime(db_record[2], "%m/%d/%Y")
-        transaction.bank = db_record[3]
-        transaction.account = db_record[4]
+        transaction.bank = db_record_bank
+        transaction.account = db_record_account
         # For simplicity sake, let's pretend everyone is a merchant
         transaction.merchant = db_record[5]
         transaction.amount = db_record[6]
