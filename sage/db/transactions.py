@@ -54,7 +54,7 @@ def get_complete_transactions_by_daterange(
 ) -> List[tuple]:
     select_criteria = (start_date, stop_date)
     stmt = """
-    SELECT 
+    SELECT
         t.id AS "transaction_id",
         t.email_id AS "email_id",
         t.date,
