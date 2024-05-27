@@ -8,11 +8,12 @@ import csv
 import pathlib
 import sys
 from datetime import datetime
-from typing import List
+from typing import Dict, List
 
 from loguru import logger
 
 from sage.db import transactions
+from sage.models.transaction import Transaction
 
 from . import ENV
 
@@ -23,39 +24,38 @@ FILE_PATH = APP_ROOT + "/validator/real_data/"
 
 
 def main(file: str, date: str):
+    """
+    input:
+        bank CSV file
+        selected date in 4-2024 format or 1-4-2024 format
+
+    output:
+        diff of DB transactions not in CSV
+        diff of CSV transaction not in DB
+        multiples identified in the DB transactions
+
+    """
     logger.info("STARTING VALIDATION")
 
     dates, start_date, stop_date = create_dates(date)
     logger.info(f"Dates to validate: {dates}")
-    logger.info(f"Opening validation file: {file}")
 
-    total_rows = 0
-
-    with open(FILE_PATH + file, mode="r", encoding="utf-8") as csvfile:
-        reader = csv.reader(csvfile, delimiter=",", quotechar='"')
-
-        csv_headers = next(reader)
-        logger.info(f"{csv_headers}")
-
-        for row in reader:
-            row_date = row[0]
-            if row_date in dates:
-                total_rows = total_rows + 1
-
-    logger.info(f"Total number of CSV rows: {total_rows}")
+    logger.info(f"Getting data from validation CSV file: {file}")
+    csv_data = get_csv_data(file, dates)
+    total_csv_rows = len(csv_data)
 
     # transaction dates use ISO 8601 format; 1999-01-08.
-    logger.info(f"{start_date}")
-    logger.info(f"{stop_date}")
-    records, columns = transactions.get_transactions_by_daterange(start_date, stop_date)
+    if start_date == stop_date:
+        logger.info(f"Getting DB transaction data for {start_date}.")
+    else:
+        logger.info(f"Getting DB transaction data from {start_date} to {stop_date}.")
+    db_data = get_db_data(start_date, stop_date)
+    total_db_records = len(db_data)
 
-    total_records = 0
-    for record in records:
-        total_records = total_records + 1
-        logger.info(f"{columns}")
-        logger.info(f"{record}")
-        
-    logger.info(f"Total DB records: {total_records}")
+    logger.info(f"Total CSV rows: {total_csv_rows}")
+    logger.info(f"Total DB records: {total_db_records}")
+    if total_csv_rows != total_db_records:
+        logger.error("Total rows in CSV differs from DB!")
 
 
 def create_dates(date):
@@ -110,6 +110,39 @@ def transform_zero_padded_dates(raw_dates: List) -> List:
         zero_padded_date = raw_date.strftime("%m/%d/%Y")
         dates.append(zero_padded_date)
     return dates
+
+
+def get_csv_data(file: str, dates: List) -> List:
+    with open(FILE_PATH + file, mode="r", encoding="utf-8") as open_csv:
+        reader = csv.DictReader(open_csv)
+        csv_data = []
+
+        for row in reader:
+            row_date = row["Date"]
+            if row_date in dates:
+                csv_data.append(row)
+    return csv_data
+
+
+def get_db_data(start_date: str, stop_date: str) -> List:
+    db_records = transactions.get_complete_transactions_by_daterange(
+        start_date, stop_date
+    )
+    db_data = []
+
+    for db_record in db_records:
+        # TODO: Use SQLAlchemy #16
+        # Instantiate Transaction object using email ID.
+        transaction = Transaction(db_record[1])
+        # Transform the date to Huntington's style
+        transaction.date = datetime.strftime(db_record[2], "%m/%d/%Y")
+        transaction.bank = db_record[3]
+        transaction.account = db_record[4]
+        # For simplicity sake, let's pretend everyone is a merchant
+        transaction.merchant = db_record[5]
+        transaction.amount = db_record[6]
+        db_data.append(transaction)
+    return db_data
 
 
 if __name__ == "__main__":  # pragma: no cover
