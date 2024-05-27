@@ -25,7 +25,7 @@ def open_connection():
         raise error
 
 
-def select(query: str, params: Optional[tuple] = None):
+def select(query: str, params: Optional[tuple] = None) -> List:
     with open_connection() as conn:
         with conn.cursor() as cursor:
             try:
@@ -35,8 +35,7 @@ def select(query: str, params: Optional[tuple] = None):
                     cursor.execute(query)
                 conn.commit()
                 records = [row for row in cursor.fetchall()]
-                columns = [desc[0] for desc in cursor.description]
-                return records, columns
+                return records
             except psycopg2.DatabaseError as error:
                 logger.error(f"Query execution failed due to an error: {error}")
 

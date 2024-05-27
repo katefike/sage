@@ -12,8 +12,6 @@ class Transaction:
     # The ID of the email in the emails table
     # that this transaction was parsed from
     email_id: int = field(default=None)
-    # The ID of the transaction in the transactions table
-    id: int = field(default=None)
     # Date the transaction was made; based on the day the email was
     # originally sent by the institution;
     # not based on the day the email was forwarded.
