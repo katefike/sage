@@ -16,9 +16,7 @@ from loguru import logger
 from sage.db import transactions
 from sage.models.transaction import Transaction
 
-from . import ENV
-
-logger.add(sink="validator.py", level="INFO")
+logger.add(sink="validator.log", level="INFO")
 
 APP_ROOT = str(pathlib.Path(__file__).parent.parent)
 FILE_PATH = APP_ROOT + "/validator/real_data/"
@@ -33,8 +31,7 @@ def main(file: str, date: str):
     output:
         diff of DB transactions not in CSV
         diff of CSV transaction not in DB
-        multiples identified in the DB transactions
-
+        duplicate DB transactions
     """
     logger.info("STARTING VALIDATION")
 
@@ -69,6 +66,14 @@ def main(file: str, date: str):
         logger.info(
             f"{i + 1} - {Transaction.date}, {Transaction.merchant}, {Transaction.amount}"
         )
+
+    # Find duplicate DB records
+    dups = get_duplicate_db_records(db_data)
+    if len(dups) != 0:
+        logger.info(dups)
+        for i, dup_set in enumerate(dups):
+            logger.info(f"{i + 1}.1 - {dup_set[0]}")
+            logger.info(f"{i + 1}.2 - {dup_set[1]}")
 
 
 def create_dates(date):
@@ -154,7 +159,9 @@ def get_db_data(start_date: str, stop_date: str, bank: str, account: str) -> Lis
 
         # TODO: Use SQLAlchemy #16
         # Instantiate Transaction object using email ID.
-        transaction = Transaction(db_record[1])
+        email_id = db_record[1]
+        transaction = Transaction(email_id)
+        transaction.id = db_record[0]
         # Transform the date to Huntington's style
         transaction.date = datetime.strftime(db_record[2], "%m/%d/%Y")
         transaction.bank = db_record_bank
@@ -252,6 +259,60 @@ def diff_csv_and_db_data(csv_data: List, db_data: List) -> Dict:
     diff["DB records not in CSV"] = db_data_copy
 
     return diff
+
+
+def get_duplicate_db_records(db_data: List) -> List:
+    """
+    db_data:
+        [Transaction(
+            id=1,
+            date="04/01/2024",
+            merchant="UBER BV IAT PAYPAL",
+            amount=Decimal("-0.51"),
+        ),
+        Transaction(
+            id=2,
+            date="04/01/2024",
+            merchant="UBER BV IAT PAYPAL",
+            amount=Decimal("-0.51"),
+        ),]
+    dups:
+        [
+            [Transaction(
+                id=1,
+                date="04/01/2024",
+                merchant="UBER BV IAT PAYPAL",
+                amount=Decimal("-0.51"),
+            ),
+            Transaction(
+                id=2,
+                date="04/01/2024",
+                merchant="UBER BV IAT PAYPAL",
+                amount=Decimal("-0.51"),
+            ),]
+        ]
+    """
+    dups = []
+
+    # Identify duplicate (or multiples in general) records in DB
+    db_data_copy = copy.deepcopy(db_data)
+    for Transaction in db_data:
+        dup_set = [Transaction]
+        for Transaction_copy in db_data_copy:
+            if Transaction.id == Transaction_copy.id:
+                continue
+            if Transaction.date != Transaction_copy.date:
+                continue
+            if Transaction.merchant != Transaction_copy.merchant:
+                continue
+            if Transaction.amount != Transaction_copy.amount:
+                continue
+            dup_set.append(Transaction_copy)
+            db_data_copy.remove(Transaction)
+            db_data_copy.remove(Transaction_copy)
+        if len(dup_set) > 1:
+            dups.append(dup_set)
+    return dups
 
 
 if __name__ == "__main__":  # pragma: no cover
