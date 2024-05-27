@@ -70,7 +70,7 @@ def main(file: str, date: str):
     # Find duplicate DB records
     dups = get_duplicate_db_records(db_data)
     if len(dups) != 0:
-        logger.info(dups)
+        logger.info("Possible duplicate transactions:")
         for i, dup_set in enumerate(dups):
             logger.info(f"{i + 1}.1 - {dup_set[0]}")
             logger.info(f"{i + 1}.2 - {dup_set[1]}")
