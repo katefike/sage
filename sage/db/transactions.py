@@ -54,7 +54,9 @@ def get_complete_transactions_by_daterange(
 ) -> List[tuple]:
     select_criteria = (start_date, stop_date)
     stmt = """
-    SELECT t.id,
+    SELECT 
+        t.id AS "transaction_id",
+        t.email_id AS "email_id",
         t.date,
         b.name AS "bank_name",
         b.account AS "bank_account",
@@ -70,4 +72,4 @@ def get_complete_transactions_by_daterange(
     ORDER BY t.date ASC;
     """
     records = execute_statements.select(stmt, select_criteria)
-    return records
+    return records[0]
