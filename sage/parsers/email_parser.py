@@ -306,10 +306,17 @@ def get_huntington_balance(body: str) -> str:
     Works for deposits or charges.
     I.e.
     Your balance is $19,748.78 as of 6/25/22 2:35 AM ET.
+    I.e.
+    Your balance is -$101.92 as of 4/16/24 3:28 AM ET.
     """
     balance = regex_search(
         r"(?<=Your balance is \$)([0-9]+(,[0-9]{3})?\.[0-9]{2})(?= as of)", body
     )
+    if balance is None:
+        # Match a negative balance :(
+        balance = regex_search(
+            r"(?<=Your balance is -\$)([0-9]+(,[0-9]{3})?\.[0-9]{2})(?= as of)", body
+        )
     if balance is None:
         raise RegexError(
             f"Regex failed to get the balance from a Huntington transaction email body: {body}"
