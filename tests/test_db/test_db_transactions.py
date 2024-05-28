@@ -10,16 +10,13 @@ viewed.
 The expected expected_output is the transaction object defined in
 sage/models/transaction.py
 """
-from typing import List
-
 import pytest
 
 from sage.db import transactions
-from sage.models.email import Email
 from sage.models.transaction import Transaction
 from tests import utils
 
-transaction_data = [
+data = [
     (
         dict(
             date="2022-10-06",
@@ -131,19 +128,21 @@ transaction_data = [
 ]
 
 
-def create_transaction_objects() -> List:
+def create_transaction_objects():
     input = []
-    for transaction_dict in transaction_data:
+    for transaction_dict in data:
         transaction = Transaction(
-            0,
-            transaction_dict.get("date"),
-            transaction_dict.get("type_"),
-            transaction_dict.get("bank"),
-            transaction_dict.get("merchant"),
-            transaction_dict.get("payer"),
-            transaction_dict.get("amount"),
-            transaction_dict.get("account"),
-            transaction_dict.get("balance"),
+            email_id=0,
+            id=None,
+            date=transaction_dict.get("date"),
+            type_=transaction_dict.get("type_"),
+            bank=transaction_dict.get("bank"),
+            merchant=transaction_dict.get("merchant"),
+            payer=transaction_dict.get("payer"),
+            amount=transaction_dict.get("amount"),
+            account=transaction_dict.get("account"),
+            balance=transaction_dict.get("balance"),
+            hash=None,
         )
         input.append(transaction)
     return input
@@ -175,23 +174,23 @@ email_data = [
 ]
 
 
-def create_email_objects() -> List:
-    input = []
-    for email_dict in email_data:
-        email = Email(
-            0,
-            None,
-            email_dict.get("uid"),
-            email_dict.get("batch_time"),
-            email_dict.get("forwarded_date"),
-            email_dict.get("from_"),
-            email_dict.get("origin"),
-            email_dict.get("subject"),
-            email_dict.get("html"),
-            email_dict.get("body"),
-        )
-        input.append(email)
-    return input
+# def create_email_objects() -> List:
+#     input = []
+#     for email_dict in email_data:
+#         email = Email(
+#             0,
+#             None,
+#             email_dict.get("uid"),
+#             email_dict.get("batch_time"),
+#             email_dict.get("forwarded_date"),
+#             email_dict.get("from_"),
+#             email_dict.get("origin"),
+#             email_dict.get("subject"),
+#             email_dict.get("html"),
+#             email_dict.get("body"),
+#         )
+#         input.append(email)
+#     return input
 
 
 # @pytest.mark.parametrize("input", create_email_objects())
