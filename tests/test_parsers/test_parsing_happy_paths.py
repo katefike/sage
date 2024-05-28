@@ -181,9 +181,24 @@ def get_test_data():
                     bank="Huntington",
                     merchant=None,
                     payer="cash",
-                    amount="1,500.00",
+                    amount="1500.00",
                     account="checking",
                     balance="798.08",
+                )
+            ),
+        ),
+        (
+            (dict(uid="27", email_id=12)),
+            (
+                dict(
+                    date="2024-04-29",
+                    type_="withdrawal",
+                    bank="Chase",
+                    merchant="SAVE A LOT #24664",
+                    payer=None,
+                    amount="12.97",
+                    account=None,
+                    balance=None,
                 )
             ),
         ),
