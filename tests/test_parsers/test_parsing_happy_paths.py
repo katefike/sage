@@ -213,7 +213,7 @@ def get_test_data():
                     payer=None,
                     amount="150.00",
                     account="checking",
-                    balance="-101.92",
+                    balance="- 101.92",
                 )
             ),
         ),
