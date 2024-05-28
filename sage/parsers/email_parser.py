@@ -72,20 +72,39 @@ def main(msg: MailMessage, email_id: int) -> Transaction:
 def get_date(body: str) -> str:
     """
     Identify the date using the bank's email
-    I.e.
+    E.g.
         ---------- Forwarded message ---------
         From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
         Date: Thu, Oct 6, 2022 at 10:32 AM
         Subject: Withdrawal or Purchase
         To: <example.com>
+    E.g.
+        ---------- Forwarded message ---------
+        From: Chase <no.reply.alerts@chase.com>
+        Date: Wed, 24 Apr 2024 18:33:10 -0400 (EDT)
+        Subject: Your $253.36 transaction with AMZN Mktp US
+        To: <example.com>
     """
+    # Match month, day, year format e.g. "Oct 6, 2022"
     raw_date = regex_search(
         r"(?<=Date: \w{3}, )(\w{3} [0-9]{1,2}, [0-9]{4})(?= at [0-9]{1,2}:[0-9]{2} \w{2} Subject: )",
         body,
     )
     if raw_date is not None:
-        # Converts raw date to datetime object. I.e. "Oct 6, 2022"
+        # Converts raw date to datetime object. E.g. "Oct 6, 2022"
         datetime_raw_date = datetime.strptime(raw_date, "%b %d, %Y")
+        # Reformat the datetime object to ISO 8601 format
+        transformed_date = datetime.strftime(datetime_raw_date, "%Y-%m-%d")
+        return transformed_date
+
+    # Match day month year format E.g. "24 Apr 2024"
+    raw_date = regex_search(
+        r"(?<=Date: \w{3}, )([0-9]{1,2} \w{3},? [0-9]{4})(?= [0-9]{2}:[0-9]{2}:[0-9]{2} )",
+        body,
+    )
+    if raw_date is not None:
+        # Converts raw date to datetime object. E.g. "24 Apr 2024"
+        datetime_raw_date = datetime.strptime(raw_date, "%d %b %Y")
         # Reformat the datetime object to ISO 8601 format
         transformed_date = datetime.strftime(datetime_raw_date, "%Y-%m-%d")
         return transformed_date
