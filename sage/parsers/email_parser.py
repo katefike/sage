@@ -317,6 +317,7 @@ def get_huntington_balance(body: str) -> str:
         balance = regex_search(
             r"(?<=Your balance is -\$)([0-9]+(,[0-9]{3})?\.[0-9]{2})(?= as of)", body
         )
+        balance = "-" + balance
     if balance is None:
         raise RegexError(
             f"Regex failed to get the balance from a Huntington transaction email body: {body}"
