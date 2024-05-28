@@ -1,0 +1,953 @@
+Delivered-To: incoming@gmail.com
+Received: by 2002:a05:7010:734c:b0:3cc:117f:c77b with SMTP id i12csp3772880mdc;
+        Tue, 28 May 2024 07:15:21 -0700 (PDT)
+X-Received: by 2002:a05:6871:7998:b0:23c:bbe9:570 with SMTP id 586e51a60fabf-24ca1382e58mr16332852fac.37.1716905721535;
+        Tue, 28 May 2024 07:15:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1716905721; cv=none;
+        d=google.com; s=arc-20160816;
+        b=QnnFZTP2nQC2HqBKgPOkHfYIqe3gNU/ujSCn8oNeh6u0NXDsBq7fP0terWmoiZHI7I
+         hz4DOc9R86p0JpQptBPvMHnr+U8r7iMCN2w9VsAijS3XHxhnG/47VSNEnVpSH4TsZPH8
+         ctrHcZr+HRFm/jOwabgPYobVNbepH/xFu0nIWeQoRBg6kuL30JYNAHiClTaJ0wObL7yP
+         F2Unn5reQtB+xa7G6cSCMPl64ilyW4VNtDs1hEvkOlQ6ArOIAgN3lf998s9q/RidU9mt
+         xJihTHEJ+aup5TpZCS7Yh3o4ISbWUx0axfobM3DwMx/nWgvAIxBOpFNxsar1e42fL0/t
+         A2tQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :dkim-signature;
+        bh=PIrc9jLGro9On/3hoEezEf3XN0hNU/JwKcN1DmSAYOA=;
+        fh=uDCTqrjUuSN01MbuUJAXsMebbw+mvpbkL6i/yQe0nOU=;
+        b=qghHVDMPXBThSOkDNRFG+iPscqIvRaO+5KPZIFgceOIphaLJxb4EKgw56eVaiKUhJM
+         zCl2452j9XFtxamgMg9lCNd3yEX9KgzIbLZv2kQobcbnVjq5QI72Mb0WNxJ60cW43EVJ
+         c2teQYiwLQG9cHlO0SxM61M6aLvlr2rNR9bSCeq/RpXAd/FJz7tC5p2sT4on/H3MvJUz
+         uV1dIBL1eJIZCebky+3B0gyooAmOsEyFEE+o/hBrx9ehIP0ViV0ijiQfL+qVIjb4nX9S
+         6H4CztIlSegHuWTNx9M7TFHq5MnlqX+Pxh66XTAmUm+DMkdHCLDr6384JRr2yCURAvtn
+         yCeQ==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b="gu5/tjQq";
+       spf=pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=outgoing@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Return-Path: <outgoing@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id 586e51a60fabf-24ca2043517sor4117334fac.10.2024.05.28.07.15.21
+        for <incoming@gmail.com>
+        (Google Transport Security);
+        Tue, 28 May 2024 07:15:21 -0700 (PDT)
+Received-SPF: pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b="gu5/tjQq";
+       spf=pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=outgoing@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716905721; x=1717510521; dara=google.com;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PIrc9jLGro9On/3hoEezEf3XN0hNU/JwKcN1DmSAYOA=;
+        b=gu5/tjQqGmnyTLvuotbI/8nsceFeYe6m0JNJsmOE0BV80+Zp+dE/XwExNQtH5QKPCh
+         3Uf1mfGYhwzef2CX+k/8r3jSnKlixGeqb+0F2Upb6x+8yI6SmLgCwKMXquOi/TEw3sem
+         7g0TIShYnDnDWMd7SZUT1yMdyDV+CRK5txU6gw16yDuPKtlSEKzcdftep+BXYmwQ+p/4
+         S2ug1NUfF6bkjbfdzfCt1ODBrs3FqUgijDowi3tGWIcvIo8fgDOJlEnLQmrZ4/VYad5z
+         NT+3IU/FDiTGSz8o8KZxGkyl3JSpmUz+TJGlSzBaAgIq4QpGAk117S+wpHKdD/8/BxPh
+         bBug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716905721; x=1717510521;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PIrc9jLGro9On/3hoEezEf3XN0hNU/JwKcN1DmSAYOA=;
+        b=IdQLWCQouQTOgG3FG1lXni7uKP7QQJ59/EABCRHg6jHfZ+j6xDeUa2pmgwHkcpAV+h
+         gjwnBiuO7xgBYEO/F425yhPiRlMBNjda7AfaRwFxfqER86Q4WOCbavhzWxuLVO8IMJHK
+         7Lp14ecJIlXdTRAHh1qm5Iz70ROYoNag/3VUA7kW3Q26H072XblrYOzQmSgP2H6So+kZ
+         04oRoR7GLBM7Xp7fhPXWfYaqXYWPLGIzH2jURIhq2H3fcfULrAcuJbxd76FzxS1WV/Ic
+         XIwSW4rOdzCBeKZMg4pT7I7Gnirmx511Dek3PfiyBkTgc1I12wmaYzHHvwFVQi2Js6gK
+         FDPw==
+X-Gm-Message-State: AOJu0YybfCRfpmxkY+eK00pC5gSmKqhNFqVKOXaox65RLGXgGbzSW79O YXzli+hy7xtL6dG258/4gVApzane+EgioTwhsF2g565vtiLy+5Z3E9ySiRF62zJdQK3XkjG2p21 t2J/Figqd9WFSGVfoh5hYr6TCLnM4y0Db
+X-Google-Smtp-Source: AGHT+IFLpiB73FHrOqKEtR531/0lYLpSIH6yw3L4p5StKmLEb1h3yBf/gm5AWEch4ZgU5GkoYF6Q3AP5z9VahlGVPdM=
+X-Received: by 2002:a05:6870:c088:b0:24f:e369:4223 with SMTP id 586e51a60fabf-24fe3698e5fmr10280185fac.55.1716905720653; Tue, 28 May 2024 07:15:20 -0700 (PDT)
+MIME-Version: 1.0
+References: <1912156003.2734613.1715455047872.JavaMail.webuser@iaasn00025451.svr.us.jpmchase.net>
+In-Reply-To: <1912156003.2734613.1715455047872.JavaMail.webuser@iaasn00025451.svr.us.jpmchase.net>
+From: Kate Fike <outgoing@gmail.com>
+Date: Tue, 28 May 2024 10:15:09 -0400
+Message-ID: <CAHpjF2quQ3hJaV4xN3tbrrOf2aCsFu1ittRrysJGv23bRXWdTw@mail.gmail.com>
+Subject: Fwd: Your $47.91 transaction with SQ *HABITAT FOR HUMA
+To: incoming@gmail.com
+Content-Type: multipart/alternative; boundary="00000000000097aeaa061984432d"
+
+--00000000000097aeaa061984432d
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: Chase <no.reply.alerts@chase.com>
+Date: Sat, May 11, 2024 at 3:17=E2=80=AFPM
+Subject: Your $47.91 transaction with SQ *HABITAT FOR HUMA
+To: <outgoing@gmail.com>
+
+
+This transaction is above the level you set, see more here.
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C  =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C  =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C
+[image: Chase Logo]
+Transaction alert
+You made a $47.91 transaction
+Account Prime Visa (...6104)
+Date May 11, 2024 at 3:17 PM ET
+Merchant SQ *HABITAT FOR HUMA
+Amount $47.91
+You are receiving this alert because your transaction was more than the
+$0.01 level you set. You can visit our Resource Center
+<https://www.chase.com/personal/credit-cards/card-resource-center> anytime
+to help answer your questions or manage your account.
+Review account
+<https://secure.chase.com/web/auth/nav?navKey=3DrequestDashboard>
+Securely access your accounts with the Chase Mobile=C2=AE app
+<https://www.chase.com/digital/mobile-banking> or chase.com
+<https://secure.chase.com/web/auth/nav?navKey=3DrequestDashboard>.
+About this message
+
+Chase Mobile=C2=AE app is available for select mobile devices. Message and =
+data
+rates may apply.
+
+This service email was sent based on your alert settings. Use the
+Chase Mobile app or visit chase.com/alerts
+<https://www.chase.com/personal/mobile-online-banking/login-alerts> to view
+or manage your settings.
+
+Chase cannot guarantee the delivery of alerts and notifications. Wireless
+or internet service provider outages or other circumstances could delay
+them. You can always check chase.com or the Chase Mobile app for the status
+of your accounts including your latest account balances and transaction
+details.
+
+To protect your personal information, please don't reply to this message.
+Chase won't ask for confidential information in an email.
+
+If you have concerns about the authenticity of this message or have
+questions about your account visit chase.com/CustomerService
+<https://www.chase.com/digital/customer-service> for ways to contact us.
+
+Your privacy is important to us. See our online Security Center
+<https://www.chase.com/digital/resources/privacy-security> to learn how to
+protect your information.
+
+=C2=A9 2024 JPMorgan Chase & Co.
+
+--00000000000097aeaa061984432d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=
+=3D"gmail_attr">---------- Forwarded message ---------<br>From: <strong cla=
+ss=3D"gmail_sendername" dir=3D"auto">Chase</strong> <span dir=3D"auto">&lt;=
+<a href=3D"mailto:no.reply.alerts@chase.com">no.reply.alerts@chase.com</a>&=
+gt;</span><br>Date: Sat, May 11, 2024 at 3:17=E2=80=AFPM<br>Subject: Your $=
+47.91 transaction with SQ *HABITAT FOR HUMA<br>To:  &lt;<a href=3D"mailto:d=
+ev.kfike@gmail.com">outgoing@gmail.com</a>&gt;<br></div><br><br><div class=
+=3D"msg5561469224768438773"><u></u>
+
+
+
+
+
+
+
+<div style=3D"padding:0px;margin:0px;background-color:#d7dbe0">
+<table role=3D"presentation" align=3D"center" width=3D"100%" border=3D"0" c=
+ellspacing=3D"0" cellpadding=3D"0" style=3D"min-width:800px;background-colo=
+r:#d7dbe0" class=3D"m_5561469224768438773fullWidth">
+  <tbody><tr>
+    <td align=3D"center" style=3D"vertical-align:top;padding:0px 0px 20px 0=
+px;min-width:800px;background-color:#d7dbe0" class=3D"m_5561469224768438773=
+fullWidth"><table role=3D"presentation" align=3D"center" width=3D"800" cell=
+padding=3D"0" cellspacing=3D"0" border=3D"0" class=3D"m_5561469224768438773=
+fullWidth" style=3D"background-color:#ffffff">
+       =20
+        <tbody><tr>
+          <td align=3D"center" style=3D"vertical-align:top;padding:23px 0px=
+ 0px;background-color:#005eb8"><table role=3D"presentation" cellpadding=3D"=
+0" cellspacing=3D"0" border=3D"0">
+              <tbody><tr>
+                <td align=3D"right" style=3D"vertical-align:bottom;padding:=
+0px 0px;width:12px"><img src=3D"https://www.chase.com/content/dam/email/ima=
+ges/blue-left.jpg" width=3D"12" height=3D"226" border=3D"0" style=3D"displa=
+y:block" alt=3D""></td>
+                <td align=3D"center" style=3D"vertical-align:bottom;padding=
+:0px 0px 0px;width:616px;background-color:#ffffff"><table role=3D"presentat=
+ion" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
+                    <tbody><tr>
+                      <td align=3D"left" style=3D"vertical-align:top;paddin=
+g:0px 0px"><table role=3D"presentation" width=3D"100%" cellpadding=3D"0" ce=
+llspacing=3D"0" border=3D"0">
+                         =20
+                          <tbody><tr><td><div style=3D"display:none;max-hei=
+ght:0px;overflow:hidden">This transaction is above the level you set, see m=
+ore here.</div>
+
+                         =20
+
+                          <div style=3D"display:none;max-height:0px;overflo=
+w:hidden"> =C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=
+=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=
+=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0</div>
+                         =20
+                          </td></tr><tr>
+                            <td align=3D"left" style=3D"vertical-align:top;=
+padding-left:30px" class=3D"m_5561469224768438773moPad"><table role=3D"pres=
+entation" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
+                                <tbody><tr>
+                                  <td align=3D"left" style=3D"vertical-alig=
+n:bottom;padding:36px 0px 20px"><img src=3D"https://www.chase.com/content/d=
+am/email/images/chase-logo-h-rgb.png" width=3D"104" height=3D"20" border=3D=
+"0" style=3D"display:block" alt=3D"Chase Logo"></td>
+                                </tr>
+                              </tbody></table></td>
+                          </tr>
+                          <tr>
+                            <td align=3D"left" style=3D"vertical-align:top;=
+padding:20px 28px 0px" class=3D"m_5561469224768438773moPad"><table role=3D"=
+presentation" align=3D"left" cellpadding=3D"0" cellspacing=3D"0" border=3D"=
+0">
+                                <tbody><tr>
+                                  <td align=3D"left" style=3D"vertical-alig=
+n:top"><table role=3D"presentation" width=3D"100%" cellpadding=3D"0" cellsp=
+acing=3D"0" border=3D"0">
+                                      <tbody><tr>
+                                        <td align=3D"left" style=3D"vertica=
+l-align:top;padding:5px 10px;font-family:Arial,Helvetica,sans-serif;font-si=
+ze:12px;font-weight:bold;color:#414042;background-color:#d7dbe0;border-radi=
+us:20px;white-space:nowrap" class=3D"m_5561469224768438773font14">Transacti=
+on alert</td>
+                                      </tr>
+                                    </tbody></table></td>
+                                </tr>
+                              </tbody></table></td>
+                          </tr>
+                          <tr>
+                            <td align=3D"left" style=3D"vertical-align:top"=
+><table role=3D"presentation" width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0" border=3D"0">
+                                <tbody><tr>
+                                  <td align=3D"left" style=3D"vertical-alig=
+n:top;padding:20px 30px 28px" class=3D"m_5561469224768438773moPad"><table r=
+ole=3D"presentation" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" bor=
+der=3D"0">
+                                      <tbody><tr>
+                                        <td align=3D"left" style=3D"vertica=
+l-align:top;padding:0px 20px 0px 0px"><img src=3D"https://static.chasecdn.c=
+om/content/services/rendition/image.small.png/unified-assets/digital-cards/=
+amazon-prime/41473477008.png" width=3D"57" height=3D"auto" alt=3D"" border=
+=3D"0" style=3D"display:block"></td>
+                                        <td align=3D"left" style=3D"vertica=
+l-align:top;padding:0px 50px 0px 0px;font-family:Arial,Helvetica,sans-serif=
+;font-size:30px;font-weight:bold;color:#414042" class=3D"m_5561469224768438=
+773zeroPad">You made a $47.91 transaction</td>
+                                      </tr>
+                                    </tbody></table></td>
+                                </tr>
+                              </tbody></table></td>
+                          </tr>
+                        </tbody></table></td>
+                    </tr>
+                  </tbody></table></td>
+                <td align=3D"left" style=3D"vertical-align:bottom;padding:0=
+px 0px;width:12px"><img src=3D"https://www.chase.com/content/dam/email/imag=
+es/blue-right.jpg" width=3D"12" height=3D"226" border=3D"0" style=3D"displa=
+y:block" alt=3D""></td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+        <tr>
+          <td align=3D"center" style=3D"vertical-align:top;padding:0px 0px =
+0px;background-color:#ffffff"><table role=3D"presentation" cellpadding=3D"0=
+" cellspacing=3D"0" border=3D"0">
+              <tbody><tr>
+                <td align=3D"right" style=3D"vertical-align:top;padding:0px=
+ 0px;width:12px"><img src=3D"https://www.chase.com/content/dam/email/images=
+/white-left.jpg" width=3D"12" height=3D"77" border=3D"0" style=3D"display:b=
+lock" alt=3D""></td>
+                <td align=3D"center" style=3D"vertical-align:top;padding:0p=
+x 0px 0px;width:616px"><table role=3D"presentation" width=3D"100%" cellpadd=
+ing=3D"0" cellspacing=3D"0" border=3D"0">
+                    <tbody><tr>
+                      <td align=3D"left" style=3D"vertical-align:top;paddin=
+g:0px 150px 0px 30px" class=3D"m_5561469224768438773moPad"><table role=3D"p=
+resentation" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0=
+">
+                          <tbody><tr>
+                            <td align=3D"left" style=3D"vertical-align:top;=
+padding:10px 0px;border-bottom:solid 1px #414042"><table role=3D"presentati=
+on" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
+                                <tbody><tr>
+                                  <td align=3D"left" style=3D"vertical-alig=
+n:top;padding:0px 0px 0px 0px;font-family:Arial,Helvetica,sans-serif;font-s=
+ize:16px;color:#414042" class=3D"m_5561469224768438773font14">Account</td>
+                                  <td align=3D"right" style=3D"vertical-ali=
+gn:top;padding:0px 0px 0px 5px;font-family:Arial,Helvetica,sans-serif;font-=
+size:16px;font-weight:bold;color:#414042" class=3D"m_5561469224768438773fon=
+t14">Prime Visa (...6104)</td>
+                                </tr>
+                              </tbody></table></td>
+                          </tr>
+                          <tr>
+                            <td align=3D"left" style=3D"vertical-align:top;=
+padding:10px 0px;border-bottom:solid 1px #414042"><table role=3D"presentati=
+on" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
+                                <tbody><tr>
+                                  <td align=3D"left" style=3D"vertical-alig=
+n:top;padding:0px 0px 0px 0px;font-family:Arial,Helvetica,sans-serif;font-s=
+ize:16px;color:#414042" class=3D"m_5561469224768438773font14">Date</td>
+                                  <td align=3D"right" style=3D"vertical-ali=
+gn:top;padding:0px 0px 0px 5px;font-family:Arial,Helvetica,sans-serif;font-=
+size:16px;font-weight:bold;color:#414042" class=3D"m_5561469224768438773fon=
+t14"><span class=3D"m_5561469224768438773applelinksgray41"><a style=3D"colo=
+r:#414042;text-decoration:none">May 11, 2024 at 3:17 PM ET</a></span></td>
+                                </tr>
+                              </tbody></table></td>
+                          </tr>
+                          <tr>
+                            <td align=3D"left" style=3D"vertical-align:top;=
+padding:10px 0px;border-bottom:solid 1px #414042"><table role=3D"presentati=
+on" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
+                                <tbody><tr>
+                                  <td align=3D"left" style=3D"vertical-alig=
+n:top;padding:0px 0px 0px 0px;font-family:Arial,Helvetica,sans-serif;font-s=
+ize:16px;color:#414042" class=3D"m_5561469224768438773font14">Merchant</td>
+                                  <td align=3D"right" style=3D"vertical-ali=
+gn:top;padding:0px 0px 0px 5px;font-family:Arial,Helvetica,sans-serif;font-=
+size:16px;font-weight:bold;color:#414042" class=3D"m_5561469224768438773fon=
+t14">SQ *HABITAT FOR HUMA</td>
+                                </tr>
+                              </tbody></table></td>
+                          </tr>
+                          <tr>
+                            <td align=3D"left" style=3D"vertical-align:top;=
+padding:10px 0px;border-bottom:solid 1px #414042"><table role=3D"presentati=
+on" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
+                                <tbody><tr>
+                                  <td align=3D"left" style=3D"vertical-alig=
+n:top;padding:0px 0px 0px 0px;font-family:Arial,Helvetica,sans-serif;font-s=
+ize:16px;color:#414042" class=3D"m_5561469224768438773font14">Amount</td>
+                                  <td align=3D"right" style=3D"vertical-ali=
+gn:top;padding:0px 0px 0px 5px;font-family:Arial,Helvetica,sans-serif;font-=
+size:16px;font-weight:bold;color:#414042" class=3D"m_5561469224768438773fon=
+t14">$47.91</td>
+                                </tr>
+                              </tbody></table></td>
+                          </tr>
+                        </tbody></table></td>
+                    </tr>
+                    <tr>
+                        <td align=3D"left" style=3D"vertical-align:top;padd=
+ing:40px 150px 40px 30px;font-family:Arial,Helvetica,sans-serif;font-size:1=
+6px;color:#414042" class=3D"m_5561469224768438773moPad">You are receiving t=
+his alert because your transaction was more than the $0.01 level you set. Y=
+ou can visit our <a style=3D"text-decoration:underline;color:#0060f0" href=
+=3D"https://www.chase.com/personal/credit-cards/card-resource-center" rel=
+=3D"noopener noreferrer" target=3D"_blank">Resource Center</a> anytime to h=
+elp answer your questions or manage your account.</td>
+                    </tr>
+                    <tr>
+                      <td align=3D"left" style=3D"padding:0px;vertical-alig=
+n:top;padding:0px 0px 30px 30px" class=3D"m_5561469224768438773moPad"><tabl=
+e role=3D"presentation" align=3D"left" cellpadding=3D"0" cellspacing=3D"0" =
+border=3D"0" style=3D"vertical-align:top">
+                          <tbody><tr>
+                            <td role=3D"button" align=3D"center" style=3D"b=
+ackground-color:#0060f0;color:#fffffe;font-size:16px;font-family:Arial,Helv=
+etica,sans-serif;padding:10px 0px;border:1px solid #0060f0;vertical-align:t=
+op;border-radius:4px;width:168px"><a href=3D"https://secure.chase.com/web/a=
+uth/nav?navKey=3DrequestDashboard" style=3D"color:#fffffe;text-decoration:n=
+one" target=3D"_blank">Review account</a></td>
+                          </tr>
+                        </tbody></table></td>
+                    </tr>
+                    <tr>
+                      <td align=3D"left" style=3D"vertical-align:top;paddin=
+g:0px 30px 20px;font-family:Arial,Helvetica,sans-serif;font-size:12px;color=
+:#717171" class=3D"m_5561469224768438773moPad m_5561469224768438773font14">=
+Securely access your accounts with the <a style=3D"text-decoration:underlin=
+e;color:#0060f0" href=3D"https://www.chase.com/digital/mobile-banking" rel=
+=3D"noopener noreferrer" target=3D"_blank">Chase=C2=A0Mobile<span style=3D"=
+font-size:70%;line-height:0;vertical-align:3px;text-decoration:none">=C2=AE=
+</span> app</a> or <a style=3D"text-decoration:underline;color:#0060f0" hre=
+f=3D"https://secure.chase.com/web/auth/nav?navKey=3DrequestDashboard" rel=
+=3D"noopener noreferrer" target=3D"_blank">chase.com</a>. </td>
+                    </tr>
+                    <tr>
+                      <td align=3D"left" style=3D"vertical-align:top;paddin=
+g:0px 0px;background-color:#f6f6f6"><table role=3D"presentation" width=3D"1=
+00%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
+                          <tbody><tr>
+                            <td align=3D"left" style=3D"vertical-align:top;=
+padding:20px 30px 60px;font-family:Arial,Helvetica,sans-serif;font-size:12p=
+x;color:#717171" class=3D"m_5561469224768438773moPad m_5561469224768438773f=
+ont14"><span role=3D"heading" style=3D"text-transform:uppercase;font-weight=
+:bold">About this message</span><br>
+                              <br>
+                              Chase=C2=A0Mobile<span style=3D"font-size:70%=
+;line-height:0;vertical-align:3px">=C2=AE</span>=C2=A0app is available  for=
+ select mobile devices. Message and data rates may apply.<br>
+                              <br>
+                              This service email was sent based on your ale=
+rt settings. Use the Chase=C2=A0Mobile app or visit <a href=3D"https://www.=
+chase.com/personal/mobile-online-banking/login-alerts" style=3D"text-decora=
+tion:underline;color:#0060f0" rel=3D"noopener noreferrer" target=3D"_blank"=
+>chase.com/alerts</a> to view or manage your settings.<br>
+                              <br>
+                              Chase cannot guarantee the delivery of alerts=
+ and notifications.=C2=A0Wireless or internet service provider outages or o=
+ther circumstances could delay them. You can always check <span class=3D"m_=
+5561469224768438773applelinksgray"><a style=3D"color:#717171;text-decoratio=
+n:none">chase.com</a></span> or the Chase=C2=A0Mobile=C2=A0app for the stat=
+us of your accounts including your latest account balances and transaction =
+details.=C2=A0<br>
+                              <br>
+                              To protect your personal information, please =
+don&#39;t reply to this message. Chase won&#39;t ask for confidential infor=
+mation in an email. <br>
+                              <br>
+                              If you have concerns about the authenticity o=
+f this message or have questions about your account visit <a style=3D"text-=
+decoration:underline;color:#0060f0" href=3D"https://www.chase.com/digital/c=
+ustomer-service" rel=3D"noopener noreferrer" target=3D"_blank">chase.com/Cu=
+stomerService</a> for ways to contact us.<br>
+                              <br>
+                              Your privacy is important to us. See our onli=
+ne <a style=3D"text-decoration:underline;color:#0060f0" href=3D"https://www=
+.chase.com/digital/resources/privacy-security" rel=3D"noopener noreferrer" =
+target=3D"_blank">Security Center</a> to learn how to protect your informat=
+ion.<br>
+                              <br>
+                              =C2=A9 2024 JPMorgan Chase &amp; Co. </td>
+                          </tr>
+                        </tbody></table></td>
+                    </tr>
+                  </tbody></table></td>
+                <td align=3D"left" style=3D"vertical-align:top;padding:0px =
+0px;width:12px"><img src=3D"https://www.chase.com/content/dam/email/images/=
+white-right.jpg" width=3D"12" height=3D"77" border=3D"0" style=3D"display:b=
+lock" alt=3D""></td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+       =20
+       =20
+      </tbody></table></td>
+  </tr>
+</tbody></table>
+</div>
+
+</div></div></div>
+
+--00000000000097aeaa061984432d--
+
+Delivered-To: incoming@gmail.com
+Received: by 2002:a05:7010:734c:b0:3cc:117f:c77b with SMTP id i12csp3775553mdc;
+        Tue, 28 May 2024 07:19:09 -0700 (PDT)
+X-Received: by 2002:a05:6830:1213:b0:6ef:97a5:8800 with SMTP id 46e09a7af769-6f8d094fb8emr12310641a34.0.1716905949289;
+        Tue, 28 May 2024 07:19:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1716905949; cv=none;
+        d=google.com; s=arc-20160816;
+        b=DMlc5jWeHE6rem2Zyjpv/gdrSEjr8VirS48/H52jciwi1J1mpRvxH4V2CBJ53OYsQs
+         VzwMfqkMY7Wo1N7OLQL8fUQDoFUYHat97agXu5zkdNZMRSlmxzuocLdJj0OitmqY93Pp
+         y58hFC2lUcrdLLMabepI3TfmN757tSnXZeSnwZjenWudrkCxuyjjUk1DA0ZlSvYpfGzm
+         kClWRGabMKm88/8NZg0k+HHJbcdTGUfKA8PI4Uw+pciAmXBeQ/WR5FC4m4hz7rkevURv
+         GA9cTRh12kiPN5ust7LMy+cz0VYlE1B02q9ErXH97Nsn3BXCkfyS09TfEFHu7rTh0tEY
+         sRtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :dkim-signature;
+        bh=gV+HDNlOY6pi4qVGERJ8H8edrBKmY5ebTOczbyeLVvQ=;
+        fh=uDCTqrjUuSN01MbuUJAXsMebbw+mvpbkL6i/yQe0nOU=;
+        b=xPCBkopvac6hLTKRBBQR4dUblG36nArN0Ok89zpoIYHqlRr/lAJ/vqMY6IGmMYd6DP
+         a+M+Frb+EwdkBHZ5kA04DlJZWbtrkiRmVrdtwpteHVKiRSXCF+5jwQ7cp888HPMlYHuu
+         m/z1v9NfvhveXVfu3Hd9I4PiUlSdTUVUdcxKncdsiELUjNjz21apQy224PXA1tz/Ip3m
+         coX9+hXkZjc6CQdQ7ZTole/1naUZ/Do2Y4awnpZRir1nbChxmdquplZwPgNggcc5jAw4
+         s26e+IJLvLDpFCUZ8kzN8ra/a5oYcLODcJPjQGitwMH5Cvpli8Fba6Kj7znkbZG+03NW
+         QYcg==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=Pga4IbAg;
+       spf=pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=outgoing@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Return-Path: <outgoing@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id 46e09a7af769-6f8d0e798bbsor3180447a34.18.2024.05.28.07.19.09
+        for <incoming@gmail.com>
+        (Google Transport Security);
+        Tue, 28 May 2024 07:19:09 -0700 (PDT)
+Received-SPF: pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=Pga4IbAg;
+       spf=pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=outgoing@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716905949; x=1717510749; dara=google.com;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gV+HDNlOY6pi4qVGERJ8H8edrBKmY5ebTOczbyeLVvQ=;
+        b=Pga4IbAgrDmNqbn8ipFjNLhkPFMtOxIytiJgrp98Ihx+mTbJWvtu/pMA4CcYhcqf+e
+         hModB9Mwh9SfPhmafZpQzFq2jdNG6oyWw20e+ymN0pOMFm1sFSlGynsS5vHT+AzcT15+
+         11bD5id0yp4VZnuKQomAFV73YGQGfYrWbYnDfq//yT5dvj86UU20bFhmAKC9mxsA0nr6
+         85XPbVbmSzH6c5NUpkApmqTMzvzVhlkGSdX0MqWgIKNs4plUMVP71lc418iqeDr00vbZ
+         0UkBZrdr/072jfDweaqW8oySMVONspcWVQG1eNdvnCiAJcMOpCErejBsy6G+pwzcpScT
+         xnQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716905949; x=1717510749;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gV+HDNlOY6pi4qVGERJ8H8edrBKmY5ebTOczbyeLVvQ=;
+        b=cJ1SKWLWkmhpDD8HxaXjH53uV6VXO4Co8W4ahyE/LVXhEsjeJYC8bMpTMgHocIogvy
+         CiI5n+kZ6SGSEw7V7+bP43WLEftv30+cegFSioArfDKlwfEK+c2MluzYX0cud6dEERhv
+         kYNtRcL5dOn06ZpBGdWHaB2OQyCW/XWMtKsXW8cTfidq7AQFrg9TH17wdyAFp2Ume22q
+         fVeEMacLaD1i+Eq4uRB17NSvdh0fAjrjGwek6QASIxlUWbJ3mdxAr3Nl9jyaOAxX/JUF
+         ZPwU0YbTaqIu7dpkQpMfw8jfTxPrk+uOdhvlr5WU2vQCqRS/h6w9anIQfdjaYbO+THN0
+         ADjA==
+X-Gm-Message-State: AOJu0YzQ8WSD9nzKOoS3EioHKBlGw1aedd080udRw6ROGNrT9a7+U+mB Bs2dDM3Vz1hr8sZFvXsJM9nNSaFdwrwpBfXIrNWLYlYMZCy6k1j5td54zq1PrXtAzIIB3GPTooq LF2LxuaVmaUh1BSx+pX7dkM/loYSWqyli
+X-Google-Smtp-Source: AGHT+IGmXjBVXUupZbS+WfPb502psvpusm9wAJyM9pPPKRqubwYSbJELDab8xWK3fN2Zns5aarK8squIO7sb5k52+r0=
+X-Received: by 2002:a05:6830:440c:b0:6f7:a45f:6df5 with SMTP id 46e09a7af769-6f8d0b40b91mr15047752a34.34.1716905948636; Tue, 28 May 2024 07:19:08 -0700 (PDT)
+MIME-Version: 1.0
+References: <1912156003.2734613.1715455047872.JavaMail.webuser@iaasn00025451.svr.us.jpmchase.net>
+In-Reply-To: <1912156003.2734613.1715455047872.JavaMail.webuser@iaasn00025451.svr.us.jpmchase.net>
+From: Kate Fike <outgoing@gmail.com>
+Date: Tue, 28 May 2024 10:18:57 -0400
+Message-ID: <CAHpjF2pJ7Okhe6YEy4j7cdQxUN1MrAYWGuVcDzq4=E0xS-5yqQ@mail.gmail.com>
+Subject: Fwd: Your $47.91 transaction with SQ *HABITAT FOR HUMA
+To: incoming@gmail.com
+Content-Type: multipart/alternative; boundary="0000000000002e73c8061984513f"
+
+--0000000000002e73c8061984513f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: Chase <no.reply.alerts@chase.com>
+Date: Sat, May 11, 2024 at 3:17=E2=80=AFPM
+Subject: Your $47.91 transaction with SQ *HABITAT FOR HUMA
+To: <outgoing@gmail.com>
+
+
+This transaction is above the level you set, see more here.
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C  =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C  =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C
+[image: Chase Logo]
+Transaction alert
+You made a $47.91 transaction
+Account Prime Visa (...6104)
+Date May 11, 2024 at 3:17 PM ET
+Merchant SQ *HABITAT FOR HUMA
+Amount $47.91
+You are receiving this alert because your transaction was more than the
+$0.01 level you set. You can visit our Resource Center
+<https://www.chase.com/personal/credit-cards/card-resource-center> anytime
+to help answer your questions or manage your account.
+Review account
+<https://secure.chase.com/web/auth/nav?navKey=3DrequestDashboard>
+Securely access your accounts with the Chase Mobile=C2=AE app
+<https://www.chase.com/digital/mobile-banking> or chase.com
+<https://secure.chase.com/web/auth/nav?navKey=3DrequestDashboard>.
+About this message
+
+Chase Mobile=C2=AE app is available for select mobile devices. Message and =
+data
+rates may apply.
+
+This service email was sent based on your alert settings. Use the
+Chase Mobile app or visit chase.com/alerts
+<https://www.chase.com/personal/mobile-online-banking/login-alerts> to view
+or manage your settings.
+
+Chase cannot guarantee the delivery of alerts and notifications. Wireless
+or internet service provider outages or other circumstances could delay
+them. You can always check chase.com or the Chase Mobile app for the status
+of your accounts including your latest account balances and transaction
+details.
+
+To protect your personal information, please don't reply to this message.
+Chase won't ask for confidential information in an email.
+
+If you have concerns about the authenticity of this message or have
+questions about your account visit chase.com/CustomerService
+<https://www.chase.com/digital/customer-service> for ways to contact us.
+
+Your privacy is important to us. See our online Security Center
+<https://www.chase.com/digital/resources/privacy-security> to learn how to
+protect your information.
+
+=C2=A9 2024 JPMorgan Chase & Co.
+
+--0000000000002e73c8061984513f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=
+=3D"gmail_attr">---------- Forwarded message ---------<br>From: <strong cla=
+ss=3D"gmail_sendername" dir=3D"auto">Chase</strong> <span dir=3D"auto">&lt;=
+<a href=3D"mailto:no.reply.alerts@chase.com">no.reply.alerts@chase.com</a>&=
+gt;</span><br>Date: Sat, May 11, 2024 at 3:17=E2=80=AFPM<br>Subject: Your $=
+47.91 transaction with SQ *HABITAT FOR HUMA<br>To:  &lt;<a href=3D"mailto:d=
+ev.kfike@gmail.com">outgoing@gmail.com</a>&gt;<br></div><br><br><div class=
+=3D"msg-2040737787524796557"><u></u>
+
+
+
+
+
+
+
+<div style=3D"padding:0px;margin:0px;background-color:#d7dbe0">
+<table role=3D"presentation" align=3D"center" width=3D"100%" border=3D"0" c=
+ellspacing=3D"0" cellpadding=3D"0" style=3D"min-width:800px;background-colo=
+r:#d7dbe0" class=3D"m_-2040737787524796557fullWidth">
+  <tbody><tr>
+    <td align=3D"center" style=3D"vertical-align:top;padding:0px 0px 20px 0=
+px;min-width:800px;background-color:#d7dbe0" class=3D"m_-204073778752479655=
+7fullWidth"><table role=3D"presentation" align=3D"center" width=3D"800" cel=
+lpadding=3D"0" cellspacing=3D"0" border=3D"0" class=3D"m_-20407377875247965=
+57fullWidth" style=3D"background-color:#ffffff">
+       =20
+        <tbody><tr>
+          <td align=3D"center" style=3D"vertical-align:top;padding:23px 0px=
+ 0px;background-color:#005eb8"><table role=3D"presentation" cellpadding=3D"=
+0" cellspacing=3D"0" border=3D"0">
+              <tbody><tr>
+                <td align=3D"right" style=3D"vertical-align:bottom;padding:=
+0px 0px;width:12px"><img src=3D"https://www.chase.com/content/dam/email/ima=
+ges/blue-left.jpg" width=3D"12" height=3D"226" border=3D"0" style=3D"displa=
+y:block" alt=3D""></td>
+                <td align=3D"center" style=3D"vertical-align:bottom;padding=
+:0px 0px 0px;width:616px;background-color:#ffffff"><table role=3D"presentat=
+ion" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
+                    <tbody><tr>
+                      <td align=3D"left" style=3D"vertical-align:top;paddin=
+g:0px 0px"><table role=3D"presentation" width=3D"100%" cellpadding=3D"0" ce=
+llspacing=3D"0" border=3D"0">
+                         =20
+                          <tbody><tr><td><div style=3D"display:none;max-hei=
+ght:0px;overflow:hidden">This transaction is above the level you set, see m=
+ore here.</div>
+
+                         =20
+
+                          <div style=3D"display:none;max-height:0px;overflo=
+w:hidden"> =C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=
+=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=
+=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0</div>
+                         =20
+                          </td></tr><tr>
+                            <td align=3D"left" style=3D"vertical-align:top;=
+padding-left:30px" class=3D"m_-2040737787524796557moPad"><table role=3D"pre=
+sentation" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
+                                <tbody><tr>
+                                  <td align=3D"left" style=3D"vertical-alig=
+n:bottom;padding:36px 0px 20px"><img src=3D"https://www.chase.com/content/d=
+am/email/images/chase-logo-h-rgb.png" width=3D"104" height=3D"20" border=3D=
+"0" style=3D"display:block" alt=3D"Chase Logo"></td>
+                                </tr>
+                              </tbody></table></td>
+                          </tr>
+                          <tr>
+                            <td align=3D"left" style=3D"vertical-align:top;=
+padding:20px 28px 0px" class=3D"m_-2040737787524796557moPad"><table role=3D=
+"presentation" align=3D"left" cellpadding=3D"0" cellspacing=3D"0" border=3D=
+"0">
+                                <tbody><tr>
+                                  <td align=3D"left" style=3D"vertical-alig=
+n:top"><table role=3D"presentation" width=3D"100%" cellpadding=3D"0" cellsp=
+acing=3D"0" border=3D"0">
+                                      <tbody><tr>
+                                        <td align=3D"left" style=3D"vertica=
+l-align:top;padding:5px 10px;font-family:Arial,Helvetica,sans-serif;font-si=
+ze:12px;font-weight:bold;color:#414042;background-color:#d7dbe0;border-radi=
+us:20px;white-space:nowrap" class=3D"m_-2040737787524796557font14">Transact=
+ion alert</td>
+                                      </tr>
+                                    </tbody></table></td>
+                                </tr>
+                              </tbody></table></td>
+                          </tr>
+                          <tr>
+                            <td align=3D"left" style=3D"vertical-align:top"=
+><table role=3D"presentation" width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0" border=3D"0">
+                                <tbody><tr>
+                                  <td align=3D"left" style=3D"vertical-alig=
+n:top;padding:20px 30px 28px" class=3D"m_-2040737787524796557moPad"><table =
+role=3D"presentation" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" bo=
+rder=3D"0">
+                                      <tbody><tr>
+                                        <td align=3D"left" style=3D"vertica=
+l-align:top;padding:0px 20px 0px 0px"><img src=3D"https://static.chasecdn.c=
+om/content/services/rendition/image.small.png/unified-assets/digital-cards/=
+amazon-prime/41473477008.png" width=3D"57" height=3D"auto" alt=3D"" border=
+=3D"0" style=3D"display:block"></td>
+                                        <td align=3D"left" style=3D"vertica=
+l-align:top;padding:0px 50px 0px 0px;font-family:Arial,Helvetica,sans-serif=
+;font-size:30px;font-weight:bold;color:#414042" class=3D"m_-204073778752479=
+6557zeroPad">You made a $47.91 transaction</td>
+                                      </tr>
+                                    </tbody></table></td>
+                                </tr>
+                              </tbody></table></td>
+                          </tr>
+                        </tbody></table></td>
+                    </tr>
+                  </tbody></table></td>
+                <td align=3D"left" style=3D"vertical-align:bottom;padding:0=
+px 0px;width:12px"><img src=3D"https://www.chase.com/content/dam/email/imag=
+es/blue-right.jpg" width=3D"12" height=3D"226" border=3D"0" style=3D"displa=
+y:block" alt=3D""></td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+        <tr>
+          <td align=3D"center" style=3D"vertical-align:top;padding:0px 0px =
+0px;background-color:#ffffff"><table role=3D"presentation" cellpadding=3D"0=
+" cellspacing=3D"0" border=3D"0">
+              <tbody><tr>
+                <td align=3D"right" style=3D"vertical-align:top;padding:0px=
+ 0px;width:12px"><img src=3D"https://www.chase.com/content/dam/email/images=
+/white-left.jpg" width=3D"12" height=3D"77" border=3D"0" style=3D"display:b=
+lock" alt=3D""></td>
+                <td align=3D"center" style=3D"vertical-align:top;padding:0p=
+x 0px 0px;width:616px"><table role=3D"presentation" width=3D"100%" cellpadd=
+ing=3D"0" cellspacing=3D"0" border=3D"0">
+                    <tbody><tr>
+                      <td align=3D"left" style=3D"vertical-align:top;paddin=
+g:0px 150px 0px 30px" class=3D"m_-2040737787524796557moPad"><table role=3D"=
+presentation" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"=
+0">
+                          <tbody><tr>
+                            <td align=3D"left" style=3D"vertical-align:top;=
+padding:10px 0px;border-bottom:solid 1px #414042"><table role=3D"presentati=
+on" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
+                                <tbody><tr>
+                                  <td align=3D"left" style=3D"vertical-alig=
+n:top;padding:0px 0px 0px 0px;font-family:Arial,Helvetica,sans-serif;font-s=
+ize:16px;color:#414042" class=3D"m_-2040737787524796557font14">Account</td>
+                                  <td align=3D"right" style=3D"vertical-ali=
+gn:top;padding:0px 0px 0px 5px;font-family:Arial,Helvetica,sans-serif;font-=
+size:16px;font-weight:bold;color:#414042" class=3D"m_-2040737787524796557fo=
+nt14">Prime Visa (...6104)</td>
+                                </tr>
+                              </tbody></table></td>
+                          </tr>
+                          <tr>
+                            <td align=3D"left" style=3D"vertical-align:top;=
+padding:10px 0px;border-bottom:solid 1px #414042"><table role=3D"presentati=
+on" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
+                                <tbody><tr>
+                                  <td align=3D"left" style=3D"vertical-alig=
+n:top;padding:0px 0px 0px 0px;font-family:Arial,Helvetica,sans-serif;font-s=
+ize:16px;color:#414042" class=3D"m_-2040737787524796557font14">Date</td>
+                                  <td align=3D"right" style=3D"vertical-ali=
+gn:top;padding:0px 0px 0px 5px;font-family:Arial,Helvetica,sans-serif;font-=
+size:16px;font-weight:bold;color:#414042" class=3D"m_-2040737787524796557fo=
+nt14"><span class=3D"m_-2040737787524796557applelinksgray41"><a style=3D"co=
+lor:#414042;text-decoration:none">May 11, 2024 at 3:17 PM ET</a></span></td=
+>
+                                </tr>
+                              </tbody></table></td>
+                          </tr>
+                          <tr>
+                            <td align=3D"left" style=3D"vertical-align:top;=
+padding:10px 0px;border-bottom:solid 1px #414042"><table role=3D"presentati=
+on" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
+                                <tbody><tr>
+                                  <td align=3D"left" style=3D"vertical-alig=
+n:top;padding:0px 0px 0px 0px;font-family:Arial,Helvetica,sans-serif;font-s=
+ize:16px;color:#414042" class=3D"m_-2040737787524796557font14">Merchant</td=
+>
+                                  <td align=3D"right" style=3D"vertical-ali=
+gn:top;padding:0px 0px 0px 5px;font-family:Arial,Helvetica,sans-serif;font-=
+size:16px;font-weight:bold;color:#414042" class=3D"m_-2040737787524796557fo=
+nt14">SQ *HABITAT FOR HUMA</td>
+                                </tr>
+                              </tbody></table></td>
+                          </tr>
+                          <tr>
+                            <td align=3D"left" style=3D"vertical-align:top;=
+padding:10px 0px;border-bottom:solid 1px #414042"><table role=3D"presentati=
+on" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
+                                <tbody><tr>
+                                  <td align=3D"left" style=3D"vertical-alig=
+n:top;padding:0px 0px 0px 0px;font-family:Arial,Helvetica,sans-serif;font-s=
+ize:16px;color:#414042" class=3D"m_-2040737787524796557font14">Amount</td>
+                                  <td align=3D"right" style=3D"vertical-ali=
+gn:top;padding:0px 0px 0px 5px;font-family:Arial,Helvetica,sans-serif;font-=
+size:16px;font-weight:bold;color:#414042" class=3D"m_-2040737787524796557fo=
+nt14">$47.91</td>
+                                </tr>
+                              </tbody></table></td>
+                          </tr>
+                        </tbody></table></td>
+                    </tr>
+                    <tr>
+                        <td align=3D"left" style=3D"vertical-align:top;padd=
+ing:40px 150px 40px 30px;font-family:Arial,Helvetica,sans-serif;font-size:1=
+6px;color:#414042" class=3D"m_-2040737787524796557moPad">You are receiving =
+this alert because your transaction was more than the $0.01 level you set. =
+You can visit our <a style=3D"text-decoration:underline;color:#0060f0" href=
+=3D"https://www.chase.com/personal/credit-cards/card-resource-center" rel=
+=3D"noopener noreferrer" target=3D"_blank">Resource Center</a> anytime to h=
+elp answer your questions or manage your account.</td>
+                    </tr>
+                    <tr>
+                      <td align=3D"left" style=3D"padding:0px;vertical-alig=
+n:top;padding:0px 0px 30px 30px" class=3D"m_-2040737787524796557moPad"><tab=
+le role=3D"presentation" align=3D"left" cellpadding=3D"0" cellspacing=3D"0"=
+ border=3D"0" style=3D"vertical-align:top">
+                          <tbody><tr>
+                            <td role=3D"button" align=3D"center" style=3D"b=
+ackground-color:#0060f0;color:#fffffe;font-size:16px;font-family:Arial,Helv=
+etica,sans-serif;padding:10px 0px;border:1px solid #0060f0;vertical-align:t=
+op;border-radius:4px;width:168px"><a href=3D"https://secure.chase.com/web/a=
+uth/nav?navKey=3DrequestDashboard" style=3D"color:#fffffe;text-decoration:n=
+one" target=3D"_blank">Review account</a></td>
+                          </tr>
+                        </tbody></table></td>
+                    </tr>
+                    <tr>
+                      <td align=3D"left" style=3D"vertical-align:top;paddin=
+g:0px 30px 20px;font-family:Arial,Helvetica,sans-serif;font-size:12px;color=
+:#717171" class=3D"m_-2040737787524796557moPad m_-2040737787524796557font14=
+">Securely access your accounts with the <a style=3D"text-decoration:underl=
+ine;color:#0060f0" href=3D"https://www.chase.com/digital/mobile-banking" re=
+l=3D"noopener noreferrer" target=3D"_blank">Chase=C2=A0Mobile<span style=3D=
+"font-size:70%;line-height:0;vertical-align:3px;text-decoration:none">=C2=
+=AE</span> app</a> or <a style=3D"text-decoration:underline;color:#0060f0" =
+href=3D"https://secure.chase.com/web/auth/nav?navKey=3DrequestDashboard" re=
+l=3D"noopener noreferrer" target=3D"_blank">chase.com</a>. </td>
+                    </tr>
+                    <tr>
+                      <td align=3D"left" style=3D"vertical-align:top;paddin=
+g:0px 0px;background-color:#f6f6f6"><table role=3D"presentation" width=3D"1=
+00%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
+                          <tbody><tr>
+                            <td align=3D"left" style=3D"vertical-align:top;=
+padding:20px 30px 60px;font-family:Arial,Helvetica,sans-serif;font-size:12p=
+x;color:#717171" class=3D"m_-2040737787524796557moPad m_-204073778752479655=
+7font14"><span role=3D"heading" style=3D"text-transform:uppercase;font-weig=
+ht:bold">About this message</span><br>
+                              <br>
+                              Chase=C2=A0Mobile<span style=3D"font-size:70%=
+;line-height:0;vertical-align:3px">=C2=AE</span>=C2=A0app is available  for=
+ select mobile devices. Message and data rates may apply.<br>
+                              <br>
+                              This service email was sent based on your ale=
+rt settings. Use the Chase=C2=A0Mobile app or visit <a href=3D"https://www.=
+chase.com/personal/mobile-online-banking/login-alerts" style=3D"text-decora=
+tion:underline;color:#0060f0" rel=3D"noopener noreferrer" target=3D"_blank"=
+>chase.com/alerts</a> to view or manage your settings.<br>
+                              <br>
+                              Chase cannot guarantee the delivery of alerts=
+ and notifications.=C2=A0Wireless or internet service provider outages or o=
+ther circumstances could delay them. You can always check <span class=3D"m_=
+-2040737787524796557applelinksgray"><a style=3D"color:#717171;text-decorati=
+on:none">chase.com</a></span> or the Chase=C2=A0Mobile=C2=A0app for the sta=
+tus of your accounts including your latest account balances and transaction=
+ details.=C2=A0<br>
+                              <br>
+                              To protect your personal information, please =
+don&#39;t reply to this message. Chase won&#39;t ask for confidential infor=
+mation in an email. <br>
+                              <br>
+                              If you have concerns about the authenticity o=
+f this message or have questions about your account visit <a style=3D"text-=
+decoration:underline;color:#0060f0" href=3D"https://www.chase.com/digital/c=
+ustomer-service" rel=3D"noopener noreferrer" target=3D"_blank">chase.com/Cu=
+stomerService</a> for ways to contact us.<br>
+                              <br>
+                              Your privacy is important to us. See our onli=
+ne <a style=3D"text-decoration:underline;color:#0060f0" href=3D"https://www=
+.chase.com/digital/resources/privacy-security" rel=3D"noopener noreferrer" =
+target=3D"_blank">Security Center</a> to learn how to protect your informat=
+ion.<br>
+                              <br>
+                              =C2=A9 2024 JPMorgan Chase &amp; Co. </td>
+                          </tr>
+                        </tbody></table></td>
+                    </tr>
+                  </tbody></table></td>
+                <td align=3D"left" style=3D"vertical-align:top;padding:0px =
+0px;width:12px"><img src=3D"https://www.chase.com/content/dam/email/images/=
+white-right.jpg" width=3D"12" height=3D"77" border=3D"0" style=3D"display:b=
+lock" alt=3D""></td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+       =20
+       =20
+      </tbody></table></td>
+  </tr>
+</tbody></table>
+</div>
+
+</div></div></div>
+
+--0000000000002e73c8061984513f--
