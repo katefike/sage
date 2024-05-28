@@ -1,6 +1,3 @@
-"""
-
-"""
 from sage.__main__ import main
 from tests import utils
 
