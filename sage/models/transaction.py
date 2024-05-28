@@ -16,6 +16,8 @@ class Transaction:
     # originally sent by the institution;
     # not based on the day the email was forwarded.
     # ISO 8601 format; 1999-01-08. No time is included.
+    # The ID of the transaction in the transactions table
+    id: int = field(default=None)
     date: str = field(default=None)
     # Transaction type can be one of the following
     # withdrawal: a merchant removed money from the account
@@ -32,6 +34,8 @@ class Transaction:
     # Payers perform deposits
     payer: str = field(default=None)
     amount: str = field(default=None)
+    # Not all transactions list the account balance.
+    hash: str = field(default=None)
     # Not all banks have accounts. If there is no account listed that means
     # there is only one account associated with the bank.
     account: str = field(default=None)
