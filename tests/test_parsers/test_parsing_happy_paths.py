@@ -212,7 +212,7 @@ def get_test_data():
                     merchant="R.I.T.A. RITA EFILE",
                     payer=None,
                     amount="150.00",
-                    account="Checking",
+                    account="checking",
                     balance="-101.92",
                 )
             ),
