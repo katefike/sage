@@ -195,7 +195,7 @@ def parse_huntington_transfer_withdrawal(body: str) -> str:
 def parse_huntington_transfer_deposit(body: str) -> str:
     """
     Extract the tranferred amount from the email body
-    I.e.
+    E.g.
     We've processed a transfer deposit for $999.51 to your account nicknamed
     SAVE. That's above the $0.00 you set for an alert.
     """
@@ -204,6 +204,7 @@ def parse_huntington_transfer_deposit(body: str) -> str:
         body,
     )
     if raw_amount is None:
+
         raise RegexError(
             f"Regex failed to get the raw amount from a Huntington transfer deposit email body: {body}"
         )
@@ -241,18 +242,31 @@ def parse_huntington_withdrawal(body: str) -> str:
 def parse_huntington_deposit(body: str) -> str:
     """
     Extract the transaction amount and merchant from the email body
-    I.e.
+    E.g.
     We've processed an ACH deposit for $59.81
     from CHASE CREDIT CRD RWRD RDM to your account nicknamed CHECK.
+    E.g.
+    We've processed a deposit for $1,500.00 to your account nicknamed CHECK
     """
     raw_amount = regex_search(
         r"(?<= for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= from)",
         body,
     )
+
+    if raw_amount is None:
+        # Cash deposit
+        raw_amount = regex_search(
+            r"(?<= for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= to your account nicknamed)",
+            body,
+        )
+        payer = "cash"
+        return payer, raw_amount
+
     if raw_amount is None:
         raise RegexError(
             f"Regex failed to get the raw amount from a Huntington deposit email body: {body}"
         )
+
     payer = regex_search(
         r"(?: for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} from )(.*)(?= to your account nicknamed)",
         body,
