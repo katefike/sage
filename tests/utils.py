@@ -114,14 +114,14 @@ def send_email(html_body: Optional[str] = None, sender: Optional[str] = None) ->
 def insert_db_email(email: Optional[Email] = None) -> int:
     if not email:
         email = Email(
-            1,
-            "2023-08-31 15:22:40",
-            "2023-08-31",
-            "outgoing@gmail.com",
-            "bank@example.com",
-            "Example Transaction Email",
-            "f",
-            "Hello world!",
+            uid=1,
+            batch_time="2023-08-31 15:22:40",
+            forwarded_date="2023-08-31",
+            from_="outgoing@gmail.com",
+            origin="bank@example.com",
+            subject="Example Transaction Email",
+            html="f",
+            body="Hello world!",
         )
     email_id = emails.insert_email(email)
     return email_id
