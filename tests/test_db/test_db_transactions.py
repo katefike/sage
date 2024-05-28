@@ -133,7 +133,6 @@ def create_transaction_objects():
     for transaction_dict in data:
         transaction = Transaction(
             0,
-            None,
             transaction_dict.get("date"),
             transaction_dict.get("type_"),
             transaction_dict.get("bank"),

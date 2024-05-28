@@ -3,9 +3,8 @@ CRUD methods for the banks table.
 """
 from typing import Optional
 
-from loguru import logger
-
 from sage.db import execute_statements
+from loguru import logger
 
 logger.add(sink="sage_main.log")
 
@@ -32,9 +31,9 @@ def get_id(bank_name: str, account: Optional[str]) -> int:
             WHERE
                 name = %s
             """
-    bank_id_results, _colummns = execute_statements.select(query, params)
-    if bank_id_results:
-        bank_id = bank_id_results[0][0]
+    bank_id_result = execute_statements.select(query, params)
+    if bank_id_result:
+        bank_id = bank_id_result[0]
         return bank_id
     else:
         logger.error(
