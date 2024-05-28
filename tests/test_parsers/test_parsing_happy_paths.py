@@ -172,6 +172,21 @@ def get_test_data():
                 )
             ),
         ),
+        (
+            (dict(uid="26", email_id=11)),
+            (
+                dict(
+                    date="2024-04-16",
+                    type_="deposit",
+                    bank="Huntington",
+                    merchant=None,
+                    payer="cash",
+                    amount="1,500.00",
+                    account="checking",
+                    balance="798.08",
+                )
+            ),
+        ),
     ]
 
     # Retrieve the email corresponding to the UID

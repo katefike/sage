@@ -10356,3 +10356,121 @@ $0.01 level you set. You can visit our Resource Center
 to help answer your questions or manage your account.
 
 --0000000000001e852906194ce13f--
+
+From 1800056835137910613@xxx Sat May 25 20:12:51 +0000 2024
+X-GM-THRID: 1800056835137910613
+X-Gmail-Labels: Inbox,Category Personal,Unread,backfill/202404
+Delivered-To: shelovescacti@gmail.com
+Received: by 2002:a05:7010:734c:b0:3cc:117f:c77b with SMTP id i12csp2347133mdc;
+        Sat, 25 May 2024 13:12:52 -0700 (PDT)
+X-Received: by 2002:a0d:cb93:0:b0:61a:ca09:dae3 with SMTP id 00721157ae682-62a08e5f45bmr67178697b3.26.1716667971883;
+        Sat, 25 May 2024 13:12:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1716667971; cv=none;
+        d=google.com; s=arc-20160816;
+        b=X6SW6W/mh+ZYHcdVWYbbXmoHARzG+a/GdhoJ85Xkh6rbbhf2WhglaSIlDrOVJq3F3n
+         /EOCmNDy3+lOTQ7HSlFo+ehpi17IB6hiuj+NtuK13lWggKqOxhanmPCljK1PILot9S1/
+         9c9qmyP1BQJWGKfB0VuQxfJdyYJwX3PHJE/AI5Os8eD5qHV7zdOttxaeCY8tLpr2ExcM
+         M/XehV8qzcEnIv5nMpCN+V5skrPsOMsqHPnRfuSLNuQ6cCy0WekNi6l3ZM5dWTyVShbH
+         t90E+XYb5CiKUJ6uXB5dWOhNN7ipSJYsADEFNGx7QJ8YHhUZ+PvwZAgzTlB7/4qBH10e
+         CG2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:subject:message-id:date:mime-version:from:references
+         :dkim-signature;
+        bh=uVegx6nBLXtqT1PfB4Y73oTdW+YJZyjeEkAgjKYWIP8=;
+        fh=uDCTqrjUuSN01MbuUJAXsMebbw+mvpbkL6i/yQe0nOU=;
+        b=c8kZlIRkVrwo896ij1H/CBcuhPZ2l9DFUUUuQvytQzpWscikvrphx719WDcGQ7C8nA
+         ZeJpunZBFAOCOuCFQ6l0Yw/EIX9MmlBT5+q1Pzu8Jj1Ms7E3BOcZYSg6h/o5VGIxoGqA
+         25Rb+/hAsuaB5fVS5c1dMPbXfosFI1NwSpjfLRMim1Vha2jVJMAWAMYI4DCupJAJqd1a
+         5HIm510FoC+b9yxZQz33yFUaa1r2SL4QOZx24T1TJfRoLB5Bdli7b5GGVm37lMBXKKoz
+         KPiXI/vkaKBREtOTGJtMtySHJzhDIvQDjQZa46KFnJgLQ01BfPzLtDtj69LTjkoqnxOT
+         9ZQA==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b="hs4H9Ox/";
+       spf=pass (google.com: domain of dev.kfike@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=dev.kfike@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Return-Path: <dev.kfike@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id 71dfb90a1353d-4e4f072af19sor738591e0c.2.2024.05.25.13.12.51
+        for <shelovescacti@gmail.com>
+        (Google Transport Security);
+        Sat, 25 May 2024 13:12:51 -0700 (PDT)
+Received-SPF: pass (google.com: domain of dev.kfike@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b="hs4H9Ox/";
+       spf=pass (google.com: domain of dev.kfike@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=dev.kfike@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716667971; x=1717272771; dara=google.com;
+        h=to:subject:message-id:date:mime-version:from:references:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uVegx6nBLXtqT1PfB4Y73oTdW+YJZyjeEkAgjKYWIP8=;
+        b=hs4H9Ox/MnjUtOY5GtrPr+i1likAE786z2+OBwEIDEpyC1M5g1LvQ18tADiaS4/lJX
+         KtrBzfwSzP+v1ka7gB1jJBXWRpoaArQPndqudrLDoKkAhH3fJXJZDZDeVDAKn7UYPFBK
+         ARLz7mXVn2gvSWE3Qm5RB7e5b+bdqkXej1yyKSMns+YurV4FBJXQUoBt5Gos/dxFu9Ku
+         m6vA2FysfO8+38tyFZvkzkrPRxZz/O1urId+pWgIU9+kDlDLiSUhFrA4QmKaLpdUi3UM
+         9EXIqkF9hCRg1/2oPRltq2L4zVTncVzwEnvKRpxGaU/8OxUSZP/f8IJFnzMYhNni6rFx
+         yrcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716667971; x=1717272771;
+        h=to:subject:message-id:date:mime-version:from:references
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uVegx6nBLXtqT1PfB4Y73oTdW+YJZyjeEkAgjKYWIP8=;
+        b=Uoqb5m4zDbCh5xm6vtctzQTzEyI3kq+jLKXQSX2hYo1TpBigpNObvUz/tDKzmAkfkS
+         TPBJuw9nELHy0a7xMn1IfVWcNG+Rej1v930Ysg5xor0GRHFgyjeBQUI8D9v50cptsEm4
+         Mtgrxt8Lwz6zKHS/Ah2s9u4uYbEX3Ng7Cq5ey4sEfEcClu8XGfo8gNOLs70j8kdSQ/cD
+         ZFbnY0Toa/Tt4bAKr+4l2b6mvV8GoMJWxHCROQ7Mhy94jMlJKSl8nG7agiVvB0/JdOxk
+         pU2Pv5ve+xiWetQeL5Fw+MVTjwA6Y0j9d1+KLxZkTSezth/yHYWBIEbSYCf+MAycs9ud
+         BMNg==
+X-Gm-Message-State: AOJu0Yxek69HR1K0GiKvSNFeS7MTiUYS78rZiniEEH79dR/qigQex1bT
+	cz2C6IQvU95KAR+P3XDUKzDEyCkU7V3zbZwt3mSauH2+vs6rvrxxI2oOROHp7xV7s3z+zEOQqjd
+	HRfkI4jI6jaAdWNgURvS3NaYVHuqRnQ==
+X-Google-Smtp-Source: AGHT+IHyBoqjSclqxhq7mHBCL+0mIjqgKFcrhIN42MTr3D9CaLJ7z0zDqDqs1epNgDcpVAAHvtjyDdQ3I2UXxqqkxX8=
+X-Received: by 2002:a67:fc0c:0:b0:480:76a4:3394 with SMTP id
+ ada2fe7eead31-48a38517db8mr5465631137.7.1716667971199; Sat, 25 May 2024
+ 13:12:51 -0700 (PDT)
+Received: from 125135905029 named unknown by gmailapi.google.com with
+ HTTPREST; Sat, 25 May 2024 13:12:50 -0700
+References: <18ee8134392583f3dev.kfike@gmail.com>
+From: dev.kfike@gmail.com
+MIME-Version: 1.0
+X-cloudHQ-Custom-Header-description: created via cloudHQ
+Date: Sat, 25 May 2024 13:12:50 -0700
+Message-ID: <CAHpjF2qdSb6d9Bbh2yUAJQw1zNB7x+WAkEmzBTcH89WjVUeiqw@mail.gmail.com>
+Subject: Fwd: Deposit
+To: shelovescacti@gmail.com
+Content-Type: multipart/alternative; boundary="0000000000009eea4406194ce826"
+
+--0000000000009eea4406194ce826
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Forwarded using cloudHQ's free email forwarding tool: Multi Email Forward
+For Gmail <https://www.multi-email-forward.com/>
+You might be also interested to try cloudHQ's Signature Generator
+<https://www.email-signature-generator.com>: *Free email signature
+generator and signature templates*
+
+---------- Forwarded message ---------
+From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
+Date: Tue, 16 Apr 2024 12:02:39 -0600
+Subject: Deposit
+To: dev.kfike@gmail.com
+Date Sent: Tue, 16 Apr 2024 12:02:39 -0600
+Date Received: Tue, 16 Apr 2024 11:02:40 -0700 (PDT)
+
+A deposit was made to CHECK above the amount you set for an alert.
+View as a web page
+<https://view.email.huntington.com/?qs=3Da0aacabe9780057050570ccb218e7d5b4e=
+b86cf3b80142d74e71e746fac231296f7508b221f258cbcdecf967b6b9072a2517068208642=
+4353e3b04f991bf0b1280578d4c1ea050eb9ef090064515b590273d2fb5a951cea64235ecc7=
+91a13df9>
+
+We've processed a deposit for $1,500.00 to your account nicknamed CHECK.
+That's above the $0.00 you set for an alert.
+
+Your balance is $798.08 as of 4/16/24 2:02 PM ET.
+
+Thank you for banking with Huntington.
+
+--0000000000009eea4406194ce826--
