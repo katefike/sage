@@ -87,7 +87,7 @@ def get_date(body: str) -> str:
     """
     # Match month, day, year format e.g. "Oct 6, 2022"
     raw_date = regex_search(
-        r"(?<=Date: \w{3}, )(\w{3} [0-9]{1,2}, [0-9]{4})(?= at [0-9]{1,2}:[0-9]{2} \w{2} Subject: )",
+        r"(?<=Date: \w{3}, )(\w{3} [0-9]{1,2}, [0-9]{4})(?= at [0-9]{1,2}:[0-9]{2}\S|\s\w{2})",
         body,
     )
     if raw_date is not None:
@@ -115,7 +115,7 @@ def get_date(body: str) -> str:
 def get_bank(body: str) -> str:
     """
     Identify the bank using the bank's email
-    I.e.
+    E.g.
         ---------- Forwarded message ---------
         From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
         Date: Thu, Oct 6, 2022 at 10:32 AM
@@ -134,7 +134,7 @@ def get_bank(body: str) -> str:
 def parse_chase(subject: MailMessage.subject) -> str:
     """
     Extract the transaction amount and merchant from the email subject
-    I.e.
+    E.g.
     Your $1.00 transaction with DIGITALOCEAN.COM
     """
     merchant = regex_search(r"(?<=with )(.*)", subject)
@@ -145,7 +145,7 @@ def parse_chase(subject: MailMessage.subject) -> str:
 def parse_discover(body: str) -> str:
     """
     Extract the transaction amount and merchant from the email body
-    I.e.
+    E.g.
     Transaction Date: June 11, 2022
 
     Merchant: SQ *EARTH BISTRO CAFE
@@ -177,7 +177,7 @@ def get_huntington_transaction_type(body: str) -> str:
 def parse_huntington_transfer_withdrawal(body: str) -> str:
     """
     Extract the transferred amount from the email body
-    I.e.
+    E.g.
     We've processed a transfer withdrawal for $999.51
     from your account nicknamed CHECK. That's above the $0.00 you set for an alert.
     """
@@ -214,10 +214,10 @@ def parse_huntington_transfer_deposit(body: str) -> str:
 def parse_huntington_withdrawal(body: str) -> str:
     """
     Extract the transaction amount and merchant from the email body
-    I.e.
+    E.g.
     We've processed an ACH withdrawal for $1.72 at CHASE CREDIT CRD EPAY
     from your account nicknamed SAVE.
-    I.e.
+    E.g.
     We've processed an ACH withdrawal for $10,000.00 at TREASURY DIRECT TREAS DRCT from your account nicknamed SAVE.
     """
     raw_amount = regex_search(
