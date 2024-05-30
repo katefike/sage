@@ -12,39 +12,18 @@ the output is one inserted transaction.
 """
 import pytest
 
+from sage.__main__ import main
 from sage.db import transactions
-from sage.models.email import Email
 from tests import utils
 
-
-def get_test_data():
-    data = [
-        # (dict(file="distinct_but_similar_txns.mbox"), dict(insert_count=2)),
-        (dict(file="duplicate_txns_gmail+cloudHQ_forwards.mbox"), dict(insert_count=1)),
-        (dict(file="duplicate_txns_identical_forwards.mbox"), dict(insert_count=1)),
-    ]
-
-    # Retrieve the email corresponding to the UID
-    for email in data:
-        input = email[0]
-        uid = input.get("uid")
-        msgs = utils.get_inbox_emails(uid)
-        if len(msgs) == 0:
-            print(f"CRITICAL: No email having UID {uid} was found.")
-        if len(msgs) > 1:
-            print(f"CRITICAL: More than one email having UID {uid} was found.")
-        # Iterate over messages,
-        # but we're only expecting a single email message in the object.
-        for msg in msgs:
-            input["msg"] = msg
-
-        input["email_id"] = input.get("email_id")
-
-    return data
-
-
-utils.fresh_inbox("transaction_emails.mbox")
-DATA = get_test_data()
+DATA = [
+    # (dict(file="distinct_but_similar_txns.mbox"), dict(inserted_txn_count=2)),
+    (
+        dict(file="duplicate_txns_gmail+cloudHQ_forwards.mbox"),
+        dict(inserted_txn_count=1),
+    ),
+    (dict(file="duplicate_txns_identical_forwards.mbox"), dict(inserted_txn_count=1)),
+]
 
 
 @pytest.mark.parametrize("input,expected_output", DATA)
@@ -52,5 +31,7 @@ def test_hash(input, expected_output):
     """
     Ensure that duplicate transactions are rejected based on the hash value.
     """
-    # transaction = email_parser.main(input.get("msg"), input.get("email_id"))
-    # assert expected_output.get("bank") == transaction.bank
+    print(input.get("file"))
+    utils.fresh_inbox(input.get("file"))
+    msg_count = main()
+    assert expected_output.get("inserted_txn_count") == msg_count.get("processed")
