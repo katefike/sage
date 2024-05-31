@@ -26,6 +26,7 @@ logger.add(sink="sage_main.log", level="INFO")
 
 def main():
     logger.info("STARTING SAGE")
+    logger.info(f"Forwarding email: {ENV['FORWARDING_EMAIL']}")
 
     # Set the time the batch started
     utc_timestamp = datetime.utcnow()
