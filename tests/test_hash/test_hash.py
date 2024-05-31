@@ -10,9 +10,10 @@ transactions.
 For duplicate transactions (e.g. from the same transaction forwarded twice)
 the output is one inserted transaction.
 """
+import os
+
 import pytest
 
-from sage.__main__ import main
 from sage.db import transactions
 from tests import utils
 
@@ -31,7 +32,12 @@ def test_hash(input, expected_output):
     """
     Ensure that duplicate transactions are rejected based on the hash value.
     """
-    print(input.get("file"))
+    FORWARDING_EMAIL = os.environ.get("FORWARDING_EMAIL")
+    print(
+        f"In test_hash function, environment variable FORWARDING_EMAIL is {FORWARDING_EMAIL}"
+    )
     utils.fresh_inbox(input.get("file"))
+    from sage.__main__ import main
+
     msg_count = main()
     assert expected_output.get("inserted_txn_count") == msg_count.get("processed")
