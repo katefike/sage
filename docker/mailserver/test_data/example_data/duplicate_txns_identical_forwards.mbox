@@ -1,4 +1,4 @@
-Delivered-To: incoming@gmail.com
+Delivered-To: incoming@example.com
 Received: by 2002:a05:7010:734c:b0:3cc:117f:c77b with SMTP id i12csp3772880mdc;
         Tue, 28 May 2024 07:15:21 -0700 (PDT)
 X-Received: by 2002:a05:6871:7998:b0:23c:bbe9:570 with SMTP id 586e51a60fabf-24ca1382e58mr16332852fac.37.1716905721535;
@@ -30,7 +30,7 @@ ARC-Authentication-Results: i=1; mx.google.com;
 Return-Path: <outgoing@gmail.com>
 Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
         by mx.google.com with SMTPS id 586e51a60fabf-24ca2043517sor4117334fac.10.2024.05.28.07.15.21
-        for <incoming@gmail.com>
+        for <incoming@example.com>
         (Google Transport Security);
         Tue, 28 May 2024 07:15:21 -0700 (PDT)
 Received-SPF: pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
@@ -70,7 +70,7 @@ From: Kate Fike <outgoing@gmail.com>
 Date: Tue, 28 May 2024 10:15:09 -0400
 Message-ID: <CAHpjF2quQ3hJaV4xN3tbrrOf2aCsFu1ittRrysJGv23bRXWdTw@mail.gmail.com>
 Subject: Fwd: Your $47.91 transaction with SQ *HABITAT FOR HUMA
-To: incoming@gmail.com
+To: incoming@example.com
 Content-Type: multipart/alternative; boundary="00000000000097aeaa061984432d"
 
 --00000000000097aeaa061984432d
@@ -474,7 +474,7 @@ lock" alt=3D""></td>
 
 --00000000000097aeaa061984432d--
 
-Delivered-To: incoming@gmail.com
+Delivered-To: incoming@example.com
 Received: by 2002:a05:7010:734c:b0:3cc:117f:c77b with SMTP id i12csp3775553mdc;
         Tue, 28 May 2024 07:19:09 -0700 (PDT)
 X-Received: by 2002:a05:6830:1213:b0:6ef:97a5:8800 with SMTP id 46e09a7af769-6f8d094fb8emr12310641a34.0.1716905949289;
@@ -506,7 +506,7 @@ ARC-Authentication-Results: i=1; mx.google.com;
 Return-Path: <outgoing@gmail.com>
 Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
         by mx.google.com with SMTPS id 46e09a7af769-6f8d0e798bbsor3180447a34.18.2024.05.28.07.19.09
-        for <incoming@gmail.com>
+        for <incoming@example.com>
         (Google Transport Security);
         Tue, 28 May 2024 07:19:09 -0700 (PDT)
 Received-SPF: pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
@@ -546,7 +546,7 @@ From: Kate Fike <outgoing@gmail.com>
 Date: Tue, 28 May 2024 10:18:57 -0400
 Message-ID: <CAHpjF2pJ7Okhe6YEy4j7cdQxUN1MrAYWGuVcDzq4=E0xS-5yqQ@mail.gmail.com>
 Subject: Fwd: Your $47.91 transaction with SQ *HABITAT FOR HUMA
-To: incoming@gmail.com
+To: incoming@example.com
 Content-Type: multipart/alternative; boundary="0000000000002e73c8061984513f"
 
 --0000000000002e73c8061984513f
