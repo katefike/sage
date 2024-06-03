@@ -4,6 +4,8 @@ import pathlib
 import imap_tools
 from dotenv import load_dotenv
 
+from sage.config import ENV
+
 """
 Usage:
 

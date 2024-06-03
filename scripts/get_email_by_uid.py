@@ -5,6 +5,8 @@ import sys
 import imap_tools
 from dotenv import load_dotenv
 
+from sage.config import ENV
+
 """
 Usage:
 
@@ -16,13 +18,9 @@ it's easier to redirect stdout to a file by adding this like to the command.
 > scripts/debug_stdout.txt
 """
 # Get all environment variables
-app_root = str(pathlib.Path(__file__).parent.parent)
-env_path = app_root + "/.env"
-if not load_dotenv(env_path):
-    print(f"ENVIRONMENT ERROR: .env failed to load from {env_path}")
-FORWARDING_EMAIL = os.environ.get("FORWARDING_EMAIL")
-RECEIVING_EMAIL_USER = os.environ.get("RECEIVING_EMAIL_USER")
-RECEIVING_EMAIL_PASSWORD = os.environ.get("RECEIVING_EMAIL_PASSWORD")
+FORWARDING_EMAIL = ENV["FORWARDING_EMAIL"]
+RECEIVING_EMAIL_USER = ENV["RECEIVING_EMAIL_USER"]
+RECEIVING_EMAIL_PASSWORD = ENV["RECEIVING_EMAIL_PASSWORD"]
 
 # Use uid provided as command line argument
 input_uid = sys.argv[1]
