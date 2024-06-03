@@ -32,10 +32,6 @@ def test_hash(input, expected_output):
     """
     Ensure that duplicate transactions are rejected based on the hash value.
     """
-    FORWARDING_EMAIL = os.environ.get("FORWARDING_EMAIL")
-    print(
-        f"In test_hash function, environment variable FORWARDING_EMAIL is {FORWARDING_EMAIL}"
-    )
     utils.fresh_inbox(input.get("file"))
     from sage.__main__ import main
 
