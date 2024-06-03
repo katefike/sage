@@ -8,7 +8,7 @@ from . import ENV
 
 def pytest_configure():
     assert (
-        ENV["ISDEV"] == True
+        ENV["ISDEV"] is True
     ), "CRITICAL: Only run pytest in the development environment."
 
 
