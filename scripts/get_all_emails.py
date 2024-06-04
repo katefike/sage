@@ -9,13 +9,12 @@ It's hard to look at the email body from the command line,
 it's easier to redirect stdout to a file by adding this like to the command.
 > scripts/debug_stdout.txt
 """
-FORWARDING_EMAIL = ENV["FORWARDING_EMAIL"]
 RECEIVING_EMAIL_USER = ENV["RECEIVING_EMAIL_USER"]
 RECEIVING_EMAIL_PASSWORD = ENV["RECEIVING_EMAIL_PASSWORD"]
 
 count = 0
 try:
-    print(f"Connecting to mailbox with ")
+    print(f"Connecting to mailbox of user {RECEIVING_EMAIL_USER}...")
     with imap_tools.MailBoxUnencrypted("localhost").login(
         RECEIVING_EMAIL_USER, RECEIVING_EMAIL_PASSWORD
     ) as mailbox:
