@@ -30,7 +30,6 @@ try:
                 print(f"HTML: {msg.html}")
         print(f"{count} emails were retrieved.")
 except imap_tools.MailboxLoginError as error:
-    print("FAILED")
     print(
         f"MAILSERVER ERROR: Failed to connect via IMAP to the inbox of user {RECEIVING_EMAIL_USER}: {error}"
     )
