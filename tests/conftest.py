@@ -12,23 +12,9 @@ def pytest_configure():
     ), "CRITICAL: Only run pytest in the development environment."
 
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="session")
 def env() -> Dict:
-    mp = pytest.MonkeyPatch()
-    mp.delenv("FORWARDING_EMAIL", raising=False)
-    mp.setenv("FORWARDING_EMAIL", "outgoing@gmail.com")
-    print(
-        f"In env function, environment variable FORWARDING_EMAIL is {ENV['FORWARDING_EMAIL']}"
-    )
     return ENV
-
-
-# @pytest.fixture(scope="function", autouse=True)
-# def set_env(monkeypatch) -> Dict:
-#     monkeypatch.setenv("FORWARDING_EMAIL", "outgoing@gmail.com", prepend=None)
-#     print(
-#         f"In set_env Set environment variable FORWARDING_EMAIL to {ENV['FORWARDING_EMAIL']}"
-#     )
 
 
 @pytest.fixture(scope="session")
