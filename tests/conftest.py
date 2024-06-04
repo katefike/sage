@@ -9,7 +9,8 @@ from . import ENV
 def pytest_configure():
     assert (
         ENV["ISDEV"] is True
-    ), "CRITICAL: Only run pytest in the development environment."
+    ), "CRITICAL: Only run pytest in the development environment. \
+        ISDEV must be true."
 
 
 @pytest.fixture(scope="session")
