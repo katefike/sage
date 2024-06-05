@@ -24,7 +24,7 @@ def fresh_inbox(mbox_name: str):
     """
     container = "docker exec sage-mailserver"
     maildir_path = f"/home/{ENV['RECEIVING_EMAIL_USER']}/Maildir/"
-    mbox_path = f"/home/{ENV['RECEIVING_EMAIL_USER']}/test_data/example_data"
+    mbox_path = "test_data/example_data"
     try:
         subprocess.call(
             f"{container} rm -r {maildir_path} && mkdir {maildir_path}",
