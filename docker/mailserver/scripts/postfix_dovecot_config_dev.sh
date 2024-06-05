@@ -7,6 +7,9 @@ if [[ -f /test_data/$PRE_LOAD_MBOX ]]; then
   mb2md -s /test_data/$PRE_LOAD_MBOX -d /home/$RECEIVING_EMAIL_USER/Maildir/
 fi
 
+# TODO: Create an imap group
+chmod -R 777 /home/$RECEIVING_EMAIL_USER/Maildir
+
 # Configures /etc/postfix/main.cf, /etc/postfix/master.cf,
 # and /etc/dovecot/dovecot.conf for development
 
