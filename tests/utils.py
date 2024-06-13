@@ -16,32 +16,61 @@ from . import ENV
 def fresh_inbox(mbox_name: str):
     """
     Re-create the user's Maildir. Then reads a directory
-    containing an Mbox format mailbox and creates a Maildir format mailbox.
+    containing an mbox format mailbox and creates a Maildir format mailbox.
 
     The command doveadm expunge -u {EN['RECEIVING_EMAIL_USER']} mailbox 'INBOX' all
     is insufficient because it does not restart incrementing of the UIDs
     at 1.
     """
+    print(f"Refreshing inbox with mbox {mbox_name}...")
+
     container = "docker exec sage-mailserver"
     maildir_path = f"/home/{ENV['RECEIVING_EMAIL_USER']}/Maildir/"
-    mbox_path = "test_data/example_data"
+    # The mbox path MUST be the full file path
+    # Otherwise fails with error "Fatal: Source is not an mbox file or a directory!"
+    # https://www.linuxquestions.org/questions/linux-server-73/mb2md-problem-891502/
+    mbox_path = "./test_data/example_data"
+
+    _delete_maildir_success, delete_maildir_output = call_subprocess_with_output(
+        f"{container} rm -r {maildir_path}"
+    )
+    print(f"INFO: Deleted existing Maildir/, if any: {delete_maildir_output}")
+
+    recreate_maildir_success, recreate_maildir_output = call_subprocess_with_output(
+        f"{container} mkdir {maildir_path}"
+    )
+    if recreate_maildir_success is False:
+        print(f"CRITICAL: Failed to recreate Maildir/: {recreate_maildir_output}")
+
+    load_mbox_success, load_mbox_output = call_subprocess_with_output(
+        f"{container} mb2md -s {mbox_path}/{mbox_name} -d {maildir_path}"
+    )
+    if load_mbox_success is False:
+        print(f"CRITICAL: Failed to load mbox: {load_mbox_output}")
+
+    (
+        modify_maildir_permissions_success,
+        modify_maildir_permissions_output,
+    ) = call_subprocess_with_output(
+        f"{container} mb2md -s {mbox_path}/{mbox_name} -d {maildir_path}"
+    )
+    if modify_maildir_permissions_success is False:
+        print(
+            f"CRITICAL: Failed to modify Maildir/ permissions: {modify_maildir_permissions_output}"
+        )
+
+
+def call_subprocess_with_output(command):
+    success = False
     try:
-        subprocess.call(
-            f"{container} rm -r {maildir_path} && mkdir {maildir_path}",
-            shell=True,
-        )
-        print("Recreated Maildir/.")
-        subprocess.call(
-            f"{container} mb2md -s {mbox_path}/{mbox_name} -d {maildir_path}",
-            shell=True,
-        )
-        subprocess.call(
-            f"{container} chmod -R 777 {maildir_path}",
-            shell=True,
-        )
-        print("Successfully loaded emails from mbox file.")
-    except Exception as error:
-        print(f"CRITICAL: Failed to create an inbox from an mbox: {error}")
+        output = subprocess.check_output(command, stderr=subprocess.STDOUT).decode()
+        success = True
+    except subprocess.CalledProcessError as e:
+        output = e.output.decode()
+    except Exception as e:
+        # check_call can raise other exceptions, such as FileNotFoundError
+        output = str(e)
+    return (success, output)
 
 
 def get_inbox_emails(input_uid: Optional[int] = None) -> List:
