@@ -13,7 +13,7 @@ from sage.models.email import Email
 from . import ENV
 
 
-def fresh_inbox(mbox_name: str):
+def refresh_inbox(mbox_name: str):
     """
     Re-create the user's Maildir. Then reads a directory
     containing an mbox format mailbox and creates a Maildir format mailbox.
