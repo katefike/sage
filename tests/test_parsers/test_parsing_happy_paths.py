@@ -238,7 +238,7 @@ def get_test_data():
     return data
 
 
-utils.fresh_inbox("transaction_emails.mbox")
+utils.refresh_inbox("transaction_emails.mbox")
 DATA = get_test_data()
 
 
