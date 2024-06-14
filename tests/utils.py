@@ -31,33 +31,21 @@ def refresh_inbox(mbox_name: str):
     # https://www.linuxquestions.org/questions/linux-server-73/mb2md-problem-891502/
     mbox_path = "./test_data/example_data"
 
-    _delete_maildir_success, delete_maildir_output = call_subprocess_with_output(
-        f"{container} rm -r {maildir_path}"
+    print("Recreating Maildir/...")
+    subprocess.call(
+        f"{container} rm -r {maildir_path} && mkdir {maildir_path}",
+        shell=True,
     )
-    print(f"INFO: Deleted existing Maildir/, if any: {delete_maildir_output}")
-
-    recreate_maildir_success, recreate_maildir_output = call_subprocess_with_output(
-        f"{container} mkdir {maildir_path}"
+    print("Loading mbox into Maildir/...")
+    subprocess.call(
+        f"{container} mb2md -s {mbox_path}/{mbox_name} -d {maildir_path}",
+        shell=True,
     )
-    if recreate_maildir_success is False:
-        print(f"CRITICAL: Failed to recreate Maildir/: {recreate_maildir_output}")
-
-    load_mbox_success, load_mbox_output = call_subprocess_with_output(
-        f"{container} mb2md -s {mbox_path}/{mbox_name} -d {maildir_path}"
+    print("modifying Maildir/ permissions...")
+    subprocess.call(
+        f"{container} chmod -R 777 {maildir_path}",
+        shell=True,
     )
-    if load_mbox_success is False:
-        print(f"CRITICAL: Failed to load mbox: {load_mbox_output}")
-
-    (
-        modify_maildir_permissions_success,
-        modify_maildir_permissions_output,
-    ) = call_subprocess_with_output(
-        f"{container} mb2md -s {mbox_path}/{mbox_name} -d {maildir_path}"
-    )
-    if modify_maildir_permissions_success is False:
-        print(
-            f"CRITICAL: Failed to modify Maildir/ permissions: {modify_maildir_permissions_output}"
-        )
 
 
 def call_subprocess_with_output(command):
