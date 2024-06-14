@@ -259,13 +259,12 @@ def parse_huntington_deposit(body: str) -> str:
             r"(?<= for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= to your account nicknamed)",
             body,
         )
+        if raw_amount is None:
+            raise RegexError(
+                f"Regex failed to get the raw amount from a Huntington deposit email body: {body}"
+            )
         payer = "cash"
         return payer, raw_amount
-
-    if raw_amount is None:
-        raise RegexError(
-            f"Regex failed to get the raw amount from a Huntington deposit email body: {body}"
-        )
 
     payer = regex_search(
         r"(?: for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} from )(.*)(?= to your account nicknamed)",
