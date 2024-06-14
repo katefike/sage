@@ -48,19 +48,6 @@ def refresh_inbox(mbox_name: str):
     )
 
 
-def call_subprocess_with_output(command):
-    success = False
-    try:
-        output = subprocess.check_output(command, stderr=subprocess.STDOUT).decode()
-        success = True
-    except subprocess.CalledProcessError as e:
-        output = e.output.decode()
-    except Exception as e:
-        # check_call can raise other exceptions, such as FileNotFoundError
-        output = str(e)
-    return (success, output)
-
-
 def get_inbox_emails(input_uid: Optional[int] = None) -> List:
     msgs = []
     try:
