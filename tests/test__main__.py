@@ -35,6 +35,6 @@ def test_unparsable_emails():
     They should be retrieved from the inbox and left unparsed.
     """
 
-    utils.fresh_inbox("unparsable_emails.mbox")
+    utils.refresh_inbox("unparsable_emails.mbox")
     msg_count = main()
     assert msg_count.get("retrieved") == msg_count.get("unparsed")

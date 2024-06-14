@@ -32,7 +32,7 @@ def test_hash(input, expected_output):
     """
     Ensure that duplicate transactions are rejected based on the hash value.
     """
-    utils.fresh_inbox(input.get("file"))
+    utils.refresh_inbox(input.get("file"))
     from sage.__main__ import main
 
     msg_count = main()
