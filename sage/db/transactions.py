@@ -4,6 +4,7 @@ CRUD functions for the txns table.
 
 from typing import List
 
+import psycopg2
 from loguru import logger
 
 from sage.db import banks, entities, execute_statements
@@ -14,40 +15,27 @@ logger.add(sink="sage_main.log")
 
 def insert_transaction(transaction: Transaction) -> bool:
     bank_id = banks.get_id(transaction.bank, transaction.account)
+
     # Transfers don't have entities
-    if "transfer" in transaction.type_:
-        txn_data = (
-            transaction.email_id,
-            transaction.date,
-            bank_id,
-            transaction.type_,
-            transaction.amount,
-        )
-        stmt = """
-        INSERT INTO
-            transactions (email_id, date, bank_id, type, amount)
-        VALUES
-            (%s, %s, %s, %s, %s);
-        """
-    else:
-        if not transaction.merchant and not transaction.payer:
-            logger.critical(f"No merchant or payer for txn: {transaction}")
+    entity_id = None
+    if "transfer" not in transaction.type_:
         entity_id = entities.get_id(transaction.merchant, transaction.payer)
-        txn_data = (
-            transaction.email_id,
-            transaction.date,
-            bank_id,
-            transaction.type_,
-            transaction.amount,
-            entity_id,
-        )
-        stmt = """
-        INSERT INTO
-            transactions (email_id, date, bank_id, type, amount, entity_id)
-        VALUES
-            (%s, %s, %s, %s, %s, %s);
-        """
-    row_count = execute_statements.insert(stmt, txn_data)
+
+    data = (
+        transaction.email_id,
+        transaction.date,
+        bank_id,
+        transaction.type_,
+        transaction.amount,
+        entity_id,
+    )
+    stmt = """
+    INSERT INTO
+        transactions (email_id, date, bank_id, type, amount, entity_id)
+    VALUES
+        (%s, %s, %s, %s, %s, %s);
+    """
+    row_count = execute_statements.insert(stmt, data)
     return row_count
 
 
@@ -82,41 +70,29 @@ def get_identical_txn_id(txn: Transaction) -> tuple:
     Identify the oldest txn that has the same attributes as the current txn.
     """
     bank_id = banks.get_id(txn.bank, txn.account)
-    if "transfer" in txn.type_:
-        criteria = (
-            txn.date,
-            txn.type_,
-            bank_id,
-            txn.amount,
-        )
-        stmt = """
-        SELECT
-            MIN(t.id) AS "txn_id"
-        FROM transactions t
-        WHERE t.date = %s
-            AND t.type = %s
-            AND t.bank_id = %s
-            AND t.amount = %s;
-        """
-    else:
+
+    # Transfers don't have entities
+    entity_id = None
+    if "transfer" not in txn.type_:
         entity_id = entities.get_id(txn.merchant, txn.payer)
-        criteria = (
-            txn.date,
-            txn.type_,
-            bank_id,
-            txn.amount,
-            entity_id,
-        )
-        stmt = """
-        SELECT
-            MIN(t.id) AS "txn_id"
-        FROM transactions t
-        WHERE t.date = %s
-            AND t.type = %s
-            AND t.bank_id = %s
-            AND t.amount = %s
-            AND t.entity_id = %s;
-        """
+
+    criteria = (
+        txn.date,
+        txn.type_,
+        bank_id,
+        txn.amount,
+        entity_id,
+    )
+    stmt = """
+    SELECT
+        MIN(t.id) AS "txn_id"
+    FROM transactions t
+    WHERE t.date = %s
+        AND t.type = %s
+        AND t.bank_id = %s
+        AND t.amount = %s
+        AND t.entity_id = %s;
+    """
     result, _column = execute_statements.select(stmt, criteria)
     identical_txn_id = result[0][0]
     return identical_txn_id
