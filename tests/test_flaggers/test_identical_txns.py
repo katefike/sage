@@ -10,27 +10,26 @@ transactions.
 For duplicate transactions (e.g. from the same transaction forwarded twice)
 the output is one inserted transaction.
 """
-import os
-
 import pytest
 
 from sage.__main__ import main
+from sage.db import transactions
 from tests import utils
 
 DATA = [
     # (dict(file="distinct_but_similar_txns.mbox"), dict(inserted_txn_count=2, flagged_identical_txn=1)),
     (
         dict(file="identical_txns_gmail+cloudHQ_forwards.mbox"),
-        dict(inserted_txn_count=2, flagged_identical_txn=1),
+        dict(inserted_txn_count=2, identical_txn_count=1),
     ),
     # FIXME: Won't load; returns error "Skipping ./test_data/example_data/identical_txns_duplicate_forwards.mbox: not a mbox file"
     # (
     #     dict(file="identical_txns_duplicate_forwards.mbox"),
-    #     dict(inserted_txn_count=2, flagged_identical_txn=1),
+    #     dict(inserted_txn_count=2, identical_txn_count=1),
     # ),
     # (
     #     dict(file="identical_txns_triplicate_forwards.mbox"),
-    #     dict(inserted_txn_count=3, flagged_identical_txn=2),
+    #     dict(inserted_txn_count=3, identical_txn_count=2),
     # ),
 ]
 
@@ -38,9 +37,11 @@ DATA = [
 @pytest.mark.parametrize("input,expected_output", DATA)
 def test_identical_txns(input, expected_output):
     """
-    Ensure that potential identical transactions are flagged.
+    Verify that identical transactions are flagged.
     """
     utils.refresh_inbox(input.get("file"))
 
     msg_count = main()
     assert expected_output.get("inserted_txn_count") == msg_count.get("processed")
+    rows = transactions.get_identical_txns()
+    assert expected_output.get("identical_txn_count") == len(rows)
