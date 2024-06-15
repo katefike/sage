@@ -1,5 +1,5 @@
 """
-CRUD methods for the entities table and the .
+CRUD functions for the entities table.
 """
 from typing import Optional
 
