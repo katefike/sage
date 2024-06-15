@@ -6,7 +6,7 @@ from dotenv import dotenv_values
 if os.environ.get("ISDEV") == "True":
     ISDEV = True
     ENV_FILE = "/.env-example"
-else:
+else:  # pragma: no cover
     ISDEV = False
     ENV_FILE = "/.env"
 
