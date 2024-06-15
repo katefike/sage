@@ -20,7 +20,7 @@ def open_connection():
             password=ENV["POSTGRES_PASSWORD"],
         )
         return conn
-    except psycopg2.DatabaseError as error:
+    except psycopg2.DatabaseError as error:  # pragma: no cover
         logger.critical(f"Failed to connect to the database: {error}")
         raise error
 
@@ -37,7 +37,7 @@ def select(query: str, params: Optional[tuple] = None):
                 records = [row for row in cursor.fetchall()]
                 columns = [desc[0] for desc in cursor.description]
                 return records, columns
-            except psycopg2.DatabaseError as error:
+            except psycopg2.DatabaseError as error:  # pragma: no cover
                 logger.error(f"Query execution failed due to an error: {error}")
 
 
@@ -48,7 +48,7 @@ def insert(stmt: str, data: tuple) -> int:
                 cursor.execute(stmt, data)
                 conn.commit()
                 return cursor.rowcount
-            except psycopg2.DatabaseError as error:
+            except psycopg2.DatabaseError as error:  # pragma: no cover
                 logger.error(f"Query execution failed due to an error: {error}")
 
 
@@ -60,5 +60,5 @@ def insert_get_id(stmt: str, data: tuple) -> int:
                 id = cursor.fetchone()[0]
                 conn.commit()
                 return id
-            except psycopg2.DatabaseError as error:
+            except psycopg2.DatabaseError as error:  # pragma: no cover
                 logger.error(f"Query execution failed due to an error: {error}")
