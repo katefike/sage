@@ -49,8 +49,8 @@ def insert_transaction(transaction: Transaction) -> bool:
 def get_complete_transactions_by_daterange(
     start_date: str, stop_date: str
 ) -> List[tuple]:
-    criteria = (start_date, stop_date)
-    stmt = """
+    params = (start_date, stop_date)
+    query = """
     SELECT
         t.id AS "transaction_id",
         t.email_id AS "email_id",
@@ -68,7 +68,7 @@ def get_complete_transactions_by_daterange(
     WHERE t.date >= %s AND t.date <= %s
     ORDER BY t.date ASC;
     """
-    row = execute_statements.select(stmt, criteria)
+    row = execute_statements.select(query, params)
     return row
 
 
@@ -89,14 +89,14 @@ def get_identical_txn_id(txn: Transaction) -> Optional[int]:
     if "transfer" not in txn.type_:
         entity_id = entities.get_id(txn.merchant, txn.payer)
 
-    criteria = (
+    params = (
         txn.date,
         txn.type_,
         bank_id,
         txn.amount,
         entity_id,
     )
-    stmt = """
+    query = """
     SELECT
         MIN(t.id) AS "txn_id"
     FROM transactions t
@@ -106,7 +106,7 @@ def get_identical_txn_id(txn: Transaction) -> Optional[int]:
         AND t.amount = %s
         AND t.entity_id = %s;
     """
-    row, _column = execute_statements.select(stmt, criteria)
+    row, _column = execute_statements.select(query, params)
     identical_txn_id = row[0][0]
     return identical_txn_id
 
@@ -115,11 +115,11 @@ def get_identical_txns() -> tuple:
     """
     Get all txns that have been flagged with an identical txn.
     """
-    stmt = """
+    query = """
     SELECT
         *
     FROM transactions t
     WHERE t.identical_txn_id IS NOT NULL;
     """
-    rows, _columns = execute_statements.select(stmt)
+    rows, _columns = execute_statements.select(query)
     return rows
