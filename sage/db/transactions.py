@@ -48,7 +48,11 @@ def insert_transaction(transaction: Transaction) -> bool:
 
 def get_complete_transactions_by_daterange(
     start_date: str, stop_date: str
-) -> List[tuple]:
+) -> List[tuple]:  # pragma: no cover
+    """
+    Used in sage.validator; not a part of the main Sage program.
+    That's why this function doesn't have test coverage.
+    """
     params = (start_date, stop_date)
     query = """
     SELECT
