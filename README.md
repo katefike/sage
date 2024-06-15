@@ -8,6 +8,7 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 - msg = message
 - txn = transaction
 - uid = unique identifier
+- stmt = SQL statement
 - mx = mailserver
 - db = database
 
