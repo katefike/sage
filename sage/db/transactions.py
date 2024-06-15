@@ -2,9 +2,8 @@
 CRUD functions for the txns table.
 """
 
-from typing import List
+from typing import List, Optional
 
-import psycopg2
 from loguru import logger
 
 from sage.db import banks, entities, execute_statements
@@ -20,7 +19,6 @@ def insert_transaction(transaction: Transaction) -> bool:
     entity_id = None
     if "transfer" not in transaction.type_:
         entity_id = entities.get_id(transaction.merchant, transaction.payer)
-
     data = (
         transaction.email_id,
         transaction.date,
@@ -28,12 +26,13 @@ def insert_transaction(transaction: Transaction) -> bool:
         transaction.type_,
         transaction.amount,
         entity_id,
+        transaction.identical_txn_id,
     )
     stmt = """
     INSERT INTO
-        transactions (email_id, date, bank_id, type, amount, entity_id)
+        transactions (email_id, date, bank_id, type, amount, entity_id, identical_txn_id)
     VALUES
-        (%s, %s, %s, %s, %s, %s);
+        (%s, %s, %s, %s, %s, %s, %s);
     """
     row_count = execute_statements.insert(stmt, data)
     return row_count
@@ -65,7 +64,7 @@ def get_complete_transactions_by_daterange(
     return row
 
 
-def get_identical_txn_id(txn: Transaction) -> tuple:
+def get_identical_txn_id(txn: Transaction) -> Optional[int]:
     """
     Identify the oldest txn that has the same attributes as the current txn.
     """
@@ -93,6 +92,20 @@ def get_identical_txn_id(txn: Transaction) -> tuple:
         AND t.amount = %s
         AND t.entity_id = %s;
     """
-    result, _column = execute_statements.select(stmt, criteria)
-    identical_txn_id = result[0][0]
+    row, _column = execute_statements.select(stmt, criteria)
+    identical_txn_id = row[0][0]
     return identical_txn_id
+
+
+def get_identical_txns() -> tuple:
+    """
+    Get all txns that have been flagged with an identical txn.
+    """
+    stmt = """
+    SELECT
+        *
+    FROM transactions t
+    WHERE t.identical_txn_id IS NOT NULL;
+    """
+    rows, _columns = execute_statements.select(stmt)
+    return rows
