@@ -4,6 +4,13 @@ This app is like Mint, but ~~better~~ actually exists. It collects all of your p
 
 Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 
+## Abbreviations
+- msg = message
+- txn = transaction
+- uid = unique identifier
+- mx = mailserver
+- db = database
+
 ## Production Setup Instructions
 *This app is production ready! For questions, problems and enhancements, open a github issue.*
 
