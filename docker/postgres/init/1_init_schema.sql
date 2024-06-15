@@ -54,18 +54,19 @@ CREATE TABLE IF NOT EXISTS public.entity_tag_mapping(
 );
 CREATE TABLE IF NOT EXISTS public.transactions(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    email_id INT NOT NULL, 
+    email_id INT NOT NULL,
     date DATE NOT NULL,
     -- TODO: Replace with enum (withdrawal, deposit, transfer withdrawal, transfer deposit)
     TYPE TEXT NOT NULL,
     bank_id INTEGER NOT NULL,
     amount NUMERIC NOT NULL,
     entity_id INT,
+    identical_txn_id INT,
     FOREIGN KEY (email_id) REFERENCES public.emails(id),
     FOREIGN KEY (bank_id) REFERENCES public.banks(id),
-    FOREIGN KEY (entity_id) REFERENCES public.entities(id)
+    FOREIGN KEY (entity_id) REFERENCES public.entities(id),
+    FOREIGN KEY (identical_txn_id) REFERENCES public.transactions(id)
 );
-
 CREATE TABLE IF NOT EXISTS public.transaction_tags(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     NAME TEXT NOT NULL,

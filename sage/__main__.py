@@ -8,7 +8,8 @@ forwarded alert emails. Retrieve emails that are from the forwarding email.
 3. Store all retrieved emails in the database's emails table.
 4. Process the transaction data contained in the email message:
     4a. Parse the transaction data from the email message.
-    4b. Write the transaction data to the Postgres database.
+    4b. If needed, flag identical transactions.
+    4c. Write the transaction data to the Postgres database.
 """
 from datetime import datetime
 
@@ -16,6 +17,7 @@ import imap_tools
 from loguru import logger
 
 from sage.db import emails, transactions
+from sage.flaggers import identical_txns
 from sage.models.email import Email
 from sage.parsers import email_parser
 
@@ -26,6 +28,7 @@ logger.add(sink="sage_main.log", level="INFO")
 
 def main():
     logger.info("STARTING SAGE")
+    logger.info(f"FORWARDING_EMAIL: {ENV['FORWARDING_EMAIL']}")
 
     # Set the time the batch started
     utc_timestamp = datetime.utcnow()
@@ -50,7 +53,8 @@ def main():
             msg_count["retrieved"] = msg_count.get("retrieved", 0) + 1
 
             # Store the retrieved email in the database's emails table
-            # FIXME: Parse the origin email
+            # FIXME: Move to email_parser.py
+            # FIXME: Add origin to the emails table #157
             origin = "placeholder"
             # FIXME: body is set twice: once here and once in email_parser
             if msg.html:
@@ -71,16 +75,20 @@ def main():
             )
             email_id = emails.insert_email(email)
 
-            # Parse a email message into the transaction data
-            transaction = email_parser.main(msg, email_id)
+            # Parse a email message into the txn data
+            txn = email_parser.main(msg, email_id)
             logger.info(f"Email UID {msg.uid} - attempting to parse...")
-            if not transaction:
+            if not txn:
                 logger.info(f"Email UID {msg.uid} - unparsed.")
                 msg_count["unparsed"] = msg_count.get("unparsed", 0) + 1
                 continue
 
-            # Write the transaction to the database
-            transactions.insert_transaction(transaction)  # pragma: no cover
+            # Check if there's an identical txn in the DB already
+            # If so, flag it
+            flagged_txn = identical_txns.main(txn)
+
+            # Write the txn to the database
+            transactions.insert_transaction(flagged_txn)  # pragma: no cover
             logger.info(f"Email UID {msg.uid} - successfully parsed!")
 
             # One down!

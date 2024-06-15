@@ -69,10 +69,19 @@ postconf -e myorigin=$DOMAIN
 postconf -e "mydestination = prod.$DOMAIN, $DOMAIN, localhost.$DOMAIN, localhost.localdomain, localhost"
 postconf -e "home_mailbox = Maildir/"
 
+# Initialize an email user
+useradd -m -s /bin/bash $RECEIVING_EMAIL_USER
+{ echo "$RECEIVING_EMAIL_PASSWORD"; echo "$RECEIVING_EMAIL_PASSWORD"; } | passwd $RECEIVING_EMAIL_USER
+# Create the Maildir mailbox
+mkdir /home/$RECEIVING_EMAIL_USER/Maildir
+# TODO: Create an imap group
+chmod -R 777 /home/$RECEIVING_EMAIL_USER/Maildir
+
 # POSTFIX/DOVECOT: Config specific to the dev or prod environment
 [[ -f "/postfix_dovecot_config.sh" ]] && bash /postfix_dovecot_config.sh
 
-# DOVECOT: Configures /etc/dovecot/dovecot.conf for production
+# DOVECOT: Configures /etc/dovecot/dovecot.conf
+# Allows platintext auth because IMAP is only accessed locally
 # Clear the file contents
 :> /etc/dovecot/dovecot.conf
 cat >> /etc/dovecot/dovecot.conf <<EOF
@@ -102,15 +111,7 @@ mkdir -p /etc/letsencrypt/live/prod.$DOMAIN
 # Set up DKIM and FAIL2BAN (prod only)
 [[ -f "/dkim_fail2ban.sh" ]] && bash /dkim_fail2ban.sh
 
-# Initialize an email user
-useradd -m -s /bin/bash $RECEIVING_EMAIL_USER
-{ echo "$RECEIVING_EMAIL_PASSWORD"; echo "$RECEIVING_EMAIL_PASSWORD"; } | passwd $RECEIVING_EMAIL_USER
 service postfix reload
 service dovecot restart
-
-# Create the Maildir mailbox
-mkdir /home/$RECEIVING_EMAIL_USER/Maildir
-# TODO: Create an imap group
-chmod -R 777 /home/$RECEIVING_EMAIL_USER/Maildir
 
 exec "$@"

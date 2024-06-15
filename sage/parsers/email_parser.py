@@ -72,20 +72,39 @@ def main(msg: MailMessage, email_id: int) -> Transaction:
 def get_date(body: str) -> str:
     """
     Identify the date using the bank's email
-    I.e.
+    E.g.
         ---------- Forwarded message ---------
         From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
         Date: Thu, Oct 6, 2022 at 10:32 AM
         Subject: Withdrawal or Purchase
         To: <example.com>
+    E.g.
+        ---------- Forwarded message ---------
+        From: Chase <no.reply.alerts@chase.com>
+        Date: Wed, 24 Apr 2024 18:33:10 -0400 (EDT)
+        Subject: Your $253.36 transaction with AMZN Mktp US
+        To: <example.com>
     """
+    # Match month, day, year format e.g. "Oct 6, 2022"
     raw_date = regex_search(
-        r"(?<=Date: \w{3}, )(\w{3} [0-9]{1,2}, [0-9]{4})(?= at [0-9]{1,2}:[0-9]{2} \w{2} Subject: )",
+        r"(?<=Date: \w{3}, )(\w{3} [0-9]{1,2}, [0-9]{4})(?= at [0-9]{1,2}:[0-9]{2}\S|\s\w{2})",
         body,
     )
     if raw_date is not None:
-        # Converts raw date to datetime object. I.e. "Oct 6, 2022"
+        # Converts raw date to datetime object. E.g. "Oct 6, 2022"
         datetime_raw_date = datetime.strptime(raw_date, "%b %d, %Y")
+        # Reformat the datetime object to ISO 8601 format
+        transformed_date = datetime.strftime(datetime_raw_date, "%Y-%m-%d")
+        return transformed_date
+
+    # Match day month year format E.g. "24 Apr 2024"
+    raw_date = regex_search(
+        r"(?<=Date: \w{3}, )([0-9]{1,2} \w{3},? [0-9]{4})(?= [0-9]{2}:[0-9]{2}:[0-9]{2} )",
+        body,
+    )
+    if raw_date is not None:
+        # Converts raw date to datetime object. E.g. "24 Apr 2024"
+        datetime_raw_date = datetime.strptime(raw_date, "%d %b %Y")
         # Reformat the datetime object to ISO 8601 format
         transformed_date = datetime.strftime(datetime_raw_date, "%Y-%m-%d")
         return transformed_date
@@ -96,7 +115,7 @@ def get_date(body: str) -> str:
 def get_bank(body: str) -> str:
     """
     Identify the bank using the bank's email
-    I.e.
+    E.g.
         ---------- Forwarded message ---------
         From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
         Date: Thu, Oct 6, 2022 at 10:32 AM
@@ -115,7 +134,7 @@ def get_bank(body: str) -> str:
 def parse_chase(subject: MailMessage.subject) -> str:
     """
     Extract the transaction amount and merchant from the email subject
-    I.e.
+    E.g.
     Your $1.00 transaction with DIGITALOCEAN.COM
     """
     merchant = regex_search(r"(?<=with )(.*)", subject)
@@ -126,7 +145,7 @@ def parse_chase(subject: MailMessage.subject) -> str:
 def parse_discover(body: str) -> str:
     """
     Extract the transaction amount and merchant from the email body
-    I.e.
+    E.g.
     Transaction Date: June 11, 2022
 
     Merchant: SQ *EARTH BISTRO CAFE
@@ -158,7 +177,7 @@ def get_huntington_transaction_type(body: str) -> str:
 def parse_huntington_transfer_withdrawal(body: str) -> str:
     """
     Extract the transferred amount from the email body
-    I.e.
+    E.g.
     We've processed a transfer withdrawal for $999.51
     from your account nicknamed CHECK. That's above the $0.00 you set for an alert.
     """
@@ -176,7 +195,7 @@ def parse_huntington_transfer_withdrawal(body: str) -> str:
 def parse_huntington_transfer_deposit(body: str) -> str:
     """
     Extract the tranferred amount from the email body
-    I.e.
+    E.g.
     We've processed a transfer deposit for $999.51 to your account nicknamed
     SAVE. That's above the $0.00 you set for an alert.
     """
@@ -185,6 +204,7 @@ def parse_huntington_transfer_deposit(body: str) -> str:
         body,
     )
     if raw_amount is None:
+
         raise RegexError(
             f"Regex failed to get the raw amount from a Huntington transfer deposit email body: {body}"
         )
@@ -194,10 +214,10 @@ def parse_huntington_transfer_deposit(body: str) -> str:
 def parse_huntington_withdrawal(body: str) -> str:
     """
     Extract the transaction amount and merchant from the email body
-    I.e.
+    E.g.
     We've processed an ACH withdrawal for $1.72 at CHASE CREDIT CRD EPAY
     from your account nicknamed SAVE.
-    I.e.
+    E.g.
     We've processed an ACH withdrawal for $10,000.00 at TREASURY DIRECT TREAS DRCT from your account nicknamed SAVE.
     """
     raw_amount = regex_search(
@@ -222,18 +242,30 @@ def parse_huntington_withdrawal(body: str) -> str:
 def parse_huntington_deposit(body: str) -> str:
     """
     Extract the transaction amount and merchant from the email body
-    I.e.
+    E.g.
     We've processed an ACH deposit for $59.81
     from CHASE CREDIT CRD RWRD RDM to your account nicknamed CHECK.
+    E.g.
+    We've processed a deposit for $1,500.00 to your account nicknamed CHECK
     """
     raw_amount = regex_search(
         r"(?<= for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= from)",
         body,
     )
+
     if raw_amount is None:
-        raise RegexError(
-            f"Regex failed to get the raw amount from a Huntington deposit email body: {body}"
+        # Cash deposit
+        raw_amount = regex_search(
+            r"(?<= for \$)([0-9]+(?:,[0-9]{3})?\.[0-9]{2})(?= to your account nicknamed)",
+            body,
         )
+        if raw_amount is None:
+            raise RegexError(
+                f"Regex failed to get the raw amount from a Huntington deposit email body: {body}"
+            )
+        payer = "cash"
+        return payer, raw_amount
+
     payer = regex_search(
         r"(?: for \$[0-9]+(?:,[0-9]{3})?\.[0-9]{2} from )(.*)(?= to your account nicknamed)",
         body,
@@ -273,14 +305,22 @@ def get_huntington_balance(body: str) -> str:
     Works for deposits or charges.
     I.e.
     Your balance is $19,748.78 as of 6/25/22 2:35 AM ET.
+    I.e.
+    Your balance is -$101.92 as of 4/16/24 3:28 AM ET.
     """
     balance = regex_search(
         r"(?<=Your balance is \$)([0-9]+(,[0-9]{3})?\.[0-9]{2})(?= as of)", body
     )
     if balance is None:
-        raise RegexError(
-            f"Regex failed to get the balance from a Huntington transaction email body: {body}"
+        # Match a negative balance :(
+        balance = regex_search(
+            r"(?<=Your balance is -\$)([0-9]+(,[0-9]{3})?\.[0-9]{2})(?= as of)", body
         )
+        if balance is None:
+            raise RegexError(
+                f"Regex failed to get the balance from a Huntington transaction email body: {body}"
+            )
+        balance = "-" + balance
     return balance
 
 

@@ -1,14 +1,11 @@
 """
 Tests inserting transactions (module sage/db/transactions.py).
 
-The input is a transaction class object.
+The input is a transaction class object. Each object is created from the data
+list defined below the imports.
 
-They're also listed as separate files in
-tests/test_parsers/test_data/example_data so they can be more easily
-viewed.
-
-The expected expected_output is the transaction object defined in
-sage/models/transaction.py
+The expected output is simply that the transaction can be
+successfully inserted into the DB.
 """
 import pytest
 
@@ -132,15 +129,17 @@ def create_transaction_objects():
     input = []
     for transaction_dict in data:
         transaction = Transaction(
-            0,
-            transaction_dict.get("date"),
-            transaction_dict.get("type_"),
-            transaction_dict.get("bank"),
-            transaction_dict.get("merchant"),
-            transaction_dict.get("payer"),
-            transaction_dict.get("amount"),
-            transaction_dict.get("account"),
-            transaction_dict.get("balance"),
+            email_id=0,
+            id=None,
+            date=transaction_dict.get("date"),
+            type_=transaction_dict.get("type_"),
+            bank=transaction_dict.get("bank"),
+            merchant=transaction_dict.get("merchant"),
+            payer=transaction_dict.get("payer"),
+            amount=transaction_dict.get("amount"),
+            account=transaction_dict.get("account"),
+            balance=transaction_dict.get("balance"),
+            identical_txn_id=None,
         )
         input.append(transaction)
     return input

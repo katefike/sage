@@ -478,7 +478,7 @@ alt=3D"">
 From 1744019656438691322@xxx Thu Sep 15 07:25:53 +0000 2022
 X-GM-THRID: 1744019656438691322
 X-Gmail-Labels: Inbox,Opened,Category Updates,Sample Emails
-Delivered-To: outgoing@gmail.com
+Delivered-To: incoming@example.com
 Received: by 2002:ab3:180e:0:b0:1e7:316c:bada with SMTP id y14csp130559lth;
         Thu, 15 Sep 2022 00:25:54 -0700 (PDT)
 X-Google-Smtp-Source: AA6agR6XC9z5bN/8269Psv3i1Y5WiFoPTsQ/0hfnUzkvyQfTJDdmksuK/PEdmGKiTpoFxBjYQ9+r
@@ -1317,7 +1317,7 @@ alt=3D"">
 From 1745949027129267321@xxx Thu Oct 06 14:32:24 +0000 2022
 X-GM-THRID: 1745949027129267321
 X-Gmail-Labels: Archived,Opened,Category Updates,Sample Emails
-Delivered-To: outgoing@gmail.com
+Delivered-To: incoming@example.com
 Received: by 2002:ab3:180e:0:b0:1e7:316c:bada with SMTP id y14csp551418lth;
         Thu, 6 Oct 2022 07:32:25 -0700 (PDT)
 X-Google-Smtp-Source: AMsMyM6/Av8QcbrokRLL2fyv+qVskXI2p64s2n5wbKume9nmNy+epWZT0LfUybIDGq1BSljm9isf
@@ -2164,7 +2164,7 @@ alt=3D"">
 From 1743843576675933823@xxx Tue Sep 13 08:47:10 +0000 2022
 X-GM-THRID: 1743843576675933823
 X-Gmail-Labels: Inbox,Opened,Category Updates,Sample Emails
-Delivered-To: outgoing@gmail.com
+Delivered-To: incoming@example.com
 Received: by 2002:ab3:180e:0:b0:1e7:316c:bada with SMTP id y14csp934117lth;
         Tue, 13 Sep 2022 01:47:11 -0700 (PDT)
 X-Google-Smtp-Source: AA6agR5gHyiPv/6Hy5IIMRys5V1Jp1ajwDqM2AZhf5ueqWDJNUkf4Zt4FWeU3I4A+S/eSNq3tfPn
@@ -3011,7 +3011,7 @@ alt=3D"">
 From 1740581129827437937@xxx Mon Aug 08 08:31:59 +0000 2022
 X-GM-THRID: 1740581129827437937
 X-Gmail-Labels: Inbox,Opened,Category Updates,Sample Emails
-Delivered-To: outgoing@gmail.com
+Delivered-To: incoming@example.com
 Received: by 2002:ab3:6d22:0:b0:1d7:a004:edc0 with SMTP id w2csp2263555ltl;
         Mon, 8 Aug 2022 01:31:59 -0700 (PDT)
 X-Google-Smtp-Source: AA6agR7v2dvnwktJ75z3rEDkOSaWYodTWLsYYDmrdhdZHaD/xE+fjEdCftihj2DWPtfq3sYNxBet
@@ -3796,7 +3796,7 @@ mail/images/white-right.jpg" width=3D"12" height=3D"77" border=3D"0" style=
 From 1745949460056184884@xxx Thu Oct 06 14:39:17 +0000 2022
 X-GM-THRID: 1745949460056184884
 X-Gmail-Labels: Archived,Opened,Category Updates,Sample Emails
-Delivered-To: outgoing@gmail.com
+Delivered-To: incoming@example.com
 Received: by 2002:ab3:180e:0:b0:1e7:316c:bada with SMTP id y14csp556695lth;
         Thu, 6 Oct 2022 07:39:17 -0700 (PDT)
 X-Google-Smtp-Source: AMsMyM7HU+GxhDopmOcp4T8oG4vhj2zAMWeIviNxJD4A1RuUrzXXjs0yvGnfPEjH2ri46KG2igVe
@@ -3854,7 +3854,7 @@ Received: from vsin25p9817.svr.us.jpmchase.net ([165.168.218.13])
 Received: from iaasn00033628.svr.us.jpmchase.net (iaasn00033628.svr.us.jpmchase.net [147.107.148.18])       by vsin25p9817.svr.us.jpmchase.net  with ESMTP id 296EdGF5016608       for <outgoing@gmail.com>; Thu, 6 Oct 2022 14:39:17 GMT
 Date: Thu, 6 Oct 2022 10:39:16 -0400 (EDT)
 From: Chase <no.reply.alerts@chase.com>
-To: outgoing@gmail.com
+To: incoming@example.com
 Message-ID: <2138553344.7176634.1665067156884.JavaMail.webuser@iaasn00033628.svr.us.jpmchase.net>
 Subject: Your $113.11 transaction with EB *TRAUMA 2022
 MIME-Version: 1.0
@@ -4752,7 +4752,7 @@ alt=3D"">
 From 1742045055522086959@xxx Wed Aug 24 12:20:27 +0000 2022
 X-GM-THRID: 1742045055522086959
 X-Gmail-Labels: Inbox,Opened,Category Updates,Sample Emails
-Delivered-To: outgoing@gmail.com
+Delivered-To: incoming@example.com
 Received: by 2002:ab3:64cc:0:b0:1dc:7ba2:eec8 with SMTP id p12csp2482621ltg;
         Wed, 24 Aug 2022 05:20:27 -0700 (PDT)
 X-Google-Smtp-Source: AA6agR5XEMrkXCGjVib1raya6qgY7eXOCnnwq11UplDPjfcTSpT7p6ueOALMuqucp51t4vOZUH3G
@@ -6059,7 +6059,7 @@ alt=3D"">
 From 1745948798834231660@xxx Thu Oct 06 14:28:47 +0000 2022
 X-GM-THRID: 1745927677739662713
 X-Gmail-Labels: Archived,Opened,Category Updates,Sample Emails
-Delivered-To: outgoing@gmail.com
+Delivered-To: incoming@example.com
 Received: by 2002:ab3:180e:0:b0:1e7:316c:bada with SMTP id y14csp548233lth;
         Thu, 6 Oct 2022 07:28:47 -0700 (PDT)
 X-Google-Smtp-Source: AMsMyM61KLOv+BkjaouWdpZi0KDO/L38a6UmHxCB2DZrvadi14H7vJNU+LXlByA2puoyWbCwMcpC
@@ -6409,7 +6409,7 @@ Loans subject to credit application and approval.  <br><br>
 From 1745927677739662713@xxx Thu Oct 06 08:53:04 +0000 2022
 X-GM-THRID: 1745927677739662713
 X-Gmail-Labels: Archived,Opened,Category Updates,Sample Emails
-Delivered-To: outgoing@gmail.com
+Delivered-To: incoming@example.com
 Received: by 2002:ab3:180e:0:b0:1e7:316c:bada with SMTP id y14csp334528lth;
         Thu, 6 Oct 2022 01:53:05 -0700 (PDT)
 X-Google-Smtp-Source: AMsMyM7n++5DNPhXCA1bjtakDfi5q5tY3RVqZO3Gbv3c27796Osxsw8rcmDBHwnuyYodrormL38f
@@ -7202,7 +7202,7 @@ x">
 From 1745895454465686962@xxx Thu Oct 06 00:20:54 +0000 2022
 X-GM-THRID: 1745895454465686962
 X-Gmail-Labels: Archived,Opened,Category Updates,Sample Emails
-Delivered-To: outgoing@gmail.com
+Delivered-To: incoming@example.com
 Received: by 2002:ab3:180e:0:b0:1e7:316c:bada with SMTP id y14csp119646lth;
         Wed, 5 Oct 2022 17:20:54 -0700 (PDT)
 X-Google-Smtp-Source: AMsMyM7TlUgW4PjpU4C4wq49GDdfKiKLm99T1rIp5O342yw7ZID2QqG8nzH5pNUrGYN5DVZghOCX
@@ -7260,7 +7260,7 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
 	bAzAzclkHc8ATDLDHDlpSFsWl04tznh/qrILFQGE=
 From: Discover Card <discover@services.discover.com>
 Reply-To: dontrply@services.discovercard.com
-To: outgoing@gmail.com
+To: incoming@example.com
 Message-ID: <01000183aaaaa205-94d4f7b4-3eee-4751-ba02-376ebcfa60ee-000000@email.amazonses.com>
 Subject: Transaction Alert
 Errors-To: 416920526889205@services.discover.com
@@ -9191,7 +9191,7 @@ alt=3D"">
 From 1742045070332780542@xxx Wed Aug 24 12:20:41 +0000 2022
 X-GM-THRID: 1742031326677158884
 X-Gmail-Labels: Inbox,Opened,Category Updates,Sample Emails
-Delivered-To: outgoing@gmail.com
+Delivered-To: incoming@example.com
 Received: by 2002:ab3:64cc:0:b0:1dc:7ba2:eec8 with SMTP id p12csp2482766ltg;
         Wed, 24 Aug 2022 05:20:41 -0700 (PDT)
 X-Google-Smtp-Source: AA6agR7nAnrAHbMpmqRQ8HNnucMWQivLY5VAEOLXphTI7xssMN2BddaZPE/VHvAQXysUHd/5iY3I
@@ -9541,7 +9541,7 @@ Loans subject to credit application and approval.  <br><br>
 From 1742031326789311241@xxx Wed Aug 24 08:42:14 +0000 2022
 X-GM-THRID: 1742031326677158884
 X-Gmail-Labels: Inbox,Opened,Category Updates,Sample Emails
-Delivered-To: outgoing@gmail.com
+Delivered-To: incoming@example.com
 Received: by 2002:ab3:64cc:0:b0:1dc:7ba2:eec8 with SMTP id p12csp2383196ltg;
         Wed, 24 Aug 2022 01:42:14 -0700 (PDT)
 X-Google-Smtp-Source: AA6agR5Q4KSQBA7oNf5CImTmxocleYc6DdvIsb1P3i0hKWN6LzBrlEyuDsdh9hlOWnd7Ybplk1OR
@@ -9891,7 +9891,7 @@ Loans subject to credit application and approval.  <br><br>
 From 1742031326677158884@xxx Wed Aug 24 08:42:14 +0000 2022
 X-GM-THRID: 1742031326677158884
 X-Gmail-Labels: Inbox,Opened,Category Updates,Sample Emails
-Delivered-To: outgoing@gmail.com
+Delivered-To: incoming@example.com
 Received: by 2002:ab3:64cc:0:b0:1dc:7ba2:eec8 with SMTP id p12csp2383193ltg;
         Wed, 24 Aug 2022 01:42:14 -0700 (PDT)
 X-Google-Smtp-Source: AA6agR6xEqutXiwdhwZOmU7/UjeCnS19FBamK90xAnEcnHn5GYIldyOPaz+xt9OcGhs2A18q5Zim
@@ -10238,3 +10238,481 @@ Loans subject to credit application and approval.  <br><br>
   </body>
 </html>
 --0000000000009ee35c05eaf684ed--
+
+From 1800056703323623928@xxx Sat May 25 20:10:46 +0000 2024
+X-GM-THRID: 1800056703323623928
+X-Gmail-Labels: Inbox,Category Personal,Unread,backfill/202404
+Delivered-To: incoming@example.com
+Received: by 2002:a05:7010:734c:b0:3cc:117f:c77b with SMTP id i12csp2346450mdc;
+        Sat, 25 May 2024 13:10:47 -0700 (PDT)
+X-Received: by 2002:a67:fd05:0:b0:47e:f87f:a0b0 with SMTP id ada2fe7eead31-48a38545cdamr5544322137.14.1716667847033;
+        Sat, 25 May 2024 13:10:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1716667847; cv=none;
+        d=google.com; s=arc-20160816;
+        b=jTPIziu1LF/uRfDTOnSQnNdgnSDe9RxdgcnapF0UYV8/YoJweewmh8Ds87CZx2aBEB
+         G3M38NA4F8uUtvuh7rKxK8KA9f2kLX0fGA9PCKT0LFaGftEcWgdWUikntUFdk2MjhTPS
+         QYz/uuUGi4nTMQYl4Wz7rNjrtyhAz45FBv62XOiKyKsYSed/yOy1JHPTaRB1CC8PSR29
+         Ked1BmqG1wLR0ipcZQ41PjEUV6FyXHPAgkj0Sq124v1rl3TE0OLSZgfA3H5lWuUCBDZq
+         smCQB+7auB3k54AQ2IarlxbbGDYbZZp00qIVjWMVokon6+AJoH4IMGg2404KW9DQTKRm
+         cdWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:subject:message-id:date:mime-version:from:references
+         :dkim-signature;
+        bh=RIxB5Wrn1adRNPY8VM+sv7tAAdYr6AKzhF0VwD++x7o=;
+        fh=uDCTqrjUuSN01MbuUJAXsMebbw+mvpbkL6i/yQe0nOU=;
+        b=iIKH5Qal7HfT4gq6LngRSmAXojvYHxnrjewAbftBTgkNs5lVHOBxprJQhXnbcOjUoI
+         5KbSI8SMumO3kFe0upnwtCRrKTCwBm8CrSBDO9IHeyAzdRuGf2ltgDYAPko6qvQ7zSig
+         OqRSsttaOgrhmV+tJSulM9GikBfpS2SjegvZ9QIAM0c8XTHukvig7+W7b2fVN4yfrJQ6
+         xn0KrB5eGC4pTv1e83iZcOX1t1Zn9I4Gachu4eaYA4rRc4NRXtKjX0cGW+BaHH56IdO6
+         ypAYWk742rU4/tBIKeJXTC0dSwpn1ii5w8rzMUP2AbycmnrTaY6B22pNhNn1lUvUGxMM
+         6beQ==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=bobC8KBA;
+       spf=pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=outgoing@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Return-Path: <outgoing@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id ada2fe7eead31-48a39fb5b16sor1243285137.0.2024.05.25.13.10.45
+        for <outgoing@gmail.com>
+        (Google Transport Security);
+        Sat, 25 May 2024 13:10:46 -0700 (PDT)
+Received-SPF: pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=bobC8KBA;
+       spf=pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=outgoing@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716667845; x=1717272645; dara=google.com;
+        h=to:subject:message-id:date:mime-version:from:references:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RIxB5Wrn1adRNPY8VM+sv7tAAdYr6AKzhF0VwD++x7o=;
+        b=bobC8KBAM8HssfHWvuFH8nCcgAGviOmw53t+3XF6fJZ9ZLtMS46bhU4rqHlMw3Mqvb
+         pZlrbjwxkVuR0xw92fEuYSUYh16OD4sE3rUBMcXahvobswhOwJ0/F+DE1U9OJ4ExI/dD
+         lvTbshCIge0G2gzz7UEZx0+xTsqHC9nC9ytrZqcpZfMDA+dpJMO6KgJweSDmyAiTeK3x
+         L87KI9rLwg/4mF4yTB++GzSGJZJl5/AWszJsjXdyPRj5iopPyanHnJzRwbdCC626mLT9
+         w5FdCUM+ehSjjkK4xhyqqdn8gesqMvc5tRLWcyohLtNX/R1gHdiAMyjtwRj5XWQvuxsF
+         U+xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716667845; x=1717272645;
+        h=to:subject:message-id:date:mime-version:from:references
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RIxB5Wrn1adRNPY8VM+sv7tAAdYr6AKzhF0VwD++x7o=;
+        b=WVFan38VVQdWri3Xj529LX7jTtJdyx55d4rImzpjWZeGGkxD8ws1MClQSMQndliAGZ
+         o3hbgm6IhMqGD80/W7YfeCbIVUgkW2wHfoV/c1HWEt8mIMftDKUYwCGLHXHxdOk9qv9m
+         plRzXzzvJYZg9CqPzjVHNtfm19E5B6qjW1JW1D8Ye/JtH9mt2kPPHrrmNGGnJTR1Pq06
+         FbFmdAprShvi1z9KDMXMJ5EQXG0och88aHOijpVZNDFee91/4Pb5b65S3NtxVijbc2q/
+         4YcjCHtvWwveih3tAvi9iMS5f/PUoa8o37C8XXO4yq92ztvmKk6SzdCKJIlfQS4WnrYo
+         Ubsg==
+X-Gm-Message-State: AOJu0Yx4eVLeofgCcTBrge/F55mYXFRG2RaRzjv8+qeyIxtXMqB//RpZ
+	kwyuCkC3/fx2tc6A72VzmY6vY4maQ/Du7WMHIXcC/IaXgmwCXaRKGcekKjDzt0lskt2ea31UFDr
+	wpvrNL0ZXXcJs+4WlbMFt08by2Epkdw==
+X-Google-Smtp-Source: AGHT+IEQHmRhO51zXfAVO2q/mp5LD/Vy5/4RXwGCpsb6PHvGqPxNHVsEvfbCrso7W23etk/TIfDNjdshlJeOh52fekU=
+X-Received: by 2002:a05:6102:3024:b0:485:b713:2932 with SMTP id
+ ada2fe7eead31-48a386a5814mr5395155137.30.1716667845343; Sat, 25 May 2024
+ 13:10:45 -0700 (PDT)
+Received: from 125135905029 named unknown by gmailapi.google.com with
+ HTTPREST; Sat, 25 May 2024 13:10:44 -0700
+References: <18f123dd08cb1eeedev.kfike@gmail.com>
+From: outgoing@gmail.com
+MIME-Version: 1.0
+X-cloudHQ-Custom-Header-description: created via cloudHQ
+Date: Sat, 25 May 2024 13:10:44 -0700
+Message-ID: <CAHpjF2qxGacxmdB+U=iv3x0WLCoN4uh9NJqDDmDvgM93K1C8sg@mail.gmail.com>
+Subject: Fwd: Your $253.36 transaction with AMZN Mktp US
+To: incoming@example.com
+Content-Type: multipart/alternative; boundary="0000000000001e852906194ce13f"
+
+--0000000000001e852906194ce13f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Forwarded using cloudHQ's free email forwarding tool: Multi Email Forward
+For Gmail <https://www.multi-email-forward.com/>
+You might be also interested to try cloudHQ's Google Sheets Templates
+<https://www.google-sheets-templates.com>: *Professional and Free Google
+Sheets templates*
+
+---------- Forwarded message ---------
+From: Chase <no.reply.alerts@chase.com>
+Date: Wed, 24 Apr 2024 18:33:10 -0400 (EDT)
+Subject: Your $253.36 transaction with AMZN Mktp US
+To: outgoing@gmail.com
+Date Sent: Wed, 24 Apr 2024 18:33:10 -0400 (EDT)
+Date Received: Wed, 24 Apr 2024 15:33:12 -0700 (PDT)
+
+This transaction is above the level you set, see more here.
+
+[image: Chase Logo]
+Transaction alert
+You made a $253.36 transaction
+Account Prime Visa (...6104)
+Date Apr 24, 2024 at 6:33 PM ET
+Merchant AMZN Mktp US
+Amount $253.36
+You are receiving this alert because your transaction was more than the
+$0.01 level you set. You can visit our Resource Center
+<https://www.chase.com/personal/credit-cards/card-resource-center> anytime
+to help answer your questions or manage your account.
+
+--0000000000001e852906194ce13f--
+
+From 1800056835137910613@xxx Sat May 25 20:12:51 +0000 2024
+X-GM-THRID: 1800056835137910613
+X-Gmail-Labels: Inbox,Category Personal,Unread,backfill/202404
+Delivered-To: incoming@example.com
+Received: by 2002:a05:7010:734c:b0:3cc:117f:c77b with SMTP id i12csp2347133mdc;
+        Sat, 25 May 2024 13:12:52 -0700 (PDT)
+X-Received: by 2002:a0d:cb93:0:b0:61a:ca09:dae3 with SMTP id 00721157ae682-62a08e5f45bmr67178697b3.26.1716667971883;
+        Sat, 25 May 2024 13:12:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1716667971; cv=none;
+        d=google.com; s=arc-20160816;
+        b=X6SW6W/mh+ZYHcdVWYbbXmoHARzG+a/GdhoJ85Xkh6rbbhf2WhglaSIlDrOVJq3F3n
+         /EOCmNDy3+lOTQ7HSlFo+ehpi17IB6hiuj+NtuK13lWggKqOxhanmPCljK1PILot9S1/
+         9c9qmyP1BQJWGKfB0VuQxfJdyYJwX3PHJE/AI5Os8eD5qHV7zdOttxaeCY8tLpr2ExcM
+         M/XehV8qzcEnIv5nMpCN+V5skrPsOMsqHPnRfuSLNuQ6cCy0WekNi6l3ZM5dWTyVShbH
+         t90E+XYb5CiKUJ6uXB5dWOhNN7ipSJYsADEFNGx7QJ8YHhUZ+PvwZAgzTlB7/4qBH10e
+         CG2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:subject:message-id:date:mime-version:from:references
+         :dkim-signature;
+        bh=uVegx6nBLXtqT1PfB4Y73oTdW+YJZyjeEkAgjKYWIP8=;
+        fh=uDCTqrjUuSN01MbuUJAXsMebbw+mvpbkL6i/yQe0nOU=;
+        b=c8kZlIRkVrwo896ij1H/CBcuhPZ2l9DFUUUuQvytQzpWscikvrphx719WDcGQ7C8nA
+         ZeJpunZBFAOCOuCFQ6l0Yw/EIX9MmlBT5+q1Pzu8Jj1Ms7E3BOcZYSg6h/o5VGIxoGqA
+         25Rb+/hAsuaB5fVS5c1dMPbXfosFI1NwSpjfLRMim1Vha2jVJMAWAMYI4DCupJAJqd1a
+         5HIm510FoC+b9yxZQz33yFUaa1r2SL4QOZx24T1TJfRoLB5Bdli7b5GGVm37lMBXKKoz
+         KPiXI/vkaKBREtOTGJtMtySHJzhDIvQDjQZa46KFnJgLQ01BfPzLtDtj69LTjkoqnxOT
+         9ZQA==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b="hs4H9Ox/";
+       spf=pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=outgoing@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Return-Path: <outgoing@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id 71dfb90a1353d-4e4f072af19sor738591e0c.2.2024.05.25.13.12.51
+        for <outgoing@gmail.com>
+        (Google Transport Security);
+        Sat, 25 May 2024 13:12:51 -0700 (PDT)
+Received-SPF: pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b="hs4H9Ox/";
+       spf=pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=outgoing@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716667971; x=1717272771; dara=google.com;
+        h=to:subject:message-id:date:mime-version:from:references:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uVegx6nBLXtqT1PfB4Y73oTdW+YJZyjeEkAgjKYWIP8=;
+        b=hs4H9Ox/MnjUtOY5GtrPr+i1likAE786z2+OBwEIDEpyC1M5g1LvQ18tADiaS4/lJX
+         KtrBzfwSzP+v1ka7gB1jJBXWRpoaArQPndqudrLDoKkAhH3fJXJZDZDeVDAKn7UYPFBK
+         ARLz7mXVn2gvSWE3Qm5RB7e5b+bdqkXej1yyKSMns+YurV4FBJXQUoBt5Gos/dxFu9Ku
+         m6vA2FysfO8+38tyFZvkzkrPRxZz/O1urId+pWgIU9+kDlDLiSUhFrA4QmKaLpdUi3UM
+         9EXIqkF9hCRg1/2oPRltq2L4zVTncVzwEnvKRpxGaU/8OxUSZP/f8IJFnzMYhNni6rFx
+         yrcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716667971; x=1717272771;
+        h=to:subject:message-id:date:mime-version:from:references
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uVegx6nBLXtqT1PfB4Y73oTdW+YJZyjeEkAgjKYWIP8=;
+        b=Uoqb5m4zDbCh5xm6vtctzQTzEyI3kq+jLKXQSX2hYo1TpBigpNObvUz/tDKzmAkfkS
+         TPBJuw9nELHy0a7xMn1IfVWcNG+Rej1v930Ysg5xor0GRHFgyjeBQUI8D9v50cptsEm4
+         Mtgrxt8Lwz6zKHS/Ah2s9u4uYbEX3Ng7Cq5ey4sEfEcClu8XGfo8gNOLs70j8kdSQ/cD
+         ZFbnY0Toa/Tt4bAKr+4l2b6mvV8GoMJWxHCROQ7Mhy94jMlJKSl8nG7agiVvB0/JdOxk
+         pU2Pv5ve+xiWetQeL5Fw+MVTjwA6Y0j9d1+KLxZkTSezth/yHYWBIEbSYCf+MAycs9ud
+         BMNg==
+X-Gm-Message-State: AOJu0Yxek69HR1K0GiKvSNFeS7MTiUYS78rZiniEEH79dR/qigQex1bT
+	cz2C6IQvU95KAR+P3XDUKzDEyCkU7V3zbZwt3mSauH2+vs6rvrxxI2oOROHp7xV7s3z+zEOQqjd
+	HRfkI4jI6jaAdWNgURvS3NaYVHuqRnQ==
+X-Google-Smtp-Source: AGHT+IHyBoqjSclqxhq7mHBCL+0mIjqgKFcrhIN42MTr3D9CaLJ7z0zDqDqs1epNgDcpVAAHvtjyDdQ3I2UXxqqkxX8=
+X-Received: by 2002:a67:fc0c:0:b0:480:76a4:3394 with SMTP id
+ ada2fe7eead31-48a38517db8mr5465631137.7.1716667971199; Sat, 25 May 2024
+ 13:12:51 -0700 (PDT)
+Received: from 125135905029 named unknown by gmailapi.google.com with
+ HTTPREST; Sat, 25 May 2024 13:12:50 -0700
+References: <18ee8134392583f3dev.kfike@gmail.com>
+From: outgoing@gmail.com
+MIME-Version: 1.0
+X-cloudHQ-Custom-Header-description: created via cloudHQ
+Date: Sat, 25 May 2024 13:12:50 -0700
+Message-ID: <CAHpjF2qdSb6d9Bbh2yUAJQw1zNB7x+WAkEmzBTcH89WjVUeiqw@mail.gmail.com>
+Subject: Fwd: Deposit
+To: incoming@example.com
+Content-Type: multipart/alternative; boundary="0000000000009eea4406194ce826"
+
+--0000000000009eea4406194ce826
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Forwarded using cloudHQ's free email forwarding tool: Multi Email Forward
+For Gmail <https://www.multi-email-forward.com/>
+You might be also interested to try cloudHQ's Signature Generator
+<https://www.email-signature-generator.com>: *Free email signature
+generator and signature templates*
+
+---------- Forwarded message ---------
+From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
+Date: Tue, 16 Apr 2024 12:02:39 -0600
+Subject: Deposit
+To: outgoing@gmail.com
+Date Sent: Tue, 16 Apr 2024 12:02:39 -0600
+Date Received: Tue, 16 Apr 2024 11:02:40 -0700 (PDT)
+
+A deposit was made to CHECK above the amount you set for an alert.
+View as a web page
+<https://view.email.huntington.com/?qs=3Da0aacabe9780057050570ccb218e7d5b4e=
+b86cf3b80142d74e71e746fac231296f7508b221f258cbcdecf967b6b9072a2517068208642=
+4353e3b04f991bf0b1280578d4c1ea050eb9ef090064515b590273d2fb5a951cea64235ecc7=
+91a13df9>
+
+We've processed a deposit for $1,500.00 to your account nicknamed CHECK.
+That's above the $0.00 you set for an alert.
+
+Your balance is $798.08 as of 4/16/24 2:02 PM ET.
+
+Thank you for banking with Huntington.
+
+--0000000000009eea4406194ce826--
+
+From 1800061969460437114@xxx Sat May 25 21:34:28 +0000 2024
+X-GM-THRID: 1800061969460437114
+X-Gmail-Labels: Inbox,Opened,Category Personal,backfill/202404
+Delivered-To: incoming@example.com
+Received: by 2002:a05:7010:734c:b0:3cc:117f:c77b with SMTP id i12csp2368626mdc;
+        Sat, 25 May 2024 14:34:28 -0700 (PDT)
+X-Received: by 2002:a05:6102:3b81:b0:47b:9fd6:233b with SMTP id ada2fe7eead31-48a386ff8b3mr4995397137.31.1716672868085;
+        Sat, 25 May 2024 14:34:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1716672868; cv=none;
+        d=google.com; s=arc-20160816;
+        b=HUfwLDz6T3qFHd7tHVXWO+sQtTKmsw7zOf2ZJnHvf5KWjloxjFFpytWfVy24Vt5dS1
+         fmsbgHnVhZ4oAs5ZnUxvRAvBuNiVWncjxbkeTS408cmjx5ujd7wFzVI5M35J3JNe3LUh
+         7tV0HW54R1ukvwRqZibt8B+7GbbTHZMwQM2H39zk2zq4Ehka59P+mFFqF525NR7uHKfP
+         6eTAlnYKK0sm0k5bUzyZiwBXdk0cyzj57I+e5QYhaZqoLMq251U8D+MQnv6o+kfkyYp+
+         NtzH2tJx0KL+t1U32MOhZbwIdcNQ2q25bnzbxs3nA/eqXtiFOuKejmOqujmpORwenakw
+         8bJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :dkim-signature;
+        bh=jcSHKhbglTU+V0eA2M5GVc4aeHyiI42sQzx3OBEenEw=;
+        fh=uDCTqrjUuSN01MbuUJAXsMebbw+mvpbkL6i/yQe0nOU=;
+        b=pZkJq8H1EvAMlDujYjlzS9uwKd7obf6t2ax7A6RcUakM/JfCGNjnZYeO3QsGmxo8xC
+         J/g8BsIdfmqRXtaA1HTxldE8ZJ1WQOxb7htsbTe/8ThL2SaOXVLCIHwYdaOJdH5O1H7V
+         w35ntSuG6YS3svk7uRyErhDV5ROSjOQsbJe+XZLfNPuFTAvaO19w58uqPgkglf1chwqS
+         0jNzambBHhgZTVo2tJhfP4BWMCvZLvgz/oFfRSKo0b1Z7ud+Sazkh3UKxErMd0z/SBQv
+         8WPXOmvl2Ow5AzEukFw5dW1jZrqLT96qugTI5a4D3Gg7dYQQr1FgSIqNCfVgr1K/KCEO
+         VXQg==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=N+t01Mz3;
+       spf=pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=outgoing@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Return-Path: <outgoing@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id a1e0cc1a2514c-804f115372esor163914241.6.2024.05.25.14.34.28
+        for <outgoing@gmail.com>
+        (Google Transport Security);
+        Sat, 25 May 2024 14:34:28 -0700 (PDT)
+Received-SPF: pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=N+t01Mz3;
+       spf=pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=outgoing@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716672867; x=1717277667; dara=google.com;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jcSHKhbglTU+V0eA2M5GVc4aeHyiI42sQzx3OBEenEw=;
+        b=N+t01Mz3pLmYze+5+iTyrsoCnk/rAeUSolY/uFUVfF2or25yLLVY+bowmPlsOWdBwz
+         4jCDBKsZ+XRXm4D1ZP3gagH/oiLONUvI+M1OLt6OYjlDkaLZm/H5jRdUlJ0hGYpKTt2F
+         wuFESDQ9AbwPLGVRku1PrJ/WpqidJzTgu/0U2mxipEI00sDg6Xz5RCqRSZU3Vy2Lx8Fq
+         6J2rc/B4/xmf/kpHQKXmdnxiPLMORPshxzxO07qNxOBLW38kieXRl65+0sEl4BpV05w8
+         4y8xWBsMnUx3VvGC5zGHAYFTgute0JvosTnEZepkiuXfYdIfl5xCUgm+zBFltygP2t2Z
+         cvGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716672867; x=1717277667;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jcSHKhbglTU+V0eA2M5GVc4aeHyiI42sQzx3OBEenEw=;
+        b=ImhwwUMg+ubqn+3G087iVRu6SzQFsFnowUH97LL0aFEbhFoD1/XLmB2azjktmyYPx7
+         6oxFg42W9OozYnTMhzkI6KGItpnW7YFC6juR4L/wbbdwEVW3N4vK9dzgMcYSri4Qcloy
+         JuK6pSIAMbXZPTsqGsBelZHaPAr2YAXGlZilQeWwK3mJI0VdBz2T32csNtCEt4kxbIuG
+         I3ku/a4as9EDwn4V2wnRN2nQS36OL3uFH+EbvhSAlR9OhQ3wGscOfF1tcNGfh08xWnyw
+         nnbDt6/8snazjL5LgkwTln2CvUvDbudZSiv10pCf/OepDjyWV1NeJO1UnCGXO169wqhS
+         0kEw==
+X-Gm-Message-State: AOJu0YzG7MdiI0LTRe8MfoB6YnPPHjLrBe7BttffGewgFlt5Q3ovFf3h
+	lA4Pe4ysPkiW8go114TKMdCHnn1uflsG/IYejDytR4KkGhY9ysRFNeGmKx1LsGeigB/qWsDJIgR
+	QS6WyxoCYuxbTfaG+kgj+QWewmhLtN6bX
+X-Google-Smtp-Source: AGHT+IHQEVNgoTyvwWnSrZv125oBxSXvNnm/+DiMJydhECbhGPo5sOZ1diOWEiR6klgum6aUyNAaihYDDGkeqiCdoZM=
+X-Received: by 2002:a05:6102:3186:b0:47c:2a81:a98 with SMTP id
+ ada2fe7eead31-48a385f189amr5711663137.20.1716672867470; Sat, 25 May 2024
+ 14:34:27 -0700 (PDT)
+MIME-Version: 1.0
+References: <1881197728.27398400.1714431974821.JavaMail.webuser@iaasn00075634.svr.us.jpmchase.net>
+In-Reply-To: <1881197728.27398400.1714431974821.JavaMail.webuser@iaasn00075634.svr.us.jpmchase.net>
+From: Kate Fike <outgoing@gmail.com>
+Date: Sat, 25 May 2024 17:34:16 -0400
+Message-ID: <CAHpjF2rGegrXxUn9xZhGNDkfoqhNfoiG+vQ7JtM8UXw=biLjyg@mail.gmail.com>
+Subject: Fwd: Your $12.97 transaction with SAVE A LOT #24664
+To: incoming@example.com
+Content-Type: multipart/alternative; boundary="00000000000076139d06194e0c52"
+
+--00000000000076139d06194e0c52
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: Chase <no.reply.alerts@chase.com>
+Date: Mon, Apr 29, 2024 at 7:06=E2=80=AFPM
+Subject: Your $12.97 transaction with SAVE A LOT #24664
+To: <outgoing@gmail.com>
+
+
+This transaction is above the level you set, see more here.
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C  =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C  =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C
+[image: Chase Logo]
+Transaction alert
+You made a $12.97 transaction
+Account Prime Visa (...6104)
+Date Apr 29, 2024 at 7:06 PM ET
+Merchant SAVE A LOT #24664
+Amount $12.97
+
+--00000000000076139d06194e0c52--
+
+From 1800056849999629103@xxx Sat May 25 20:13:05 +0000 2024
+X-GM-THRID: 1800056841623349562
+X-Gmail-Labels: Inbox,Category Personal,Unread,backfill/202404
+Delivered-To: incoming@example.com
+Received: by 2002:a05:7010:734c:b0:3cc:117f:c77b with SMTP id i12csp2347185mdc;
+        Sat, 25 May 2024 13:13:06 -0700 (PDT)
+X-Received: by 2002:a05:6122:8c4:b0:4ca:80c5:7544 with SMTP id 71dfb90a1353d-4e4f022e980mr5728651e0c.4.1716667985462;
+        Sat, 25 May 2024 13:13:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1716667985; cv=none;
+        d=google.com; s=arc-20160816;
+        b=nQyJo2/xyGLsfVSZjwEyOG+9jAr6jaBsx+O2ebrxCFJIpp8d0+ovm6YbNmxDu8WCiC
+         yXFj9E/rYnLavb1pVA22mTAj98wpVt8urHm8h6PVFQl46gexlhX9+yaKzHxNngwhSY7q
+         RMvPvv7Scj46i6xuisln8+WcqspfgoEi5LqnqJdSwhFhpv4e7oZqR2Xxn0pj/OryFy4n
+         wCjfz1vt9BkDiP8Icm6Yu62IhWwS1Sln8xh8maAIVFzBEzH9jlAipTFNpx0Q0QblH7Of
+         HfVBlIVDTvGQQO40R0F95WXYWf0ipI+De2tVd+Na6saCt5Iql0bDMlo8vggBp34/Rjx8
+         2UDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:subject:message-id:date:mime-version:from:references
+         :dkim-signature;
+        bh=rwxzRdEmlejn0Ynf8LmbwR1N1HLQLpUmbamVAZ+nW+0=;
+        fh=uDCTqrjUuSN01MbuUJAXsMebbw+mvpbkL6i/yQe0nOU=;
+        b=hXK6i0QuORCFUqaGpjZa9945l3+IEkxNrhfbco2Dt13qqEZ3nGuK4Li9gtFl2LeQ10
+         3ZRmwZY8il3OxTfhHU2PYH4Ym14MKCqdIvXEyD0WtIlSURoR+kOPtUBK3FWPtVKTWZyR
+         Hc/+NVZ3IONm6DhXmwDuQgrBRori8kqC6h0S9JT/b7MqUjFHlnYdiruKPMFOvrsPq/w5
+         vYH+qop+U8KQy/Ab2Zqae+bxCTpEN/REs+WRbttzsRf7Vwa0zwz50jotjX2dDHmskyUV
+         J5wsoZL1H24GtSNIMOtUgmp+++fBzId1NZ/C3FwTrxbPbPLP9NeALEZsvYDJLAy+ow9T
+         qjkQ==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=DsjUeDSG;
+       spf=pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=outgoing@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Return-Path: <outgoing@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id 71dfb90a1353d-4e4f07bcdfcsor970909e0c.4.2024.05.25.13.13.05
+        for <incoming@example.com>
+        (Google Transport Security);
+        Sat, 25 May 2024 13:13:05 -0700 (PDT)
+Received-SPF: pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=DsjUeDSG;
+       spf=pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=outgoing@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716667985; x=1717272785; dara=google.com;
+        h=to:subject:message-id:date:mime-version:from:references:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rwxzRdEmlejn0Ynf8LmbwR1N1HLQLpUmbamVAZ+nW+0=;
+        b=DsjUeDSGq5C+jmfCCZeKpt5lJzxzT9J0uqufV2w48AB4Yhvr5v4lFUd7iod6DwtV9P
+         7olVDaqARL+TK5ZcjBD/TYw9pvsSFAoEoIsx3uYkwjPSLobPqtla9OihuomSmJUscZ5d
+         elB40ndDmrDEaGfMY5fAo0v6BTfWoxWD77kZgQUdXsASG+6E8x4SKPV0mpL6M/XrB29d
+         kvPTTdMN+5nIzTHB3lEuRRR42DyHrbfyoh0cHbctVpv6oCjdt0k9ny4T5Od1UYDdNKoO
+         WTWy5GFBOGXJllT1kGUjzwD+ZpDyJmx4YTJ185X0em0mSuhsehqitQ9/F3ZVS353zNHM
+         txuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716667985; x=1717272785;
+        h=to:subject:message-id:date:mime-version:from:references
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rwxzRdEmlejn0Ynf8LmbwR1N1HLQLpUmbamVAZ+nW+0=;
+        b=diZJc8I8gQ1ThFBBuOA8OmrNOBxjJzX8Q0P2LKQK+qhIJ7jD3yeCa/wTALMfEbDEjC
+         V5D9Qx7IhJlRitIzouawzlfsrFQ+tdqR0VyQvN2ja6F+6FvIxXPJbhwqXsgIAkOgG6Vi
+         AxAHaqCAsFW/X5iqnZblN9EiNlmcQihXhjwA1kLHUSu6MeK+jic+gH4guM+qPUUGRIs+
+         FwqfIeecIQOdArHMenjZyzJGsgFWaztPaMZSpHZkQ+u9a9Ca491f1sG1cRxwfqsfEZSf
+         fEIpPORtKQsbMpFA8syV5HdQwXs7oG3wRKtlo/WjE/Hlj76/d0bsr9jhiJfTWgrkA7pJ
+         uhgg==
+X-Gm-Message-State: AOJu0YwmZRWmoaaWorsuw+AeGMOzIzS+oYSGgqsoupEI4o+5AaNP2gz5
+	Q0Ijmvb7fogXt0GSExW1JzK3pVx62T/DHNsQCwLCs3H3fkZpOXma435DbS2pVdE49tSxmTffZdw
+	dKOlNg+D6s3jU7/sM9NTYeEA1RYxZfw==
+X-Google-Smtp-Source: AGHT+IGCRd+wEaqTmNxVhReyd19/wBK7OIcUtTulfZtKcB0SWVGiOWsW8JSJ6IFCAJKyUIRDXfejiNcI1uQZ9cSAHLQ=
+X-Received: by 2002:a05:6122:318b:b0:4d4:1ec7:76e5 with SMTP id
+ 71dfb90a1353d-4e4f02f9a85mr5739812e0c.16.1716667984896; Sat, 25 May 2024
+ 13:13:04 -0700 (PDT)
+Received: from 125135905029 named unknown by gmailapi.google.com with
+ HTTPREST; Sat, 25 May 2024 16:13:04 -0400
+References: <18ee5cff9475c498dev.kfike@gmail.com>
+From: outgoing@gmail.com
+MIME-Version: 1.0
+X-cloudHQ-Custom-Header-description: created via cloudHQ
+Date: Sat, 25 May 2024 16:13:04 -0400
+Message-ID: <CAHpjF2pSpJC4mwT3M4WnN86e-vo6_srKfBLWPDrP8J1dr2giAg@mail.gmail.com>
+Subject: Fwd: Withdrawal or Purchase
+To: incoming@example.com
+Content-Type: multipart/alternative; boundary="0000000000006feb3e06194ce99f"
+
+--0000000000006feb3e06194ce99f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Forwarded using cloudHQ's free email forwarding tool: Multi Email Forward
+For Gmail <https://www.multi-email-forward.com/>
+You might be also interested to try cloudHQ's Email Templates
+<https://www.email-templates.com>: *Create and share beautiful email
+templates*
+
+---------- Forwarded message ---------
+From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
+Date: Tue, 16 Apr 2024 01:39:26 -0600
+Subject: Withdrawal or Purchase
+To: outgoing@gmail.com
+Date Sent: Tue, 16 Apr 2024 01:39:26 -0600
+Date Received: Tue, 16 Apr 2024 00:39:28 -0700 (PDT)
+
+We've processed a withdrawal or purchase above the amount you set for an
+alert.
+View as a web page
+<https://view.email.huntington.com/?qs=3D42f5786f05208531f07816028606a876f2=
+30942aa878645f45a53b0603d34e3ada603d39e49103a03ebb00599bd2769457080ac4d8f37=
+c977ad19d89fbf11f26073707c64d05b36faccea3a023e9531638ca4add95755fae81a5fa50=
+7c72674f>
+
+
+Hello,
+
+Just a heads up for you. We've processed an ACH withdrawal for $150.00 at
+R.I.T.A. RITA EFILE from your account nicknamed CHECK. That's above the
+$0.00 you set for an alert.
+
+Your balance is -$101.92 as of 4/16/24 3:28 AM ET.
+
+Thank you for banking with Huntington.
+
+--0000000000006feb3e06194ce99f--

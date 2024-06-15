@@ -5,7 +5,7 @@ services:
     container_name: sage-db
     restart: always
     env_file:
-      - .env
+      - .env-example
     ports:
       - '5432:5432'
     logging:
@@ -22,13 +22,13 @@ services:
     build: ./docker/mailserver/
     restart: always
     env_file:
-      - .env
+      - .env-example
     ports:
       - '25:25'    # SMTP
       - '143:143'  # IMAP4
     volumes:
       - ./docker/mailserver/scripts/postfix_dovecot_config_dev.sh:/postfix_dovecot_config.sh
-      - ./docker/mailserver/test_data/:/home/${RECEIVING_EMAIL_USER}/test_data/
+      - ./docker/mailserver/test_data/:/test_data/
 volumes:
   db:
     driver: local

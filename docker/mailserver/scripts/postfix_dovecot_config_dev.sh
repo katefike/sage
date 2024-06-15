@@ -1,11 +1,14 @@
 #!/bin/bash
 
 # Loads test data into the mailbox
-if [[ -f /home/$RECEIVING_EMAIL_USER/test_data/$PRE_LOAD_MBOX ]]; then
+if [[ -f /test_data/$PRE_LOAD_MBOX ]]; then
   # Convert mbox (mb) file to Maildir (md)
   # docs found out https://github.com/dovecot/tools/blob/main/mb2md.pl
-  mb2md -s /home/$RECEIVING_EMAIL_USER/test_data/$PRE_LOAD_MBOX -d /home/$RECEIVING_EMAIL_USER/Maildir/
+  mb2md -s /test_data/$PRE_LOAD_MBOX -d /home/$RECEIVING_EMAIL_USER/Maildir/
 fi
+
+# TODO: Create an imap group
+chmod -R 777 /home/$RECEIVING_EMAIL_USER/Maildir
 
 # Configures /etc/postfix/main.cf, /etc/postfix/master.cf,
 # and /etc/dovecot/dovecot.conf for development
