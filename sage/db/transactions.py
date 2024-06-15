@@ -30,7 +30,15 @@ def insert_transaction(transaction: Transaction) -> bool:
     )
     stmt = """
     INSERT INTO
-        transactions (email_id, date, bank_id, type, amount, entity_id, identical_txn_id)
+        transactions (
+                email_id,
+                date,
+                bank_id,
+                type,
+                amount,
+                entity_id,
+                identical_txn_id
+            )
     VALUES
         (%s, %s, %s, %s, %s, %s, %s);
     """
@@ -66,7 +74,13 @@ def get_complete_transactions_by_daterange(
 
 def get_identical_txn_id(txn: Transaction) -> Optional[int]:
     """
-    Identify the oldest txn that has the same attributes as the current txn.
+    Identify the oldest txn that is identical to the current txn for the
+    following attributes:
+    - date
+    - type
+    - bank
+    - amount
+    - entity (merchant/payer)
     """
     bank_id = banks.get_id(txn.bank, txn.account)
 
