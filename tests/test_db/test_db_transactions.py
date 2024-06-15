@@ -139,7 +139,7 @@ def create_transaction_objects():
             amount=transaction_dict.get("amount"),
             account=transaction_dict.get("account"),
             balance=transaction_dict.get("balance"),
-            hash=None,
+            identical_txn_id=None,
         )
         input.append(transaction)
     return input
