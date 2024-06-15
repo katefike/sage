@@ -14,7 +14,7 @@ import os
 
 import pytest
 
-from sage.db import transactions
+from sage.__main__ import main
 from tests import utils
 
 DATA = [
@@ -41,7 +41,6 @@ def test_identical_txns(input, expected_output):
     Ensure that potential identical transactions are flagged.
     """
     utils.refresh_inbox(input.get("file"))
-    from sage.__main__ import main
 
     msg_count = main()
     assert expected_output.get("inserted_txn_count") == msg_count.get("processed")
