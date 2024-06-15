@@ -21,8 +21,6 @@ jobs:
       with:
         python-version: "3.10"
     - name: Start docker containers
-      env:
-          .env-example
       run: docker compose -f docker-compose.dev.yml up --build -d
     - name: Install dependencies
       run: |
@@ -30,8 +28,6 @@ jobs:
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Test with pytest
-      env:
-          .env-example
       run: export ISDEV=True && pytest tests/ -xv
     - name: Lint with flake8
       run: |
