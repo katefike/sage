@@ -1,14 +1,12 @@
 """
-Tests hashing, which is a way to screen for duplicate transactions.
+Tests flagging of identical txns.
 
 The input is a set of two or more emails. The emails may or may not represent
-duplicate transactions.
+identical txns.
 
-The expected output is the failure or success of inserting a transaction.
-For two similar, but distinct transactions, the output is two inserted
-transactions.
-For duplicate transactions (e.g. from the same transaction forwarded twice)
-the output is one inserted transaction.
+There are two expected outputs:
+    1. Every email results in an inserted txn.
+    2. A count of identical txns.
 """
 import pytest
 
@@ -17,20 +15,10 @@ from sage.db import transactions
 from tests import utils
 
 DATA = [
-    # (dict(file="distinct_but_similar_txns.mbox"), dict(inserted_txn_count=2, flagged_identical_txn=1)),
     (
         dict(file="identical_txns_gmail+cloudHQ_forwards.mbox"),
         dict(inserted_txn_count=2, identical_txn_count=1),
     ),
-    # FIXME: Won't load; returns error "Skipping ./test_data/example_data/identical_txns_duplicate_forwards.mbox: not a mbox file"
-    # (
-    #     dict(file="identical_txns_duplicate_forwards.mbox"),
-    #     dict(inserted_txn_count=2, identical_txn_count=1),
-    # ),
-    # (
-    #     dict(file="identical_txns_triplicate_forwards.mbox"),
-    #     dict(inserted_txn_count=3, identical_txn_count=2),
-    # ),
 ]
 
 
