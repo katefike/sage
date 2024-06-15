@@ -39,4 +39,5 @@ class Transaction:
     account: str = field(default=None)
     # Not all transactions list the account balance.
     balance: str = field(default=None)
-    hash: str = field(default=None)
+    # The ID of an older txn that's identical to this one
+    identical_txn_id: id = field(default=None)
