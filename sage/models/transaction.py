@@ -12,6 +12,8 @@ class Transaction:
     # The ID of the email in the emails table
     # that this transaction was parsed from
     email_id: int = field(default=None)
+    # The ID of the transaction in the transactions table
+    id: int = field(default=None)
     # Date the transaction was made; based on the day the email was
     # originally sent by the institution;
     # not based on the day the email was forwarded.
@@ -36,4 +38,7 @@ class Transaction:
     # there is only one account associated with the bank.
     account: str = field(default=None)
     # Not all transactions list the account balance.
+    # FIXME: Add balance to txn table #156
     balance: str = field(default=None)
+    # The ID of an older txn that's identical to this one
+    identical_txn_id: id = field(default=None)

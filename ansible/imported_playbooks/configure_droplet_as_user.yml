@@ -5,12 +5,13 @@
     ansible_user: '{{ lookup("env", "SERVER_USER") }}'
     project_root_path: '{{ lookup("env", "PROJECT_ROOT_PATH") }}'
   tasks:
-    - name: Clone the GitLab repository
+    - name: Clone the GitLab repository. Local changes will be lost.
       git:
         repo: 'https://github.com/katefike/sage.git'
         dest: '/home/{{ ansible_user }}/sage/'
         clone: yes
         update: yes
+        force: true
         version: production
 
     - name: Copy .env file to {{ host_name }}
@@ -22,6 +23,7 @@
     - name: Add execute permissions for all on /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh
       shell: 
         cmd: 'chmod +x /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh'
+      when: host_name!= 'sageEphem' 
 
     - name: Create the Python virtual environment
       shell: 
@@ -70,6 +72,7 @@
         hour: '*'
         job: '/usr/bin/env bash -c "date; . /home/{{ ansible_user }}/sage/docker/certbot/get_certs.sh >> /var/log/certbot_cronjob.log 2>&1"' 
         user: root
+      when: host_name!= 'sageEphem' 
       become: yes
 
     - name: Create a cron job for parsing transactions from emails
@@ -81,15 +84,22 @@
         job: '/usr/bin/env bash -c "cd ~/sage/ && .venv/bin/python3 -m sage >> ~/sage/cron.log 2>&1"' 
         user: '{{ ansible_user }}'
 
-    # - name: Run pytest and ensure all tests pass
-    #   shell: 
-    #     cmd: ~/sage/.venv/bin/pytest ~/sage/tests -xv
-    #     executable: /bin/bash   
-    #   register: pytest_result
+    - name: Verify that TLS is enforced for SMTPD
+      shell: 
+        cmd: docker exec -it sage-mailserver postconf -n | grep "smtpd_tls_security_level = encrypt"
+        executable: /bin/bash  
+      when: host_name!= 'sageEphem' 
+      register: smptd_tls_result
+      failed_when: smptd_tls_result.stdout_lines == ""
 
-    # - name: Show results of pytest
-    #   ansible.builtin.debug:
-    #     var: pytest_result.stdout_lines
-    # - name: Show results of pytest
-    #   ansible.builtin.debug:
-    #     var: pytest_result.stdout_lines
+    - name: Run pytest and ensure all tests pass
+      shell: 
+        cmd: ~/sage/.venv/bin/pytest ~/sage/tests -xv
+        executable: /bin/bash  
+      when: host_name == 'sageEphem'  
+      register: pytest_result
+
+    - name: Show results of pytest
+      ansible.builtin.debug:
+        var: pytest_result.stdout_lines
+      when: host_name == 'sageEphem'

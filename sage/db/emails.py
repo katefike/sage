@@ -17,7 +17,7 @@ def insert_email(email: Email) -> int:
         (%s, %s, %s, %s, %s, %s, %s, %s)
     RETURNING id;
     """
-    email_data = (
+    data = (
         email.uid,
         email.batch_time,
         email.forwarded_date,
@@ -27,5 +27,5 @@ def insert_email(email: Email) -> int:
         email.html,
         email.body,
     )
-    email_id = execute_statements.insert_get_id(stmt, email_data)
+    email_id = execute_statements.insert_get_id(stmt, data)
     return email_id

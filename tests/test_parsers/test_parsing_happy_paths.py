@@ -245,6 +245,51 @@ def get_test_data():
                 balance="-10.92",
             ),
         ),
+        (
+            (dict(uid="31", email_id=11)),
+            (
+                dict(
+                    date="2024-04-24",
+                    type_="withdrawal",
+                    bank="Chase",
+                    merchant="AMZN Mktp US",
+                    payer=None,
+                    amount="253.36",
+                    account=None,
+                    balance=None,
+                )
+            ),
+        ),
+        (
+            (dict(uid="32", email_id=12)),
+            (
+                dict(
+                    date="2024-04-16",
+                    type_="deposit",
+                    bank="Huntington",
+                    merchant=None,
+                    payer="cash",
+                    amount="1500.00",
+                    account="checking",
+                    balance="798.08",
+                )
+            ),
+        ),
+        (
+            (dict(uid="33", email_id=13)),
+            (
+                dict(
+                    date="2024-04-29",
+                    type_="withdrawal",
+                    bank="Chase",
+                    merchant="SAVE A LOT #24664",
+                    payer=None,
+                    amount="12.97",
+                    account=None,
+                    balance=None,
+                )
+            ),
+        ),
     ]
 
     # Retrieve the email corresponding to the UID
@@ -266,7 +311,7 @@ def get_test_data():
     return data
 
 
-utils.fresh_inbox("transaction_emails.mbox")
+utils.refresh_inbox("transaction_emails.mbox")
 DATA = get_test_data()
 
 

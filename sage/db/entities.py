@@ -1,5 +1,5 @@
 """
-CRUD methods for the entities table and the .
+CRUD functions for the entities table.
 """
 from typing import Optional
 
@@ -11,7 +11,7 @@ logger.add(sink="sage_main.log")
 
 
 def get_id(merchant: Optional[str], payer: Optional[str]) -> int:
-    stmt = """
+    query = """
     SELECT
         id
     FROM
@@ -21,22 +21,18 @@ def get_id(merchant: Optional[str], payer: Optional[str]) -> int:
         AND payer = %s
     """
     if merchant:
-        entity_data = (merchant, False)
+        params = (merchant, False)
     elif payer:
-        entity_data = (payer, True)
-    entity_id = execute_statements.select(stmt, entity_data)
-
-    # Convert the tuple to an integer by accessing its first element
-    # FIXME: Make it impossible to have the same combo of name and payer
-    if isinstance(entity_id, list) and len(entity_id) == 1:
-        entity_id = entity_id[0][0]
-
-    if not bool(entity_id):
-        entity_id = insert_get_id(entity_data)
+        params = (payer, True)
+    row, _column = execute_statements.select(query, params)
+    if not bool(row):
+        entity_id = insert_get_id(params)
+    else:
+        entity_id = row[0]
     return entity_id
 
 
-def insert_get_id(entity_data: tuple) -> int:
+def insert_get_id(data: tuple) -> int:
     stmt = """
     INSERT INTO
         entities (name, payer)
@@ -44,5 +40,5 @@ def insert_get_id(entity_data: tuple) -> int:
         (%s, %s)
     RETURNING id;
     """
-    entity_id = execute_statements.insert_get_id(stmt, entity_data)
+    entity_id = execute_statements.insert_get_id(stmt, data)
     return entity_id

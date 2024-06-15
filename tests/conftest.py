@@ -8,8 +8,9 @@ from . import ENV
 
 def pytest_configure():
     assert (
-        ENV["ISDEV"] == "True"
-    ), "CRITICAL: Only run pytest in the development environment."
+        ENV["ISDEV"] is True
+    ), "CRITICAL: Only run pytest in the development environment. \
+        ISDEV must be true."
 
 
 @pytest.fixture(scope="session")
@@ -19,20 +20,23 @@ def env() -> Dict:
 
 @pytest.fixture(scope="session")
 def conn():
+    POSTGRES_HOST = ENV["POSTGRES_HOST"]
+    POSTGRES_DB = ENV["POSTGRES_DB"]
+    POSTGRES_USER = ENV["POSTGRES_USER"]
+    POSTGRES_PASSWORD = ENV["POSTGRES_PASSWORD"]
     try:
         conn = psycopg2.connect(
-            host=ENV["POSTGRES_HOST"],
-            dbname=ENV["POSTGRES_DB"],
-            user=ENV["POSTGRES_USER"],
-            password=ENV["POSTGRES_PASSWORD"],
+            host=POSTGRES_HOST,
+            dbname=POSTGRES_DB,
+            user=POSTGRES_USER,
+            password=POSTGRES_PASSWORD,
         )
     except psycopg2.DatabaseError as error:
         print(f"Failed to connect to the database: {error}")
-        host = ENV["POSTGRES_HOST"]
-        db = ENV["POSTGRES_DB"]
-        user = ENV["POSTGRES_USER"]
-        passw = ENV["POSTGRES_PASSWORD"]
-        print(f"HOST: {host} DB: {db} USER: {user} PASS: {passw} ")
+        print(
+            f"HOST: {POSTGRES_HOST} DB: {POSTGRES_DB} USER: {POSTGRES_USER} \
+            PASS: {POSTGRES_PASSWORD}"
+        )
     yield conn
     conn.close()
 

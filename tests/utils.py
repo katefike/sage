@@ -13,35 +13,39 @@ from sage.models.email import Email
 from . import ENV
 
 
-def fresh_inbox(mbox_name: str):
+def refresh_inbox(mbox_name: str):
     """
     Re-create the user's Maildir. Then reads a directory
-    containing an Mbox format mailbox and creates a Maildir format mailbox.
+    containing an mbox format mailbox and creates a Maildir format mailbox.
 
     The command doveadm expunge -u {EN['RECEIVING_EMAIL_USER']} mailbox 'INBOX' all
     is insufficient because it does not restart incrementing of the UIDs
     at 1.
     """
+    print(f"Refreshing inbox with mbox {mbox_name}...")
+
     container = "docker exec sage-mailserver"
     maildir_path = f"/home/{ENV['RECEIVING_EMAIL_USER']}/Maildir/"
-    mbox_path = f"/home/{ENV['RECEIVING_EMAIL_USER']}/test_data/example_data"
-    try:
-        subprocess.call(
-            f"{container} rm -r {maildir_path} && mkdir {maildir_path}",
-            shell=True,
-        )
-        print("Recreated Maildir/.")
-        subprocess.call(
-            f"{container} mb2md -s {mbox_path}/{mbox_name} -d {maildir_path}",
-            shell=True,
-        )
-        subprocess.call(
-            f"{container} chmod -R 777 {maildir_path}",
-            shell=True,
-        )
-        print("Successfully loaded emails from mbox file.")
-    except Exception as error:
-        print(f"CRITICAL: Failed to create an inbox from an mbox: {error}")
+    # The mbox path MUST be the full file path
+    # Otherwise fails with error "Fatal: Source is not an mbox file or a directory!"
+    # https://www.linuxquestions.org/questions/linux-server-73/mb2md-problem-891502/
+    mbox_path = "./test_data/example_data"
+
+    print("Recreating Maildir/...")
+    subprocess.call(
+        f"{container} rm -r {maildir_path} && mkdir {maildir_path}",
+        shell=True,
+    )
+    print("Loading mbox into Maildir/...")
+    subprocess.call(
+        f"{container} mb2md -s {mbox_path}/{mbox_name} -d {maildir_path}",
+        shell=True,
+    )
+    print("modifying Maildir/ permissions...")
+    subprocess.call(
+        f"{container} chmod -R 777 {maildir_path}",
+        shell=True,
+    )
 
 
 def get_inbox_emails(input_uid: Optional[int] = None) -> List:
@@ -114,14 +118,14 @@ def send_email(html_body: Optional[str] = None, sender: Optional[str] = None) ->
 def insert_db_email(email: Optional[Email] = None) -> int:
     if not email:
         email = Email(
-            1,
-            "2023-08-31 15:22:40",
-            "2023-08-31",
-            "outgoing@gmail.com",
-            "bank@example.com",
-            "Example Transaction Email",
-            "f",
-            "Hello world!",
+            uid=1,
+            batch_time="2023-08-31 15:22:40",
+            forwarded_date="2023-08-31",
+            from_="outgoing@gmail.com",
+            origin="bank@example.com",
+            subject="Example Transaction Email",
+            html="f",
+            body="Hello world!",
         )
     email_id = emails.insert_email(email)
     return email_id
