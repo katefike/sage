@@ -32,7 +32,6 @@ def get_id(bank_name: str, account: Optional[str]) -> int:
             WHERE
                 name = %s
             """
-    bank_id_results, _colummns = execute_statements.select(query, params)
-    if bank_id_results:
-        bank_id = bank_id_results[0][0]
-        return bank_id
+    rows, _colummns = execute_statements.select(query, params)
+    bank_id = rows[0][0]
+    return bank_id
