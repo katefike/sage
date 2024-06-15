@@ -28,9 +28,7 @@ logger.add(sink="sage_main.log", level="INFO")
 
 def main():
     logger.info("STARTING SAGE")
-    logger.info(f"Forwarding email: {ENV['FORWARDING_EMAIL']}")
-    logger.info(f"RECEIVING_EMAIL_USER: {ENV['RECEIVING_EMAIL_USER']}")
-    logger.info(f"RECEIVING_EMAIL_PASSWORD: {ENV['RECEIVING_EMAIL_PASSWORD']}")
+    logger.info(f"FORWARDING_EMAIL: {ENV['FORWARDING_EMAIL']}")
 
     # Set the time the batch started
     utc_timestamp = datetime.utcnow()
@@ -56,7 +54,7 @@ def main():
 
             # Store the retrieved email in the database's emails table
             # FIXME: Move to email_parser.py
-            # FIXME: Parse the origin email
+            # FIXME: Add origin to the emails table #157
             origin = "placeholder"
             # FIXME: body is set twice: once here and once in email_parser
             if msg.html:
