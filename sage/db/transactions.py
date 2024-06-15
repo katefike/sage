@@ -1,5 +1,5 @@
 """
-Insert a transaction into the transactions table.
+CRUD functions for the txns table.
 """
 
 from typing import List
@@ -16,7 +16,7 @@ def insert_transaction(transaction: Transaction) -> bool:
     bank_id = banks.get_id(transaction.bank, transaction.account)
     # Transfers don't have entities
     if "transfer" in transaction.type_:
-        transaction_data = (
+        txn_data = (
             transaction.email_id,
             transaction.date,
             bank_id,
@@ -30,8 +30,10 @@ def insert_transaction(transaction: Transaction) -> bool:
             (%s, %s, %s, %s, %s);
         """
     else:
+        if not transaction.merchant and not transaction.payer:
+            logger.critical(f"No merchant or payer for txn: {transaction}")
         entity_id = entities.get_id(transaction.merchant, transaction.payer)
-        transaction_data = (
+        txn_data = (
             transaction.email_id,
             transaction.date,
             bank_id,
@@ -45,16 +47,16 @@ def insert_transaction(transaction: Transaction) -> bool:
         VALUES
             (%s, %s, %s, %s, %s, %s);
         """
-    row_count = execute_statements.insert(stmt, transaction_data)
+    row_count = execute_statements.insert(stmt, txn_data)
     return row_count
 
 
 def get_complete_transactions_by_daterange(
     start_date: str, stop_date: str
 ) -> List[tuple]:
-    select_criteria = (start_date, stop_date)
+    criteria = (start_date, stop_date)
     stmt = """
-    SELECT 
+    SELECT
         t.id AS "transaction_id",
         t.email_id AS "email_id",
         t.date,
@@ -71,5 +73,50 @@ def get_complete_transactions_by_daterange(
     WHERE t.date >= %s AND t.date <= %s
     ORDER BY t.date ASC;
     """
-    records = execute_statements.select(stmt, select_criteria)
-    return records[0]
+    row = execute_statements.select(stmt, criteria)
+    return row
+
+
+def get_identical_txn_id(txn: Transaction) -> tuple:
+    """
+    Identify the oldest txn that has the same attributes as the current txn.
+    """
+    bank_id = banks.get_id(txn.bank, txn.account)
+    if "transfer" in txn.type_:
+        criteria = (
+            txn.date,
+            txn.type_,
+            bank_id,
+            txn.amount,
+        )
+        stmt = """
+        SELECT
+            MIN(t.id) AS "txn_id"
+        FROM transactions t
+        WHERE t.date = %s
+            AND t.type = %s
+            AND t.bank_id = %s
+            AND t.amount = %s;
+        """
+    else:
+        entity_id = entities.get_id(txn.merchant, txn.payer)
+        criteria = (
+            txn.date,
+            txn.type_,
+            bank_id,
+            txn.amount,
+            entity_id,
+        )
+        stmt = """
+        SELECT
+            MIN(t.id) AS "txn_id"
+        FROM transactions t
+        WHERE t.date = %s
+            AND t.type = %s
+            AND t.bank_id = %s
+            AND t.amount = %s
+            AND t.entity_id = %s;
+        """
+    result, _column = execute_statements.select(stmt, criteria)
+    identical_txn_id = result[0][0]
+    return identical_txn_id
