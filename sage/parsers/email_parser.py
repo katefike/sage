@@ -126,7 +126,7 @@ def get_bank(body: str) -> str:
         return "Chase"
     elif regex_search("(discover@services.discover.com)", body):
         return "Discover"
-    elif regex_search("(HuntingtonAlerts@email.huntington.com)", body):
+    elif regex_search("(huntington.com)", body):
         return "Huntington"
     return
 
