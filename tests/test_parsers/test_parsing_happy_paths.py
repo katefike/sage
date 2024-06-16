@@ -290,6 +290,21 @@ def get_test_data():
                 )
             ),
         ),
+        (
+            (dict(uid="34", email_id=14)),
+            (
+                dict(
+                    date="2024-05-14",
+                    type_="deposit",
+                    bank="Huntington",
+                    merchant=None,
+                    payer="ABC DE LLC ERECT DEP",
+                    amount="3546.71",
+                    account="checking",
+                    balance="4394.84",
+                )
+            ),
+        ),
     ]
 
     # Retrieve the email corresponding to the UID

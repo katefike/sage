@@ -11226,3 +11226,115 @@ Merchant SAVE A LOT #24664
 Amount $12.97
 
 --00000000000076139d06194e0c52--
+
+From 1799787425217430291@xxx Wed May 22 20:50:42 +0000 2024
+X-GM-THRID: 1799787425217430291
+X-Gmail-Labels: Inbox,Category Personal,Unread,backfill/202405
+Delivered-To: shelovescacti@gmail.com
+Received: by 2002:a05:7010:734c:b0:3cc:117f:c77b with SMTP id i12csp544323mdc;
+        Wed, 22 May 2024 13:50:43 -0700 (PDT)
+X-Received: by 2002:a05:6102:3048:b0:47b:9547:bfde with SMTP id ada2fe7eead31-4890093797cmr4297967137.13.1716411042790;
+        Wed, 22 May 2024 13:50:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1716411042; cv=none;
+        d=google.com; s=arc-20160816;
+        b=GLRBef9izql0eEPr4pNmX6HURGXwsR0dy7U+6bt3beQGzxLn4UnTuGAoXYHg2eVhlw
+         WyPQN55IsYK+Pw657aCkUhTDuj6argN0KVlu/7ofkTCJMiuzrY7W1EQFzy81kfympygJ
+         qkm11pNUC9YibtuccBgSQ+goMRtLbmfsWYEQl2cbABnPyAOzWmdhIu4olV605JEEqLG0
+         bEV1O+hhDx4io9pOPQTzKI8NBreKWbmQWFiUmGRkDRPdRkQ+oZOYcZGMIGXL7TT35sOm
+         GGIWDnezeVEzgJqGWWGklnykLIbtvmGtk/exrBrMFc+1MTVF4Bn6grrpcWW+DV3JHyyb
+         usvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:subject:message-id:date:mime-version:from:references
+         :dkim-signature;
+        bh=oUxhHLSG9Paz4V+j4rGOPvhJTzG3T/K2sOBPqK/gfzQ=;
+        fh=uDCTqrjUuSN01MbuUJAXsMebbw+mvpbkL6i/yQe0nOU=;
+        b=piYq4HW0YltKdpi7GjWfBM0WS+aByKSSgod0P1jWjc1zREwgxzz1nYfGd0UI4mP/t6
+         EMMAcmTqqxXWpnrEbbCDPVpW7arkeXQ1jDwxwmlq2uKcE1uRMxMktMB6tVMxC7QQG9tx
+         cxAcoHYA17vU0zHB61HgnmkiGcDd2GpqSSgzL23in5St0mdeoc4GGi4jCCewf7WA5bl0
+         cnhvn+8IpOZ3Lznr0PZC3b4HGlHd9U0e+QwNzxl7U13w12pr0RYnWM1GzJJ+IseTw8M2
+         iqjd9wRKxpM0RFksYUl9ZMh3HayS26eOmFJ4eFTMcU4HldpNZm+DLW9rLXQLd96r0Vej
+         SbsQ==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=MnnWmWNb;
+       spf=pass (google.com: domain of dev.kfike@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=dev.kfike@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Return-Path: <dev.kfike@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id ada2fe7eead31-4806cae9625sor7510447137.3.2024.05.22.13.50.42
+        for <shelovescacti@gmail.com>
+        (Google Transport Security);
+        Wed, 22 May 2024 13:50:42 -0700 (PDT)
+Received-SPF: pass (google.com: domain of dev.kfike@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=MnnWmWNb;
+       spf=pass (google.com: domain of dev.kfike@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=dev.kfike@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716411042; x=1717015842; dara=google.com;
+        h=to:subject:message-id:date:mime-version:from:references:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oUxhHLSG9Paz4V+j4rGOPvhJTzG3T/K2sOBPqK/gfzQ=;
+        b=MnnWmWNbtLq3OY6CcuzivE4HxJqrRlREYjCNUC6UtodbXhBNYVd+IDOghqH+uurw10
+         EGncKmTmS/Un1h1Lb+OmL3QOPFOSFE2Gs5tfwpXNjQVUBUuBND453GZ3CQePYfn3ZoIp
+         H35YDEoiRXq3utYJ4F+Krvab/f+jlgHPzhBbRqUyCywNrrQwYbZgJk1GAayS0IuEaqi5
+         lZyEIjP2Vdc9PwWvoGhoNFitW9z39HEJSoPcV5yVC3txXluT+zHBoNo3fOcvHkyGsqOm
+         LIX01giMFPjsoTLY0whvccmQ/3utxyj6l8VDNPMN/0XXlCMKFyH5gbr0CThCRd930gnC
+         gqHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716411042; x=1717015842;
+        h=to:subject:message-id:date:mime-version:from:references
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oUxhHLSG9Paz4V+j4rGOPvhJTzG3T/K2sOBPqK/gfzQ=;
+        b=lH15mWwyCmm6dWaAPmudH1mZkMjY4UG38Y+CliauSQOhCwDazSItVCCsTyO62yo9sI
+         zEYWMeorRxacvV5/zNbZXg1dgQiLYtt8u7OPVToP1GpdM7WmxltxzHgOHm2YnNtE10RM
+         7GNkMvS8A1UXoAjnK4QG3vlRzDV3Wx8tBUH/gZzWNyJd89tceOOxrAyYXJf1Bu8Lspod
+         sE1E65O0wV4grmevNIbNUrt5FOB/VTq+UUeM12iMOEOeNch8U8K9ng79XlvSqj0VGC9F
+         7qYZTEWeR0Tf8PwKpotkr6nEmX2vQruHh0Q58d/KwHFVN4ZV2eqXmbqehGOR+5l0iXXs
+         M8jg==
+X-Gm-Message-State: AOJu0YzoPvQ4oxicIoxt/U94GnPDr4EV5gB/JBG1tnGRLzcvPy8JzNsv
+	cQaUhMxIMDU3mw5sbZRQTf8pJBQv9lUxgmnZ85QdEK+98NAKM8TkWOO5X4UtLLBFDWttTeGGIXo
+	esCnEZ7KIJ+Jby7nuwHlHLdg628A3Jw==
+X-Google-Smtp-Source: AGHT+IFRIWWvcawZA6JdY26CmyYovqPzSNOoOGGfd+2fKn5vp/fsXxU9OWSnlzhCtsYOC7qT1+RQ7LmuYg8Y1gLWdIA=
+X-Received: by 2002:a05:6102:3754:b0:47f:fe4:a39a with SMTP id
+ ada2fe7eead31-48900937a23mr4120712137.9.1716411041292; Wed, 22 May 2024
+ 13:50:41 -0700 (PDT)
+Received: from 125135905029 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 22 May 2024 16:50:40 -0400
+References: <18f77675381dd623dev.kfike@gmail.com>
+From: dev.kfike@gmail.com
+MIME-Version: 1.0
+X-cloudHQ-Custom-Header-description: created via cloudHQ
+Date: Wed, 22 May 2024 16:50:40 -0400
+Message-ID: <CAHpjF2r+Q-ktfiyh6d10e9+s6fUc+dk75t8F4KaZxk=Qv=wNLA@mail.gmail.com>
+Subject: Fwd: Deposit
+To: shelovescacti@gmail.com
+Content-Type: multipart/alternative; boundary="00000000000067c342061911167c"
+
+--00000000000067c342061911167c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Forwarded using cloudHQ's free email forwarding tool: Multi Email Forward
+For Gmail <https://www.multi-email-forward.com/>
+You might be also interested to try cloudHQ's Gmail URL Link Preview
+<https://www.gmail-url-link-preview.com>: *Create beautiful web URL link
+previews when composing your email.*
+
+---------- Forwarded message ---------
+From: Huntington Bank <HuntingtonOnline@email.huntington.com>
+Date: Tue, 14 May 2024 08:00:04 -0600
+Subject: Deposit
+To: dev.kfike@gmail.com
+Date Sent: Tue, 14 May 2024 08:00:04 -0600
+Date Received: Tue, 14 May 2024 07:00:12 -0700 (PDT)
+
+A deposit was made to acct CHECK above the amount you set for an alert.
+
+We've processed an ACH deposit for $3,546.71 from ABC DE LLC ERECT DEP to
+your account nicknamed CHECK. That's above the $0.00 you set for an alert.
+Thanks to Early Pay, it arrived 1 day early.=E2=80=8B
+
+Your balance is $4,394.84 as of 5/14/24 9:58 AM ET.
+
+--00000000000067c342061911167c--
