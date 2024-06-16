@@ -65,15 +65,16 @@ def get_complete_transactions_by_daterange(
         CASE
             WHEN t.type = 'withdrawal' THEN t.amount * -1
             ELSE t.amount
-        END
+        END,
+        t.type
     FROM transactions t
         JOIN banks b ON b.id = t.bank_id
-        JOIN entities e ON e.id = t.entity_id
+        LEFT JOIN entities e ON e.id = t.entity_id
     WHERE t.date >= %s AND t.date <= %s
     ORDER BY t.date ASC;
     """
-    row = execute_statements.select(query, params)
-    return row
+    rows = execute_statements.select(query, params)
+    return rows[0]
 
 
 def get_identical_txn_id(txn: Transaction) -> Optional[int]:
