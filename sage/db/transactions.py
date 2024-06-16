@@ -46,14 +46,15 @@ def insert_transaction(transaction: Transaction) -> bool:
     return row_count
 
 
-def get_complete_txns_by_daterange(
-    start_date: str, stop_date: str
+def get_txns_by_daterange_and_bank_account(
+    start_date: str, stop_date: str, bank: str, account: Optional[str]
 ) -> List[tuple]:  # pragma: no cover
     """
     Used in sage.validator; not a part of the main Sage program.
     That's why this function doesn't have test coverage.
     """
-    params = (start_date, stop_date)
+    bank_id = banks.get_id(bank, account)
+    params = (start_date, stop_date, bank_id)
     query = """
     SELECT
         t.id AS "transaction_id",
@@ -70,7 +71,10 @@ def get_complete_txns_by_daterange(
     FROM transactions t
         JOIN banks b ON b.id = t.bank_id
         LEFT JOIN entities e ON e.id = t.entity_id
-    WHERE t.date >= %s AND t.date <= %s
+    WHERE
+        t.date >= %s 
+        AND t.date <= %s
+        AND t.bank_id = %s
     ORDER BY t.date ASC;
     """
     rows = execute_statements.select(query, params)
