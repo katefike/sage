@@ -63,7 +63,7 @@ def get_complete_txns_by_daterange(
         b.account AS "bank_account",
         e.name AS "entity_name",
         CASE
-            WHEN t.type = 'withdrawal' THEN t.amount * -1
+            WHEN t.type LIKE '%%withdrawal' THEN t.amount * -1
             ELSE t.amount
         END,
         t.type
