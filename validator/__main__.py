@@ -66,14 +66,6 @@ def main(file: str, date: str):
             f"{i + 1} - {Transaction.date}, {Transaction.merchant}, {Transaction.amount}"
         )
 
-    # Find duplicate DB records
-    dups = get_duplicate_db_records(db_data)
-    if len(dups) != 0:
-        logger.info("Possible duplicate transactions:")
-        for i, dup_set in enumerate(dups):
-            logger.info(f"{i + 1}.1 - {dup_set[0]}")
-            logger.info(f"{i + 1}.2 - {dup_set[1]}")
-
 
 def create_dates(date):
     raw_dates = []
@@ -258,60 +250,6 @@ def diff_csv_and_db_data(csv_data: List, db_data: List) -> Dict:
     diff["DB records not in CSV"] = db_data_copy
 
     return diff
-
-
-def get_duplicate_db_records(db_data: List) -> List:
-    """
-    db_data:
-        [Transaction(
-            id=1,
-            date="04/01/2024",
-            merchant="UBER BV IAT PAYPAL",
-            amount=Decimal("-0.51"),
-        ),
-        Transaction(
-            id=2,
-            date="04/01/2024",
-            merchant="UBER BV IAT PAYPAL",
-            amount=Decimal("-0.51"),
-        ),]
-    dups:
-        [
-            [Transaction(
-                id=1,
-                date="04/01/2024",
-                merchant="UBER BV IAT PAYPAL",
-                amount=Decimal("-0.51"),
-            ),
-            Transaction(
-                id=2,
-                date="04/01/2024",
-                merchant="UBER BV IAT PAYPAL",
-                amount=Decimal("-0.51"),
-            ),]
-        ]
-    """
-    dups = []
-
-    # Identify duplicate (or multiples in general) records in DB
-    db_data_copy = copy.deepcopy(db_data)
-    for Transaction in db_data:
-        dup_set = [Transaction]
-        for Transaction_copy in db_data_copy:
-            if Transaction.id == Transaction_copy.id:
-                continue
-            if Transaction.date != Transaction_copy.date:
-                continue
-            if Transaction.merchant != Transaction_copy.merchant:
-                continue
-            if Transaction.amount != Transaction_copy.amount:
-                continue
-            dup_set.append(Transaction_copy)
-            db_data_copy.remove(Transaction)
-            db_data_copy.remove(Transaction_copy)
-        if len(dup_set) > 1:
-            dups.append(dup_set)
-    return dups
 
 
 if __name__ == "__main__":  # pragma: no cover
