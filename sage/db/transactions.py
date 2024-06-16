@@ -46,7 +46,7 @@ def insert_transaction(transaction: Transaction) -> bool:
     return row_count
 
 
-def get_complete_transactions_by_daterange(
+def get_complete_txns_by_daterange(
     start_date: str, stop_date: str
 ) -> List[tuple]:  # pragma: no cover
     """
