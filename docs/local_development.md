@@ -4,7 +4,7 @@
   - Docker
     - Use [these instructions](https://docs.docker.com/engine/install/) to install 
   - Python 3.7 or higher
-2. Run the first setup script. This will create a .env file using the file .env-example as a template. 
+2. Run the first setup script. This will create a .env file using the file .env-example as a template. Note that pytest uses the .env-example.
   <br>`bash setup/1_setup_sage_directory.sh`
 3. Run a setup script for setting up the virtual environment and Python dependencies.
   <br>`source setup/local_development/1_setup_venv.sh`

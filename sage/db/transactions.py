@@ -46,14 +46,15 @@ def insert_transaction(transaction: Transaction) -> bool:
     return row_count
 
 
-def get_complete_transactions_by_daterange(
-    start_date: str, stop_date: str
+def get_txns_by_daterange_and_bank_account(
+    start_date: str, stop_date: str, bank: str, account: Optional[str]
 ) -> List[tuple]:  # pragma: no cover
     """
     Used in sage.validator; not a part of the main Sage program.
     That's why this function doesn't have test coverage.
     """
-    params = (start_date, stop_date)
+    bank_id = banks.get_id(bank, account)
+    params = (start_date, stop_date, bank_id)
     query = """
     SELECT
         t.id AS "transaction_id",
@@ -63,17 +64,21 @@ def get_complete_transactions_by_daterange(
         b.account AS "bank_account",
         e.name AS "entity_name",
         CASE
-            WHEN t.type = 'withdrawal' THEN t.amount * -1
+            WHEN t.type LIKE '%%withdrawal' THEN t.amount * -1
             ELSE t.amount
-        END
+        END,
+        t.type
     FROM transactions t
         JOIN banks b ON b.id = t.bank_id
-        JOIN entities e ON e.id = t.entity_id
-    WHERE t.date >= %s AND t.date <= %s
+        LEFT JOIN entities e ON e.id = t.entity_id
+    WHERE
+        t.date >= %s 
+        AND t.date <= %s
+        AND t.bank_id = %s
     ORDER BY t.date ASC;
     """
-    row = execute_statements.select(query, params)
-    return row
+    rows = execute_statements.select(query, params)
+    return rows[0]
 
 
 def get_identical_txn_id(txn: Transaction) -> Optional[int]:

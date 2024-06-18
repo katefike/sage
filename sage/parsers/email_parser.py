@@ -54,6 +54,8 @@ def main(msg: MailMessage, email_id: int) -> Transaction:
             transaction.merchant, raw_amount = parse_huntington_withdrawal(body)
         elif transaction.type_ == "deposit":
             transaction.payer, raw_amount = parse_huntington_deposit(body)
+        else:
+            return
         # Identify the Huntington account the transaction occurred on
         transaction.account = get_huntington_account(body)
         # Get the balance of the Huntington account
@@ -126,7 +128,7 @@ def get_bank(body: str) -> str:
         return "Chase"
     elif regex_search("(discover@services.discover.com)", body):
         return "Discover"
-    elif regex_search("(HuntingtonAlerts@email.huntington.com)", body):
+    elif regex_search("(huntington.com)", body):
         return "Huntington"
     return
 
@@ -161,13 +163,16 @@ def get_huntington_transaction_type(body: str) -> str:
     """
     Identify the Huntington transaction type
     """
-    if regex_search("(transfer withdrawal)", body):
+    type_ = None
+    if regex_search("(We've processed a transfer withdrawal for )", body):
         type_ = "transfer withdrawal"
-    elif regex_search("(transfer deposit)", body):
+    elif regex_search("(We've processed a transfer deposit for )", body):
         type_ = "transfer deposit"
-    elif regex_search("(withdrawal)", body):
+    elif regex_search("(We've processed an ACH withdrawal for)", body):
         type_ = "withdrawal"
-    elif regex_search("(deposit)", body):
+    elif regex_search("(We've processed an ACH deposit for )", body):
+        type_ = "deposit"
+    elif regex_search("(We've processed a deposit for )", body):
         type_ = "deposit"
     else:
         logger.info("No Huntington transaction type identified")
