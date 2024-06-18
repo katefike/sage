@@ -134,7 +134,7 @@ def get_csv_data(file: str, dates: List) -> List:
 
 
 def get_db_data(start_date: str, stop_date: str, bank: str, account: str) -> List:
-    db_records = transactions.get_txns_by_daterange__and_bank_account(
+    db_records = transactions.get_txns_by_daterange_and_bank_account(
         start_date, stop_date, bank, account
     )
     db_data = []
