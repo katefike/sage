@@ -79,7 +79,7 @@ def main():
             txn = email_parser.main(msg, email_id)
             logger.info(f"Email UID {msg.uid} - attempting to parse...")
             if not txn:
-                logger.info(f"Email UID {msg.uid} - unparsed.")
+                logger.warning(f"Email UID {msg.uid} - unparsed.")
                 msg_count["unparsed"] = msg_count.get("unparsed", 0) + 1
                 continue
 
