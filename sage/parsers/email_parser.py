@@ -2,9 +2,9 @@ import re
 from datetime import datetime
 
 from bs4 import BeautifulSoup
-from imap_tools import MailMessage
 from loguru import logger
 
+from sage.models.email import Email
 from sage.models.transaction import Transaction
 
 logger.add(sink="sage_main.log")
@@ -16,21 +16,21 @@ class RegexError(Exception):
     pass
 
 
-def main(msg: MailMessage, email_id: int) -> Transaction:
+def main(email: Email) -> Transaction:
     """
-    Parse the transaction data from the email.
+    Parse the txn data from the email.
 
-    :param msg: this is an an email
-    :param email_id: the ID in the database's emails table for this email
-    :returns: this is a transaction object defined by the program
+    :param email: an Email object defined in sage.models.email.py
+    :returns: a Transaction object defined in sage.models.transaction.py
     """
-    transaction = Transaction(email_id)
+    transaction = Transaction(email.id)
+
     # Get the email body
-    if msg.text:
-        body = msg.text
-    elif msg.html:
-        soup = BeautifulSoup(msg.html, "html.parser")
+    if email.html:
+        soup = BeautifulSoup(email.body, "html.parser")
         body = soup.get_text(" ")
+    else:
+        body = email.body
 
     # Identify who the bank is
     if not get_bank(body):
@@ -39,7 +39,7 @@ def main(msg: MailMessage, email_id: int) -> Transaction:
     # Parse the email based on who the bank is
     if transaction.bank == "Chase":
         transaction.type_ = "withdrawal"
-        transaction.merchant, raw_amount = parse_chase(msg.subject)
+        transaction.merchant, raw_amount = parse_chase(email.subject)
     if transaction.bank == "Discover":
         transaction.type_ = "withdrawal"
         transaction.merchant, raw_amount = parse_discover(body)
@@ -133,7 +133,7 @@ def get_bank(body: str) -> str:
     return
 
 
-def parse_chase(subject: MailMessage.subject) -> str:
+def parse_chase(subject: str) -> str:
     """
     Extract the transaction amount and merchant from the email subject
     E.g.
