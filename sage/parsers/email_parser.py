@@ -1,7 +1,6 @@
 import re
 from datetime import datetime
 
-from bs4 import BeautifulSoup
 from loguru import logger
 
 from sage.models.email import Email
@@ -25,41 +24,34 @@ def main(email: Email) -> Transaction:
     """
     transaction = Transaction(email.id)
 
-    # Get the email body
-    if email.html:
-        soup = BeautifulSoup(email.body, "html.parser")
-        body = soup.get_text(" ")
-    else:
-        body = email.body
-
     # Identify who the bank is
-    if not get_bank(body):
+    if not get_bank(email.body):
         return
-    transaction.bank = get_bank(body)
+    transaction.bank = get_bank(email.body)
     # Parse the email based on who the bank is
     if transaction.bank == "Chase":
         transaction.type_ = "withdrawal"
         transaction.merchant, raw_amount = parse_chase(email.subject)
     if transaction.bank == "Discover":
         transaction.type_ = "withdrawal"
-        transaction.merchant, raw_amount = parse_discover(body)
+        transaction.merchant, raw_amount = parse_discover(email.body)
     if transaction.bank == "Huntington":
-        transaction.type_ = get_huntington_transaction_type(body)
+        transaction.type_ = get_huntington_transaction_type(email.body)
         # Parse the Huntington transaction based on the transaction type
         if transaction.type_ == "transfer withdrawal":
-            raw_amount = parse_huntington_transfer_withdrawal(body)
+            raw_amount = parse_huntington_transfer_withdrawal(email.body)
         elif transaction.type_ == "transfer deposit":
-            raw_amount = parse_huntington_transfer_deposit(body)
+            raw_amount = parse_huntington_transfer_deposit(email.body)
         elif transaction.type_ == "withdrawal":
-            transaction.merchant, raw_amount = parse_huntington_withdrawal(body)
+            transaction.merchant, raw_amount = parse_huntington_withdrawal(email.body)
         elif transaction.type_ == "deposit":
-            transaction.payer, raw_amount = parse_huntington_deposit(body)
+            transaction.payer, raw_amount = parse_huntington_deposit(email.body)
         else:
             return
         # Identify the Huntington account the transaction occurred on
-        transaction.account = get_huntington_account(body)
+        transaction.account = get_huntington_account(email.body)
         # Get the balance of the Huntington account
-        raw_balance = get_huntington_balance(body)
+        raw_balance = get_huntington_balance(email.body)
         transaction.balance = transform_amount(raw_balance)
     # Don't return a transaction object if the no amount could be determined.
     # The email was likely some other notification email from the bank.
@@ -67,7 +59,7 @@ def main(email: Email) -> Transaction:
         return
     transaction.amount = transform_amount(raw_amount)
     # Identify the date the tansaction email arrived
-    transaction.date = get_date(body)
+    transaction.date = get_date(email.body)
     return transaction
 
 
