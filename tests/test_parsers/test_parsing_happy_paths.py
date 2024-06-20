@@ -16,6 +16,7 @@ sage/models/transaction.py
 """
 import pytest
 
+from sage.mx import get_emails
 from sage.parsers import email_parser
 from tests import utils
 
@@ -308,21 +309,12 @@ def get_test_data():
     ]
 
     # Retrieve the email corresponding to the UID
-    for email in data:
-        input = email[0]
+    for test_case in data:
+        input = test_case[0]
         uid = input.get("uid")
-        msgs = utils.get_inbox_emails(uid)
-        if len(msgs) == 0:
-            print(f"CRITICAL: No email having UID {uid} was found.")
-        if len(msgs) > 1:
-            print(f"CRITICAL: More than one email having UID {uid} was found.")
-        # Iterate over messages,
-        # but we're only expecting a single email message in the object.
-        for msg in msgs:
-            input["msg"] = msg
-
-        input["email_id"] = input.get("email_id")
-
+        emails = get_emails.main(f"uid={uid}")
+        for email in emails:
+            input["email"] = email
     return data
 
 
@@ -337,7 +329,7 @@ def test_transaction_bank_parsing(input, expected_output):
     Ensure the right bank was identified. The bank can be
     Huntington, Chase, Discover or cash.
     """
-    transaction = email_parser.main(input.get("msg"), input.get("email_id"))
+    transaction = email_parser.main(input.get("email"))
     assert expected_output.get("bank") == transaction.bank
 
 
@@ -357,7 +349,7 @@ def test_transaction_type_parsing(input, expected_output):
         transfer deposit: I moved money into this account from another account
         or I deposited cash into this account
     """
-    transaction = email_parser.main(input.get("msg"), input.get("email_id"))
+    transaction = email_parser.main(input.get("email"))
     assert expected_output.get("type_") == transaction.type_
 
 
@@ -368,7 +360,7 @@ def test_transaction_merchant_parsing(input, expected_output):
     identified. If the transaction is a deposit, ensure that no merchant is
     identified.
     """
-    transaction = email_parser.main(input.get("msg"), input.get("email_id"))
+    transaction = email_parser.main(input.get("email"))
     assert expected_output.get("merchant") == transaction.merchant
 
 
@@ -379,7 +371,7 @@ def test_transaction_payer_parsing(input, expected_output):
     identified. If the transaction is a withdrawal, ensure that no payer is
     identified.
     """
-    transaction = email_parser.main(input.get("msg"), input.get("email_id"))
+    transaction = email_parser.main(input.get("email"))
     assert expected_output.get("payer") == transaction.payer
 
 
@@ -389,7 +381,7 @@ def test_transaction_amount_parsing(input, expected_output):
     Ensure that the correct amount is identified from the email. Also ensure
     that the format is 00.00
     """
-    transaction = email_parser.main(input.get("msg"), input.get("email_id"))
+    transaction = email_parser.main(input.get("email"))
     assert expected_output.get("amount") == transaction.amount
 
 
@@ -399,7 +391,7 @@ def test_transaction_account_parsing(input, expected_output):
     Ensure that the correct account is identified. The only bank that does not
     have multiple accounts is Chase.
     """
-    transaction = email_parser.main(input.get("msg"), input.get("email_id"))
+    transaction = email_parser.main(input.get("email"))
     assert expected_output.get("account") == transaction.account
 
 
@@ -409,7 +401,7 @@ def test_transaction_balance_parsing(input, expected_output):
     Ensure that the balance was identified. Chase and Discover do not provide
     balance information.
     """
-    transaction = email_parser.main(input.get("msg"), input.get("email_id"))
+    transaction = email_parser.main(input.get("email"))
     assert expected_output.get("balance") == transaction.balance
 
 
@@ -420,5 +412,5 @@ def test_date_parsing(input, expected_output):
     right. The time the email was forwarded to the mail server should not be
     recorded.
     """
-    transaction = email_parser.main(input.get("msg"), input.get("email_id"))
+    transaction = email_parser.main(input.get("email"))
     assert expected_output.get("date") == transaction.date
