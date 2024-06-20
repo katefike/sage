@@ -1,4 +1,9 @@
 # Troubleshooting
+# Environment Variables
+If you're in the local development environment, use `export ISDEV=True && <insert command here>` before most every command. Exporting `ISDEV` causes `sage/config.py` to instantiate the env vars in `.env-example` instead of `.env`. 
+- The `.env` file is only used when creating prod infrastructure via ansible, or on prod itself. 
+- The `.env-example` file is used when doing any local development work. It is used by Docker, the DB, the MX, pytest and every module of `sage/`.
+
 ## Logging
 Shows Sage's attempts to parse batches of emails in the MX and insert them as transactions into the DB. 
 `~/sage/sage_main.log`
@@ -91,22 +96,9 @@ quit
 ```
 
 ### Retrieving Emails 
-Retrieve emails on your MX in development (locally) and production (on the DO droplet host). 
+Retrieve all emails on your MX in development (locally) and production (on the DO droplet host). 
 ```
-(.venv) kfike@prod:~/sage$ python3 scripts/get_all_emails.py 
-UID: 1
-Date: 1900-01-01 00:00:00
-To: ()
-From: 
-Text: Test email open_ssl 25
-
-UID: 2
-Date: 2024-03-01 09:45:23+07:00
-To: ('kfike@example.com',)
-From: example@gmail.com
-Text: Test email gmail 25
-
-2 emails were retrieved.
+(.venv) kfike@prod:~/sage$ 
 ```
 
 ### Getting an mbox file from your Gmail account
