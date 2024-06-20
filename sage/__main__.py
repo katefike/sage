@@ -35,10 +35,15 @@ def main(retry_unparsed_emails=False):
     }
 
     # Log into the receiving mailbox on the mail server and retrieve emails
-    # that are from the forwarding email
-    # Connect to the mailbox containing transaction alert emails
-    from_forwarding_email = True
-    retrieved_emails = get_emails.main(from_forwarding_email, retry_unparsed_emails)
+    if retry_unparsed_emails:
+        # Retry emails that went through the pipeline and were
+        # initially unparsed
+        filter = "unparsed"
+    else:
+        # Retrieve emails from the forwarding email specified in the .env
+        filter = "forwarded"
+
+    retrieved_emails = get_emails.main(filter)
 
     for msg in retrieved_emails:
         msg_count["retrieved"] = msg_count.get("retrieved", 0) + 1
