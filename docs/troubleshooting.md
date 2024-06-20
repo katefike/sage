@@ -95,10 +95,40 @@ Test email open_ssl 25
 quit
 ```
 
-### Retrieving Emails 
-Retrieve all emails on your MX in development (locally) and production (on the DO droplet host). 
+### Retrieving Emails
+Below are the primary ways `main()` in `sage.mx.get_emails.py` can be called. Some possibilities aren't shown.
+The module connects to the dockerized MX that receives the forwarded txn emails.
+The entrypoint of Sage, `/sage/__main__.py`, also uses the module `sage.mx.get_emails.py` to retrieve all emails
+from the forwarding email.
+
+Retrieve and print all emails. 
 ```
-(.venv) kfike@prod:~/sage$ 
+(.venv) kfike@prod:~/sage$ python3 -c 'from sage.mx import get_emails ; get_emails.main(pls_print=True)'
+```
+
+Retrieve and print all emails forwarded by the email associated with the env var `FORWARDING_EMAIL`. 
+```
+(.venv) kfike@prod:~/sage$ python3 -c 'from sage.mx import get_emails ; get_emails.main(filter="forwarded", pls_print=True)'
+```
+
+Retrieve and print all unparsed emails. These are emails returned by this query:
+```
+SELECT 
+    e.* 
+FROM emails e 
+    LEFT JOIN transactions t ON t.email_id == e.id 
+WHERE 
+    t.email_id IS NULL;
+```
+```
+(.venv) kfike@prod:~/sage$ python3 -c 'from sage.mx import get_emails ; get_emails.main(filter="unparsed", pls_print=True)'
+```
+
+Retrieve and print an email by UID.
+Below is an example for email UID 77. 
+The string must have the syntax below because it's used to identify the filter _and_ integer.
+```
+(.venv) kfike@prod:~/sage$ python3 -c 'from sage.mx import get_emails ; get_emails.main(filter="uid=77", pls_print=True)'
 ```
 
 ### Getting an mbox file from your Gmail account
