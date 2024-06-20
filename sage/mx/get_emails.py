@@ -5,22 +5,12 @@ from typing import List, Optional
 import imap_tools
 from loguru import logger
 
+from sage.db import emails
 from sage.models.email import Email
 
 from . import ENV
 
 logger.add(sink="sage_main.log")
-
-
-def open_mailbox() -> imap_tools.BaseMailBox:
-    try:
-        mailbox = imap_tools.MailBoxUnencrypted("localhost").login(
-            ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
-        )
-        return mailbox
-    except imap_tools.ImapToolsError as error:  # pragma: no cover
-        logger.critical(f"Failed to open mailbox: {error}")
-        raise error
 
 
 def main(
@@ -34,22 +24,53 @@ def main(
             f"Only getting emails from FORWARDING_EMAIL {ENV['FORWARDING_EMAIL']}..."
         )
         msgs = mailbox.fetch(imap_tools.A(from_=ENV["FORWARDING_EMAIL"]))
+
     elif filter == "unparsed":
         logger.info(
-            "Only getting emails that are in the DB table named emails, \
+            "Only getting emails that are in the DB table named emails,\
             but don't have an associated txn..."
         )
+        msgs = []
+        records, columns_ = emails.get_unparsed_emails()
+        for record in records:
+            uid_ = record[1]
+            retrieved_msg = mailbox.fetch(imap_tools.AND(uid=[str(uid_)]))
+            for msg in retrieved_msg:
+                msgs.append(msg)
+
     elif filter and "uid=" in filter:
         uid_parts = filter.split("=")
         uid_ = uid_parts[1]
         logger.info(f"Only getting email uid {uid_}...")
         msgs = mailbox.fetch(imap_tools.AND(uid=[uid_]))
+
     else:
         logger.info("Getting all emails from inbox...")
         msgs = mailbox.fetch()
 
-    # Ultimately returned messages
-    emails = []
+    emails_ = transform_MailMessages_to_Emails(msgs)
+
+    if pls_print:
+        pprint.pp(emails_)
+
+    logger.info(f"{len(emails_)} email(s) retrieved.")
+
+    return emails_
+
+
+def open_mailbox() -> imap_tools.BaseMailBox:
+    try:
+        mailbox = imap_tools.MailBoxUnencrypted("localhost").login(
+            ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
+        )
+        return mailbox
+    except imap_tools.ImapToolsError as error:  # pragma: no cover
+        logger.critical(f"Failed to open mailbox: {error}")
+        raise error
+
+
+def transform_MailMessages_to_Emails(msgs: imap_tools.MailMessage) -> List[Email]:
+    emails_ = []
 
     # Set the time the batch started
     utc_timestamp = datetime.utcnow()
@@ -76,11 +97,6 @@ def main(
             html,
             body,
         )
-        emails.append(email)
+        emails_.append(email)
 
-    if pls_print:
-        pprint.pp(emails)
-
-    logger.info(f"{len(emails)} email(s) retrieved.")
-
-    return emails
+    return emails_
