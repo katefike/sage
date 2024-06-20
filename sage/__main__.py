@@ -28,7 +28,7 @@ logger.add(sink="sage_main.log", level="INFO")
 
 def main(retry_unparsed_emails=False):
     logger.info("STARTING SAGE")
-    msg_count = {
+    email_count = {
         "retrieved": 0,
         "unparsed": 0,
         "processed": 0,
@@ -45,17 +45,17 @@ def main(retry_unparsed_emails=False):
 
     retrieved_emails = get_emails.main(filter)
 
-    for msg in retrieved_emails:
-        msg_count["retrieved"] = msg_count.get("retrieved", 0) + 1
+    for email in retrieved_emails:
+        email_count["retrieved"] = email_count.get("retrieved", 0) + 1
         # Store the retrieved email in the database's emails table
-        email_id = emails.insert_email(msg)
+        email.id = emails.insert_email(email)
 
-        # Parse a email message into the txn data
-        txn = email_parser.main(msg, email_id)
-        logger.info(f"Email UID {msg.uid} - attempting to parse...")
+        # Parse the email into a txn
+        txn = email_parser.main(email)
+        logger.info(f"Email UID {email.uid} - attempting to parse...")
         if not txn:
-            logger.info(f"Email UID {msg.uid} - unparsed.")
-            msg_count["unparsed"] = msg_count.get("unparsed", 0) + 1
+            logger.info(f"Email UID {email.uid} - unparsed.")
+            email_count["unparsed"] = email_count.get("unparsed", 0) + 1
             continue
 
         # Check if there's an identical txn in the DB already
@@ -64,23 +64,25 @@ def main(retry_unparsed_emails=False):
 
         # Write the txn to the database
         transactions.insert_transaction(flagged_txn)  # pragma: no cover
-        logger.info(f"Email UID {msg.uid} - successfully parsed!")
+        logger.info(f"Email UID {email.uid} - successfully parsed!")
 
         # One down!
-        msg_count["processed"] = msg_count.get("processed", 0) + 1  # pragma: no cover
+        email_count["processed"] = (
+            email_count.get("processed", 0) + 1
+        )  # pragma: no cover
 
-    deduced_msg_count = msg_count.get("unparsed") + msg_count.get("processed")
-    retrieved_msg_count = msg_count.get("retrieved")
-    if deduced_msg_count != msg_count.get("retrieved"):  # pragma: no cover
+    deduced_email_count = email_count.get("unparsed") + email_count.get("processed")
+    retrieved_email_count = email_count.get("retrieved")
+    if deduced_email_count != email_count.get("retrieved"):  # pragma: no cover
         logger.critical(
-            f"FAILED: {retrieved_msg_count} msgs retrieved but {deduced_msg_count} were accounted for."
+            f"FAILED: {retrieved_email_count} emails retrieved but {deduced_email_count} were accounted for."
         )
-    logger.info(f"Total Messages in Batch = {retrieved_msg_count}")
-    logger.info(f"{msg_count}")
+    logger.info(f"Total Emails in Batch = {retrieved_email_count}")
+    logger.info(f"{email_count}")
     logger.info("DONE")
-    return msg_count
+    return email_count
 
 
 if __name__ == "__main__":  # pragma: no cover
     retry_unparsed_emails = sys.argv[1]
-    msg_count = main(retry_unparsed_emails)
+    email_count = main(retry_unparsed_emails)
