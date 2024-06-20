@@ -28,3 +28,5 @@ class Email:
     html: str
     # The raw, unparsed email body
     body: str
+    # The ID in the emails table
+    id: int = field(default=None)
