@@ -73,7 +73,6 @@ def test_retry_unparsed_emails():
         )
         _email_id = emails.insert_email(email)
 
-    breakpoint()
     msg_count = main(retry_unparsed_emails=True)
     assert len(msgs) == msg_count.get("retrieved")
     assert msg_count.get("retrieved") == msg_count.get("processed")
