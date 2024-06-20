@@ -39,8 +39,8 @@ echo '/dev/disk/by-id/scsi-0DO_Volume_sage-mailserver /mnt/sage_mailserver ext4 
 ```
 TODO: Create and mount Digital Ocean volumes during automated production deployment https://github.com/katefike/sage/issues/145
 13. Re-run `bash setup/3_configure_prod_server.sh` so that Sage is started using the mounts.
-14. Send a test email. Verify it was received and all your existing emails are still there by SSH'ing to the Droplet and running the script to get all emails: 
+14. Send a test email. Verify it was received and all your existing emails are still there by SSH'ing to the Droplet and getting all emails: 
 ```
-(.venv) kfike@prod:~/sage$ python3 scripts/get_all_emails.py
+(.venv) kfike@prod:~/sage$ python3 -c 'from sage.mx import get_emails ; get_emails.main(pls_print=True)'
 ```
 15. While SSH'd to the droplet, verify that all your existing transactions are there. Connect to the DB by running `docker exec -it  sage-db psql -U <POSTGRES_USER> sage` and executing the query `SELECT * FROM transactions;` `POSTGRES_USER` is an environment variable specified in your `.env`.
