@@ -1,8 +1,9 @@
 import pprint
 from datetime import datetime
-from typing import List, Optional
+from typing import Iterator, List, Optional
 
 import imap_tools
+from bs4 import BeautifulSoup
 from loguru import logger
 
 from sage.db import emails
@@ -69,21 +70,22 @@ def open_mailbox() -> imap_tools.BaseMailBox:
         raise error
 
 
-def transform_MailMessages_to_Emails(msgs: imap_tools.MailMessage) -> List[Email]:
+def transform_MailMessages_to_Emails(
+    msgs: Iterator[imap_tools.MailMessage],
+) -> List[Email]:
     emails_ = []
 
     # Set the time the batch started
     utc_timestamp = datetime.utcnow()
     batch_time = utc_timestamp.strftime("%Y-%m-%d %H:%M:%S")
 
-    # FIXME: type msg as class imap_tools.MailMessage
     for msg in msgs:
         # FIXME: Add origin to the emails table #157
         origin = "placeholder"
-        # FIXME: body is set twice: once below and once in email_parser
         if msg.html:
             html = "true"
-            body = msg.html
+            soup = BeautifulSoup(msg.html, "html.parser")
+            body = soup.get_text(" ")
         elif msg.text:
             html = "false"
             body = msg.text
