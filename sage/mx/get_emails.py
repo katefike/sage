@@ -44,7 +44,9 @@ def main(
         uid_ = uid_parts[1]
         logger.info(f"Only getting email uid {uid_}...")
         msgs = mailbox.fetch(imap_tools.AND(uid=[uid_]))
-
+        if msgs is None:
+            logger.critical(f"No email was retrieved for email UID {uid_}...")
+            return
     else:
         logger.info("Getting all emails from inbox...")
         msgs = mailbox.fetch()
