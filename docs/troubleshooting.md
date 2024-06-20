@@ -111,15 +111,7 @@ Retrieve and print all emails forwarded by the email associated with the env var
 (.venv) kfike@prod:~/sage$ python3 -c 'from sage.mx import get_emails ; get_emails.main(filter="forwarded", pls_print=True)'
 ```
 
-Retrieve and print all unparsed emails. These are emails returned by this query:
-```
-SELECT 
-    e.* 
-FROM emails e 
-    LEFT JOIN transactions t ON t.email_id == e.id 
-WHERE 
-    t.email_id IS NULL;
-```
+Retrieve and print all unparsed emails.
 ```
 (.venv) kfike@prod:~/sage$ python3 -c 'from sage.mx import get_emails ; get_emails.main(filter="unparsed", pls_print=True)'
 ```
