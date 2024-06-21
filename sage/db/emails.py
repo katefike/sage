@@ -29,3 +29,16 @@ def insert_email(email: Email) -> int:
     )
     email_id = execute_statements.insert_get_id(stmt, data)
     return email_id
+
+
+def get_unparsed_emails():
+    query = """
+    SELECT
+        e.*
+    FROM emails e
+        LEFT JOIN transactions t ON t.email_id = e.id
+    WHERE
+        t.email_id IS NULL;
+    """
+    records, columns_ = execute_statements.select(query)
+    return records, columns_

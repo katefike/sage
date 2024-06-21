@@ -2,6 +2,8 @@
 Tests the entrypoint of the program, __main__.py
 """
 from sage.__main__ import main
+from sage.db import emails
+from sage.mx import get_emails
 
 from . import utils
 
@@ -30,11 +32,26 @@ def test_unretrieved_email():
 
 def test_unparsable_emails():
     """
-    Send unparasble emails that are from the forwarding email and have bodies,
-    but the contents are not transactions.
-    They should be retrieved from the inbox and left unparsed.
+    Load unparasble emails. They are from the forwarding email but are not
+    txns. They should be retrieved from the inbox and left unparsed.
     """
 
     utils.refresh_inbox("unparsable_emails.mbox")
     msg_count = main()
     assert msg_count.get("retrieved") == msg_count.get("unparsed")
+
+
+def test_retry_unparsed_emails():
+    """
+    Insert data into the emails table, simulating initially unparsed emails.
+    Load parsable emails. Run sage and verify they were all processed.
+    """
+    utils.refresh_inbox("transaction_emails.mbox")
+    emails_ = get_emails.main(filter="forwarded")
+    # Retrieve all emails in the inbox from the forwarding email
+    for email in emails_:
+        emails.insert_email(email)
+
+    email_count = main(retry_unparsed_emails=True)
+    assert len(emails_) == email_count.get("retrieved")
+    assert email_count.get("retrieved") == email_count.get("processed")

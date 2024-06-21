@@ -11,14 +11,14 @@ forwarded alert emails. Retrieve emails that are from the forwarding email.
     4b. If needed, flag identical transactions.
     4c. Write the transaction data to the Postgres database.
 """
-from datetime import datetime
+import sys
 
-import imap_tools
 from loguru import logger
 
 from sage.db import emails, transactions
 from sage.flaggers import identical_txns
 from sage.models.email import Email
+from sage.mx import get_emails
 from sage.parsers import email_parser
 
 from . import ENV
@@ -26,88 +26,63 @@ from . import ENV
 logger.add(sink="sage_main.log", level="INFO")
 
 
-def main():
+def main(retry_unparsed_emails=False):
     logger.info("STARTING SAGE")
-    logger.info(f"FORWARDING_EMAIL: {ENV['FORWARDING_EMAIL']}")
-
-    # Set the time the batch started
-    utc_timestamp = datetime.utcnow()
-    batch_time = utc_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+    email_count = {
+        "retrieved": 0,
+        "unparsed": 0,
+        "processed": 0,
+    }
 
     # Log into the receiving mailbox on the mail server and retrieve emails
-    # that are from the forwarding email
-    # Connect to the mailbox containing transaction alert emails
-    with imap_tools.MailBoxUnencrypted("localhost").login(
-        ENV["RECEIVING_EMAIL_USER"], ENV["RECEIVING_EMAIL_PASSWORD"]
-    ) as mailbox:
+    if retry_unparsed_emails:
+        # Retry emails that went through the pipeline and were
+        # initially unparsed
+        filter = "unparsed"
+    else:
+        # Retrieve emails from the forwarding email specified in the .env
+        filter = "forwarded"
 
-        msg_count = {
-            "retrieved": 0,
-            "unparsed": 0,
-            "processed": 0,
-        }
+    retrieved_emails = get_emails.main(filter)
 
-        # Retrieve all emails in the inbox from the forwarding email
-        for msg in mailbox.fetch(imap_tools.A(from_=ENV["FORWARDING_EMAIL"])):
+    for email in retrieved_emails:
+        email_count["retrieved"] = email_count.get("retrieved", 0) + 1
+        # Store the retrieved email in the database's emails table
+        email.id = emails.insert_email(email)
 
-            msg_count["retrieved"] = msg_count.get("retrieved", 0) + 1
+        # Parse the email into a txn
+        txn = email_parser.main(email)
+        logger.info(f"Email UID {email.uid} - attempting to parse...")
+        if not txn:
+            logger.info(f"Email UID {email.uid} - unparsed.")
+            email_count["unparsed"] = email_count.get("unparsed", 0) + 1
+            continue
 
-            # Store the retrieved email in the database's emails table
-            # FIXME: Move to email_parser.py
-            # FIXME: Add origin to the emails table #157
-            origin = "placeholder"
-            # FIXME: body is set twice: once here and once in email_parser
-            if msg.html:
-                html = "true"
-                body = msg.html
-            elif msg.text:
-                html = "false"
-                body = msg.text
-            email = Email(
-                int(msg.uid),
-                batch_time,
-                msg.date,
-                msg.from_,
-                origin,
-                msg.subject,
-                html,
-                body,
-            )
-            email_id = emails.insert_email(email)
+        # Check if there's an identical txn in the DB already
+        # If so, flag it
+        flagged_txn = identical_txns.main(txn)
 
-            # Parse a email message into the txn data
-            txn = email_parser.main(msg, email_id)
-            logger.info(f"Email UID {msg.uid} - attempting to parse...")
-            if not txn:
-                logger.warning(f"Email UID {msg.uid} - unparsed.")
-                msg_count["unparsed"] = msg_count.get("unparsed", 0) + 1
-                continue
+        # Write the txn to the database
+        transactions.insert_transaction(flagged_txn)  # pragma: no cover
+        logger.info(f"Email UID {email.uid} - successfully parsed!")
 
-            # Check if there's an identical txn in the DB already
-            # If so, flag it
-            flagged_txn = identical_txns.main(txn)
+        # One down!
+        email_count["processed"] = (
+            email_count.get("processed", 0) + 1
+        )  # pragma: no cover
 
-            # Write the txn to the database
-            transactions.insert_transaction(flagged_txn)  # pragma: no cover
-            logger.info(f"Email UID {msg.uid} - successfully parsed!")
-
-            # One down!
-            msg_count["processed"] = (
-                msg_count.get("processed", 0) + 1
-            )  # pragma: no cover
-
-    deduced_msg_count = msg_count.get("unparsed") + msg_count.get("processed")
-    retrieved_msg_count = msg_count.get("retrieved")
-    if deduced_msg_count != msg_count.get("retrieved"):  # pragma: no cover
-        logger.critical("FAILED")
+    deduced_email_count = email_count.get("unparsed") + email_count.get("processed")
+    retrieved_email_count = email_count.get("retrieved")
+    if deduced_email_count != email_count.get("retrieved"):  # pragma: no cover
         logger.critical(
-            f"ERROR-HANDLING ERROR: {retrieved_msg_count} msgs retrieved but {deduced_msg_count} were accounted for."
+            f"FAILED: {retrieved_email_count} emails retrieved but {deduced_email_count} were accounted for."
         )
-    logger.info(f"Total Messages in Batch = {retrieved_msg_count}")
-    logger.info(f"{msg_count}")
+    logger.info(f"Total Emails in Batch = {retrieved_email_count}")
+    logger.info(f"{email_count}")
     logger.info("DONE")
-    return msg_count
+    return email_count
 
 
 if __name__ == "__main__":  # pragma: no cover
-    msg_count = main()
+    retry_unparsed_emails = sys.argv[1]
+    email_count = main(retry_unparsed_emails)

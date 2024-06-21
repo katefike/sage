@@ -24,11 +24,15 @@
 <br> `bash server/setup_scripts/ansible_delete_droplet_ephem.sh`
 
 ### Pytest
-Run the full test suite, stop after the first failure. Docker must be started for pytests to be successful.
+Before running pytest:
+- you MUST be in the development environment. All commands below must be run with `export ISDEV=True && <insert command>`
+- Docker containers are running.
 
-`(venv) $ pytest -xv`
+Run the full test suite, stop after the first failure. 
+
+`(.venv) $ pytest -xv`
 
 
 See code coverage of the tests
 
-`(venv) $ coverage run --source=sage -m pytest -v tests/ && coverage report -m`
+`(.venv) $ coverage run --source=sage -m pytest -v tests/ && coverage report -m`
