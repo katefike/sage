@@ -17,11 +17,8 @@ from loguru import logger
 
 from sage.db import emails, transactions
 from sage.flaggers import identical_txns
-from sage.models.email import Email
 from sage.mx import get_emails
 from sage.parsers import email_parser
-
-from . import ENV
 
 logger.add(sink="sage_main.log", level="INFO")
 
@@ -84,5 +81,7 @@ def main(retry_unparsed_emails=False):
 
 
 if __name__ == "__main__":  # pragma: no cover
-    retry_unparsed_emails = sys.argv[1]
+    retry_unparsed_emails = False
+    if len(sys.argv) == 2:
+        retry_unparsed_emails = True
     email_count = main(retry_unparsed_emails)
