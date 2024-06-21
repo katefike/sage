@@ -25,13 +25,19 @@ def main(email: Email) -> Transaction:
     txn = Transaction(email.id)
 
     # Identify who the bank is
+    # TODO: Refactor this to only call get_bank once
     if not get_bank(email.body):
         return
     txn.bank = get_bank(email.body)
     # Parse the email based on who the bank is
     if txn.bank == "Chase":
-        txn.type_ = "withdrawal"
-        txn.merchant, raw_amount = parse_chase(email.subject)
+        txn.type_ = get_chase_txn_type(email.subject)
+        if txn.type_ == "deposit":
+            txn.payer, raw_amount = parse_chase_deposit(email.body)
+        elif txn.type_ == "withdrawal":
+            txn.merchant, raw_amount = parse_chase_withdrawal(email.subject)
+        else:
+            return
     if txn.bank == "Discover":
         txn.type_ = "withdrawal"
         txn.merchant, raw_amount = parse_discover(email.body)
@@ -125,7 +131,37 @@ def get_bank(body: str) -> str:
     return
 
 
-def parse_chase(subject: str) -> str:
+def get_chase_txn_type(subject: str) -> str:
+    """
+    Identify the Chase txn type
+    """
+    type_ = None
+    if regex_search("( credit pending )", subject):
+        type_ = "credit"
+    elif regex_search("( transaction with )", subject):
+        type_ = "withdrawal"
+    else:
+        logger.info("No Chase txn type identified")
+    return type_
+
+
+def parse_chase_deposit(body: str) -> str:
+    """
+    Extract the txn amount and payer from the email body
+    E.g.
+    Transaction alert
+    You have a $1.63 credit pending on your credit card
+    Account Prime Visa (...6104)
+    Date Apr 3, 2024 at 11:48 AM ET
+    Merchant RAPPI* VERIF $1.63 U
+    Credit Amount $1.63
+    """
+    payer = regex_search(r"(?<=Merchant )(.*)(?= \$)", body)
+    raw_amount = regex_search(r"(?<=You have a \$)(.*)(?= credit pending)", body)
+    return payer, raw_amount
+
+
+def parse_chase_withdrawal(subject: str) -> str:
     """
     Extract the txn amount and merchant from the email subject
     E.g.
