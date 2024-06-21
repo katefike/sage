@@ -1,4 +1,9 @@
 # Troubleshooting
+# Environment Variables
+If you're in the local development environment, use `export ISDEV=True && <insert command here>` before most every command. Exporting `ISDEV` causes `sage/config.py` to instantiate the env vars in `.env-example` instead of `.env`. 
+- The `.env` file is only used when creating prod infrastructure via ansible, or on prod itself. 
+- The `.env-example` file is used when doing any local development work. It is used by Docker, the DB, the MX, pytest and every module of `sage/`.
+
 ## Logging
 Shows Sage's attempts to parse batches of emails in the MX and insert them as transactions into the DB. 
 `~/sage/sage_main.log`
@@ -90,23 +95,32 @@ Test email open_ssl 25
 quit
 ```
 
-### Retrieving Emails 
-Retrieve emails on your MX in development (locally) and production (on the DO droplet host). 
+### Retrieving Emails
+Below are the primary ways `main()` in `sage.mx.get_emails.py` can be called. Some possibilities aren't shown.
+The module connects to the dockerized MX that receives the forwarded txn emails.
+The entrypoint of Sage, `/sage/__main__.py`, also uses the module `sage.mx.get_emails.py` to retrieve all emails
+from the forwarding email.
+
+Retrieve and print all emails. 
 ```
-(.venv) kfike@prod:~/sage$ python3 scripts/get_all_emails.py 
-UID: 1
-Date: 1900-01-01 00:00:00
-To: ()
-From: 
-Text: Test email open_ssl 25
+(.venv) kfike@prod:~/sage$ python3 -c 'from sage.mx import get_emails ; get_emails.main(pls_print=True)'
+```
 
-UID: 2
-Date: 2024-03-01 09:45:23+07:00
-To: ('kfike@example.com',)
-From: example@gmail.com
-Text: Test email gmail 25
+Retrieve and print all emails forwarded by the email associated with the env var `FORWARDING_EMAIL`. 
+```
+(.venv) kfike@prod:~/sage$ python3 -c 'from sage.mx import get_emails ; get_emails.main(filter="forwarded", pls_print=True)'
+```
 
-2 emails were retrieved.
+Retrieve and print all unparsed emails.
+```
+(.venv) kfike@prod:~/sage$ python3 -c 'from sage.mx import get_emails ; get_emails.main(filter="unparsed", pls_print=True)'
+```
+
+Retrieve and print an email by UID.
+Below is an example for email UID 77. 
+The string must have the syntax below because it's used to identify the filter _and_ integer.
+```
+(.venv) kfike@prod:~/sage$ python3 -c 'from sage.mx import get_emails ; get_emails.main(filter="uid=77", pls_print=True)'
 ```
 
 ### Getting an mbox file from your Gmail account

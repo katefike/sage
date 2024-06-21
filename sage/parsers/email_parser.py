@@ -1,10 +1,9 @@
 import re
 from datetime import datetime
 
-from bs4 import BeautifulSoup
-from imap_tools import MailMessage
 from loguru import logger
 
+from sage.models.email import Email
 from sage.models.transaction import Transaction
 
 logger.add(sink="sage_main.log")
@@ -16,59 +15,52 @@ class RegexError(Exception):
     pass
 
 
-def main(msg: MailMessage, email_id: int) -> Transaction:
+def main(email: Email) -> Transaction:
     """
-    Parse the transaction data from the email.
+    Parse the txn data from the email.
 
-    :param msg: this is an an email
-    :param email_id: the ID in the database's emails table for this email
-    :returns: this is a transaction object defined by the program
+    :param email: an Email object defined in sage.models.email.py
+    :returns: a Transaction object defined in sage.models.transaction.py
     """
-    transaction = Transaction(email_id)
-    # Get the email body
-    if msg.text:
-        body = msg.text
-    elif msg.html:
-        soup = BeautifulSoup(msg.html, "html.parser")
-        body = soup.get_text(" ")
+    txn = Transaction(email.id)
 
     # Identify who the bank is
-    if not get_bank(body):
+    if not get_bank(email.body):
         return
-    transaction.bank = get_bank(body)
+    txn.bank = get_bank(email.body)
     # Parse the email based on who the bank is
-    if transaction.bank == "Chase":
-        transaction.type_ = "withdrawal"
-        transaction.merchant, raw_amount = parse_chase(msg.subject)
-    if transaction.bank == "Discover":
-        transaction.type_ = "withdrawal"
-        transaction.merchant, raw_amount = parse_discover(body)
-    if transaction.bank == "Huntington":
-        transaction.type_ = get_huntington_transaction_type(body)
-        # Parse the Huntington transaction based on the transaction type
-        if transaction.type_ == "transfer withdrawal":
-            raw_amount = parse_huntington_transfer_withdrawal(body)
-        elif transaction.type_ == "transfer deposit":
-            raw_amount = parse_huntington_transfer_deposit(body)
-        elif transaction.type_ == "withdrawal":
-            transaction.merchant, raw_amount = parse_huntington_withdrawal(body)
-        elif transaction.type_ == "deposit":
-            transaction.payer, raw_amount = parse_huntington_deposit(body)
+    if txn.bank == "Chase":
+        txn.type_ = "withdrawal"
+        txn.merchant, raw_amount = parse_chase(email.subject)
+    if txn.bank == "Discover":
+        txn.type_ = "withdrawal"
+        txn.merchant, raw_amount = parse_discover(email.body)
+    if txn.bank == "Huntington":
+        txn.type_ = get_huntington_txn_type(email.body)
+        # Parse the Huntington txn based on the txn type
+        if txn.type_ == "transfer withdrawal":
+            raw_amount = parse_huntington_transfer_withdrawal(email.body)
+        elif txn.type_ == "transfer deposit":
+            raw_amount = parse_huntington_transfer_deposit(email.body)
+        elif txn.type_ == "withdrawal":
+            txn.merchant, raw_amount = parse_huntington_withdrawal(email.body)
+        elif txn.type_ == "deposit":
+            txn.payer, raw_amount = parse_huntington_deposit(email.body)
         else:
             return
-        # Identify the Huntington account the transaction occurred on
-        transaction.account = get_huntington_account(body)
+        # Identify the Huntington account the txn occurred on
+        txn.account = get_huntington_account(email.body)
         # Get the balance of the Huntington account
-        raw_balance = get_huntington_balance(body)
-        transaction.balance = transform_amount(raw_balance)
-    # Don't return a transaction object if the no amount could be determined.
+        raw_balance = get_huntington_balance(email.body)
+        txn.balance = transform_amount(raw_balance)
+    # Don't return a txn object if the no amount could be determined.
     # The email was likely some other notification email from the bank.
     if not raw_amount:
         return
-    transaction.amount = transform_amount(raw_amount)
+    txn.amount = transform_amount(raw_amount)
     # Identify the date the tansaction email arrived
-    transaction.date = get_date(body)
-    return transaction
+    txn.date = get_date(email.body)
+    return txn
 
 
 def get_date(body: str) -> str:
@@ -133,9 +125,9 @@ def get_bank(body: str) -> str:
     return
 
 
-def parse_chase(subject: MailMessage.subject) -> str:
+def parse_chase(subject: str) -> str:
     """
-    Extract the transaction amount and merchant from the email subject
+    Extract the txn amount and merchant from the email subject
     E.g.
     Your $1.00 transaction with DIGITALOCEAN.COM
     """
@@ -146,7 +138,7 @@ def parse_chase(subject: MailMessage.subject) -> str:
 
 def parse_discover(body: str) -> str:
     """
-    Extract the transaction amount and merchant from the email body
+    Extract the txn amount and merchant from the email body
     E.g.
     Transaction Date: June 11, 2022
 
@@ -159,9 +151,9 @@ def parse_discover(body: str) -> str:
     return merchant, raw_amount
 
 
-def get_huntington_transaction_type(body: str) -> str:
+def get_huntington_txn_type(body: str) -> str:
     """
-    Identify the Huntington transaction type
+    Identify the Huntington txn type
     """
     type_ = None
     if regex_search("(We've processed a transfer withdrawal for )", body):
@@ -175,7 +167,7 @@ def get_huntington_transaction_type(body: str) -> str:
     elif regex_search("(We've processed a deposit for )", body):
         type_ = "deposit"
     else:
-        logger.info("No Huntington transaction type identified")
+        logger.info("No Huntington txn type identified")
     return type_
 
 
@@ -218,7 +210,7 @@ def parse_huntington_transfer_deposit(body: str) -> str:
 
 def parse_huntington_withdrawal(body: str) -> str:
     """
-    Extract the transaction amount and merchant from the email body
+    Extract the txn amount and merchant from the email body
     E.g.
     We've processed an ACH withdrawal for $1.72 at CHASE CREDIT CRD EPAY
     from your account nicknamed SAVE.
@@ -246,7 +238,7 @@ def parse_huntington_withdrawal(body: str) -> str:
 
 def parse_huntington_deposit(body: str) -> str:
     """
-    Extract the transaction amount and merchant from the email body
+    Extract the txn amount and merchant from the email body
     E.g.
     We've processed an ACH deposit for $59.81
     from CHASE CREDIT CRD RWRD RDM to your account nicknamed CHECK.
@@ -299,7 +291,7 @@ def get_huntington_account(body: str) -> str:
         account = "savings"
     else:
         raise RegexError(
-            f"Regex failed to get the account from a Huntington transaction email body: {body}"
+            f"Regex failed to get the account from a Huntington txn email body: {body}"
         )
     return account
 
@@ -323,7 +315,7 @@ def get_huntington_balance(body: str) -> str:
         )
         if balance is None:
             raise RegexError(
-                f"Regex failed to get the balance from a Huntington transaction email body: {body}"
+                f"Regex failed to get the balance from a Huntington txn email body: {body}"
             )
         balance = "-" + balance
     return balance
