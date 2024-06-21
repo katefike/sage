@@ -4,6 +4,7 @@ Tests the entrypoint of the program, __main__.py
 from sage.__main__ import main
 from sage.db import emails
 from sage.models.email import Email
+from sage.mx import get_emails
 
 from . import ENV, utils
 
@@ -47,32 +48,12 @@ def test_retry_unparsed_emails():
     Load parsable emails. Run sage and verify they were all processed.
     """
     utils.refresh_inbox("transaction_emails.mbox")
-    batch_time = "2024-06-18 13:48:30+00"
-    origin = "placeholder"
-    msgs = utils.get_inbox_emails()
+    emails_ = get_emails.main(filter="forwarded")
     # Retrieve all emails in the inbox from the forwarding email
-    for msg in msgs:
-        if msg.from_ != ENV["FORWARDING_EMAIL"]:
-            continue
+    for email in emails_:
+        emails.insert_email(email)
 
-        if msg.html:
-            html = "true"
-            body = msg.html
-        elif msg.text:
-            html = "false"
-            body = msg.text
-        email = Email(
-            int(msg.uid),
-            batch_time,
-            msg.date,
-            msg.from_,
-            origin,
-            msg.subject,
-            html,
-            body,
-        )
-        _email_id = emails.insert_email(email)
-
-    msg_count = main(retry_unparsed_emails=True)
-    assert len(msgs) == msg_count.get("retrieved")
-    assert msg_count.get("retrieved") == msg_count.get("processed")
+    email_count = main(retry_unparsed_emails=True)
+    assert len(emails_) == email_count.get("retrieved")
+    assert email_count.get("retrieved") == email_count.get("processed")
+    breakpoint()
