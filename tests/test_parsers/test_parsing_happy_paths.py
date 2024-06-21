@@ -311,12 +311,12 @@ def get_test_data():
             (
                 dict(
                     date="2024-04-3",
-                    type_="credit",
+                    type_="deposit",
                     bank="Chase",
                     merchant=None,
-                    payer="ABC DE LLC ERECT DEP",
+                    payer="RAPPI* VERIF",
                     amount="1.63",
-                    account="RAPPI* VERIF",
+                    account=None,
                     balance=None,
                 )
             ),
