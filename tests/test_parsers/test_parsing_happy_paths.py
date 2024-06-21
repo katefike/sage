@@ -306,6 +306,21 @@ def get_test_data():
                 )
             ),
         ),
+        (
+            (dict(uid="35", email_id=15)),
+            (
+                dict(
+                    date="2024-04-3",
+                    type_="credit",
+                    bank="Chase",
+                    merchant=None,
+                    payer="ABC DE LLC ERECT DEP",
+                    amount="1.63",
+                    account="RAPPI* VERIF",
+                    balance=None,
+                )
+            ),
+        ),
     ]
 
     # Retrieve the email corresponding to the UID
