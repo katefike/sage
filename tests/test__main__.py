@@ -3,10 +3,9 @@ Tests the entrypoint of the program, __main__.py
 """
 from sage.__main__ import main
 from sage.db import emails
-from sage.models.email import Email
 from sage.mx import get_emails
 
-from . import ENV, utils
+from . import utils
 
 
 def test_unretrieved_email():
@@ -52,8 +51,8 @@ def test_retry_unparsed_emails():
     # Retrieve all emails in the inbox from the forwarding email
     for email in emails_:
         emails.insert_email(email)
+        print(email.id)
 
     email_count = main(retry_unparsed_emails=True)
     assert len(emails_) == email_count.get("retrieved")
     assert email_count.get("retrieved") == email_count.get("processed")
-    breakpoint()
