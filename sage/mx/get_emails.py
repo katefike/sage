@@ -1,4 +1,5 @@
 import pprint
+import re
 from datetime import datetime
 from typing import Iterator, List, Optional
 
@@ -86,10 +87,11 @@ def transform_MailMessages_to_Emails(
         if msg.html:
             html = "true"
             soup = BeautifulSoup(msg.html, "html.parser")
-            body = soup.get_text(" ")
+            body = soup.get_text(" ").strip()
+            body = re.sub(r"\s+", " ", body).strip()
         elif msg.text:
             html = "false"
-            body = msg.text
+            body = msg.text.strip()
         email = Email(
             int(msg.uid),
             batch_time,
