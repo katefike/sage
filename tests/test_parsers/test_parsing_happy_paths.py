@@ -314,7 +314,7 @@ def get_test_data():
                     type_="deposit",
                     bank="Chase",
                     merchant=None,
-                    payer="RAPPI* VERIF",
+                    payer="RAPPI* VERIF $1.63 U",
                     amount="1.63",
                     account=None,
                     balance=None,
