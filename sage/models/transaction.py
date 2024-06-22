@@ -21,7 +21,8 @@ class Transaction:
     date: str = field(default=None)
     # Transaction type can be one of the following
     # withdrawal: a merchant removed money from the account
-    # deposit: a payer added money from the account
+    # deposit: a payer added money from the account;
+    # this includes credits and refunds
     # transfer withdrawal: I moved money out of this account to another account
     # or I withdrew cash from this account
     # transfer deposit: I moved money into this account from another account
