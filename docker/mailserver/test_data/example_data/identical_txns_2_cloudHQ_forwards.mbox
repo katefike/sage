@@ -1,0 +1,215 @@
+From 1800056645907755655@xxx Sat May 25 20:09:51 +0000 2024
+X-GM-THRID: 1800056645907755655
+X-Gmail-Labels: Inbox,Category Personal,Unread,backfill/202404
+Delivered-To: incoming@example.com
+Received: by 2002:a05:7010:734c:b0:3cc:117f:c77b with SMTP id i12csp2346178mdc;
+        Sat, 25 May 2024 13:09:51 -0700 (PDT)
+X-Received: by 2002:a05:6102:50a4:b0:48a:4706:7255 with SMTP id ada2fe7eead31-48a4706741bmr3616762137.14.1716667791115;
+        Sat, 25 May 2024 13:09:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1716667791; cv=none;
+        d=google.com; s=arc-20160816;
+        b=HgMbEQq7UOqQ3xxgdRa9DZPY39yviTxSg/Dd1p4mbLDJrlc+k96EHKSa3cGNXmHxq9
+         jKYNun4kcQ62pI5r34Xq62jTF2ujQeKlzoqmcYs7uIWl0DzaT8ZKvd0Iry1wx4AKBrLe
+         rXmcg/D5fmj761A5zSLgyxgrc9cQeV7YpX+nSUOLkkfheNnpIOHdn9sVt5U4VxTADBR/
+         JsZ5T4rvnz76Hg89OU2of1hK+E+ABAiR+IbkTtMcpRxTbmO+zkBeNmzDqGCPAL0+85AX
+         6i1Vjm8su+lPtVLBH3FI1J/eAUMCs4Y0AhMpwSQlwtMNbxnj4YA8hYIi33TqC2YP8I0H
+         GlVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:subject:message-id:date:mime-version:from:references
+         :dkim-signature;
+        bh=8q7hD3auz901VR1wds5IX4zzHYRvZloXUaY74ZrHFiQ=;
+        fh=uDCTqrjUuSN01MbuUJAXsMebbw+mvpbkL6i/yQe0nOU=;
+        b=UdXHg/YKf+W/KBMFuiRnFrr8dqapAhgxr0x4kp/OJSTDOFg4zj4gXKDsJsd4TdrNc1
+         faT/7ScG4ufwliMheJLqt6unoSCXD3H4k84nBE3yPkZTWD08RzOnwkdYYi+I+/++b01C
+         IoYKlhjq2I7Uz9aguZ3d1c5nYRw4j6xuaRFFJrb3VsNA2bTVTWVams66GBmlJUymVBkn
+         8lwIac/N5Sg2PbVfoHbvkpwEde8y4HeHXgKxLdw45lYiLB85tH8aMxpvbqMRsTmTLSGJ
+         r1YgMW2OvceMddMxAvKVLXHaQ8IHynyKj2YFTy2HL9MSA8YtrGFKauK4+IFK1lbZrdlu
+         70lg==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=V5zrYDkH;
+       spf=pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=outgoing@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Return-Path: <outgoing@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id a1e0cc1a2514c-804cc0852c4sor1261261241.5.2024.05.25.13.09.50
+        for <incoming@example.com>
+        (Google Transport Security);
+        Sat, 25 May 2024 13:09:50 -0700 (PDT)
+Received-SPF: pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=V5zrYDkH;
+       spf=pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=outgoing@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716667790; x=1717272590; dara=google.com;
+        h=to:subject:message-id:date:mime-version:from:references:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8q7hD3auz901VR1wds5IX4zzHYRvZloXUaY74ZrHFiQ=;
+        b=V5zrYDkHysuLBrR2gy7yJAcgjesg11myVviFbJCQy4aYydi+aADa7X5kImGgcYdDca
+         8PDCtPLLT5LTNf+/U08aw5guUnrwy3ekmnfPPamF6D+hmS2omqmxDk1hcioevzXEE+uN
+         Nt4YM3lHLMKPNFp7xyTyiWr0qHMS96pNYVfm1vzT1KnwOcsmDGlePKmfQQUIozdS2l5r
+         fCsqb5nc1MFLXVq1Qno8thMYPisBQCmjZdPe84ie9ePrcpfMDrUBVwxakS7y61M5CyUO
+         1rkb/Iu4LhAxNVcL7Vh3O0Pc3SlT8+ZCW3Fbl6ONONsUT5Kpyvleea1cbuhKsbPTyWn4
+         8iTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716667790; x=1717272590;
+        h=to:subject:message-id:date:mime-version:from:references
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8q7hD3auz901VR1wds5IX4zzHYRvZloXUaY74ZrHFiQ=;
+        b=q8b4dDErx1mIpa29Ees8Du8utQ6iWWdO8jZQhZWU3UJ7SAZy57hU+ksllnDq7wtFtq
+         VbGYCsHeZNKjT5QB42PYA7yPtKnDZciMlQ3PWhCJAt++x9L+JmczD7jjvNaSlbN3YHXO
+         xoiZhxaVy6OoY4e89k1qrBD7SwQbvKx4lv2gCEhE+2xSOzlGM5Th6FB0/sjvHVzjub18
+         4EcvwtecCsVsDodSe+rYE8Ccgyue9jtm8N83+gib7LtA/s3g2nt7HoC/0V1/Lm4Izhlk
+         k0P7edLud7w5m/ljF17t+YyLVl5Qi62XFBf5TYC9WuZvG6FZ2PwdbOpSknk0dJokwS2x
+         LuJA==
+X-Gm-Message-State: AOJu0YwFJkS6b6FOSEjsM+njucejXWAJ8odSgfuc54EVeTUzEuDxEAeH
+	ydHU8AEhfNyjLzeo8o+rc/m6clgxOkB+Ihpw/ktKB4ebwFEyHcNB2Vu/IlK0crbwGHO3Vcu0M50
+	yR/VIr579zchNHH+bJFAOjhhixsKhQA==
+X-Google-Smtp-Source: AGHT+IFZJ4VoEQrKjM9e0y4IGazkynOP+zGbUZGzN3L5uGW5pghwDLp0lMyfC0D51iinLQscYLW0/0ricCqfybidkbA=
+X-Received: by 2002:a67:fa83:0:b0:48a:3355:bd32 with SMTP id
+ ada2fe7eead31-48a385d617emr5620225137.16.1716667789320; Sat, 25 May 2024
+ 13:09:49 -0700 (PDT)
+Received: from 125135905029 named unknown by gmailapi.google.com with
+ HTTPREST; Sat, 25 May 2024 13:09:48 -0700
+References: <18f2c1be3bb1c48boutgoing@gmail.com>
+From: outgoing@gmail.com
+MIME-Version: 1.0
+X-cloudHQ-Custom-Header-description: created via cloudHQ
+Date: Sat, 25 May 2024 13:09:48 -0700
+Message-ID: <CAHpjF2rdJ0uYFzuO8OrVq2DW1cM6D215vmyx7e7oWAn0CqR8Sg@mail.gmail.com>
+Subject: Fwd: Your $12.97 transaction with SAVE A LOT #24664
+To: incoming@example.com
+Content-Type: multipart/alternative; boundary="000000000000c7ac6f06194cdd7a"
+
+--000000000000c7ac6f06194cdd7a
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Forwarded using cloudHQ's free email forwarding tool: Multi Email Forward
+For Gmail <https://www.multi-email-forward.com/>
+You might be also interested to try cloudHQ's Gmail Snippets
+<https://www.gmail-snippets.com>: *Gmail snippets with shortcuts. Save
+time! Compose an entire email while only using 3 words!*
+
+---------- Forwarded message ---------
+From: Chase <no.reply.alerts@chase.com>
+Date: Mon, 29 Apr 2024 19:06:14 -0400 (EDT)
+Subject: Your $12.97 transaction with SAVE A LOT #24664
+To: outgoing@gmail.com
+Date Sent: Mon, 29 Apr 2024 19:06:14 -0400 (EDT)
+Date Received: Mon, 29 Apr 2024 16:06:16 -0700 (PDT)
+
+Transaction alert
+You made a $12.97 transaction
+Account Prime Visa (...6104)
+Date Apr 29, 2024 at 7:06 PM ET
+Merchant SAVE A LOT #24664
+Amount $12.97
+You are receiving this alert because your transaction was more than the
+$0.01 level you set.
+
+--000000000000c7ac6f06194cdd7a--
+
+From 1800061969460437114@xxx Sat May 25 21:34:28 +0000 2024
+X-GM-THRID: 1800061969460437114
+X-Gmail-Labels: Inbox,Opened,Category Personal,backfill/202404
+Delivered-To: incoming@example.com
+Received: by 2002:a05:7010:734c:b0:3cc:117f:c77b with SMTP id i12csp2368626mdc;
+        Sat, 25 May 2024 14:34:28 -0700 (PDT)
+X-Received: by 2002:a05:6102:3b81:b0:47b:9fd6:233b with SMTP id ada2fe7eead31-48a386ff8b3mr4995397137.31.1716672868085;
+        Sat, 25 May 2024 14:34:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1716672868; cv=none;
+        d=google.com; s=arc-20160816;
+        b=HUfwLDz6T3qFHd7tHVXWO+sQtTKmsw7zOf2ZJnHvf5KWjloxjFFpytWfVy24Vt5dS1
+         fmsbgHnVhZ4oAs5ZnUxvRAvBuNiVWncjxbkeTS408cmjx5ujd7wFzVI5M35J3JNe3LUh
+         7tV0HW54R1ukvwRqZibt8B+7GbbTHZMwQM2H39zk2zq4Ehka59P+mFFqF525NR7uHKfP
+         6eTAlnYKK0sm0k5bUzyZiwBXdk0cyzj57I+e5QYhaZqoLMq251U8D+MQnv6o+kfkyYp+
+         NtzH2tJx0KL+t1U32MOhZbwIdcNQ2q25bnzbxs3nA/eqXtiFOuKejmOqujmpORwenakw
+         8bJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :dkim-signature;
+        bh=jcSHKhbglTU+V0eA2M5GVc4aeHyiI42sQzx3OBEenEw=;
+        fh=uDCTqrjUuSN01MbuUJAXsMebbw+mvpbkL6i/yQe0nOU=;
+        b=pZkJq8H1EvAMlDujYjlzS9uwKd7obf6t2ax7A6RcUakM/JfCGNjnZYeO3QsGmxo8xC
+         J/g8BsIdfmqRXtaA1HTxldE8ZJ1WQOxb7htsbTe/8ThL2SaOXVLCIHwYdaOJdH5O1H7V
+         w35ntSuG6YS3svk7uRyErhDV5ROSjOQsbJe+XZLfNPuFTAvaO19w58uqPgkglf1chwqS
+         0jNzambBHhgZTVo2tJhfP4BWMCvZLvgz/oFfRSKo0b1Z7ud+Sazkh3UKxErMd0z/SBQv
+         8WPXOmvl2Ow5AzEukFw5dW1jZrqLT96qugTI5a4D3Gg7dYQQr1FgSIqNCfVgr1K/KCEO
+         VXQg==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=N+t01Mz3;
+       spf=pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=outgoing@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Return-Path: <outgoing@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id a1e0cc1a2514c-804f115372esor163914241.6.2024.05.25.14.34.28
+        for <incoming@example.com>
+        (Google Transport Security);
+        Sat, 25 May 2024 14:34:28 -0700 (PDT)
+Received-SPF: pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=N+t01Mz3;
+       spf=pass (google.com: domain of outgoing@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=outgoing@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716672867; x=1717277667; dara=google.com;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jcSHKhbglTU+V0eA2M5GVc4aeHyiI42sQzx3OBEenEw=;
+        b=N+t01Mz3pLmYze+5+iTyrsoCnk/rAeUSolY/uFUVfF2or25yLLVY+bowmPlsOWdBwz
+         4jCDBKsZ+XRXm4D1ZP3gagH/oiLONUvI+M1OLt6OYjlDkaLZm/H5jRdUlJ0hGYpKTt2F
+         wuFESDQ9AbwPLGVRku1PrJ/WpqidJzTgu/0U2mxipEI00sDg6Xz5RCqRSZU3Vy2Lx8Fq
+         6J2rc/B4/xmf/kpHQKXmdnxiPLMORPshxzxO07qNxOBLW38kieXRl65+0sEl4BpV05w8
+         4y8xWBsMnUx3VvGC5zGHAYFTgute0JvosTnEZepkiuXfYdIfl5xCUgm+zBFltygP2t2Z
+         cvGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716672867; x=1717277667;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jcSHKhbglTU+V0eA2M5GVc4aeHyiI42sQzx3OBEenEw=;
+        b=ImhwwUMg+ubqn+3G087iVRu6SzQFsFnowUH97LL0aFEbhFoD1/XLmB2azjktmyYPx7
+         6oxFg42W9OozYnTMhzkI6KGItpnW7YFC6juR4L/wbbdwEVW3N4vK9dzgMcYSri4Qcloy
+         JuK6pSIAMbXZPTsqGsBelZHaPAr2YAXGlZilQeWwK3mJI0VdBz2T32csNtCEt4kxbIuG
+         I3ku/a4as9EDwn4V2wnRN2nQS36OL3uFH+EbvhSAlR9OhQ3wGscOfF1tcNGfh08xWnyw
+         nnbDt6/8snazjL5LgkwTln2CvUvDbudZSiv10pCf/OepDjyWV1NeJO1UnCGXO169wqhS
+         0kEw==
+X-Gm-Message-State: AOJu0YzG7MdiI0LTRe8MfoB6YnPPHjLrBe7BttffGewgFlt5Q3ovFf3h
+	lA4Pe4ysPkiW8go114TKMdCHnn1uflsG/IYejDytR4KkGhY9ysRFNeGmKx1LsGeigB/qWsDJIgR
+	QS6WyxoCYuxbTfaG+kgj+QWewmhLtN6bX
+X-Google-Smtp-Source: AGHT+IHQEVNgoTyvwWnSrZv125oBxSXvNnm/+DiMJydhECbhGPo5sOZ1diOWEiR6klgum6aUyNAaihYDDGkeqiCdoZM=
+X-Received: by 2002:a05:6102:3186:b0:47c:2a81:a98 with SMTP id
+ ada2fe7eead31-48a385f189amr5711663137.20.1716672867470; Sat, 25 May 2024
+ 14:34:27 -0700 (PDT)
+MIME-Version: 1.0
+References: <1881197728.27398400.1714431974821.JavaMail.webuser@iaasn00075634.svr.us.jpmchase.net>
+In-Reply-To: <1881197728.27398400.1714431974821.JavaMail.webuser@iaasn00075634.svr.us.jpmchase.net>
+From: Kate Fike <outgoing@gmail.com>
+Date: Sat, 25 May 2024 17:34:16 -0400
+Message-ID: <CAHpjF2rGegrXxUn9xZhGNDkfoqhNfoiG+vQ7JtM8UXw=biLjyg@mail.gmail.com>
+Subject: Fwd: Your $12.97 transaction with SAVE A LOT #24664
+To: incoming@example.com
+Content-Type: multipart/alternative; boundary="00000000000076139d06194e0c52"
+
+--00000000000076139d06194e0c52
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: Chase <no.reply.alerts@chase.com>
+Date: Mon, Apr 29, 2024 at 7:06=E2=80=AFPM
+Subject: Your $12.97 transaction with SAVE A LOT #24664
+To: <outgoing@gmail.com>
+
+Transaction alert
+You made a $12.97 transaction
+Account Prime Visa (...6104)
+Date Apr 29, 2024 at 7:06 PM ET
+Merchant SAVE A LOT #24664
+Amount $12.97
+You are receiving this alert because your transaction was more than the
+$0.01 level you set.
+
+--00000000000076139d06194e0c52--
