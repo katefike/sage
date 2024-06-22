@@ -23,7 +23,6 @@ def main(email: Email) -> Transaction:
     :returns: a Transaction object defined in sage.models.transaction.py
     """
     txn = Transaction(email.id)
-
     # Identify who the bank is
     # TODO: Refactor this to only call get_bank once
     if not get_bank(email.body):
@@ -137,7 +136,7 @@ def get_chase_txn_type(subject: str) -> str:
     """
     type_ = None
     if regex_search("( credit pending )", subject):
-        type_ = "credit"
+        type_ = "deposit"
     elif regex_search("( transaction with )", subject):
         type_ = "withdrawal"
     else:
