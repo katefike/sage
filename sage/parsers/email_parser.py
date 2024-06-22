@@ -157,8 +157,10 @@ def parse_chase_deposit(body: str) -> str:
     Merchant RAPPI* VERIF $1.63 U
     Credit Amount $1.63
     """
-    payer = regex_search(r"(?<=Merchant )(.*)(?= \$)", body)
-    raw_amount = regex_search(r"(?<=You have a \$)(.*)(?= credit pending)", body)
+    payer = regex_search(r"(?<=Merchant )(.*)(?= Credit Amount )", body)
+    raw_amount = regex_search(
+        r"(?<=Transaction alert You have a \$)(.*)(?= credit pending)", body
+    )
     return payer, raw_amount
 
 
