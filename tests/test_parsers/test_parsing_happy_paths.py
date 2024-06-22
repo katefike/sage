@@ -310,7 +310,7 @@ def get_test_data():
             (dict(uid="35", email_id=15)),
             (
                 dict(
-                    date="2024-04-3",
+                    date="2024-04-03",
                     type_="deposit",
                     bank="Chase",
                     merchant=None,
