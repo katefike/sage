@@ -199,7 +199,9 @@ def get_huntington_txn_type(body: str) -> str:
         type_ = "transfer withdrawal"
     elif regex_search("(We've processed a transfer deposit for )", body):
         type_ = "transfer deposit"
-    elif regex_search("(We've processed an ACH withdrawal for)", body):
+    elif regex_search("(We've processed an ACH withdrawal for )", body):
+        type_ = "withdrawal"
+    elif regex_search("(We've processed a debit card withdrawal for )", body):
         type_ = "withdrawal"
     elif regex_search("(We've processed an ACH deposit for )", body):
         type_ = "deposit"
