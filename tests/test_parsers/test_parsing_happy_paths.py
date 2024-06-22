@@ -328,9 +328,9 @@ def get_test_data():
                     date="2024-04-29",
                     type_="withdrawal",
                     bank="Huntington",
-                    merchant=None,
-                    payer="CASH APP*DEB WALKO",
-                    amount="1,500",
+                    merchant="CASH APP*DEB WALKO",
+                    payer=None,
+                    amount="1500.00",
                     account="checking",
                     balance=None,
                 )
