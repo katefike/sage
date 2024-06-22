@@ -127,6 +127,8 @@ def get_bank(body: str) -> str:
         return "Discover"
     elif regex_search("(huntington.com)", body):
         return "Huntington"
+    else:
+        logger.warning("No bank identified")
     return
 
 
@@ -140,7 +142,7 @@ def get_chase_txn_type(subject: str) -> str:
     elif regex_search("( transaction with )", subject):
         type_ = "withdrawal"
     else:
-        logger.info("No Chase txn type identified")
+        logger.warning("No Chase txn type identified")
     return type_
 
 
@@ -202,7 +204,7 @@ def get_huntington_txn_type(body: str) -> str:
     elif regex_search("(We've processed a deposit for )", body):
         type_ = "deposit"
     else:
-        logger.info("No Huntington txn type identified")
+        logger.warning("No Huntington txn type identified")
     return type_
 
 
