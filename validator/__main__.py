@@ -12,6 +12,7 @@ from datetime import datetime
 from typing import Dict, List, Optional
 
 from loguru import logger
+from thefuzz import fuzz
 
 from sage.db import transactions
 from sage.models.transaction import Transaction
@@ -234,12 +235,23 @@ def diff_csv_and_db_data(csv_data: List, db_data: List, csv_cols: Dict) -> Dict:
             # Convert Transaction decimal to string
             if str(Transaction.amount) != csv_row.get(csv_cols.get("amount_col")):
                 continue
-            if "transfer" not in Transaction.type_:
-                # The Huntington CSV sometimes includes a lot of extra spaces
-                if Transaction.merchant.replace(" ", "") != csv_row.get(
-                    csv_cols.get("merchant_col")
-                ).replace(" ", ""):
+
+            if "transfer" in Transaction.type_:
+                continue
+
+            stripped_txn_merchant = Transaction.merchant.replace(" ", "")
+            transformed_txn_merchant = stripped_txn_merchant.lower()[:10]
+            stripped_csv_merchant = csv_row.get(csv_cols.get("merchant_col")).replace(
+                " ", ""
+            )
+            transformed_csv_merchant = stripped_csv_merchant.lower()[:10]
+            if transformed_txn_merchant != transformed_csv_merchant:
+                similarity_score = fuzz.ratio(
+                    transformed_txn_merchant, transformed_csv_merchant
+                )
+                if similarity_score < 90:
                     continue
+
             # Remove row from CSV data if all three fields are matched
             csv_data_copy.remove(csv_row)
     diff["CSV rows not in DB"] = csv_data_copy
@@ -250,15 +262,27 @@ def diff_csv_and_db_data(csv_data: List, db_data: List, csv_cols: Dict) -> Dict:
         for Transaction in db_data_copy:
             if Transaction.date != csv_row.get(csv_cols.get("date_col")):
                 continue
+
             # Convert Transaction decimal to string
             if str(Transaction.amount) != csv_row.get(csv_cols.get("amount_col")):
                 continue
-            if "transfer" not in Transaction.type_:
-                # The Huntington CSV sometimes includes a lot of extra spaces
-                if Transaction.merchant.replace(" ", "") != csv_row.get(
-                    csv_cols.get("merchant_col")
-                ).replace(" ", ""):
+
+            if "transfer" in Transaction.type_:
+                continue
+
+            stripped_txn_merchant = Transaction.merchant.replace(" ", "")
+            transformed_txn_merchant = stripped_txn_merchant.lower()[:10]
+            stripped_csv_merchant = csv_row.get(csv_cols.get("merchant_col")).replace(
+                " ", ""
+            )
+            transformed_csv_merchant = stripped_csv_merchant.lower()[:10]
+            if transformed_txn_merchant != transformed_csv_merchant:
+                similarity_score = fuzz.ratio(
+                    transformed_txn_merchant, transformed_csv_merchant
+                )
+                if similarity_score < 90:
                     continue
+
             # Remove row from CSV data if all three fields are matched
             db_data_copy.remove(Transaction)
     diff["DB records not in CSV"] = db_data_copy
