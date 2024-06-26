@@ -52,6 +52,7 @@ def main(file: str, date: str):
         csv_data = Huntington.get_csv_data(file, dates)
         diff = Huntington.diff_csv_and_db_data(csv_data, db_data)
     if bank == "Chase":
+        account = None
         db_data = get_db_data(start_date, stop_date, bank, account)
         logger.info(f"Getting data from validation CSV file: {file}")
         csv_data = Chase.get_csv_data(file, dates)
