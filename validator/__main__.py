@@ -9,9 +9,10 @@ import csv
 import pathlib
 import sys
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from loguru import logger
+from thefuzz import fuzz
 
 from sage.db import transactions
 from sage.models.transaction import Transaction
@@ -37,34 +38,44 @@ def main(file: str, date: str):
 
     dates, start_date, stop_date = create_dates(date)
 
-    # Get CSV data
-    logger.info(f"Getting data from validation CSV file: {file}")
-    csv_data = get_csv_data(file, dates)
-
     # Get DB data
-    if start_date == stop_date:
-        logger.info(f"Getting DB transaction data for {start_date}.")
-    else:
-        logger.info(f"Getting DB transaction data from {start_date} to {stop_date}.")
     file_parts = file.split("_")
     bank = file_parts[0]
     account = file_parts[1]
+
+    if bank == "Huntington":
+        csv_cols = dict(date_col="Date", merchant_col="Payee Name", amount_col="Amount")
+    if bank == "Chase":
+        account = None
+        csv_cols = dict(
+            date_col="Transaction Date", merchant_col="Description", amount_col="Amount"
+        )
+
+    if start_date == stop_date:
+        logger.info(
+            f"Getting DB transaction data for {start_date}, bank {bank}, account {account}."
+        )
+    else:
+        logger.info(
+            f"Getting DB transaction data from {start_date} to {stop_date}, bank {bank}, account {account}."
+        )
+
     db_data = get_db_data(start_date, stop_date, bank, account)
 
-    # Diff the CSV and DB data, row-to-record
-    diff = diff_csv_and_db_data(csv_data, db_data)
+    logger.info(f"Getting data from validation CSV file: {file}")
+    csv_data = get_csv_data(file, dates, csv_cols)
 
-    logger.info(f"CSV rows not in DB:")
+    diff = diff_csv_and_db_data(csv_data, db_data, csv_cols)
+
+    logger.info("CSV rows not in DB:")
     for i, csv_row in enumerate(diff.get("CSV rows not in DB")):
         logger.info(
-            f"{i + 1} - {csv_row['Date']}, {csv_row['Payee Name']}, {csv_row['Amount']}"
+            f"{i + 1} - {csv_row[csv_cols.get('date_col')]}, {csv_row[csv_cols.get('merchant_col')]}, {csv_row[csv_cols.get('amount_col')]}"
         )
 
-    logger.info(f"DB records not in CSV:")
-    for i, Transaction in enumerate(diff.get("DB records not in CSV")):
-        logger.info(
-            f"{i + 1} - {Transaction.date}, {Transaction.merchant}, {Transaction.amount}"
-        )
+    logger.info("DB records not in CSV:")
+    for i, txn in enumerate(diff.get("DB records not in CSV")):
+        logger.info(f"{i + 1} - {txn.date}, {txn.merchant}, {txn.amount}")
 
 
 def create_dates(date):
@@ -121,19 +132,9 @@ def transform_zero_padded_dates(raw_dates: List) -> List:
     return dates
 
 
-def get_csv_data(file: str, dates: List) -> List:
-    with open(FILE_PATH + file, mode="r", encoding="utf-8") as open_csv:
-        reader = csv.DictReader(open_csv)
-        csv_data = []
-
-        for row in reader:
-            row_date = row["Date"]
-            if row_date in dates:
-                csv_data.append(row)
-    return csv_data
-
-
-def get_db_data(start_date: str, stop_date: str, bank: str, account: str) -> List:
+def get_db_data(
+    start_date: str, stop_date: str, bank: str, account: Optional[str]
+) -> List:
     db_records = transactions.get_txns_by_daterange_and_bank_account(
         start_date, stop_date, bank, account
     )
@@ -150,23 +151,35 @@ def get_db_data(start_date: str, stop_date: str, bank: str, account: str) -> Lis
         # TODO: Use SQLAlchemy #16
         # Instantiate Transaction object using email ID.
         email_id = db_record[1]
-        transaction = Transaction(email_id)
-        transaction.id = db_record[0]
+        txn = Transaction(email_id)
+        txn.id = db_record[0]
         # Transform the date to Huntington's style
-        transaction.date = datetime.strftime(db_record[2], "%m/%d/%Y")
-        transaction.bank = db_record_bank
-        transaction.account = db_record_account
+        txn.date = datetime.strftime(db_record[2], "%m/%d/%Y")
+        txn.bank = db_record_bank
+        txn.account = db_record_account
         # For simplicity sake, let's pretend everyone is a merchant
-        transaction.merchant = db_record[5]
-        transaction.amount = db_record[6]
-        transaction.type_ = db_record[7]
-        db_data.append(transaction)
+        txn.merchant = db_record[5]
+        txn.amount = db_record[6]
+        txn.type_ = db_record[7]
+        db_data.append(txn)
     return db_data
 
 
-def diff_csv_and_db_data(csv_data: List, db_data: List) -> Dict:
+def get_csv_data(file: str, dates: List, csv_cols: Dict) -> List:
+    with open(FILE_PATH + file, mode="r", encoding="utf-8") as open_csv:
+        reader = csv.DictReader(open_csv)
+        csv_data = []
+
+        for row in reader:
+            row_date = row[csv_cols.get("date_col")]
+            if row_date in dates:
+                csv_data.append(row)
+    return csv_data
+
+
+def diff_csv_and_db_data(csv_data: List, db_data: List, csv_cols: Dict) -> Dict:
     """
-    csv_data:
+    Huntington csv_data :
         [{
             "Date": "04/01/2024",
             "Payee Name": "UBER BV          IAT PAYPAL",
@@ -217,17 +230,28 @@ def diff_csv_and_db_data(csv_data: List, db_data: List) -> Dict:
     csv_data_copy = copy.deepcopy(csv_data)
     for Transaction in db_data:
         for csv_row in csv_data_copy:
-            if Transaction.date != csv_row.get("Date"):
+            if Transaction.date != csv_row.get(csv_cols.get("date_col")):
                 continue
             # Convert Transaction decimal to string
-            if str(Transaction.amount) != csv_row.get("Amount"):
+            if str(Transaction.amount) != csv_row.get(csv_cols.get("amount_col")):
                 continue
-            if "transfer" not in Transaction.type_:
-                # The Huntington CSV sometimes includes a lot of extra spaces
-                if Transaction.merchant.replace(" ", "") != csv_row.get(
-                    "Payee Name"
-                ).replace(" ", ""):
+
+            if "transfer" in Transaction.type_:
+                continue
+
+            stripped_txn_merchant = Transaction.merchant.replace(" ", "")
+            transformed_txn_merchant = stripped_txn_merchant.lower()[:10]
+            stripped_csv_merchant = csv_row.get(csv_cols.get("merchant_col")).replace(
+                " ", ""
+            )
+            transformed_csv_merchant = stripped_csv_merchant.lower()[:10]
+            if transformed_txn_merchant != transformed_csv_merchant:
+                similarity_score = fuzz.ratio(
+                    transformed_txn_merchant, transformed_csv_merchant
+                )
+                if similarity_score < 90:
                     continue
+
             # Remove row from CSV data if all three fields are matched
             csv_data_copy.remove(csv_row)
     diff["CSV rows not in DB"] = csv_data_copy
@@ -236,17 +260,29 @@ def diff_csv_and_db_data(csv_data: List, db_data: List) -> Dict:
     db_data_copy = copy.deepcopy(db_data)
     for csv_row in csv_data:
         for Transaction in db_data_copy:
-            if Transaction.date != csv_row.get("Date"):
+            if Transaction.date != csv_row.get(csv_cols.get("date_col")):
                 continue
+
             # Convert Transaction decimal to string
-            if str(Transaction.amount) != csv_row.get("Amount"):
+            if str(Transaction.amount) != csv_row.get(csv_cols.get("amount_col")):
                 continue
-            if "transfer" not in Transaction.type_:
-                # The Huntington CSV sometimes includes a lot of extra spaces
-                if Transaction.merchant.replace(" ", "") != csv_row.get(
-                    "Payee Name"
-                ).replace(" ", ""):
+
+            if "transfer" in Transaction.type_:
+                continue
+
+            stripped_txn_merchant = Transaction.merchant.replace(" ", "")
+            transformed_txn_merchant = stripped_txn_merchant.lower()[:10]
+            stripped_csv_merchant = csv_row.get(csv_cols.get("merchant_col")).replace(
+                " ", ""
+            )
+            transformed_csv_merchant = stripped_csv_merchant.lower()[:10]
+            if transformed_txn_merchant != transformed_csv_merchant:
+                similarity_score = fuzz.ratio(
+                    transformed_txn_merchant, transformed_csv_merchant
+                )
+                if similarity_score < 90:
                     continue
+
             # Remove row from CSV data if all three fields are matched
             db_data_copy.remove(Transaction)
     diff["DB records not in CSV"] = db_data_copy

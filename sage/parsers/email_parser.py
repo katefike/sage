@@ -23,15 +23,20 @@ def main(email: Email) -> Transaction:
     :returns: a Transaction object defined in sage.models.transaction.py
     """
     txn = Transaction(email.id)
-
     # Identify who the bank is
+    # TODO: Refactor this to only call get_bank once
     if not get_bank(email.body):
         return
     txn.bank = get_bank(email.body)
     # Parse the email based on who the bank is
     if txn.bank == "Chase":
-        txn.type_ = "withdrawal"
-        txn.merchant, raw_amount = parse_chase(email.subject)
+        txn.type_ = get_chase_txn_type(email.subject)
+        if txn.type_ == "deposit":
+            txn.payer, raw_amount = parse_chase_deposit(email.body)
+        elif txn.type_ == "withdrawal":
+            txn.merchant, raw_amount = parse_chase_withdrawal(email.subject)
+        else:
+            return
     if txn.bank == "Discover":
         txn.type_ = "withdrawal"
         txn.merchant, raw_amount = parse_discover(email.body)
@@ -122,10 +127,44 @@ def get_bank(body: str) -> str:
         return "Discover"
     elif regex_search("(huntington.com)", body):
         return "Huntington"
+    else:
+        logger.warning("No bank identified")
     return
 
 
-def parse_chase(subject: str) -> str:
+def get_chase_txn_type(subject: str) -> str:
+    """
+    Identify the Chase txn type
+    """
+    type_ = None
+    if regex_search("( credit pending )", subject):
+        type_ = "deposit"
+    elif regex_search("( transaction with )", subject):
+        type_ = "withdrawal"
+    else:
+        logger.warning("No Chase txn type identified")
+    return type_
+
+
+def parse_chase_deposit(body: str) -> str:
+    """
+    Extract the txn amount and payer from the email body
+    E.g.
+    Transaction alert
+    You have a $1.63 credit pending on your credit card
+    Account Prime Visa (...6104)
+    Date Apr 3, 2024 at 11:48 AM ET
+    Merchant RAPPI* VERIF $1.63 U
+    Credit Amount $1.63
+    """
+    payer = regex_search(r"(?<=Merchant )(.*)(?= Credit Amount )", body)
+    raw_amount = regex_search(
+        r"(?<=Transaction alert You have a \$)(.*)(?= credit pending)", body
+    )
+    return payer, raw_amount
+
+
+def parse_chase_withdrawal(subject: str) -> str:
     """
     Extract the txn amount and merchant from the email subject
     E.g.
@@ -160,14 +199,16 @@ def get_huntington_txn_type(body: str) -> str:
         type_ = "transfer withdrawal"
     elif regex_search("(We've processed a transfer deposit for )", body):
         type_ = "transfer deposit"
-    elif regex_search("(We've processed an ACH withdrawal for)", body):
+    elif regex_search("(We've processed an ACH withdrawal for )", body):
+        type_ = "withdrawal"
+    elif regex_search("(We've processed a debit card withdrawal for )", body):
         type_ = "withdrawal"
     elif regex_search("(We've processed an ACH deposit for )", body):
         type_ = "deposit"
     elif regex_search("(We've processed a deposit for )", body):
         type_ = "deposit"
     else:
-        logger.info("No Huntington txn type identified")
+        logger.warning("No Huntington txn type identified")
     return type_
 
 

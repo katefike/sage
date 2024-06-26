@@ -28,8 +28,7 @@ def main(
 
         elif filter == "unparsed":
             logger.info(
-                "Only getting emails that are in the DB table named emails,\
-                but don't have an associated txn..."
+                "Only getting emails that are in the DB table named emails, but don't have an associated txn..."
             )
             msgs = []
             records, columns_ = emails.get_unparsed_emails()

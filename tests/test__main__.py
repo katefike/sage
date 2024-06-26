@@ -46,7 +46,7 @@ def test_retry_unparsed_emails():
     Insert data into the emails table, simulating initially unparsed emails.
     Load parsable emails. Run sage and verify they were all processed.
     """
-    utils.refresh_inbox("transaction_emails.mbox")
+    utils.refresh_inbox("identical_txns_gmail+cloudHQ_forwards.mbox")
     emails_ = get_emails.main(filter="forwarded")
     # Retrieve all emails in the inbox from the forwarding email
     for email in emails_:
