@@ -99,7 +99,7 @@ TEST_CASES = [
                 merchant="BOMBAY SITAR",
                 payer=None,
                 amount="20.18",
-                account=None,
+                account="student",
                 balance=None,
             )
         ),

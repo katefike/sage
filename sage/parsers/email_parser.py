@@ -39,6 +39,9 @@ def main(email: Email) -> Transaction:
             return
     if txn.bank == "Discover":
         txn.type_ = "withdrawal"
+        # Since 240628, only Discover student has sent txn emails
+        # Discover miles and savings will be closed soon
+        txn.account = "student"
         txn.merchant, raw_amount = parse_discover(email.body)
     if txn.bank == "Huntington":
         txn.type_ = get_huntington_txn_type(email.body)
