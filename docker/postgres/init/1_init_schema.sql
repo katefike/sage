@@ -31,10 +31,12 @@ CREATE TABLE IF NOT EXISTS public.banks(
 );
 INSERT INTO public.banks (NAME, account, TYPE)
 VALUES ('Huntington', 'savings', 'liquid'),
-    ('Huntington', 'checking', 'liquid');
+    ('Huntington', 'checking', 'liquid'),
+    ('Discover', 'student', 'credit'),
+    ('Discover', 'miles', 'credit'),
+    ('Discover', 'savings', 'liquid');
 INSERT INTO public.banks (NAME, TYPE)
-VALUES ('Chase', 'credit'),
-    ('Discover', 'credit');
+VALUES ('Chase', 'credit');
 CREATE TABLE IF NOT EXISTS public.entity_tags(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     NAME TEXT NOT NULL,
