@@ -45,7 +45,7 @@ data = [
             merchant=None,
             payer=None,
             amount="999.51",
-            account="checking",
+            account="asterisk-free checking",
             balance="1693.13",
         )
     ),
@@ -69,7 +69,7 @@ data = [
             merchant="VENMO PAYMENT",
             payer=None,
             amount="200.00",
-            account="checking",
+            account="asterisk-free checking",
             balance="14.80",
         )
     ),
@@ -129,7 +129,7 @@ data = [
             merchant=None,
             payer=None,
             amount="500.00",
-            account="checking",
+            account="asterisk-free checking",
             balance="757.06",
         )
     ),
@@ -141,7 +141,7 @@ data = [
             merchant=None,
             payer="CHASE CREDIT CRD RWRD RDM",
             amount="17.09",
-            account="checking",
+            account="asterisk-free checking",
             balance="257.06",
         )
     ),
