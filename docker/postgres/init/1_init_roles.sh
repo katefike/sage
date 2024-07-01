@@ -9,4 +9,8 @@ POSTGRES_PASSWORD=$POSTGRES_PASSWORD psql -v ON_ERROR_STOP=1 --username "$POSTGR
 	-- automatically grant INSERT on future tables
 	ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT INSERT ON TABLES TO etl;
 
+	CREATE USER grafana;
+	ALTER USER grafana WITH PASSWORD '$POSTGRES_GRAFANA_PASSWORD';
+	GRANT pg_read_all_data, pg_write_all_data TO grafana;
+	GRANT INSERT ON ALL TABLES IN SCHEMA public TO grafana;
 EOSQL
