@@ -31,7 +31,8 @@ CREATE TABLE IF NOT EXISTS public.banks(
 );
 INSERT INTO public.banks (NAME, account, TYPE)
 VALUES ('Huntington', 'savings', 'liquid'),
-    ('Huntington', 'checking', 'liquid'),
+    ('Huntington', 'asterisk-free checking', 'liquid'),
+    ('Huntington', 'perks checking', 'liquid'),
     ('Discover', 'student', 'credit'),
     ('Discover', 'miles', 'credit'),
     ('Discover', 'savings', 'liquid');

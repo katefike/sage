@@ -9,7 +9,7 @@ TEST_CASES = [
                 merchant=None,
                 payer=None,
                 amount="999.51",
-                account="checking",
+                account="asterisk-free checking",
                 balance="1693.13",
             )
         ),
@@ -39,7 +39,7 @@ TEST_CASES = [
                 merchant="VENMO PAYMENT",
                 payer=None,
                 amount="200.00",
-                account="checking",
+                account="asterisk-free checking",
                 balance="14.80",
             )
         ),
@@ -114,7 +114,7 @@ TEST_CASES = [
                 merchant=None,
                 payer=None,
                 amount="500.00",
-                account="checking",
+                account="asterisk-free checking",
                 balance="757.06",
             )
         ),
@@ -129,7 +129,7 @@ TEST_CASES = [
                 merchant=None,
                 payer="CHASE CREDIT CRD RWRD RDM",
                 amount="17.09",
-                account="checking",
+                account="asterisk-free checking",
                 balance="257.06",
             )
         ),
@@ -144,7 +144,7 @@ TEST_CASES = [
                 merchant="VENMO PAYMENT",
                 payer=None,
                 amount="50.00",
-                account="checking",
+                account="asterisk-free checking",
                 balance="866.27",
             )
         ),
@@ -189,7 +189,7 @@ TEST_CASES = [
                 merchant=None,
                 payer="cash",
                 amount="1500.00",
-                account="checking",
+                account="asterisk-free checking",
                 balance="798.08",
             )
         ),
@@ -218,7 +218,7 @@ TEST_CASES = [
             merchant="R.I.T.A. RITA EFILE",
             payer=None,
             amount="100.00",
-            account="checking",
+            account="asterisk-free checking",
             balance="-10.92",
         ),
     ),
@@ -247,7 +247,7 @@ TEST_CASES = [
                 merchant=None,
                 payer="cash",
                 amount="1500.00",
-                account="checking",
+                account="asterisk-free checking",
                 balance="798.08",
             )
         ),
@@ -277,7 +277,7 @@ TEST_CASES = [
                 merchant=None,
                 payer="ABC DE LLC ERECT DEP",
                 amount="3546.71",
-                account="checking",
+                account="asterisk-free checking",
                 balance="4394.84",
             )
         ),
@@ -307,7 +307,7 @@ TEST_CASES = [
                 merchant="CASH APP*DEB WALKO",
                 payer=None,
                 amount="1500.00",
-                account="checking",
+                account="asterisk-free checking",
                 balance="2682.40",
             )
         ),
