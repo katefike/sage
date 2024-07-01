@@ -32,3 +32,11 @@ services:
       - /etc/letsencrypt/:/etc/letsencrypt/
       - ./docker/mailserver/scripts/postfix_dovecot_config_prod.sh:/postfix_dovecot_config.sh
       - ./docker/mailserver/scripts/dkim_fail2ban_prod.sh:/dkim_fail2ban.sh
+  grafana:
+    image: grafana/grafana-oss
+    container_name: sage-grafana
+    restart: unless-stopped
+    ports:
+     - '3000:3000'
+    volumes:
+      - ./docker/grafana/:/etc/grafana/

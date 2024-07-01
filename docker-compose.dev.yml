@@ -29,6 +29,16 @@ services:
     volumes:
       - ./docker/mailserver/scripts/postfix_dovecot_config_dev.sh:/postfix_dovecot_config.sh
       - ./docker/mailserver/test_data/:/test_data/
+  grafana:
+    image: grafana/grafana-oss
+    container_name: sage-grafana
+    restart: unless-stopped
+    env_file:
+      - .env-example
+    ports:
+     - '3000:3000'
+    volumes:
+      - ./docker/grafana/:/etc/grafana/
 volumes:
   db:
     driver: local
