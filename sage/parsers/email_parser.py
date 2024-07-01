@@ -330,7 +330,9 @@ def get_huntington_account(body: str) -> str:
         r"(?<= your account nicknamed )(\w*)(?=. That's above the)", body
     )
     if account == "CHECK":
-        account = "checking"
+        account = "asterisk-free checking"
+    elif account == "CK2379":
+        account = "perks checking"
     elif account == "SAVE":
         account = "savings"
     else:
