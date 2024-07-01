@@ -22,20 +22,20 @@ def env() -> Dict:
 def conn():
     POSTGRES_HOST = ENV["POSTGRES_HOST"]
     POSTGRES_DB = ENV["POSTGRES_DB"]
-    POSTGRES_USER = ENV["POSTGRES_USER"]
-    POSTGRES_PASSWORD = ENV["POSTGRES_PASSWORD"]
+    POSTGRES_ETL_USER = "etl"
+    POSTGRES_ETL_PASSWORD = ENV["POSTGRES_ETL_PASSWORD"]
     try:
         conn = psycopg2.connect(
             host=POSTGRES_HOST,
             dbname=POSTGRES_DB,
-            user=POSTGRES_USER,
-            password=POSTGRES_PASSWORD,
+            user=POSTGRES_ETL_USER,
+            password=POSTGRES_ETL_PASSWORD,
         )
     except psycopg2.DatabaseError as error:
         print(f"Failed to connect to the database: {error}")
         print(
-            f"HOST: {POSTGRES_HOST} DB: {POSTGRES_DB} USER: {POSTGRES_USER} \
-            PASS: {POSTGRES_PASSWORD}"
+            f"HOST: {POSTGRES_HOST} DB: {POSTGRES_DB} USER: {POSTGRES_ETL_USER} \
+            PASS: {POSTGRES_ETL_PASSWORD}"
         )
     yield conn
     conn.close()

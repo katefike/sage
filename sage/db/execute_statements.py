@@ -16,8 +16,8 @@ def open_connection():
         conn = psycopg2.connect(
             host=ENV["POSTGRES_HOST"],
             dbname=ENV["POSTGRES_DB"],
-            user=ENV["POSTGRES_USER"],
-            password=ENV["POSTGRES_PASSWORD"],
+            user="etl",
+            password=ENV["POSTGRES_ETL_PASSWORD"],
         )
         return conn
     except psycopg2.DatabaseError as error:  # pragma: no cover
