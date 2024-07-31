@@ -39,7 +39,7 @@ services:
      - '3000:3000'
     volumes:
       - ./docker/grafana/grafana.ini:/etc/grafana/grafana.ini
-      - ./docker/grafana/datasource.yml:/provisioning/datasources/datasource.yml
+      - ./docker/grafana/postgres.yml:/etc/grafana/provisioning/datasources/postgres.yml
 volumes:
   db:
     driver: local

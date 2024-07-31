@@ -11,6 +11,6 @@ POSTGRES_PASSWORD=$POSTGRES_PASSWORD psql -v ON_ERROR_STOP=1 --username "$POSTGR
 
 	CREATE USER grafana;
 	ALTER USER grafana WITH PASSWORD '$POSTGRES_GRAFANA_PASSWORD';
-	GRANT pg_read_all_data, pg_write_all_data TO grafana;
-	GRANT INSERT ON ALL TABLES IN SCHEMA public TO grafana;
+	GRANT pg_read_all_data TO grafana;
+	ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO grafana;
 EOSQL
