@@ -7,10 +7,10 @@ datasources:
     url: db:5432
     user: grafanareader
     secureJsonData:
-      password: 'grafanapassword'
+      password: '${POSTGRES_GRAFANA_PASSWORD}'
     jsonData:
-      database: sage
-      sslmode: 'disable' # disable/require/verify-ca/verify-full
+      database: ${POSTGRES_DB}
+      sslmode: '${POSTGRES_GRAFANA_SSL_MODE}' # disable/require/verify-ca/verify-full
       maxOpenConns: 100 # Grafana v5.4+
       maxIdleConns: 100 # Grafana v5.4+
       maxIdleConnsAuto: true # Grafana v9.5.1+
