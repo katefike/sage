@@ -40,4 +40,6 @@ services:
      - '3000:3000'
     volumes:
       - ./docker/grafana/grafana.ini:/etc/grafana/grafana.ini
-      - ./docker/grafana/datasource.yml:/usr/share/grafana/provisioning/datasources/datasource.yml
+      - ./docker/grafana/provisioning/postgres.yml:/etc/grafana/provisioning/datasources/postgres.yml
+      - ./docker/grafana/provisioning/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./docker/grafana/dashboards:/var/lib/grafana/dashboards
