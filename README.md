@@ -20,15 +20,20 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 2. Run the first setup script. This will create a .env file using the file .env-example as a template. 
   <br>`bash setup/1_setup_sage_directory.sh`
 3. Define the following environment variables in the .env file:
-  <br> `ISDEV`: Change to "False"
   <br> `DOMAIN`: Buy a domain name.
   <br> `FORWARDING_EMAIL`: Set up the email account that receives the transaction alert emails. This account needs to forward all emails to the receiving email address on the MX. The default receiving email address is incoming@DOMAIN. So if you purchased the domain example.com, the receiving email address would me incoming@example.com
+  <br> `RECEIVING_EMAIL_PASSWORD`: The password for the MX account that receives transaction emails. The password is used to access the emails programatically (imap).
   <br> `DO_API_TOKEN`: Create a Digital Ocean API Key. It's located in the "API" portion of their menu.
   <br> `PROD_SSH_PUBLIC_KEY`: Create SSH keys for you to SSH to the production server. Ensure the private key permissions are restricted.For help see the section "Production Setup Troubleshooting." Copy/paste the public key here.
   <br> `PROD_SSH_PRIVATE_KEY_FILE_PATH`: Copy/paste the path to the private key file here.
   <br> `SERVER_USER`: Your user the production server.
   <br> `SERVER_USER_PASSWORD`: Your user's password on the production server.
   <br> `SSH_ALLOWED_PUBLIC_IPS`: List the public IPs that can access to the production server.
+  <br> `POSTGRES_PASSWORD`: admin role's password.
+  <br> `POSTGRES_ETL_PASSWORD`: etl role's password.
+  <br> `POSTGRES_GRAFANA_PASSWORD`: grafanareader role's password
+  <br> `POSTGRES_GRAFANA_SSL_MODE`: Change this to "enable".
+  <br> `GRAFANA_PASSWORD`: Grafana admin user's password.
 4. **WARNING: RUNNING THIS SCRIPT CAUSES DIGITAL OCEAN TO START CHARGING YOU MONEY ON A MONTHLY BASIS FOR YOUR PRODUCTION SERVER.**
 <br> Run the script to create a production Digital Ocean Droplet server that runs the application.
 <br> `bash setup/2_create_prod_server.sh`
