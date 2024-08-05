@@ -38,10 +38,20 @@ services:
     ports:
      - '3000:3000'
     volumes:
-      - ./docker/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./docker/grafana/grafana_dev.ini:/etc/grafana/grafana.ini
       - ./docker/grafana/provisioning/postgres.yml:/etc/grafana/provisioning/datasources/postgres.yml
       - ./docker/grafana/provisioning/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
       - ./docker/grafana/dashboards:/var/lib/grafana/dashboards
+  nginx:
+    image: nginx:latest
+    container_name: sage-nginx
+    restart: always
+    environment:
+      DOMAIN: 'localhost'
+    ports:
+      - '8080:80'
+    volumes:
+      - ./docker/nginx/:/etc/nginx/conf.d/
 volumes:
   db:
     driver: local

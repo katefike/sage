@@ -36,6 +36,8 @@ services:
     image: grafana/grafana-oss
     container_name: sage-grafana
     restart: unless-stopped
+    env_file:
+      - .env
     ports:
      - '3000:3000'
     volumes:
@@ -43,3 +45,11 @@ services:
       - ./docker/grafana/provisioning/postgres.yml:/etc/grafana/provisioning/datasources/postgres.yml
       - ./docker/grafana/provisioning/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
       - ./docker/grafana/dashboards:/var/lib/grafana/dashboards
+  nginx:
+    image: nginx:latest
+    container_name: sage-nginx
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - '8080:80'
