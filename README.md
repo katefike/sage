@@ -13,7 +13,7 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 - db = database
 
 ## Production Setup Instructions
-*This app is production ready! For questions, problems and enhancements, open a github issue.*
+*This app is mostly production ready! The Grafana and Nginx containers are currently under development. For questions, problems and enhancements, open a github issue.*
 
 1. Globally install the following software:
   <br> Python 3.7 or higher
@@ -56,12 +56,12 @@ All additional documentation can be found in the `docs/` directory.
         - Sending emails
         - Retrieving emails
     - Useful commands for troubleshooting problems with the following
-        - Server
-        - Postfix
-        - Dovecot
-        - MX Container
-        - Postgres Container
+        - Digital Ocean Droplet VM
+        - Ansible
         - Docker
         - Python
+        - Postfix/Dovecot Container
+        - MX Container
+        - Postgres Container
 - [Local Development](docs/local_development.md): Provides local development setup instructions, how to create an ephemeral version of Sage for deployment testing (this part costs money), and using Pytest.
 - [Disaster Recovery](docs/disaster_rcovery.md): Provides disaster recovery instructions. This is helpful for when something is deeply wrong with your current Sage deployment, but you have data in the MX and/or DB that you don't want to lose. The guide describes how to create a brand new Sage deployment and attach your existing data to it. 
