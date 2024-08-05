@@ -41,15 +41,26 @@ services:
     ports:
      - '3000:3000'
     volumes:
-      - ./docker/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./docker/grafana/grafana_dev.ini:/etc/grafana/grafana.ini
       - ./docker/grafana/provisioning/postgres.yml:/etc/grafana/provisioning/datasources/postgres.yml
       - ./docker/grafana/provisioning/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
       - ./docker/grafana/dashboards:/var/lib/grafana/dashboards
+      # TODO: https://grafana.com/docs/grafana/latest/setup-grafana/set-up-https/#set-up-symlinks-to-grafana
+      # Ideally configure grafana to look in /etc/letsencrypt/ for the files
+      - /etc/letsencrypt/live/subdomain.mysite.com/privkey.pem /etc/grafana/grafana.key
+      - /etc/letsencrypt/live/subdomain.mysite.com/fullchain.pem /etc/grafana/grafana.crt
   nginx:
     image: nginx:latest
     container_name: sage-nginx
     restart: always
     env_file:
       - .env
+    ports:
+      - '8080:80'
+    volumes:
+      - ./docker/nginx/:/etc/nginx/conf.d/
+      # TODO: https://medium.com/@vinoji2005/guide-to-setup-lets-encrypt-ssl-in-nginx-be3d641bb58a
+      # Configure nginx to look for files in /etc/letsencrypt/
+      - /etc/letsencrypt/:/etc/letsencrypt/ 
     ports:
       - '8080:80'
