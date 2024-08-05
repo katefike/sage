@@ -46,8 +46,8 @@ services:
     image: nginx:latest
     container_name: sage-nginx
     restart: always
-    environment:
-      DOMAIN: 'localhost'
+    env_file:
+      - .env-example
     ports:
       - '8080:80'
     volumes:

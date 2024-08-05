@@ -64,7 +64,7 @@ telnet localhost 25
 
 ehlo mail.localdomain
 mail from: root@localhost
-rcpt to: incoming@example.com
+rcpt to: incoming@localhost
 data
 Subject: Test email 
 This is a test email.
@@ -74,9 +74,9 @@ quit
 
 #### Production
 ```
-kfike@pop-os:~$ openssl s_client -starttls smtp -ign_eof -crlf -connect example.com:25
+kfike@pop-os:~$ openssl s_client -starttls smtp -ign_eof -crlf -connect localhost:25
 CONNECTED(00000003)
-ehlo example.com
+ehlo localhost
 depth=2 C = US, O = Internet Security Research Group, CN = ISRG Root X1
 verify return:1
 depth=1 C = US, O = Let's Encrypt, CN = R3
@@ -100,7 +100,7 @@ read R BLOCK
 
 MAIL FROM: <support@port25.com>
 250 2.1.0 Ok
-RCPT TO: <kfike@example.com>
+RCPT TO: <kfike@localhost>
 250 2.1.5 Ok
 data
 354 End data with <CR><LF>.<CR><LF>

@@ -21,7 +21,7 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
   <br>`bash setup/1_setup_sage_directory.sh`
 3. Define the following environment variables in the .env file:
   <br> `DOMAIN`: Buy a domain name.
-  <br> `FORWARDING_EMAIL`: Set up the email account that receives the transaction alert emails. This account needs to forward all emails to the receiving email address on the MX. The default receiving email address is incoming@DOMAIN. So if you purchased the domain example.com, the receiving email address would me incoming@example.com
+  <br> `FORWARDING_EMAIL`: Set up the email account that receives the transaction alert emails. This account needs to forward all emails to the receiving email address on the MX. The default receiving email address is incoming@DOMAIN. So if you purchased the domain localhost, the receiving email address would me incoming@localhost
   <br> `RECEIVING_EMAIL_PASSWORD`: The password for the MX account that receives transaction emails. The password is used to access the emails programatically (imap).
   <br> `DO_API_TOKEN`: Create a Digital Ocean API Key. It's located in the "API" portion of their menu.
   <br> `PROD_SSH_PUBLIC_KEY`: Create SSH keys for you to SSH to the production server. Ensure the private key permissions are restricted.For help see the section "Production Setup Troubleshooting." Copy/paste the public key here.
