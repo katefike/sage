@@ -56,9 +56,10 @@ services:
     env_file:
       - .env
     ports:
-      - '8080:80'
+      - '80:80'
+      - '443:443'
     volumes:
       - ./docker/nginx/nginx_prod.conf:/etc/nginx/conf.d/nginx.conf
       # TODO: https://medium.com/@vinoji2005/guide-to-setup-lets-encrypt-ssl-in-nginx-be3d641bb58a
       # Configure nginx to look for files in /etc/letsencrypt/
-      - /etc/letsencrypt/:/etc/letsencrypt/ 
+      - /etc/letsencrypt/:/etc/letsencrypt/
