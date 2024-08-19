@@ -51,7 +51,7 @@ services:
     ports:
       - '8080:80'
     volumes:
-      - ./docker/nginx/:/etc/nginx/conf.d
+      - ./docker/nginx/dev:/etc/nginx/conf.d
 volumes:
   db:
     driver: local
