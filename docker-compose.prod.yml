@@ -57,12 +57,11 @@ services:
       - .env
     environment:
       - NGINX_ENVSUBST_TEMPLATE_DIR=/etc/nginx/templates
-      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/conf.d
+      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
     ports:
       - '80:80'
       - '443:443'
     volumes:
-      # Initialize env vars in conf.d
       - ./docker/nginx/prod:/etc/nginx/templates
       # TODO: https://medium.com/@vinoji2005/guide-to-setup-lets-encrypt-ssl-in-nginx-be3d641bb58a
       # Configure nginx to look for files in /etc/letsencrypt/
