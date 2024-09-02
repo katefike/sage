@@ -56,8 +56,8 @@ services:
     env_file:
       - .env
     environment:
-      - NGINX_ENVSUBST_TEMPLATE_DIR: /etc/nginx/templates
-      - NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx
+      - NGINX_ENVSUBST_TEMPLATE_DIR=/etc/nginx/templates
+      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/conf.d
     ports:
       - '80:80'
       - '443:443'
