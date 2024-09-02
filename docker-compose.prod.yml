@@ -63,7 +63,6 @@ services:
     volumes:
       # Initialize env vars in conf.d
       - ./docker/nginx/prod:/etc/nginx/templates
-      - ./docker/nginx/prod:/etc/nginx/conf.d
       # TODO: https://medium.com/@vinoji2005/guide-to-setup-lets-encrypt-ssl-in-nginx-be3d641bb58a
       # Configure nginx to look for files in /etc/letsencrypt/
       - /etc/letsencrypt/:/etc/letsencrypt/
