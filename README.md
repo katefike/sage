@@ -44,8 +44,12 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 <br> This script is idempotent: no matter how many times you run it, the result will be the same. So if an error occurs, simply troubleshoot and run the script again until the error is resolved.
 5. **WARNING: CREATING DIGITAL OCEAN VOLUMES ALSO COST MONEY, BUT THEY'RE HELPFUL FOR DISASTER RECOVERY. AT THIS TIME, THE VOLUMES ARE NOT OPTIONAL FOR THE DEPLOYMENT.** In the Digital Ocean console, go to the "Volumes Block Storage" tab and create two volumes: `sage-db` and `sage-mailserver`.
 6. In the Digital Ocean console, attach each volume to the Droplet. SSH to the Droplet and run the commands Digital Ocean provides to mount each volume.
-7. Re-run `bash setup/3_configure_prod_server.sh` to deploy Sage using the mounted volumes. 
+7. In the Digital Ocean console, create the NS records for the domain name you purchased, corresponding to `$DOMAIN` in the `.env`.
+8. In the Digital Ocean console, create an A record for the Droplet using "prod.< $DOMAIN >" as the hostname. For example, if `$DOMAIN` is example.com, then the hostname is prod.example.com. Use the floating IP as the value.
+9. In the Digital Ocean console, create a MX record for the Droplet using $DOMAIN as the hostname. For example, if `$DOMAIN` is example.com, then the hostname is prod.example.com.
+10. Re-run `bash setup/3_configure_prod_server.sh` to deploy Sage using the mounted volumes. 
 <br> TODO: Create and mount Digital Ocean volumes during automated production deployment https://github.com/katefike/sage/issues/145
+11. Go to the Grafana login URL https://prod.< $DOMAIN >. For example, my $DOMAIN is example.com, so the URL is https://prod.example.com. At this URL, you should see "Welcome to Grafana" with a login prompt.
 
 ## Additional Documentation
 All additional documentation can be found in the `docs/` directory.

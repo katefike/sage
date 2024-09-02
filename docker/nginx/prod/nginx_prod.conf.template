@@ -1,3 +1,6 @@
+# This config file is located in the container at /etc/nginx/conf.d/nginx_prod.conf
+# It's appended to http{} block in the default config file at /etc/nginx/nginx.conf
+
 # This is required to proxy Grafana Live WebSocket connections.
 map $http_upgrade $connection_upgrade {
   default upgrade;
@@ -8,6 +11,7 @@ upstream grafana {
   server grafana:3000;
 }
 
+# Redirect HTTP to HTTPS
 server {
     listen 80;
     server_name $DOMAIN;
