@@ -10,7 +10,8 @@
   <br>`source setup/local_development/1_setup_venv.sh`
 4. Start Docker
 `docker compose -f docker-compose.dev.yml up -d`
-5. Manually kick off the script to parse transactions from emails. Execute the command from the project root. For example, if the project is located in `/home/kfike/Projects/` then execute `(.venv) kfike@pop-os:~/Projects/sage$ python3 -m sage`. 
+5. Manually kick off the script to parse transactions from emails. Execute the command from the project root. For example, if the project is located in `/home/kfike/Projects/` then execute `(.venv) kfike@pop-os:~/Projects/sage$ python3 -m sage`.
+6. Go to the Grafana login URL: localhost:8080.  At this URL, you should see "Welcome to Grafana" with a login prompt. Use the username "admin" and the password "1234."
 
 
 ### Creating/Deleting an ephemeral server instance

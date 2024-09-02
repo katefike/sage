@@ -79,13 +79,13 @@ def get_date(body: str) -> str:
         From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
         Date: Thu, Oct 6, 2022 at 10:32 AM
         Subject: Withdrawal or Purchase
-        To: <example.com>
+        To: <localhost>
     E.g.
         ---------- Forwarded message ---------
         From: Chase <no.reply.alerts@chase.com>
         Date: Wed, 24 Apr 2024 18:33:10 -0400 (EDT)
         Subject: Your $253.36 transaction with AMZN Mktp US
-        To: <example.com>
+        To: <localhost>
     """
     # Match month, day, year format e.g. "Oct 6, 2022"
     raw_date = regex_search(
@@ -122,7 +122,7 @@ def get_bank(body: str) -> str:
         From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
         Date: Thu, Oct 6, 2022 at 10:32 AM
         Subject: Withdrawal or Purchase
-        To: <example.com>
+        To: <localhost>
     """
     if regex_search("(no.reply.alerts@chase.com)", body):
         return "Chase"

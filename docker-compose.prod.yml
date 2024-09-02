@@ -32,3 +32,31 @@ services:
       - /etc/letsencrypt/:/etc/letsencrypt/
       - ./docker/mailserver/scripts/postfix_dovecot_config_prod.sh:/postfix_dovecot_config.sh
       - ./docker/mailserver/scripts/dkim_fail2ban_prod.sh:/dkim_fail2ban.sh
+  grafana:
+    image: grafana/grafana-oss
+    container_name: sage-grafana
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+     - '3000:3000'
+    volumes:
+      - ./docker/grafana/grafana_prod.ini:/etc/grafana/grafana.ini
+      - ./docker/grafana/provisioning/postgres.yml:/etc/grafana/provisioning/datasources/postgres.yml
+      - ./docker/grafana/provisioning/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./docker/grafana/dashboards:/var/lib/grafana/dashboards
+  nginx:
+    image: nginx:latest
+    container_name: sage-nginx
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - NGINX_ENVSUBST_TEMPLATE_DIR=/etc/nginx/templates
+      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/conf.d
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./docker/nginx/prod:/etc/nginx/templates
+      - /etc/letsencrypt/:/etc/letsencrypt/
