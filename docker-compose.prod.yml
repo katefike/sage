@@ -63,8 +63,3 @@ services:
       # TODO: https://medium.com/@vinoji2005/guide-to-setup-lets-encrypt-ssl-in-nginx-be3d641bb58a
       # Configure nginx to look for files in /etc/letsencrypt/
       - /etc/letsencrypt/:/etc/letsencrypt/
-    command: >
-      sh -c "
-        echo \"FORWARDING_EMAIL: \${FORWARDING_EMAIL}\"
-        echo \"DOMAIN: \${DOMAIN}\"
-      "
