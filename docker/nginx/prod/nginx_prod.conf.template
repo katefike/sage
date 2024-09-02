@@ -1,8 +1,8 @@
-# This is required to proxy Grafana Live WebSocket connections.
-map $http_upgrade $connection_upgrade {
-  default upgrade;
-  '' close;
-}
+# # This is required to proxy Grafana Live WebSocket connections.
+# map $http_upgrade $connection_upgrade {
+#   default upgrade;
+#   '' close;
+# }
 
 upstream grafana {
   server grafana:3000;
