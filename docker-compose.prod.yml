@@ -45,10 +45,6 @@ services:
       - ./docker/grafana/provisioning/postgres.yml:/etc/grafana/provisioning/datasources/postgres.yml
       - ./docker/grafana/provisioning/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
       - ./docker/grafana/dashboards:/var/lib/grafana/dashboards
-      # TODO: https://grafana.com/docs/grafana/latest/setup-grafana/set-up-https/#set-up-symlinks-to-grafana
-      # Ideally configure grafana to look in /etc/letsencrypt/ for the files
-      - /etc/letsencrypt/live/subdomain.mysite.com/privkey.pem /etc/grafana/grafana.key
-      - /etc/letsencrypt/live/subdomain.mysite.com/fullchain.pem /etc/grafana/grafana.crt
   nginx:
     image: nginx:latest
     container_name: sage-nginx
