@@ -63,6 +63,4 @@ services:
       - '443:443'
     volumes:
       - ./docker/nginx/prod:/etc/nginx/templates
-      # TODO: https://medium.com/@vinoji2005/guide-to-setup-lets-encrypt-ssl-in-nginx-be3d641bb58a
-      # Configure nginx to look for files in /etc/letsencrypt/
       - /etc/letsencrypt/:/etc/letsencrypt/
