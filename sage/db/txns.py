@@ -25,6 +25,7 @@ def insert_txn(txn: Transaction) -> bool:
         bank_id,
         txn.type_,
         txn.amount,
+        txn.balance,
         entity_id,
         txn.identical_txn_id,
     )
@@ -36,11 +37,12 @@ def insert_txn(txn: Transaction) -> bool:
                 bank_id,
                 type,
                 amount,
+                balance,
                 entity_id,
                 identical_txn_id
             )
     VALUES
-        (%s, %s, %s, %s, %s, %s, %s);
+        (%s, %s, %s, %s, %s, %s, %s, %s);
     """
     row_count = execute_statements.insert(stmt, data)
     return row_count

@@ -14,7 +14,7 @@ services:
         max-file: "3"
     volumes: 
       # TODO: Separate the schema and the init data like banks
-      - ./docker/postgres/init:/docker-entrypoint-initdb.d
+      - ./docker/db/init:/docker-entrypoint-initdb.d
       - db:/var/lib/postgresql/data
   mx:
     image: sage_mx
