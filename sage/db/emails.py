@@ -36,7 +36,7 @@ def get_unparsed_emails():
     SELECT
         e.*
     FROM emails e
-        LEFT JOIN transactions t ON t.email_id = e.id
+        LEFT JOIN txns t ON t.email_id = e.id
     WHERE
         t.email_id IS NULL;
     """

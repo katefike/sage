@@ -2,7 +2,7 @@
 Tests the email parser (module sage/parsers/email_parser.py) to ensure it
 can handle exceptions and errors from regex edge cases.
 
-The input is the transaction email bod. It's a big string containing the forwarded email.
+The input is the transaction (txn) email bod. It's a big string containing the forwarded email.
 I. e.
 --00000000000010b66806191115a5
 Content-Type: text/plain; charset="UTF-8"
@@ -43,7 +43,7 @@ This email was generated automatically. Please do not reply to this message
 
 --00000000000010b66806191115a5--
 
-The expected expected_output is the transaction object defined in
+The expected expected_output is the Transaction object defined in
 sage/models/transaction.py
 """
 import pytest
@@ -65,7 +65,7 @@ def test_get_date_regex_error():
 def test_parse_huntington_transfer_withdrawal_regex_error():
     """
     Raise error when no raw amount parsed from a Huntington
-    transfer withdrawal transaction email body.
+    transfer withdrawal txn email body.
     """
     body = "Invalid"
     with pytest.raises(
@@ -78,7 +78,7 @@ def test_parse_huntington_transfer_withdrawal_regex_error():
 def test_parse_huntington_transfer_deposit_regex_error():
     """
     Raise error when no raw amount parsed from a Huntington
-    transfer deposit transaction email body.
+    transfer deposit txn email body.
     """
     body = "Invalid"
     with pytest.raises(
@@ -91,7 +91,7 @@ def test_parse_huntington_transfer_deposit_regex_error():
 def test_parse_huntington_withdrawal_merchant_regex_error():
     """
     Raise error when no merchant parsed from a Huntington
-    withdrawal transaction email body.
+    withdrawal txn email body.
     """
     body = """
     We've processed an ACH withdrawal for $10,000.00 at INVALID MERCHANT from yo acct nicknamed SAVE.
@@ -106,7 +106,7 @@ def test_parse_huntington_withdrawal_merchant_regex_error():
 def test_parse_huntington_deposit_raw_amount_regex_error():
     """
     Raise error when no raw amount parsed from a Huntington
-    deposit transaction email body.
+    deposit txn email body.
     """
     body = """
     We've processed an ACH deposit for foop at TREASURY DIRECT TREAS DRCT from your account nicknamed SAVE.
@@ -121,7 +121,7 @@ def test_parse_huntington_deposit_raw_amount_regex_error():
 def test_parse_huntington_deposit_payer_regex_error():
     """
     Raise error when no payer parsed from a Huntington
-    deposit transaction email body.
+    deposit txn email body.
     """
     body = """
     We've processed an ACH deposit for $59.81 from INVALID to yo acct nicknamed CHECK.
@@ -136,7 +136,7 @@ def test_parse_huntington_deposit_payer_regex_error():
 def test_get_huntington_account_regex_error():
     """
     Raise error when no account parsed from a Huntington
-    transaction email body.
+    txn email body.
     """
     body = "Invalid"
     with pytest.raises(
@@ -149,7 +149,7 @@ def test_get_huntington_account_regex_error():
 def test_get_huntington_balance_regex_error():
     """
     Raise error when no balance parsed from a Huntington
-    transaction email body.
+    txn email body.
     """
     body = "Invalid"
     with pytest.raises(

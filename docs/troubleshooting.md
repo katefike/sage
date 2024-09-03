@@ -21,7 +21,7 @@ E   KeyError: 'POSTGRES_HOST'
 ```
 
 ## Logging
-Shows Sage's attempts to parse batches of emails in the MX and insert them as transactions into the DB. 
+Shows Sage's attempts to parse batches of emails in the MX and insert them as transactions (txns) into the DB. 
 `~/sage/sage_main.log`
 
 Shows additional errors from when cron invokes Sage.
@@ -146,7 +146,7 @@ For local development, you can use your real forwaded alert emails by downloadin
 2. Change the environment variable `PRE_LOAD_MBOX`. Note that the MX only loads a single mbox file.
 3. Rebuild the MX docker container.
 4. Run sage: `python3 -m sage`
-5. Verify that the transaction emails were parsed as expected.
+5. Verify that the txn emails were parsed as expected.
 
 ### Useful Commands
 #### Server

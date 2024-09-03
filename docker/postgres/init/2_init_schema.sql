@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS public.entity_tag_mapping(
     FOREIGN KEY (entity_id) REFERENCES public.entities(id),
     FOREIGN KEY (entity_tag_id) REFERENCES public.entity_tags(id)
 );
-CREATE TABLE IF NOT EXISTS public.transactions(
+CREATE TABLE IF NOT EXISTS public.txns(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     email_id INT NOT NULL,
     date DATE NOT NULL,
@@ -68,17 +68,17 @@ CREATE TABLE IF NOT EXISTS public.transactions(
     FOREIGN KEY (email_id) REFERENCES public.emails(id),
     FOREIGN KEY (bank_id) REFERENCES public.banks(id),
     FOREIGN KEY (entity_id) REFERENCES public.entities(id),
-    FOREIGN KEY (identical_txn_id) REFERENCES public.transactions(id)
+    FOREIGN KEY (identical_txn_id) REFERENCES public.txns(id)
 );
-CREATE TABLE IF NOT EXISTS public.transaction_tags(
+CREATE TABLE IF NOT EXISTS public.txn_tags(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     NAME TEXT NOT NULL,
     recurring BOOLEAN NOT NULL
 );
-CREATE TABLE IF NOT EXISTS public.transaction_tag_mapping(
+CREATE TABLE IF NOT EXISTS public.txn_tag_mapping(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    transaction_id INT NOT NULL,
-    transaction_tag_id INT NOT NULL,
-    FOREIGN KEY (transaction_id) REFERENCES public.transactions(id),
-    FOREIGN KEY (transaction_tag_id) REFERENCES public.transaction_tags(id)
+    txn_id INT NOT NULL,
+    txn_tag_id INT NOT NULL,
+    FOREIGN KEY (txn_id) REFERENCES public.txns(id),
+    FOREIGN KEY (txn_tag_id) REFERENCES public.txn_tags(id)
 );

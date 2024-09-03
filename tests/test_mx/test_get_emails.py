@@ -13,7 +13,7 @@ They're also listed as separate files in
 tests/test_parsers/test_data/example_data so they can be more easily
 viewed.
 
-The expected expected_output is the transaction object defined in
+The expected expected_output is the Transaction object defined in
 sage/models/transaction.py
 """
 

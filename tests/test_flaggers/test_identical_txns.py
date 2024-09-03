@@ -11,7 +11,7 @@ There are two expected outputs:
 import pytest
 
 from sage.__main__ import main
-from sage.db import transactions
+from sage.db import txns
 from tests import utils
 
 DATA = [
@@ -29,11 +29,11 @@ DATA = [
 @pytest.mark.parametrize("input,expected_output", DATA)
 def test_identical_txns(input, expected_output):
     """
-    Verify that identical transactions are flagged.
+    Verify that identical transactions (txns) are flagged.
     """
     utils.refresh_inbox(input.get("file"))
 
     msg_count = main()
     assert expected_output.get("inserted_txn_count") == msg_count.get("processed")
-    rows = transactions.get_identical_txns()
+    rows = txns.get_identical_txns()
     assert expected_output.get("identical_txn_count") == len(rows)
