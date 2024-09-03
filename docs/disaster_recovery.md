@@ -43,4 +43,4 @@ TODO: Create and mount Digital Ocean volumes during automated production deploym
 ```
 (.venv) kfike@prod:~/sage$ python3 -c 'from sage.mx import get_emails ; get_emails.main(pls_print=True)'
 ```
-15. While SSH'd to the droplet, verify that all your existing transactions are there. Connect to the DB by running `docker exec -it  sage-db psql -U <POSTGRES_USER> sage` and executing the query `SELECT * FROM transactions;` `POSTGRES_USER` is an environment variable specified in your `.env`.
+15. While SSH'd to the droplet, verify that all your existing transactions are there. Connect to the DB by running `docker exec -it  sage-db psql -U <POSTGRES_USER> sage` and executing the query `SELECT * FROM txns;` `POSTGRES_USER` is an environment variable specified in your `.env`.
