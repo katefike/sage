@@ -5,7 +5,7 @@ correctly parses an  email into transaction (txn) data.
 The input is the UID of the email, which maps to an email that was loaded
 into the mail server when the docker container was created. These emails
 are contained within the file
-docker/mailserver/test_data/example_data/txn_emails.mbox
+docker/mx/test_data/example_data/txn_emails.mbox
 
 They're also listed as separate files in
 tests/test_parsers/test_data/example_data so they can be more easily
