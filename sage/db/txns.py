@@ -42,7 +42,7 @@ def insert_txn(txn: Transaction) -> bool:
                 identical_txn_id
             )
     VALUES
-        (%s, %s, %s, %s, %s, %s, %s);
+        (%s, %s, %s, %s, %s, %s, %s, %s);
     """
     row_count = execute_statements.insert(stmt, data)
     return row_count
@@ -105,7 +105,6 @@ def get_identical_txn_id(txn: Transaction) -> Optional[int]:
         txn.type_,
         bank_id,
         txn.amount,
-        txn.balance,
         entity_id,
     )
     query = """
