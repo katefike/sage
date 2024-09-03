@@ -2,7 +2,7 @@
 Tests the email parser (module sage/parsers/email_parser.py) to ensure it
 can handle exceptions and errors from regex edge cases.
 
-The input is the transaction email bod. It's a big string containing the forwarded email.
+The input is the transaction (txn) email bod. It's a big string containing the forwarded email.
 I. e.
 --00000000000010b66806191115a5
 Content-Type: text/plain; charset="UTF-8"
@@ -43,7 +43,7 @@ This email was generated automatically. Please do not reply to this message
 
 --00000000000010b66806191115a5--
 
-The expected expected_output is the transaction object defined in
+The expected expected_output is the Transaction object defined in
 sage/models/transaction.py
 """
 import pytest

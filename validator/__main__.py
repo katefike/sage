@@ -1,6 +1,6 @@
 """
-This is a helper module for validating the transaction data in DB against
-a bank's CSV of transactions. This module isn't use by the Sage program,
+This is a helper module for validating the transaction (txn) data in DB against
+a bank's CSV of txns. This module isn't use by the Sage program,
 it's used to facilitate local development and troubleshooting.
 """
 import calendar
@@ -14,7 +14,7 @@ from typing import Dict, List, Optional
 from loguru import logger
 from thefuzz import fuzz
 
-from sage.db import transactions
+from sage.db import txns
 from sage.models.transaction import Transaction
 
 logger.add(sink="validator.log", level="INFO")
@@ -30,9 +30,9 @@ def main(file: str, date: str):
         selected date in 4-2024 format or 1-4-2024 format
 
     output in logs:
-        diff of DB transactions not in CSV
-        diff of CSV transaction not in DB
-        duplicate DB transactions
+        diff of DB txns not in CSV
+        diff of CSV txn not in DB
+        duplicate DB txns
     """
     logger.info("STARTING VALIDATION")
 
@@ -48,16 +48,16 @@ def main(file: str, date: str):
     if bank == "Chase":
         account = None
         csv_cols = dict(
-            date_col="Transaction Date", merchant_col="Description", amount_col="Amount"
+            date_col="Txn Date", merchant_col="Description", amount_col="Amount"
         )
 
     if start_date == stop_date:
         logger.info(
-            f"Getting DB transaction data for {start_date}, bank {bank}, account {account}."
+            f"Getting DB txn data for {start_date}, bank {bank}, account {account}."
         )
     else:
         logger.info(
-            f"Getting DB transaction data from {start_date} to {stop_date}, bank {bank}, account {account}."
+            f"Getting DB txn data from {start_date} to {stop_date}, bank {bank}, account {account}."
         )
 
     db_data = get_db_data(start_date, stop_date, bank, account)
@@ -135,7 +135,7 @@ def transform_zero_padded_dates(raw_dates: List) -> List:
 def get_db_data(
     start_date: str, stop_date: str, bank: str, account: Optional[str]
 ) -> List:
-    db_records = transactions.get_txns_by_daterange_and_bank_account(
+    db_records = txns.get_txns_by_daterange_and_bank_account(
         start_date, stop_date, bank, account
     )
     db_data = []
@@ -228,18 +228,18 @@ def diff_csv_and_db_data(csv_data: List, db_data: List, csv_cols: Dict) -> Dict:
 
     # Identify CSV rows not in DB
     csv_data_copy = copy.deepcopy(csv_data)
-    for Transaction in db_data:
+    for txn in db_data:
         for csv_row in csv_data_copy:
-            if Transaction.date != csv_row.get(csv_cols.get("date_col")):
+            if txn.date != csv_row.get(csv_cols.get("date_col")):
                 continue
-            # Convert Transaction decimal to string
-            if str(Transaction.amount) != csv_row.get(csv_cols.get("amount_col")):
-                continue
-
-            if "transfer" in Transaction.type_:
+            # Convert txn decimal to string
+            if str(txn.amount) != csv_row.get(csv_cols.get("amount_col")):
                 continue
 
-            stripped_txn_merchant = Transaction.merchant.replace(" ", "")
+            if "transfer" in txn.type_:
+                continue
+
+            stripped_txn_merchant = txn.merchant.replace(" ", "")
             transformed_txn_merchant = stripped_txn_merchant.lower()[:10]
             stripped_csv_merchant = csv_row.get(csv_cols.get("merchant_col")).replace(
                 " ", ""
@@ -259,18 +259,18 @@ def diff_csv_and_db_data(csv_data: List, db_data: List, csv_cols: Dict) -> Dict:
     # Identify DB records not in CSV
     db_data_copy = copy.deepcopy(db_data)
     for csv_row in csv_data:
-        for Transaction in db_data_copy:
-            if Transaction.date != csv_row.get(csv_cols.get("date_col")):
+        for txn in db_data_copy:
+            if txn.date != csv_row.get(csv_cols.get("date_col")):
                 continue
 
-            # Convert Transaction decimal to string
-            if str(Transaction.amount) != csv_row.get(csv_cols.get("amount_col")):
+            # Convert txn decimal to string
+            if str(txn.amount) != csv_row.get(csv_cols.get("amount_col")):
                 continue
 
-            if "transfer" in Transaction.type_:
+            if "transfer" in txn.type_:
                 continue
 
-            stripped_txn_merchant = Transaction.merchant.replace(" ", "")
+            stripped_txn_merchant = txn.merchant.replace(" ", "")
             transformed_txn_merchant = stripped_txn_merchant.lower()[:10]
             stripped_csv_merchant = csv_row.get(csv_cols.get("merchant_col")).replace(
                 " ", ""
@@ -284,7 +284,7 @@ def diff_csv_and_db_data(csv_data: List, db_data: List, csv_cols: Dict) -> Dict:
                     continue
 
             # Remove row from CSV data if all three fields are matched
-            db_data_copy.remove(Transaction)
+            db_data_copy.remove(txn)
     diff["DB records not in CSV"] = db_data_copy
 
     return diff
