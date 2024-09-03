@@ -106,12 +106,11 @@ def transform_MailMessages_to_Emails(
         fwd_pattern = r"Fwd: "
         fwd_match = re.search(fwd_pattern, msg.subject, flags=re.DOTALL | re.MULTILINE)
         if fwd_match:
-            origin_pattern = r"From: .* \<(.*)\>"
+            origin_pattern = r"From: .* \<(.*)\>\s?\n?Date:"
             origin_match = re.search(origin_pattern, body, flags=re.DOTALL | re.MULTILINE)
             if origin_match:
                 origin_raw = origin_match.group(1)
                 origin = origin_raw.strip()
-                breakpoint()
             else:
                 logger.error(f"Failed to parse origin from forwarded email with UID {msg.uid}.")
         else:
