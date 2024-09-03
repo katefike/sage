@@ -25,6 +25,7 @@ def insert_txn(txn: Transaction) -> bool:
         bank_id,
         txn.type_,
         txn.amount,
+        txn.balance,
         entity_id,
         txn.identical_txn_id,
     )
@@ -36,6 +37,7 @@ def insert_txn(txn: Transaction) -> bool:
                 bank_id,
                 type,
                 amount,
+                balance,
                 entity_id,
                 identical_txn_id
             )
@@ -103,6 +105,7 @@ def get_identical_txn_id(txn: Transaction) -> Optional[int]:
         txn.type_,
         bank_id,
         txn.amount,
+        txn.balance,
         entity_id,
     )
     query = """
