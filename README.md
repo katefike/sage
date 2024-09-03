@@ -42,7 +42,7 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 4. Run the script to configure the production Digital Ocean Droplet server.
 <br> `bash setup/3_configure_prod_server.sh`
 <br> This script is idempotent: no matter how many times you run it, the result will be the same. So if an error occurs, simply troubleshoot and run the script again until the error is resolved.
-5. **WARNING: CREATING DIGITAL OCEAN VOLUMES ALSO COST MONEY, BUT THEY'RE HELPFUL FOR DISASTER RECOVERY. AT THIS TIME, THE VOLUMES ARE NOT OPTIONAL FOR THE DEPLOYMENT.** In the Digital Ocean console, go to the "Volumes Block Storage" tab and create two volumes: `sage-db` and `sage-mailserver`.
+5. **WARNING: CREATING DIGITAL OCEAN VOLUMES ALSO COST MONEY, BUT THEY'RE HELPFUL FOR DISASTER RECOVERY. AT THIS TIME, THE VOLUMES ARE NOT OPTIONAL FOR THE DEPLOYMENT.** In the Digital Ocean console, go to the "Volumes Block Storage" tab and create two volumes: `sage-db` and `sage-mx`.
 6. In the Digital Ocean console, attach each volume to the Droplet. SSH to the Droplet and run the commands Digital Ocean provides to mount each volume.
 7. In the Digital Ocean console, create the NS records for the domain name you purchased, corresponding to `$DOMAIN` in the `.env`.
 8. In the Digital Ocean console, create an A record for the Droplet using "prod.< $DOMAIN >" as the hostname. For example, if `$DOMAIN` is example.com, then the hostname is prod.example.com. Use the floating IP as the value.

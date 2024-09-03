@@ -24,7 +24,7 @@ def refresh_inbox(mbox_name: str):
     """
     print(f"Refreshing inbox with mbox {mbox_name}...")
 
-    container = "docker exec sage-mailserver"
+    container = "docker exec sage-mx"
     maildir_path = f"/home/{ENV['RECEIVING_EMAIL_USER']}/Maildir/"
     # The mbox path MUST be the full file path
     # Otherwise fails with error "Fatal: Source is not an mbox file or a directory!"
@@ -66,7 +66,7 @@ def get_inbox_emails(input_uid: Optional[int] = None) -> List:
 
 
 def delete_inbox_emails():
-    container = "docker exec sage-mailserver"
+    container = "docker exec sage-mx"
     try:
         subprocess.call(
             f"{container} doveadm expunge -u {ENV['RECEIVING_EMAIL_USER']} mailbox 'INBOX' all",

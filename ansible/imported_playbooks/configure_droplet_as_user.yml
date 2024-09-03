@@ -86,7 +86,7 @@
 
     - name: Verify that TLS is enforced for SMTPD
       shell: 
-        cmd: docker exec -it sage-mailserver postconf -n | grep "smtpd_tls_security_level = encrypt"
+        cmd: docker exec -it sage-mx postconf -n | grep "smtpd_tls_security_level = encrypt"
         executable: /bin/bash  
       when: host_name!= 'sageEphem' 
       register: smptd_tls_result

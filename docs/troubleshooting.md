@@ -142,7 +142,7 @@ The string must have the syntax below because it's used to identify the filter _
 ### Getting an mbox file from your Gmail account
 For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. [Google has instructions on how to get the mbox files from your gmail account.](https://support.google.com/accounts/answer/3024190)
 
-1. Add the mbox file to the directory `docker/mailserver/test_data/real-data/` (gitignored). 
+1. Add the mbox file to the directory `docker/mx/test_data/real-data/` (gitignored). 
 2. Change the environment variable `PRE_LOAD_MBOX`. Note that the MX only loads a single mbox file.
 3. Rebuild the MX docker container.
 4. Run sage: `python3 -m sage`
@@ -170,13 +170,13 @@ Delete all emails from a mailbox
 #### MX Container
 Enter the mx container
 
-`docker exec -it sage-mailserver bash`
+`docker exec -it sage-mx bash`
 
-Copy Postfix and Dovecot Config files to docker/mailserver/configs/ to easily inspect them
+Copy Postfix and Dovecot Config files to docker/mx/configs/ to easily inspect them
 ```
-docker cp sage-mailserver:/etc/postfix/main.cf ./docker/mailserver/configs/postfix_main.cf \
-&& docker cp sage-mailserver:/etc/postfix/master.cf ./docker/mailserver/configs/postfix_master.cf \
-&& docker cp sage-mailserver:/etc/dovecot/dovecot.conf ./docker/mailserver/configs/dovecot.conf
+docker cp sage-mx:/etc/postfix/main.cf ./docker/mx/configs/postfix_main.cf \
+&& docker cp sage-mx:/etc/postfix/master.cf ./docker/mx/configs/postfix_master.cf \
+&& docker cp sage-mx:/etc/dovecot/dovecot.conf ./docker/mx/configs/dovecot.conf
 ```
 
 #### Postgres Container

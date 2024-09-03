@@ -25,17 +25,17 @@ Use this disaster recovery guide to create a brand new Sage deployment without l
 Create a mount point for your volume:
 ```
 mkdir -p /mnt/sage_db
-mkdir -p /mnt/sage_mailserver
+mkdir -p /mnt/sage_mx
 ```
 Mount your volume at the newly-created mount point:
 ```
 sudo mount -o discard,defaults,noatime /dev/disk/by-id/scsi-0DO_Volume_sage-db /mnt/sage_db
-mount -o discard,defaults,noatime /dev/disk/by-id/scsi-0DO_Volume_sage-mailserver /mnt/sage_mailserver
+mount -o discard,defaults,noatime /dev/disk/by-id/scsi-0DO_Volume_sage-mx /mnt/sage_mx
 ```
 Change fstab so the volume will be mounted after a reboot
 ```
 echo '/dev/disk/by-id/scsi-0DO_Volume_sage-db /mnt/sage_db ext4 defaults,nofail,discard 0 0' | sudo tee -a /etc/fstab
-echo '/dev/disk/by-id/scsi-0DO_Volume_sage-mailserver /mnt/sage_mailserver ext4 defaults,nofail,discard 0 0' | sudo tee -a /etc/fstab
+echo '/dev/disk/by-id/scsi-0DO_Volume_sage-mx /mnt/sage_mx ext4 defaults,nofail,discard 0 0' | sudo tee -a /etc/fstab
 ```
 TODO: Create and mount Digital Ocean volumes during automated production deployment https://github.com/katefike/sage/issues/145
 13. Re-run `bash setup/3_configure_prod_server.sh` so that Sage is started using the mounts.

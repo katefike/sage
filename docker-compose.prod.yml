@@ -16,10 +16,10 @@ services:
       # TODO: Separate the schema and the init data like banks
       - ./docker/postgres/init:/docker-entrypoint-initdb.d
       - /mnt/sage_db/data:/var/lib/postgresql/data
-  mailserver:
-    image: sage_mailserver
-    container_name: sage-mailserver
-    build: ./docker/mailserver/
+  mx:
+    image: sage_mx
+    container_name: sage-mx
+    build: ./docker/mx/
     restart: always
     env_file:
       - .env
@@ -27,11 +27,11 @@ services:
       - '25:25'    # SMTP
       - '143:143'  # IMAP4
     volumes:
-      - /mnt/sage_mailserver/home/:/home/
-      - /mnt/sage_mailserver/var/log/:/var/log/
+      - /mnt/sage_mx/home/:/home/
+      - /mnt/sage_mx/var/log/:/var/log/
       - /etc/letsencrypt/:/etc/letsencrypt/
-      - ./docker/mailserver/scripts/postfix_dovecot_config_prod.sh:/postfix_dovecot_config.sh
-      - ./docker/mailserver/scripts/dkim_fail2ban_prod.sh:/dkim_fail2ban.sh
+      - ./docker/mx/scripts/postfix_dovecot_config_prod.sh:/postfix_dovecot_config.sh
+      - ./docker/mx/scripts/dkim_fail2ban_prod.sh:/dkim_fail2ban.sh
   grafana:
     image: grafana/grafana-oss
     container_name: sage-grafana
