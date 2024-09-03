@@ -1,10 +1,10 @@
 """
-Tests inserting transactions (module sage/db/transactions.py).
+Tests inserting transactions (txns) (module sage/db/txns.py).
 
-The input is a transaction class object. Each object is created from the data
+The input is a Transaction class object. Each object is created from the data
 list defined below the imports.
 
-The expected output is simply that the transaction can be
+The expected output is simply that the txn can be
 successfully inserted into the DB.
 """
 import pytest
@@ -15,9 +15,9 @@ from sage.models.transaction import Transaction
 from tests import utils
 
 
-def test_transaction_insert(etl_db_conn):
+def test_txn_insert(etl_db_conn):
     """
-    Ensure that all emails in the inbox are inserted into the transaction table.
+    Ensure that all emails in the inbox are inserted into the txn table.
     """
     utils.refresh_inbox("txn_emails.mbox")
     msg_count = main()
@@ -28,7 +28,7 @@ def test_transaction_insert(etl_db_conn):
             SELECT
                 COUNT(*)
             FROM
-                transactions
+                txns
             """
         )
         for result in cursor.fetchall():
@@ -150,31 +150,31 @@ data = [
 
 def create_transaction_objects():
     input = []
-    for transaction_dict in data:
-        transaction = Transaction(
+    for txn_dict in data:
+        txn = Transaction(
             email_id=0,
             id=None,
-            date=transaction_dict.get("date"),
-            type_=transaction_dict.get("type_"),
-            bank=transaction_dict.get("bank"),
-            merchant=transaction_dict.get("merchant"),
-            payer=transaction_dict.get("payer"),
-            amount=transaction_dict.get("amount"),
-            account=transaction_dict.get("account"),
-            balance=transaction_dict.get("balance"),
+            date=txn_dict.get("date"),
+            type_=txn_dict.get("type_"),
+            bank=txn_dict.get("bank"),
+            merchant=txn_dict.get("merchant"),
+            payer=txn_dict.get("payer"),
+            amount=txn_dict.get("amount"),
+            account=txn_dict.get("account"),
+            balance=txn_dict.get("balance"),
             identical_txn_id=None,
         )
-        input.append(transaction)
+        input.append(txn)
     return input
 
 
 @pytest.mark.parametrize("input", create_transaction_objects())
-def test_insert_transaction(input):
+def test_insert_txn(input):
     """
-    Ensure that a transaction can be inserted into the transaction table.
+    Ensure that a txn can be inserted into the txn table.
     """
     email_id = utils.insert_db_email()
     input.email_id = email_id
-    row_count = txns.insert_transaction(input)
+    row_count = txns.insert_txn(input)
     # The number of rows inserted will be returned if the insert was successful
     assert 1 == row_count
