@@ -91,14 +91,27 @@ def transform_MailMessages_to_Emails(
             body = msg.text.strip()
 
         # If an emailw was forwarded, parse origin from body
-        fwd_pattern = r"---------- Forwarded message ---------"
-        fwd_match = re.search(fwd_pattern, body, flags=re.DOTALL | re.MULTILINE)
+        # fwd_pattern = r"---------- Forwarded message ---------"
+        # fwd_match = re.search(fwd_pattern, body, flags=re.DOTALL | re.MULTILINE)
+        # if fwd_match:
+        #     fwd_origin_pattern = r"From: .* \<(.*)\>"
+        #     origin_match = re.search(fwd_origin_pattern, body, flags=re.DOTALL | re.MULTILINE)
+        #     if origin_match:
+        #         origin_raw = origin_match.group(1)
+        #         origin = origin_raw.strip()
+        #     else:
+        #         logger.error(f"Failed to parse origin from forwarded email with UID {msg.uid}.")
+        # else:
+        #     origin = msg.from_
+        fwd_pattern = r"Fwd: "
+        fwd_match = re.search(fwd_pattern, msg.subject, flags=re.DOTALL | re.MULTILINE)
         if fwd_match:
-            fwd_origin_pattern = r"From: .* \<(.*)\>"
-            origin_match = re.search(fwd_origin_pattern, body, flags=re.DOTALL | re.MULTILINE)
+            origin_pattern = r"From: .* \<(.*)\>"
+            origin_match = re.search(origin_pattern, body, flags=re.DOTALL | re.MULTILINE)
             if origin_match:
                 origin_raw = origin_match.group(1)
                 origin = origin_raw.strip()
+                breakpoint()
             else:
                 logger.error(f"Failed to parse origin from forwarded email with UID {msg.uid}.")
         else:
