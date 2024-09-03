@@ -6,16 +6,16 @@ tasks:
 2. Log into the email account on the mail server that is receiving the
 forwarded alert emails. Retrieve emails that are from the forwarding email.
 3. Store all retrieved emails in the database's emails table.
-4. Process the transaction data contained in the email message:
-    4a. Parse the transaction data from the email message.
-    4b. If needed, flag identical transactions.
-    4c. Write the transaction data to the Postgres database.
+4. Process the transaction (txn) data contained in the email message:
+    4a. Parse the txn data from the email message.
+    4b. If needed, flag identical txns.
+    4c. Write the txn data to the Postgres database.
 """
 import sys
 
 from loguru import logger
 
-from sage.db import emails, transactions
+from sage.db import emails, txns
 from sage.flaggers import identical_txns
 from sage.mx import get_emails
 from sage.parsers import email_parser
@@ -60,7 +60,7 @@ def main(retry_unparsed_emails=False):
         flagged_txn = identical_txns.main(txn)
 
         # Write the txn to the database
-        transactions.insert_transaction(flagged_txn)  # pragma: no cover
+        txns.insert_txn(flagged_txn)  # pragma: no cover
         logger.info(f"Email UID {email.uid} - successfully parsed!")
 
         # One down!
