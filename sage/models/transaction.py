@@ -39,7 +39,6 @@ class Transaction:
     # there is only one account associated with the bank.
     account: str = field(default=None)
     # Not all txns list the account balance.
-    # FIXME: Add balance to txn table #156
     balance: str = field(default=None)
     # The ID of an older txn that's identical to this one
     identical_txn_id: id = field(default=None)

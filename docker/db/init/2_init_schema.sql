@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS public.txns(
     TYPE TEXT NOT NULL,
     bank_id INTEGER NOT NULL,
     amount NUMERIC NOT NULL,
+    balance NUMERIC,
     entity_id INT,
     identical_txn_id INT,
     FOREIGN KEY (email_id) REFERENCES public.emails(id),

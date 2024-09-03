@@ -132,8 +132,8 @@ dmypy.json
 *.db
 debug.sql
 
-# docker-mailserver
-docker/mailserver/configs/
+# docker-mx
+docker/mx/configs/
 
 # Ansible
 droplet_hosts
