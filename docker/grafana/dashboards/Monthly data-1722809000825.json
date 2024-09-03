@@ -108,7 +108,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT TO_CHAR(t.date, 'mm-yyyy') AS month_year,\n    SUM(\n        CASE\n            WHEN t.type = 'deposit' THEN t.amount\n        END\n    ) AS income,\n    SUM(\n        CASE\n            WHEN t.type = 'withdrawal' THEN t.amount\n        END\n    ) AS spend\nFROM transactions t\n    JOIN banks b ON b.id = t.bank_id\n    LEFT JOIN entities e ON e.id = t.entity_id\nWHERE t.type IN ('deposit', 'withdrawal')\nGROUP BY month_year\nORDER BY month_year ASC;",
+          "rawSql": "SELECT TO_CHAR(t.date, 'mm-yyyy') AS month_year,\n    SUM(\n        CASE\n            WHEN t.type = 'deposit' THEN t.amount\n        END\n    ) AS income,\n    SUM(\n        CASE\n            WHEN t.type = 'withdrawal' THEN t.amount\n        END\n    ) AS spend\nFROM txns t\n    JOIN banks b ON b.id = t.bank_id\n    LEFT JOIN entities e ON e.id = t.entity_id\nWHERE t.type IN ('deposit', 'withdrawal')\nGROUP BY month_year\nORDER BY month_year ASC;",
           "refId": "A",
           "sql": {
             "columns": [
