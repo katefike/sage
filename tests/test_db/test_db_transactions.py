@@ -10,7 +10,7 @@ successfully inserted into the DB.
 import pytest
 
 from sage.__main__ import main
-from sage.db import transactions
+from sage.db import txns
 from sage.models.transaction import Transaction
 from tests import utils
 
@@ -19,7 +19,7 @@ def test_transaction_insert(etl_db_conn):
     """
     Ensure that all emails in the inbox are inserted into the transaction table.
     """
-    utils.refresh_inbox("transaction_emails.mbox")
+    utils.refresh_inbox("txn_emails.mbox")
     msg_count = main()
     # Query to get the count of the emails table.
     with etl_db_conn, etl_db_conn.cursor() as cursor:
@@ -175,6 +175,6 @@ def test_insert_transaction(input):
     """
     email_id = utils.insert_db_email()
     input.email_id = email_id
-    row_count = transactions.insert_transaction(input)
+    row_count = txns.insert_transaction(input)
     # The number of rows inserted will be returned if the insert was successful
     assert 1 == row_count
