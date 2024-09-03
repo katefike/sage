@@ -6,7 +6,7 @@ def test_email_insert(etl_db_conn):
     """
     Ensure that all emails in the inbox are inserted into the emails table.
     """
-    utils.refresh_inbox("transaction_emails.mbox")
+    utils.refresh_inbox("txn_emails.mbox")
     msg_count = main()
     # Query to get the count of the emails table.
     with etl_db_conn, etl_db_conn.cursor() as cursor:

@@ -149,7 +149,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "transaction_id"
+              "options": "txn_id"
             },
             "properties": [
               {
@@ -262,7 +262,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "    SELECT\n        t.id AS \"transaction_id\",\n        t.email_id AS \"email_id\",\n        t.date,\n        b.name AS \"bank_name\",\n        b.account AS \"bank_account\",\n        e.name AS \"entity_name\",\n        CASE\n            WHEN t.type LIKE '%%withdrawal' THEN t.amount * -1\n            ELSE t.amount\n        END,\n        t.type\n    FROM transactions t\n        JOIN banks b ON b.id = t.bank_id\n        LEFT JOIN entities e ON e.id = t.entity_id\n    ORDER BY t.date ASC;",
+          "rawSql": "    SELECT\n        t.id AS \"txn_id\",\n        t.email_id AS \"email_id\",\n        t.date,\n        b.name AS \"bank_name\",\n        b.account AS \"bank_account\",\n        e.name AS \"entity_name\",\n        CASE\n            WHEN t.type LIKE '%%withdrawal' THEN t.amount * -1\n            ELSE t.amount\n        END,\n        t.type\n    FROM txns t\n        JOIN banks b ON b.id = t.bank_id\n        LEFT JOIN entities e ON e.id = t.entity_id\n    ORDER BY t.date ASC;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -285,7 +285,7 @@
             ],
             "limit": 50
           },
-          "table": "transactions"
+          "table": "txns"
         }
       ],
       "title": "All transactions",

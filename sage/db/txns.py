@@ -12,25 +12,25 @@ from sage.models.transaction import Transaction
 logger.add(sink="sage_main.log")
 
 
-def insert_transaction(transaction: Transaction) -> bool:
-    bank_id = banks.get_id(transaction.bank, transaction.account)
+def insert_txn(txn: Transaction) -> bool:
+    bank_id = banks.get_id(txn.bank, txn.account)
 
     # Transfers don't have entities
     entity_id = None
-    if "transfer" not in transaction.type_:
-        entity_id = entities.get_id(transaction.merchant, transaction.payer)
+    if "transfer" not in txn.type_:
+        entity_id = entities.get_id(txn.merchant, txn.payer)
     data = (
-        transaction.email_id,
-        transaction.date,
+        txn.email_id,
+        txn.date,
         bank_id,
-        transaction.type_,
-        transaction.amount,
+        txn.type_,
+        txn.amount,
         entity_id,
-        transaction.identical_txn_id,
+        txn.identical_txn_id,
     )
     stmt = """
     INSERT INTO
-        transactions (
+        txns (
                 email_id,
                 date,
                 bank_id,
@@ -57,7 +57,7 @@ def get_txns_by_daterange_and_bank_account(
     params = (start_date, stop_date, bank_id)
     query = """
     SELECT
-        t.id AS "transaction_id",
+        t.id AS "txn_id",
         t.email_id AS "email_id",
         t.date,
         b.name AS "bank_name",
@@ -68,7 +68,7 @@ def get_txns_by_daterange_and_bank_account(
             ELSE t.amount
         END,
         t.type
-    FROM transactions t
+    FROM txns t
         JOIN banks b ON b.id = t.bank_id
         LEFT JOIN entities e ON e.id = t.entity_id
     WHERE
@@ -108,7 +108,7 @@ def get_identical_txn_id(txn: Transaction) -> Optional[int]:
     query = """
     SELECT
         MIN(t.id) AS "txn_id"
-    FROM transactions t
+    FROM txns t
     WHERE t.date = %s
         AND t.type = %s
         AND t.bank_id = %s
@@ -127,7 +127,7 @@ def get_identical_txns() -> tuple:
     query = """
     SELECT
         *
-    FROM transactions t
+    FROM txns t
     WHERE t.identical_txn_id IS NOT NULL;
     """
     rows, _columns = execute_statements.select(query)
