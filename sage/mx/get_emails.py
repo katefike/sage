@@ -81,8 +81,6 @@ def transform_MailMessages_to_Emails(
     batch_time = utc_timestamp.strftime("%Y-%m-%d %H:%M:%S")
 
     for msg in msgs:
-        # FIXME: Add origin to the emails table #157
-        origin = "placeholder"
         if msg.html:
             html = "true"
             soup = BeautifulSoup(msg.html, "html.parser")
@@ -91,6 +89,33 @@ def transform_MailMessages_to_Emails(
         elif msg.text:
             html = "false"
             body = msg.text.strip()
+
+        # If an emailw was forwarded, parse origin from body
+        # fwd_pattern = r"---------- Forwarded message ---------"
+        # fwd_match = re.search(fwd_pattern, body, flags=re.DOTALL | re.MULTILINE)
+        # if fwd_match:
+        #     fwd_origin_pattern = r"From: .* \<(.*)\>"
+        #     origin_match = re.search(fwd_origin_pattern, body, flags=re.DOTALL | re.MULTILINE)
+        #     if origin_match:
+        #         origin_raw = origin_match.group(1)
+        #         origin = origin_raw.strip()
+        #     else:
+        #         logger.error(f"Failed to parse origin from forwarded email with UID {msg.uid}.")
+        # else:
+        #     origin = msg.from_
+        fwd_pattern = r"Fwd: "
+        fwd_match = re.search(fwd_pattern, msg.subject, flags=re.DOTALL | re.MULTILINE)
+        if fwd_match:
+            origin_pattern = r"From: .* \<(.*)\>\s?\n?Date:"
+            origin_match = re.search(origin_pattern, body, flags=re.DOTALL | re.MULTILINE)
+            if origin_match:
+                origin_raw = origin_match.group(1)
+                origin = origin_raw.strip()
+            else:
+                logger.error(f"Failed to parse origin from forwarded email with UID {msg.uid}.")
+        else:
+            origin = msg.from_
+
         email = Email(
             int(msg.uid),
             batch_time,
