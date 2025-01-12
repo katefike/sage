@@ -1,0 +1,13 @@
+Chase:
+  - type: credit
+    email: no.reply.alerts@chase.com
+Discover:
+  - type: credit
+    email: discover@services.discover.com
+Huntington:
+  - type: liquid
+    name: SAVE
+    email: HuntingtonAlerts@email.huntington.com
+  - type: liquid
+    name: CHECK
+    email: HuntingtonAlerts@email.huntington.com
