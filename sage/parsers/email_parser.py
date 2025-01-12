@@ -6,6 +6,8 @@ from loguru import logger
 from sage.models.email import Email
 from sage.models.transaction import Transaction
 
+from . import BANKS_CONFIG 
+
 logger.add(sink="sage_main.log")
 
 
@@ -22,6 +24,7 @@ def main(email: Email) -> Transaction:
     :param email: an Email object defined in sage.models.email.py
     :returns: a Transaction object defined in sage.models.transaction.py
     """
+    print(BANKS_CONFIG)
     txn = Transaction(email.id)
     # Identify who the bank is
     # TODO: Refactor this to only call get_bank once
