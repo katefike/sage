@@ -19,6 +19,8 @@ APP_ROOT = str(pathlib.Path(__file__).parent.parent)
 ENV = dotenv_values(APP_ROOT + ENV_FILE)
 ENV["ISDEV"] = ISDEV
 
-with open(BANKS_CONFIG_FILE, 'r') as file:
+with open(APP_ROOT + BANKS_CONFIG_FILE, 'r') as file:
     BANKS_CONFIG = yaml.safe_load(file)
+
+print(BANKS_CONFIG)
 
