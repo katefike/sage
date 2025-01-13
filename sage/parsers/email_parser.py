@@ -133,7 +133,8 @@ def get_bank(body: str) -> str:
     for bank, accounts in BANKS_CONFIG.items():
         for account in accounts:
             print(account)
-            if regex_search(account.get('email'), body):
+            email = "(" + account.get('email') + ")" 
+            if regex_search(email, body):
                 return bank
     logger.warning("No bank identified")
     return
@@ -386,5 +387,8 @@ def regex_search(pattern: str, raw_text: str) -> str:
     transformed_text = raw_text.replace("\r", "").replace("\n", " ")
     match = re.search(pattern, transformed_text, flags=re.DOTALL | re.MULTILINE)
     if match:
-        return match.group(0)
-        return match.group(1)
+        if match.group(1):
+            return match.group(1)
+        else:
+            return match.group()
+    return None
