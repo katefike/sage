@@ -7,7 +7,7 @@ Discover:
 Huntington:
   - type: liquid
     name: SAVE
-    email: HuntingtonAlerts@email.huntington.com
+    email: huntington.com
   - type: liquid
     name: CHECK
-    email: HuntingtonAlerts@email.huntington.com
+    email: huntington.com
