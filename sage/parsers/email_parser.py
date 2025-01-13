@@ -5,8 +5,9 @@ from loguru import logger
 
 from sage.models.email import Email
 from sage.models.transaction import Transaction
+from sage.parsers.banks import chase, discover, huntington
 
-from . import BANKS_CONFIG 
+from . import BANKS_CONFIG
 
 logger.add(sink="sage_main.log")
 
@@ -24,13 +25,15 @@ def main(email: Email) -> Transaction:
     :param email: an Email object defined in sage.models.email.py
     :returns: a Transaction object defined in sage.models.transaction.py
     """
-    print(BANKS_CONFIG)
+
     txn = Transaction(email.id)
     # Identify who the bank is
     # TODO: Refactor this to only call get_bank once
+    print(f"BANKS CONFIG: {BANKS_CONFIG}")
     if not get_bank(email.body):
         return
     txn.bank = get_bank(email.body)
+
     # Parse the email based on who the bank is
     if txn.bank == "Chase":
         txn.type_ = get_chase_txn_type(email.subject)
@@ -127,14 +130,12 @@ def get_bank(body: str) -> str:
         Subject: Withdrawal or Purchase
         To: <localhost>
     """
-    if regex_search("(no.reply.alerts@chase.com)", body):
-        return "Chase"
-    elif regex_search("(discover@services.discover.com)", body):
-        return "Discover"
-    elif regex_search("(huntington.com)", body):
-        return "Huntington"
-    else:
-        logger.warning("No bank identified")
+    for bank, accounts in BANKS_CONFIG.items():
+        for account in accounts:
+            print(account)
+            if regex_search(account.get('email'), body):
+                return bank
+    logger.warning("No bank identified")
     return
 
 
@@ -385,5 +386,5 @@ def regex_search(pattern: str, raw_text: str) -> str:
     transformed_text = raw_text.replace("\r", "").replace("\n", " ")
     match = re.search(pattern, transformed_text, flags=re.DOTALL | re.MULTILINE)
     if match:
-        group_1 = match.group(1)
-        return group_1
+        return match.group(0)
+        return match.group(1)
