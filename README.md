@@ -65,8 +65,7 @@ All additional documentation can be found in the `docs/` directory.
         - Ansible
         - Docker
         - Python
-        - Postfix/Dovecot Container
-        - MX Container
+        - MX Container (running Postfix and Dovecot)
         - Postgres Container
 - [Local Development](docs/local_development.md): Provides local development setup instructions, how to create an ephemeral version of Sage for deployment testing (this part costs money), and using Pytest.
 - [Disaster Recovery](docs/disaster_rcovery.md): Provides disaster recovery instructions. This is helpful for when something is deeply wrong with your current Sage deployment, but you have data in the MX and/or DB that you don't want to lose. The guide describes how to create a brand new Sage deployment and attach your existing data to it. 
