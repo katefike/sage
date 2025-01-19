@@ -1,22 +1,23 @@
 # sage
 
-This app is like Mint, but ~~better~~ actually exists. It collects all of your personal financial data. The data is collected from alert emails sent from your financial institutions. The bank alert emails can be directed to your personal email account, such as a Gmail account. Then setup your account to forward the alert emails to a self-hosted MX. The financial data in the emails is extracted, stored, and made viewable. 
+This app is like Mint, but ~~better~~ actually exists. It privately collects your personal financial data: no one but you can access it. The data is collected from alert emails sent from your financial institutions. The bank alert emails can be directed to your personal email account, such as a Gmail account. Then setup your account to forward the alert emails to your own self-hosted mailserver (MX). The financial data in the emails is extracted, stored, and made viewable to you and you only. 
 
 Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 
 ## Abbreviations
-- msg = message
-- txn = transaction
-- uid = unique identifier
-- stmt = SQL statement
-- mx = mailserver
-- db = database
+- MSG = message
+- TXN = transaction
+- UID = unique identifier
+- STMT = SQL statement
+- MX = mailserver
+- DB = database
 
 ## Production Setup Instructions
-*This app is mostly production ready! The Grafana and Nginx containers are currently under development. For questions, problems and enhancements, open a github issue.*
+*This app is mostly production ready! Enjoy!*
 
 1. Globally install the following software:
   <br> Python 3.7 or higher
+  <br> bash
 2. Run the first setup script. This will create a .env file using the file .env-example as a template. 
   <br>`bash setup/1_setup_sage_directory.sh`
 3. Define the following environment variables in the .env file:
