@@ -12,21 +12,6 @@ from . import BANKS_CONFIG
 
 logger.add(sink="sage_main.log")
 
-# Re-export bank-specific functions for backwards compatibility with tests
-parse_huntington_transfer_withdrawal = huntington.parse_transfer_withdrawal
-parse_huntington_transfer_deposit = huntington.parse_transfer_deposit
-parse_huntington_withdrawal = huntington.parse_withdrawal
-parse_huntington_deposit = huntington.parse_deposit
-get_huntington_account = huntington.get_account
-get_huntington_balance = huntington.get_balance
-get_huntington_txn_type = huntington.get_txn_type
-
-parse_chase_deposit = chase.parse_deposit
-parse_chase_withdrawal = chase.parse_withdrawal
-get_chase_txn_type = chase.get_txn_type
-
-parse_discover_withdrawal = discover.parse_withdrawal
-
 def main(email: Email) -> Transaction:
     """
     Parse the txn data from the email.
