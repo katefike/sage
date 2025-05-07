@@ -1,6 +1,7 @@
 from loguru import logger
 from sage.parsers.utils import regex_search, RegexError
 
+
 def get_txn_type(body: str) -> str:
     """
     Identify the Huntington txn type
@@ -22,6 +23,7 @@ def get_txn_type(body: str) -> str:
         logger.warning("No Huntington txn type identified")
     return type_
 
+
 def parse_transfer_withdrawal(body: str) -> str:
     """
     Extract the transferred amount from the email body
@@ -39,6 +41,7 @@ def parse_transfer_withdrawal(body: str) -> str:
         )
     return raw_amount
 
+
 def parse_transfer_deposit(body: str) -> str:
     """
     Extract the tranferred amount from the email body
@@ -55,6 +58,7 @@ def parse_transfer_deposit(body: str) -> str:
             f"Regex failed to get the raw amount from a Huntington transfer deposit email body: {body}"
         )
     return raw_amount
+
 
 def parse_withdrawal(body: str) -> tuple[str, str]:
     """
@@ -82,6 +86,7 @@ def parse_withdrawal(body: str) -> tuple[str, str]:
             f"Regex failed to get the merchant from a Huntington withdrawal email body: {body}"
         )
     return merchant, raw_amount
+
 
 def parse_deposit(body: str) -> tuple[str, str]:
     """
@@ -120,6 +125,7 @@ def parse_deposit(body: str) -> tuple[str, str]:
         )
     return payer, raw_amount
 
+
 def get_account(body: str) -> str:
     """
     Identify the Huntington account referenced.
@@ -142,6 +148,7 @@ def get_account(body: str) -> str:
             f"Regex failed to get the account from a Huntington txn email body: {body}"
         )
     return account
+
 
 def get_balance(body: str) -> str:
     """

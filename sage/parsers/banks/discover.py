@@ -1,5 +1,6 @@
 from sage.parsers.utils import regex_search
 
+
 def parse_withdrawal(body: str) -> tuple[str, str]:
     """
     Extract the txn amount and merchant from the email body

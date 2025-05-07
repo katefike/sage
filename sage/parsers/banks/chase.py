@@ -1,5 +1,6 @@
 from loguru import logger
-from sage.parsers.utils import regex_search, transform_amount
+from sage.parsers.utils import regex_search
+
 
 def get_txn_type(subject: str) -> str:
     """
@@ -13,6 +14,7 @@ def get_txn_type(subject: str) -> str:
     else:
         logger.warning("No Chase txn type identified")
     return type_
+
 
 def parse_deposit(body: str) -> tuple[str, str]:
     """
@@ -30,6 +32,7 @@ def parse_deposit(body: str) -> tuple[str, str]:
         r"(?<=Transaction alert You have a \$)(.*)(?= credit pending)", body
     )
     return payer, raw_amount
+
 
 def parse_withdrawal(subject: str) -> tuple[str, str]:
     """
