@@ -69,6 +69,23 @@ def main(email: Email) -> Transaction:
     txn.date = get_date(email.body)
     return txn
 
+def get_bank(body: str) -> str:
+    """
+    Identify the bank using the bank's email
+    E.g.
+        ---------- Forwarded message ---------
+        From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
+        Date: Thu, Oct 6, 2022 at 10:32 AM
+        Subject: Withdrawal or Purchase
+        To: <localhost>
+    """
+    for bank, accounts in BANKS_CONFIG.items():
+        for account in accounts:
+            if regex_search(f"({account.get('email')})", body):
+                return bank
+    logger.warning("No bank identified")
+    return None
+
 
 def get_date(body: str) -> str:
     """
@@ -111,21 +128,3 @@ def get_date(body: str) -> str:
         return transformed_date
     else:
         raise RegexError(f"Regex failed to get the date from body: {body}")
-
-
-def get_bank(body: str) -> str:
-    """
-    Identify the bank using the bank's email
-    E.g.
-        ---------- Forwarded message ---------
-        From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
-        Date: Thu, Oct 6, 2022 at 10:32 AM
-        Subject: Withdrawal or Purchase
-        To: <localhost>
-    """
-    for bank, accounts in BANKS_CONFIG.items():
-        for account in accounts:
-            if regex_search(f"({account.get('email')})", body):
-                return bank
-    logger.warning("No bank identified")
-    return None
