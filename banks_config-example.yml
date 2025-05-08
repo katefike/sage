@@ -1,0 +1,21 @@
+Chase:
+  - type: credit
+    email: no.reply.alerts@chase.com
+    date_opened: 2024-01-01
+    date_closed: 2024-12-31
+Discover:
+  - type: credit
+    email: discover@services.discover.com
+    date_opened: 2024-01-01
+    date_closed: 2024-12-31
+Huntington:
+  - type: liquid
+    name: SAVE
+    email: huntington.com
+    date_opened: 2024-01-01
+    date_closed: 2024-12-31
+  - type: liquid
+    name: CHECK
+    email: huntington.com
+    date_opened: 2024-01-01
+    date_closed: 2024-12-31
