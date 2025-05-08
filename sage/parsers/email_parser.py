@@ -69,6 +69,7 @@ def main(email: Email) -> Transaction:
     txn.date = get_date(email.body)
     return txn
 
+
 def get_bank(body: str) -> str:
     """
     Identify the bank using the bank's email
