@@ -18,7 +18,6 @@ CREATE TABLE IF NOT EXISTS public.emails(
     forwarded_date DATE NOT NULL,
     manually_forwarded BOOLEAN NOT NULL,
     from_ TEXT NOT NULL,
-    origin TEXT NOT NULL,
     subject TEXT NOT NULL,
     html bool NOT NULL,
     body TEXT NOT NULL

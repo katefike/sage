@@ -23,10 +23,9 @@ class Email:
     # in the body? This is helpful for seeing what was forwarded via
     # IMAP vs manually forwarded
     manually_forwarded: bool
-    # The email From: line; it should always be the forwarding email
-    from_: str
     # The email of the original sender; the financial instiution's email
-    origin: str
+    # the original From: of manually forwarded emails won't match from_
+    from_: str
     # The email Subject: line
     subject: str
     # Indicates if the email body is html or plain text

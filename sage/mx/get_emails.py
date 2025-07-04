@@ -9,6 +9,7 @@ from loguru import logger
 
 from sage.db import emails
 from sage.models.email import Email
+from sage.parsers import utils
 
 from . import ENV, BANKS_CONFIG
 
@@ -77,6 +78,24 @@ def open_mailbox() -> imap_tools.BaseMailBox:
         logger.critical(f"Failed to open mailbox: {error}")
         raise error
 
+def get_manual_forward_origin(msg: imap_tools.MailMessage, body: str)-> bool, str:
+    # If an email was forwarded, parse origin from body
+    # fwd_pattern = r"---------- Forwarded message ---------"
+    fwd_pattern = r"Fwd: "
+    fwd_match = re.search(fwd_pattern, msg.subject, flags=re.DOTALL | re.MULTILINE)
+    if fwd_match:
+        manually_forwarded = True
+        origin_pattern = r"From: .* \<(.*)\>\s?\n?Date:"
+        origin_match = re.search(origin_pattern, body, flags=re.DOTALL | re.MULTILINE)
+        if origin_match:
+            origin_raw = origin_match.group(1)
+            from_ = origin_raw.strip()
+        else:
+            logger.error(f"Failed to parse origin from manually forwarded email with UID {msg.uid}.")
+    else:
+        manually_forwarded = False
+        from_ = msg.from_
+    return manually_forwarded, from_
 
 def transform_MailMessages_to_Emails(
     msgs: Iterator[imap_tools.MailMessage],
@@ -97,42 +116,19 @@ def transform_MailMessages_to_Emails(
             html = "false"
             body = msg.text.strip()
 
-        # If an emailw was forwarded, parse origin from body
-        # fwd_pattern = r"---------- Forwarded message ---------"
-        # fwd_match = re.search(fwd_pattern, body, flags=re.DOTALL | re.MULTILINE)
-        # if fwd_match:
-        #     fwd_origin_pattern = r"From: .* \<(.*)\>"
-        #     origin_match = re.search(fwd_origin_pattern, body, flags=re.DOTALL | re.MULTILINE)
-        #     if origin_match:
-        #         origin_raw = origin_match.group(1)
-        #         origin = origin_raw.strip()
-        #     else:
-        #         logger.error(f"Failed to parse origin from forwarded email with UID {msg.uid}.")
-        # else:
-        #     origin = msg.from_
-        fwd_pattern = r"Fwd: "
-        fwd_match = re.search(fwd_pattern, msg.subject, flags=re.DOTALL | re.MULTILINE)
-        if fwd_match:
-            origin_pattern = r"From: .* \<(.*)\>\s?\n?Date:"
-            origin_match = re.search(origin_pattern, body, flags=re.DOTALL | re.MULTILINE)
-            if origin_match:
-                origin_raw = origin_match.group(1)
-                origin = origin_raw.strip()
-            else:
-                logger.error(f"Failed to parse origin from forwarded email with UID {msg.uid}.")
-        else:
-            origin = msg.from_
+        manually_forwarded, from_= get_manual_forward_origin(msg, body)
 
         email = Email(
             int(msg.uid),
             batch_time,
             msg.date,
-            msg.from_,
-            origin,
+            manually_forwarded,
+            from_,
             msg.subject,
             html,
             body,
         )
+
         emails_.append(email)
 
     return emails_
