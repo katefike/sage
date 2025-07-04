@@ -63,7 +63,6 @@ All additional documentation can be found in the `docs/` directory.
     - Lists locations of important log files
     - Common _Help!_ scenarios
     - How to manually test MX operations
-        - Sending emails
         - Retrieving emails
     - Useful commands for troubleshooting problems with the following
         - Digital Ocean Droplet VM
@@ -74,6 +73,10 @@ All additional documentation can be found in the `docs/` directory.
         - Postgres Container
 - [Local Troubleshooting](docs/local_troubleshooting.md):
     - Environment Variables
+    - How to manually test MX operations
+        - Sending emails
 - [Prod Troubleshooting](docs/prod_troubleshooting.md):
     - Lists locations of important log files
     - Common _Help!_ scenarios
+    - How to manually test MX operations
+        - Sending emails

@@ -22,3 +22,20 @@ tests/conftest.py:21: in <module>
     POSTGRES_HOST = ENV["POSTGRES_HOST"]
 E   KeyError: 'POSTGRES_HOST'
 ```
+
+## MX (Mailserver) Operations
+### Send Emails
+Test that the dockerized MX works by sending an email locally (i.e. from outside of the MX container). Doing so is different depending on the environment. In production, send via openSSL `s_client` or an email service like Gmail. In development, send via `telnet`. The methods are dependent on environment because your production MX is configured with `smtpd_tls_security_level=encrypt`, which enforces TLS for incoming email (SMTPD).
+
+```
+telnet localhost 25
+
+ehlo mail.localdomain
+mail from: root@localhost
+rcpt to: incoming@localhost
+data
+Subject: Test email 
+This is a test email.
+.
+quit
+```

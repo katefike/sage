@@ -24,3 +24,46 @@ This private key will be ignored.
 Load key "/home/kfike/.ssh/sage_prod": bad permissions
 root@< public ip >: Permission denied (publickey).
 ```
+
+## MX (Mailserver) Operations
+### Send Emails Locally 
+Test that the dockerized MX works by sending an email locally (i.e. from outside of the MX container). Doing so is different depending on the environment. In production, send via openSSL `s_client` or an email service like Gmail. In development, send via `telnet`. The methods are dependent on environment because your production MX is configured with `smtpd_tls_security_level=encrypt`, which enforces TLS for incoming email (SMTPD).
+
+#### Production
+```
+kfike@pop-os:~$ openssl s_client -starttls smtp -ign_eof -crlf -connect localhost:25
+CONNECTED(00000003)
+ehlo localhost
+depth=2 C = US, O = Internet Security Research Group, CN = ISRG Root X1
+verify return:1
+depth=1 C = US, O = Let's Encrypt, CN = R3
+[...]
+---
+SSL handshake has read 2945 bytes and written 437 bytes
+---
+New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384
+[...]
+---
+250 SMTPUTF8
+---
+Post-Handshake New Session Ticket arrived:
+SSL-Session:
+    Protocol  : TLSv1.3
+[...]
+---
+read R BLOCK
+[...]
+250-prod
+
+MAIL FROM: <support@port25.com>
+250 2.1.0 Ok
+RCPT TO: <kfike@localhost>
+250 2.1.5 Ok
+data
+354 End data with <CR><LF>.<CR><LF>
+Subject: Test email open_ssl 25
+Test email open_ssl 25             
+.
+250 2.0.0 Ok: queued as AA8B54047C
+quit
+```
