@@ -10,6 +10,8 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 - UID = unique identifier
 - STMT = SQL statement
 - MX = mailserver
+- md = Maildir
+- mb = mbox
 - DB = database
 
 ## Production Setup Instructions
@@ -82,3 +84,5 @@ All additional documentation can be found in the `docs/` directory.
     - How to manually test MX operations
         - Sending emails
         - Getting your Maildir directory from the MX
+        - Converting Maildir/ to .mbox
+        - Converting .mbox to Maildir/

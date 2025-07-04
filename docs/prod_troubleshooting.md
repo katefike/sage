@@ -67,4 +67,44 @@ Test email open_ssl 25
 quit
 ```
 
-### Getting your Maildir directory from the MX
+### Getting your Maildir/ from the MX
+There are 2 ways to do this:
+1. get the files from the docker volume `/mnt/sage_mx/home/`
+```
+cp /mnt/sage_mx/home/ ~/sage-email-backup/
+```
+2. or get the directory from the MX container
+```
+docker cp sage-mx:/home/kfike/Maildir ~/sage-email-backup/
+```
+The Maildir files are located in `Maildir/cur/` and `Maildir/new`.
+`Maildir/tmp` is generally empty.
+
+### Converting Maildir/ to .mbox
+Run these commands from outside the MX container.
+```
+# Install procmail which includes formail
+sudo apt-get update && sudo apt-get install procmail
+
+# Convert Maildir to mbox format
+cd ~/sage-email-backup/Maildir
+: > ../mbox
+for file in new/*; do
+formail -I Status: <"$file" >>../mbox
+done
+for file in cur/*; do
+formail -a "Status: RO" <"$file" >>../mbox
+done
+
+# Verify there are mbox contents in the file
+vim ../mbox
+
+# Remove the install
+apt list --installed | grep procmail
+sudo apt-get remove procmail
+sudo apt-get autoremove
+sudo apt-get clean
+```
+
+### Converting .mbox to Maildir/
+Use package [mb2md](http://batleth.sapienti-sat.org/projects/mb2md/).
