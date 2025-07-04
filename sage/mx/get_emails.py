@@ -21,13 +21,17 @@ def main(
 ) -> List[Email]:
     with open_mailbox() as mailbox:
         if filter == "forwarded":
+            forwarding_addresses = [ENV['FORWARDING_EMAIL']]
             for _bank, accounts in BANKS_CONFIG.items():
                 for account in accounts:
-                    account.get('email')
+                    forwarding_addresses.append(account.get('email'))
             logger.info(
-                f"Only getting emails from FORWARDING_EMAIL {ENV['FORWARDING_EMAIL']}..."
+                f"""
+                Only getting emails from FORWARDING_EMAIL and bank_config.yml email addresses:
+                {forwarding_addresses}
+                """
             )
-            msgs = mailbox.fetch(imap_tools.A(from_=ENV["FORWARDING_EMAIL"]))
+            msgs = mailbox.fetch(imap_tools.OR(from_=forwarding_addresses))
 
         elif filter == "unparsed":
             logger.info(

@@ -52,14 +52,14 @@ def test_get_bank_config_emails():
     Load an mbox containing emails from the addresses in
     banks_config-example.yml.
     """
-    banks_emails = []
+    banks_email_addresses = []
     for _bank, accounts in utils.BANKS_CONFIG.items():
         for account in accounts:
-            banks_emails.append(account.get('email'))
+            banks_email_addresses.append(account.get('email'))
 
-    utils.refresh_inbox("real_gmail_forwards.mbox")
+    utils.refresh_inbox("bank_config_example_emails.mbox")
     all_emails = get_emails.main("forwarded")
-    assert len(all_emails) == len(banks_emails)
+    assert len(all_emails) == len(banks_email_addresses)
 
 
 def test_get_unparsed_emails():
