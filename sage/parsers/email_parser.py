@@ -22,7 +22,7 @@ def main(email: Email) -> Transaction:
 
     txn = Transaction(email.id)
     # Identify the bank from the email
-    bank = get_bank(email.body)
+    bank = get_bank(email)
     if not bank:
         return
     txn.bank = bank
@@ -70,9 +70,13 @@ def main(email: Email) -> Transaction:
     return txn
 
 
-def get_bank(body: str) -> str:
+def get_bank(email: Email) -> str:
     """
-    Identify the bank using the bank's email
+    Identify the bank using the bank's email From: header
+    E.g.
+    From: "Huntington Alerts" <HuntingtonAlerts@email.huntington.com>
+
+    or for manually forwarded emails, from the email body
     E.g.
         ---------- Forwarded message ---------
         From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
@@ -82,7 +86,10 @@ def get_bank(body: str) -> str:
     """
     for bank, accounts in BANKS_CONFIG.items():
         for account in accounts:
-            if regex_search(f"({account.get('email')})", body):
+            if email.manually_forwarded and regex_search(f"""
+            ({account.get('email')})""", email.body):
+                return bank
+            elif account.get('email') == email.from_:
                 return bank
     logger.warning("No bank identified")
     return None
@@ -90,7 +97,7 @@ def get_bank(body: str) -> str:
 
 def get_date(body: str) -> str:
     """
-    Identify the date using the bank's email
+    Identify the date using the bank's email body
     E.g.
         ---------- Forwarded message ---------
         From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
