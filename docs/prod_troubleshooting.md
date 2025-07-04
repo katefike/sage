@@ -29,7 +29,6 @@ root@< public ip >: Permission denied (publickey).
 ### Send Emails Locally 
 Test that the dockerized MX works by sending an email locally (i.e. from outside of the MX container). Doing so is different depending on the environment. In production, send via openSSL `s_client` or an email service like Gmail. In development, send via `telnet`. The methods are dependent on environment because your production MX is configured with `smtpd_tls_security_level=encrypt`, which enforces TLS for incoming email (SMTPD).
 
-#### Production
 ```
 kfike@pop-os:~$ openssl s_client -starttls smtp -ign_eof -crlf -connect localhost:25
 CONNECTED(00000003)
@@ -67,3 +66,5 @@ Test email open_ssl 25
 250 2.0.0 Ok: queued as AA8B54047C
 quit
 ```
+
+### Getting your Maildir directory from the MX

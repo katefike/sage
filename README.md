@@ -75,8 +75,10 @@ All additional documentation can be found in the `docs/` directory.
     - Environment Variables
     - How to manually test MX operations
         - Sending emails
+        - Getting an mbox file from your Gmail account
 - [Prod Troubleshooting](docs/prod_troubleshooting.md):
     - Lists locations of important log files
     - Common _Help!_ scenarios
     - How to manually test MX operations
         - Sending emails
+        - Getting your Maildir directory from the MX

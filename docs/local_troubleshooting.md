@@ -39,3 +39,12 @@ This is a test email.
 .
 quit
 ```
+
+### Getting an mbox file from your Gmail account
+For local development, you can use your real forwaded alert emails by downloading an mbox file from your email provider. [Google has instructions on how to get the mbox files from your gmail account.](https://support.google.com/accounts/answer/3024190)
+
+1. Add the mbox file to the directory `docker/mx/test_data/real-data/` (gitignored). 
+2. Change the environment variable `PRE_LOAD_MBOX`. Note that the MX only loads a single mbox file.
+3. Rebuild the MX docker container.
+4. Run sage: `python3 -m sage`
+5. Verify that the txn emails were parsed as expected.
