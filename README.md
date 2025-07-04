@@ -61,7 +61,7 @@ All additional documentation can be found in the `docs/` directory.
 - [Disaster Recovery](docs/disaster_rcovery.md): Provides disaster recovery instructions. This is helpful for when something is deeply wrong with your current Sage deployment, but you have data in the MX and/or DB that you don't want to lose. The guide describes how to create a brand new Sage deployment and attach your existing data to it.
 - [Troubleshooting](docs/troubleshooting.md): Provides troubleshooting advice applicable in both local and prod. If you don't see what you're looking for, it may be in the env specific [local troubleshooting](docs/local_troubleshooting.md) or [prod troubleshooting](docs/prod_troubleshooting.md) files.
     - Lists locations of important log files
-    - How to troubleshoot common scenarios
+    - Common _Help!_ scenarios
     - How to manually test MX operations
         - Sending emails
         - Retrieving emails
@@ -75,3 +75,4 @@ All additional documentation can be found in the `docs/` directory.
 - [Local Troubleshooting](docs/local_troubleshooting.md):
     - Environment Variables
 - [Prod Troubleshooting](docs/prod_troubleshooting.md):
+    - Common _Help!_ scenarios
