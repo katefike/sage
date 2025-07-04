@@ -12,6 +12,7 @@ from . import BANKS_CONFIG
 
 logger.add(sink="sage_main.log")
 
+
 def main(email: Email) -> Transaction:
     """
     Parse the txn data from the email.
