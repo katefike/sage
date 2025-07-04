@@ -66,3 +66,14 @@ def test_parsable_emails():
     utils.refresh_inbox("txn_emails.mbox")
     msg_count = main()
     assert msg_count.get("retrieved") == msg_count.get("processed")
+
+
+def test_filter():
+    """
+    Load emails that are from addresses in banks_config-example.yml.
+    They should be retrieved.
+    """
+
+    utils.refresh_inbox("real_gmail_forwards.mbox")
+    msg_count = main()
+    assert msg_count.get("retrieved") == msg_count.get("processed")
