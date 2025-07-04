@@ -40,11 +40,6 @@ The string must have the syntax below because it's used to identify the filter _
 ```
 
 ### Useful Commands
-#### Server
-SSH to the server
-
-`ssh root@<ipv4 address> -i ~/.ssh/<private key file>`
-
 #### Postfix
 
 #### Dovecot
