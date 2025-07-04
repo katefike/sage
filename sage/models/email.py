@@ -30,3 +30,7 @@ class Email:
     body: str
     # The ID in the emails table
     id: int = field(default=None)
+    # Was the email manually forwarded and includes
+    # ---------- Forwarded message ---------
+    # in the body?
+    is_manual_forward: bool = False
