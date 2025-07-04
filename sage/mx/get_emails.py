@@ -10,7 +10,7 @@ from loguru import logger
 from sage.db import emails
 from sage.models.email import Email
 
-from . import ENV
+from . import ENV, BANKS_CONFIG
 
 logger.add(sink="sage_main.log")
 
@@ -21,6 +21,9 @@ def main(
 ) -> List[Email]:
     with open_mailbox() as mailbox:
         if filter == "forwarded":
+            for _bank, accounts in BANKS_CONFIG.items():
+                for account in accounts:
+                    account.get('email')
             logger.info(
                 f"Only getting emails from FORWARDING_EMAIL {ENV['FORWARDING_EMAIL']}..."
             )
@@ -31,7 +34,7 @@ def main(
                 "Only getting emails that are in the DB table named emails, but don't have an associated txn..."
             )
             msgs = []
-            records, columns_ = emails.get_unparsed_emails()
+            records, _columns = emails.get_unparsed_emails()
             for record in records:
                 uid_ = record[1]
                 retrieved_msg = mailbox.fetch(imap_tools.AND(uid=[str(uid_)]))
