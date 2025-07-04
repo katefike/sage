@@ -47,10 +47,19 @@ def test_get_all_emails():
     assert len(all_emails) == 3
 
 
-def test_get_forwarded_emails():
-    utils.refresh_inbox("identical_txns_gmail+cloudHQ_forwards.mbox")
+def test_get_bank_config_emails():
+    """
+    Load an mbox containing emails from the addresses in
+    banks_config-example.yml.
+    """
+    banks_emails = []
+    for _bank, accounts in utils.BANKS_CONFIG.items():
+        for account in accounts:
+            banks_emails.append(account.get('email'))
+
+    utils.refresh_inbox("real_gmail_forwards.mbox")
     all_emails = get_emails.main("forwarded")
-    assert len(all_emails) == 2
+    assert len(all_emails) == len(banks_emails)
 
 
 def test_get_unparsed_emails():

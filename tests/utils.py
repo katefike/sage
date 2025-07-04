@@ -10,7 +10,7 @@ import imap_tools
 from sage.db import emails
 from sage.models.email import Email
 
-from . import ENV
+from . import ENV, BANKS_CONFIG
 
 
 def refresh_inbox(mbox_name: str):
