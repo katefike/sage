@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS public.emails(
     from_ TEXT NOT NULL,
     origin TEXT NOT NULL,
     subject TEXT NOT NULL,
-    html bool NOT NUsLL,
-    body TEXT NOT NULLs
+    html bool NOT NULL,
+    body TEXT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS public.banks(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
