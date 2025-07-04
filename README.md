@@ -75,4 +75,5 @@ All additional documentation can be found in the `docs/` directory.
 - [Local Troubleshooting](docs/local_troubleshooting.md):
     - Environment Variables
 - [Prod Troubleshooting](docs/prod_troubleshooting.md):
+    - Lists locations of important log files
     - Common _Help!_ scenarios

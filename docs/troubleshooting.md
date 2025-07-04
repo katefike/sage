@@ -5,13 +5,6 @@ Troubleshooting advice here is applicable in both local and prod. If you don't s
 Shows Sage's attempts to parse batches of emails in the MX and insert them as transactions (txns) into the DB. 
 `~/sage/sage_main.log`
 
-Shows additional errors from when cron invokes Sage.
-`~/sage/cron.log`
-
-Shows errors for generating TLS certs.
-`/var/log/certbot_cronjob.log`
-
-
 ## _Help!_ Scenarios
 ### _"Help! Ansible gives the error [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all' or [WARNING]: Could not match supplied host pattern"_
 - Ensure that the setup script `1_setup_sage_directory.sh` was run using the command `bash setup/1_setup_sage_directory.sh`. 

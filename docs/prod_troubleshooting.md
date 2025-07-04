@@ -1,4 +1,11 @@
 # Prod Troubleshooting
+## Logging
+Shows additional errors from when cron invokes Sage.
+`~/sage/cron.log`
+
+Shows errors for generating TLS certs.
+`/var/log/certbot_cronjob.log`
+
 ## _Help!_ Scenarios
 ### _"Help! Ansible won't connect to my production server prod!"_
 - Ensure the permissions are correct. Typically the permissions are:
