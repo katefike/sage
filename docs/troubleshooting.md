@@ -44,17 +44,14 @@ The string must have the syntax below because it's used to identify the filter _
 
 #### Dovecot
 Show dovecot errors
-
 `doveadm log errors`
 
 
 Delete all emails from a mailbox
-
 `doveadm expunge -u incoming mailbox 'INBOX' all`
 
 #### MX Container
 Enter the mx container
-
 `docker exec -it sage-mx bash`
 
 Copy Postfix and Dovecot Config files to docker/mx/configs/ to easily inspect them
@@ -66,42 +63,30 @@ docker cp sage-mx:/etc/postfix/main.cf ./docker/mx/configs/postfix_main.cf \
 
 #### Postgres Container
 Enter the database container and access the database.
-
 `docker exec -it sage-db psql -h localhost -U postgres sage`
 
 
 Remove all containers and volumes after a schema change.
-
 `docker rm -f $(docker ps -a -q) && docker volume rm $(docker volume ls -q)`
 
 #### Docker
 Show the names of all docker containers (active and inactive)
-
 `docker ps -a --format '{{.Names}}'`
 
-
 Stop the docker containers
-
 `docker compose down`
 
-
 Remove all containers
-
 `docker rm -f $(docker ps -a -q)`
 
-
 Remove all volumes
-
 `docker volume rm $(docker volume ls -q)`
 
 
 Remove all images
-
 `docker rmi $(docker images -q)`
 
-
 Access the postgres interactive CLI within the database container
-
 `docker exec -it  sage-db psql -U admin sage`
 
 #### Python
