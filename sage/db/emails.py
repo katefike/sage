@@ -12,15 +12,16 @@ logger.add(sink="sage_main.log")
 def insert_email(email: Email) -> int:
     stmt = """
     INSERT INTO
-        emails (uid, batch_time, forwarded_date, from_, origin, subject, html, body)
+        emails (uid, batch_time, forwarded_date, manually_forwarded, from_, origin, subject, html, body)
     VALUES
-        (%s, %s, %s, %s, %s, %s, %s, %s)
+        (%s, %s, %s, %s, %s, %s, %s, %s, %s)
     RETURNING id;
     """
     data = (
         email.uid,
         email.batch_time,
         email.forwarded_date,
+        email.manually_forwarded,
         email.from_,
         email.origin,
         email.subject,

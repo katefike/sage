@@ -16,11 +16,12 @@ CREATE TABLE IF NOT EXISTS public.emails(
     uid INT NOT NULL,
     batch_time TIMESTAMPTZ NOT NULL,
     forwarded_date DATE NOT NULL,
+    manually_forwarded BOOLEAN NOT NULL DEFAULT FALSE,
     from_ TEXT NOT NULL,
     origin TEXT NOT NULL,
     subject TEXT NOT NULL,
-    html bool NOT NULL,
-    body TEXT NOT NULL
+    html bool NOT NUsLL,
+    body TEXT NOT NULLs
 );
 CREATE TABLE IF NOT EXISTS public.banks(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,

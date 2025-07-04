@@ -32,5 +32,6 @@ class Email:
     id: int = field(default=None)
     # Was the email manually forwarded and includes
     # ---------- Forwarded message ---------
-    # in the body?
-    is_manual_forward: bool = False
+    # in the body? This is helpful for seeing what was forwarded via
+    # IMAP vs manually forwarded
+    manually_forwarded: bool = False
