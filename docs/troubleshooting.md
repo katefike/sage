@@ -45,7 +45,6 @@ SSH to the server
 
 `ssh root@<ipv4 address> -i ~/.ssh/<private key file>`
 
-
 #### Postfix
 
 #### Dovecot

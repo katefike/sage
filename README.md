@@ -66,7 +66,7 @@ All additional documentation can be found in the `docs/` directory.
     - Common _Help!_ scenarios
     - How to manually test MX operations
         - Retrieving emails
-    - Useful commands for troubleshooting problems with the following
+    - Useful commands
         - Digital Ocean Droplet VM
         - Ansible
         - Docker
@@ -86,3 +86,5 @@ All additional documentation can be found in the `docs/` directory.
         - Getting your Maildir directory from the MX
         - Converting Maildir/ to .mbox
         - Converting .mbox to Maildir/
+    - Useful commands
+        - Server

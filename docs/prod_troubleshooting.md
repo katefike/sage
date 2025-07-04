@@ -108,3 +108,8 @@ sudo apt-get clean
 
 ### Converting .mbox to Maildir/
 Use package [mb2md](http://batleth.sapienti-sat.org/projects/mb2md/).
+
+### Useful Commands
+#### Server
+SSH to the server
+`ssh root@<ipv4 address> -i ~/.ssh/<private key file>`
