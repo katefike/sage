@@ -1,7 +1,7 @@
 import pprint
 import re
 from datetime import datetime
-from typing import Iterator, List, Optional
+from typing import Iterator, List, Optional, Tuple
 
 import imap_tools
 from bs4 import BeautifulSoup
@@ -78,8 +78,12 @@ def open_mailbox() -> imap_tools.BaseMailBox:
         logger.critical(f"Failed to open mailbox: {error}")
         raise error
 
-def get_manual_forward_origin(msg: imap_tools.MailMessage, body: str)-> bool, str:
-    # If an email was forwarded, parse origin from body
+
+def get_manual_forward_origin(
+    msg: imap_tools.MailMessage,
+    body: str
+) -> Tuple[bool, str]:
+    # If an email was manually forwarded, parse the origin from the body
     # fwd_pattern = r"---------- Forwarded message ---------"
     fwd_pattern = r"Fwd: "
     fwd_match = re.search(fwd_pattern, msg.subject, flags=re.DOTALL | re.MULTILINE)
