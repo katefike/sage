@@ -19,8 +19,8 @@ class Email:
     # ISO 8601/RFC 3339 format; 1999-01-08 23:04:01
     forwarded_date: str
     # Was the email manually forwarded and includes
-    # ---------- Forwarded message ---------
-    # in the body? This is helpful for seeing what was forwarded via
+    # "Fwd:' in the subject and ---------- Forwarded message ---------
+    # in the body. This is helpful for seeing what was forwarded via
     # IMAP vs manually forwarded
     manually_forwarded: bool
     # The email of the original sender; the financial instiution's email
