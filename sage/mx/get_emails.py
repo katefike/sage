@@ -1,7 +1,7 @@
 import pprint
 import re
 from datetime import datetime
-from typing import Iterator, List, Optional, Tuple
+from typing import Iterator, List, Optional, Tuple, Set
 
 import imap_tools
 from bs4 import BeautifulSoup
@@ -9,11 +9,21 @@ from loguru import logger
 
 from sage.db import emails
 from sage.models.email import Email
-from sage.parsers import utils
 
 from . import ENV, BANKS_CONFIG
 
 logger.add(sink="sage_main.log")
+
+
+def get_banks_config_email_addresses() -> Set:
+    """
+    Creates a set (unique list) of bank emails in BANKS_CONFIG
+    """
+    all_banks_addresses = []
+    for bank in BANKS_CONFIG.values():
+        all_banks_addresses.extend(bank['email_addresses'])
+    unique_banks_email_addresses = set(all_banks_addresses)
+    return unique_banks_email_addresses
 
 
 def main(
@@ -22,17 +32,16 @@ def main(
 ) -> List[Email]:
     with open_mailbox() as mailbox:
         if filter == "forwarded":
-            forwarding_addresses = [ENV['FORWARDING_EMAIL']]
-            for _bank, accounts in BANKS_CONFIG.items():
-                for account in accounts:
-                    forwarding_addresses.append(account.get('email'))
+            all_email_addresses = {ENV['FORWARDING_EMAIL']}
+            banks_email_addresses = get_banks_config_email_addresses()
+            all_email_addresses.update(banks_email_addresses)
             logger.info(
                 f"""
                 Only getting emails from FORWARDING_EMAIL and bank_config.yml email addresses:
-                {forwarding_addresses}
+                {all_email_addresses}
                 """
             )
-            msgs = mailbox.fetch(imap_tools.OR(from_=forwarding_addresses))
+            msgs = mailbox.fetch(imap_tools.OR(from_=all_email_addresses))
 
         elif filter == "unparsed":
             logger.info(

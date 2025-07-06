@@ -84,10 +84,9 @@ def get_bank(email: Email) -> str:
         Subject: Withdrawal or Purchase
         To: <localhost>
     """
-    for bank, accounts in BANKS_CONFIG.items():
-        for account in accounts:
-            if account.get('email') == email.from_:
-                return bank
+    for bank, data in BANKS_CONFIG.items():
+        if email.from_ in data['email_addresses']:
+            return bank
     logger.warning("No bank identified")
     return None
 
