@@ -101,6 +101,7 @@ def get_manual_forward_origin(
         from_ = msg.from_
     return manually_forwarded, from_
 
+
 def transform_MailMessages_to_Emails(
     msgs: Iterator[imap_tools.MailMessage],
 ) -> List[Email]:
@@ -132,7 +133,5 @@ def transform_MailMessages_to_Emails(
             html,
             body,
         )
-
         emails_.append(email)
-
     return emails_
