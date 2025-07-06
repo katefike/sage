@@ -63,7 +63,7 @@ docker cp sage-mx:/etc/postfix/main.cf ./docker/mx/configs/postfix_main.cf \
 
 #### Postgres Container
 Enter the database container and access the database.
-`docker exec -it sage-db psql -h localhost -U postgres sage`
+`docker exec -it sage-db psql -h localhost -U admin sage`
 
 
 Remove all containers and volumes after a schema change.
