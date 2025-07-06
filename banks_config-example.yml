@@ -11,11 +11,11 @@ Discover:
 Huntington:
   - type: liquid
     name: SAVE
-    email: huntington.com
+    email: HuntingtonAlerts@email.huntington.com
     date_opened: 2024-01-01
     date_closed: 2024-12-31
   - type: liquid
     name: CHECK
-    email: huntington.com
+    email: HuntingtonAlerts@email.huntington.com
     date_opened: 2024-01-01
     date_closed: 2024-12-31
