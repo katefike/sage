@@ -48,6 +48,7 @@ sage/models/transaction.py
 """
 import pytest
 
+from sage.models.email import Email
 from sage.parsers import email_parser
 from sage.parsers.banks import huntington, chase, discover
 
@@ -56,11 +57,20 @@ def test_get_date_regex_error():
     """
     Raise error when no date parsed from a body.
     """
-    body = "Invalid"
+    email = Email(
+        uid=1,
+        batch_time="1999-01-08 23:04:01",
+        forwarded_date="1999-01-07",
+        manually_forwarded=True,
+        from_="test@test.com",
+        subject="Test invalid body",
+        html="NA",
+        body="Invalid",
+    )
     with pytest.raises(
         email_parser.RegexError, match=f"Regex failed to get the date from body"
     ):
-        email_parser.get_date(body)
+        email_parser.get_date(email)
 
 
 def test_parse_huntington_transfer_withdrawal_regex_error():
