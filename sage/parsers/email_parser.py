@@ -66,7 +66,7 @@ def main(email: Email) -> Transaction:
         return
     txn.amount = transform_amount(raw_amount)
     # Identify the date the tansaction email arrived
-    txn.date = get_date(email.body)
+    txn.date = get_date(email)
     return txn
 
 
@@ -86,16 +86,13 @@ def get_bank(email: Email) -> str:
     """
     for bank, accounts in BANKS_CONFIG.items():
         for account in accounts:
-            if email.manually_forwarded and regex_search(f"""
-            ({account.get('email')})""", email.body):
-                return bank
-            elif account.get('email') == email.from_:
+            if account.get('email') == email.from_:
                 return bank
     logger.warning("No bank identified")
     return None
 
 
-def get_date(body: str) -> str:
+def get_date(email: Email) -> str:
     """
     Identify the date using the bank's email body
     E.g.
@@ -111,10 +108,16 @@ def get_date(body: str) -> str:
         Subject: Your $253.36 transaction with AMZN Mktp US
         To: <localhost>
     """
+    if not email.manually_forwarded:
+        # Date: header is month, day, year format e.g. "Oct 6, 2022"
+        # Reformat the datetime object to ISO 8601 format
+        transformed_date = datetime.strftime(email.forwarded_date, "%Y-%m-%d")
+        return transformed_date
+
     # Match month, day, year format e.g. "Oct 6, 2022"
     raw_date = regex_search(
         r"(?<=Date: \w{3}, )(\w{3} [0-9]{1,2}, [0-9]{4})(?= at [0-9]{1,2}:[0-9]{2}\S|\s\w{2})",
-        body,
+        email.body,
     )
     if raw_date is not None:
         # Converts raw date to datetime object. E.g. "Oct 6, 2022"
@@ -126,7 +129,7 @@ def get_date(body: str) -> str:
     # Match day month year format E.g. "24 Apr 2024"
     raw_date = regex_search(
         r"(?<=Date: \w{3}, )([0-9]{1,2} \w{3},? [0-9]{4})(?= [0-9]{2}:[0-9]{2}:[0-9]{2} )",
-        body,
+        email.body,
     )
     if raw_date is not None:
         # Converts raw date to datetime object. E.g. "24 Apr 2024"
@@ -135,4 +138,7 @@ def get_date(body: str) -> str:
         transformed_date = datetime.strftime(datetime_raw_date, "%Y-%m-%d")
         return transformed_date
     else:
-        raise RegexError(f"Regex failed to get the date from body: {body}")
+        raise RegexError(f"""
+        Regex failed to get the date from body:
+        {email.body}
+        """)
