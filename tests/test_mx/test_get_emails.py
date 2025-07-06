@@ -52,10 +52,7 @@ def test_get_bank_config_emails():
     Load an mbox containing emails from the addresses in
     banks_config-example.yml.
     """
-    banks_email_addresses = []
-    for _bank, accounts in utils.BANKS_CONFIG.items():
-        for account in accounts:
-            banks_email_addresses.append(account.get('email'))
+    banks_email_addresses = get_emails.get_banks_config_email_addresses()
 
     utils.refresh_inbox("bank_config_example_emails.mbox")
     all_emails = get_emails.main("forwarded")
