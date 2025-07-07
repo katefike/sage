@@ -16,9 +16,12 @@ viewed.
 The expected expected_output is the Transaction object defined in
 sage/models/transaction.py
 """
+import pytest
+import imap_tools
 
 from sage.db import emails
 from sage.mx import get_emails
+from sage.parsers import email_parser
 from tests import utils
 
 
@@ -79,3 +82,20 @@ def test_get_email_by_uid():
     assert len(emails_) == 1
     for email in emails_:
         assert email.uid == 1
+
+
+def test_get_manual_forward_origin_error():
+    """
+    Raise error when Subject starts with Fwd:
+    but body does not contain From:
+    """
+    msg = imap_tools.MailMessage
+    msg.uid = 1
+    msg.subject = " Fwd: Test"
+    body = "Invalid"
+
+    with pytest.raises(
+        email_parser.RegexError,
+        match=f"Failed to parse origin from manually forwarded email with UID {msg.uid}"""
+    ):
+        get_emails.get_manual_forward_origin(msg, body)
