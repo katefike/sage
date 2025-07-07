@@ -9,6 +9,7 @@ from loguru import logger
 
 from sage.db import emails
 from sage.models.email import Email
+from sage.parsers.utils import RegexError
 
 from . import ENV, BANKS_CONFIG
 
@@ -60,7 +61,7 @@ def main(
             uid_ = uid_parts[1]
             logger.info(f"Only getting email uid {uid_}...")
             msgs = mailbox.fetch(imap_tools.AND(uid=[uid_]))
-            if msgs is None:
+            if msgs is None:  # pragma: no cover
                 logger.critical(f"No email was retrieved for email UID {uid_}...")
                 return
         else:
@@ -69,7 +70,7 @@ def main(
 
         emails_ = transform_MailMessages_to_Emails(msgs)
 
-        if pls_print:
+        if pls_print:  # pragma: no cover
             pprint.pp(emails_)
 
         logger.info(f"{len(emails_)} email(s) retrieved.")
@@ -104,7 +105,7 @@ def get_manual_forward_origin(
             origin_raw = origin_match.group(1)
             from_ = origin_raw.strip()
         else:
-            logger.error(f"Failed to parse origin from manually forwarded email with UID {msg.uid}.")
+            raise RegexError(f"Failed to parse origin from manually forwarded email with UID {msg.uid}")
     else:
         manually_forwarded = False
         from_ = msg.from_
