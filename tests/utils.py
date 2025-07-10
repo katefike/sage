@@ -10,7 +10,7 @@ import imap_tools
 from sage.db import emails
 from sage.models.email import Email
 
-from . import ENV
+from . import ENV, BANKS_CONFIG
 
 
 def refresh_inbox(mbox_name: str):
@@ -121,8 +121,8 @@ def insert_db_email(email: Optional[Email] = None) -> int:
             uid=1,
             batch_time="2023-08-31 15:22:40",
             forwarded_date="2023-08-31",
-            from_="outgoing@gmail.com",
-            origin="bank@localhost",
+            manually_forwarded=True,
+            from_="bank@localhost",
             subject="Example Transaction Email",
             html="f",
             body="Hello world!",

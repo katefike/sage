@@ -1,0 +1,551 @@
+From outgoing+caf_=kfike=sagefinancial.dev@gmail.com  Fri Jul  4 16:27:15 2025
+Return-Path: <outgoing+caf_=kfike=sagefinancial.dev@gmail.com>
+X-Original-To: incoming@localhost
+Delivered-To: incoming@localhost
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+	by prod (Postfix) with ESMTPS id 0A221C149C
+	for <incoming@localhost>; Fri,  4 Jul 2025 14:55:23 +0000 (UTC)
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-5315ebfd92cso659778e0c.0
+        for <incoming@localhost>; Fri, 04 Jul 2025 08:01:38 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=1751641297; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=FKfZiHvRgOYnT7Lb3+h/GA85etCaVgVPpuKPmDaNLTbu0KuDMepAZKhyrjWvr+6J8+
+         hj4zgX7CVsuutI48aduSKYHNMm0+VXXIcX88STlog3VKAADNFZtd6hQz9IwBLjoycarh
+         5egWCCNy4/rntwOQcroWv/qYnVPteSILMpdUTDZeHDpm+1CE2JPm7BF6pKgG3S9tlJSs
+         9sOcC1KOuY8C4zpJo6huP/wOt343GMZaZwfDXf9MpCKmIv2/Yc6Q7gjNhEJku8L95JAD
+         unQ92+Ia8jAew5XJxbcdfnCRgeayHH3JAHo2/Sp6nCogc+HYjXNsUoakEYSOFF0K+Taq
+         FwLQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:feedback-id:message-id:reply-to
+         :mime-version:list-help:date:subject:to:from:dkim-signature
+         :dkim-signature:delivered-to;
+        bh=tUFQQz1kI0ny690epkl2q4KbSYI/GW+JIkw9KmKjR9I=;
+        fh=u8WbouABiozTUqdoZ5NvQuq1mCdxTyTLWatbVtwPJBI=;
+        b=i3Bs2nIUj8hvC+/dDXXV6BliO2tc/bepArvDILTbBSA2jwZkjudPhE+nPAHL5jf1j4
+         GXjz9v9ybDxfl9xeyIMw/nODdyPeh53bAbko3blSFs1gDhqE+1SJryHS4GStdhIhfNzE
+         OL241UdWpFqVyif2/cDfGTNxaBLEurFUCLi1F5ROEsAHmWCuNlNaVfB3VFuYdVyBU1gV
+         85wprfg6PkZohgB0zqaeIGbb/fWK14vMwCBMsJVjcFKm7T2yAPWtkK3Y6r/U/i3SF9db
+         7YWHDcbLoQWoHD5ikiMQ9xB6+OqUr4qewL9aTeAmAynVb8dGqY6UO+aAnKV9a0HBRG2j
+         DAEw==;
+        darn=sagefinancial.dev
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@email.huntington.com header.s=200608 header.b=riLRpA3c;
+       dkim=pass header.i=@s1.y.mc.salesforce.com header.s=fbldkim1 header.b=hqNscLKW;
+       spf=pass (google.com: domain of bounce-20839930_html-1320866408-46806908-10956480-2935272@bounce.email.huntington.com designates 207.67.38.53 as permitted sender) smtp.mailfrom=bounce-20839930_HTML-1320866408-46806908-10956480-2935272@bounce.email.huntington.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=email.huntington.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751641297; x=1752246097;
+        h=content-transfer-encoding:feedback-id:message-id:reply-to
+         :mime-version:list-help:date:subject:to:from:dkim-signature
+         :dkim-signature:delivered-to:x-forwarded-for:x-forwarded-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tUFQQz1kI0ny690epkl2q4KbSYI/GW+JIkw9KmKjR9I=;
+        b=Ivjx+vfL/9awMEPVgQKcEAhzli14XY+kgGP05PJsZ7/OJnvZ2b+rs11ohhmURAMrd2
+         ioCtsQtkjgw7gBrV7pD4ZKlm81t051BYypESDgeMToKaXrbX76dTKTlLFECJ7J5JtHOs
+         5i0rZQ1d7mnrjFeHXrpK+mUitWBkRfcBfJ5C5pJ6g/Hh0o8ti6lEWkZIaVPls0/g2519
+         uzPdUCNsL4lqjzt2AeQklJ9Ua+nd14RvaiA25FGLGVRXY/CX2wWvcM0/Oy+WYirJSWYr
+         18s1UFlIjxsERMasjKePpMqSJKFES87mrVpDWG8mWHtOqJorBDa7BVuT9mCjyLMWzAzb
+         +kUA==
+X-Forwarded-Encrypted: i=2; AJvYcCXPzJN+ERigQelRjWhUyZFhlE9iIor73tuRL6VwhbSE7oc4mYX+TDlBNzRVXgLFUoJf4qxGng==@sagefinancial.dev
+X-Gm-Message-State: AOJu0YxxL5fJjsDMgr1GuQ8Au4PWnzRLS18X8rbHpFVTgD15JZuzYJ1v
+	1OQLzoJDhQAoozin/W/P4qCFSKL79Ix78rimRj7o74kzAukPOzGWKmLGF90n6520LXMkGFB44k3
+	MYprcjV/yIbMBWXEsEFFT5CMVpr+de/My8J0YhCwMeYYk67vu5npnBU7AvpOYVw==
+X-Received: by 2002:a05:6122:4185:b0:534:7fbd:62a4 with SMTP id 71dfb90a1353d-5347fbdacc9mr1198272e0c.6.1751641297371;
+        Fri, 04 Jul 2025 08:01:37 -0700 (PDT)
+X-Forwarded-To: incoming@localhost
+X-Forwarded-For: outgoing@gmail.com incoming@localhost
+Delivered-To: outgoing@gmail.com
+Received: by 2002:a05:612c:d10:b0:4d5:f1a4:79c with SMTP id jn16csp5543870vqb;
+        Fri, 4 Jul 2025 08:01:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEuZq5lJmgD0QBYJ/EkRoKOGxVe59V7XNzbAm8vWlKT2j0o34qEjny4/BZGbaYT6/3Fzb9R
+X-Received: by 2002:a05:622a:5515:b0:4a9:8b3c:ea08 with SMTP id d75a77b69052e-4a994f9e874mr63634901cf.26.1751641296000;
+        Fri, 04 Jul 2025 08:01:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1751641295; cv=none;
+        d=google.com; s=arc-20240605;
+        b=H15IbPNbKvaAdKNYmwRL3ljEMFQ1s50H1dmqZUYEsKmj3eZ8IxMrZHZaGPXXDnac3c
+         HeLBxyWc/DhXvC7RAflVWRIBDE6Bo0x9hP3sJ/3bluxM9OofsR0sgNZ6i+r+BJq+LZXI
+         rNqb4e8Nys9XiEVrLn4xJwa4hIiJFOmU6Uz/WCf/z5nOlk87ODSxjuW6EMqekBl5mM80
+         GipFBGFl3wk+4N080eG94PAs6o/PcsbbegEIkPzbc8/zplU/RSLnhkNAMo3DaNZonEKc
+         WBeTXRaWqD53D5jtKA1BBwkDQspb9Mc7BQbypuNnMuAA0nKlt1snCLob1vvq080BpW2a
+         d+VA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:feedback-id:message-id:reply-to
+         :mime-version:list-help:date:subject:to:from:dkim-signature
+         :dkim-signature;
+        bh=tUFQQz1kI0ny690epkl2q4KbSYI/GW+JIkw9KmKjR9I=;
+        fh=Ln8UHqZ5H/eG/78z3KHzeHZ9c+K/pwEH9W5YI6weeXE=;
+        b=PZB9xrOJP144WlQYDNayXA/9ZILPzbyJuwA8BR+HsmuJnGXR/gLE728EmPtLVaOlUX
+         WnLq4WXPeXKalVdqwtAv75asdGgvqa57dekeE3GR8/eIsySJ7UNTolE3/+18ynAqcRFB
+         2Z8tfj9syYnFR5ICdsKn1ei+EV2kQ+3A5v9kPQpSUgqh65D3667ZWhCbhDfNLQrDhmmg
+         5XH9cmc9US9DpWF9pnHkWZXOrrSDiTR9VvK6IgjjT21W0joG+iZTUXczqh07XwItSNKe
+         gUM0msIvNBm7/PkHTYTo8+IVlJqhyst38+JTctAHUq6rjflbrynQOlEStPFHdKSG5DuK
+         yF2w==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@email.huntington.com header.s=200608 header.b=riLRpA3c;
+       dkim=pass header.i=@s1.y.mc.salesforce.com header.s=fbldkim1 header.b=hqNscLKW;
+       spf=pass (google.com: domain of bounce-20839930_html-1320866408-46806908-10956480-2935272@bounce.email.huntington.com designates 207.67.38.53 as permitted sender) smtp.mailfrom=bounce-20839930_HTML-1320866408-46806908-10956480-2935272@bounce.email.huntington.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=email.huntington.com
+Received: from mta.huntington-email.com (mta.huntington-email.com. [207.67.38.53])
+        by mx.google.com with ESMTPS id d75a77b69052e-4a994ad0b82si22369771cf.388.2025.07.04.08.01.35
+        for <outgoing@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 04 Jul 2025 08:01:35 -0700 (PDT)
+Received-SPF: pass (google.com: domain of bounce-20839930_html-1320866408-46806908-10956480-2935272@bounce.email.huntington.com designates 207.67.38.53 as permitted sender) client-ip=207.67.38.53;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@email.huntington.com header.s=200608 header.b=riLRpA3c;
+       dkim=pass header.i=@s1.y.mc.salesforce.com header.s=fbldkim1 header.b=hqNscLKW;
+       spf=pass (google.com: domain of bounce-20839930_html-1320866408-46806908-10956480-2935272@bounce.email.huntington.com designates 207.67.38.53 as permitted sender) smtp.mailfrom=bounce-20839930_HTML-1320866408-46806908-10956480-2935272@bounce.email.huntington.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=email.huntington.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=200608; d=email.huntington.com;
+ h=From:To:Subject:Date:List-Help:MIME-Version:Reply-To:Message-ID:
+ Content-Type:Content-Transfer-Encoding;
+ i=HuntingtonAlerts@email.huntington.com;
+ bh=tUFQQz1kI0ny690epkl2q4KbSYI/GW+JIkw9KmKjR9I=;
+ b=riLRpA3cGvQsbtK6vQJ07bYkCC7USlOwWX2ox7aNwf9ZT/sAE9WEUVDrfjb+lQ6MSUsnQwodjC7S
+   lQwzN+helcS1XbGFkFPYuEwFYouDSsce89yhyvA16Cc5DSFQeOnthDNCHhntALp8fTkaO35jAyhF
+   PCcQHnSyDkfIpZPHltM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim1; d=s1.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Help:MIME-Version:Reply-To:Message-ID:
+ Content-Type:Content-Transfer-Encoding;
+ bh=tUFQQz1kI0ny690epkl2q4KbSYI/GW+JIkw9KmKjR9I=;
+ b=hqNscLKWpqxSVBwfHIdF2L6pmYHDjsRqqmTF6opArk8fH5Lvt6Ua7CRmztA/iOPXIZYYmWyRerkc
+   9xfpSy1BlbwEHHzyREJP/X9Gp29TeRJ+Qo0S9oSZ/FugLBa2KcqOPex54CjkjxoOX++nwdvscUiU
+   uddq1chZxIPwVBGiZuaXWFvcmSuGAcxrV43Uz3PJ9kIZgTaAim31Yo0/6alAlZYi/lK2nZG3Blcf
+   cZ1i3CHTQaozUt1CFQHXXfZJi/npGdz/pRqQDSnh3W6OUyAA3LCVwfl9WCW9vqPiK4JmqWK9fMYV
+   1Pop3/RRQtLogx7MNQ5LjPH0pSeq1cEU3itxPg==
+Received: by mta.huntington-email.com id hcvmcu2fmd4k for <outgoing@gmail.com>; Fri, 4 Jul 2025 15:01:35 +0000 (envelope-from <bounce-20839930_HTML-1320866408-46806908-10956480-2935272@bounce.email.huntington.com>)
+From: "Huntington Alerts" <HuntingtonAlerts@email.huntington.com>
+To: <outgoing@gmail.com>
+cDeposit
+Date: Fri, 04 Jul 2025 09:01:35 -0600
+List-Help: <https://click.email.huntington.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiIxMDk1NjQ4MCIsInMiOiIxMzIwODY2NDA4IiwibGlkIjoiMjA4Mzk5MzAiLCJqIjoiNDY4MDY5MDgiLCJqYiI6IjI5MzUyNzIiLCJkIjoiMTAxOTIifQ.FFLaAeDHTuwI0katrIpDiCMSKeiUsRQ2UVCPXQfoLHg>
+MIME-Version: 1.0
+Reply-To: "Huntington Online Banking" <reply-46806908-20839930_HTML-1320866408-10956480-2935272@email.huntington.com>
+X-SFMC-Stack: 1
+x-job: 10956480_46806908
+Message-ID: <36a528e5-817e-424c-affe-04a7ba54c534@ind1s01mta611.xt.local>
+Feedback-ID: 10956480:46806908:207.67.38.53:sfmktgcld
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4=2E01 Transitional//EN" "http://ww=
+w=2Ew3=2Eorg/TR/html4/loose=2Edtd">
+<html>
+A deposit was made to CHECK above the amount you set for an alert
+</html>
+
+From outgoing+caf_=kfike=sagefinancial.dev@gmail.com  Fri Jul  4 16:27:28 2025
+Return-Path: <outgoing+caf_=kfike=sagefinancial.dev@gmail.com>
+X-Original-To: incoming@localhost
+Delivered-To: incoming@localhost
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+	by prod (Postfix) with ESMTPS id AFFFABD001
+	for <incoming@localhost>; Mon, 24 Jun 2024 16:09:51 +0000 (UTC)
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-4ef748596d7so428782e0c.0
+        for <incoming@localhost>; Mon, 24 Jun 2024 09:09:49 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=1719245388; cv=pass;
+        d=google.com; s=arc-20160816;
+        b=jm4qTMTnADAOj+J7F3K7v1TCNZlIio51sqq/kLoMo2ZHPTnWiofBxNx2T7a46YGbRM
+         wNliYSQN4ZKInHhvgarhhLepOZ3Y7iAEOaVu+FRJMOWkD4/Vyrmj94G+StZXl4ubs8v1
+         5aTJk7NN+pBeaIe5ZrjMMUC7fjk/ZqeRw0N+fp5kcV2R5NVUxWbP9MN409e5fGw5DQab
+         mGNundbeeTHAIz2DTTd6nN5p+doSOmUPZeht1RwRXYmw8uCexIh7dhMQ5ua4UrMPG73z
+         aj2Am2f7pGK69Sh1P/whqc/0czwPsJ5m6HJyGE4ZWgBDW4jgNfAWyr4JzskPl64PvKfB
+         /ZGQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=retry-count:notification-id:content-transfer-encoding:mime-version
+         :subject:message-id:to:from:date:dkim-signature:delivered-to;
+        bh=hK4IasLJ2Rvp7eIpQbzA8KbZcGVF9rWEfrQ+pZju3DM=;
+        fh=Y9HEv81hxvkJhFCtDg6PbLZ9I6ZunzWjfBZHLQW5isg=;
+        b=u1j18tkJ0I1RmlVX1VGUPl4NdZXMhvDwaEQAFG3CULgE8Jco5UVAAwUO1jvIjVILli
+         Vii9dsUQ+GE64AC969Kti9DTF+uvOY2gJDVCAxlHhEde3kzSRTeKJMk5Dfq+QTNDuL28
+         MY5niDoPipv0eGEj6JpMTkYHN7g8caFcFHZkVw9D9EVsrGa8G0N/A8lrrETpR7CYYYv9
+         hBxadWnyxm1AJzPF8kNySoBp7mGANSw3z5lgeSIMBVzKatKvkXclvTWjKhOiY5w4kOSL
+         kZbWoGDAf7vDmKLTuaca3RRyQKCltzOqltA6w6b8l/zThn66zyrB8GaYXMrg7+xgygqz
+         pphw==;
+        darn=sagefinancial.dev
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@chase.com header.s=d4815 header.b=6lLnZ2ll;
+       spf=pass (google.com: domain of no.reply.alerts.01@chase.com designates 159.53.111.162 as permitted sender) smtp.mailfrom=no.reply.alerts.01@chase.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=chase.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719245388; x=1719850188;
+        h=retry-count:notification-id:content-transfer-encoding:mime-version
+         :subject:message-id:to:from:date:dkim-signature:delivered-to
+         :x-forwarded-for:x-forwarded-to:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hK4IasLJ2Rvp7eIpQbzA8KbZcGVF9rWEfrQ+pZju3DM=;
+        b=cCO0s0jRvRFmTft2NgdoONGDqB7wNQ3of4BhMbXtLTqTSlZETrhcLIJSbuYBUt4uHY
+         vnIBRr8hX7sLaLZf41ccU3Td9jGt0yW7/sg4u96rfuo7NJdJxoLQqj/os/6M+2UZ299D
+         fMZO21UWOa2G1T0C7PrNAyZYjB2JW5eGiyW998y3TOzr3Lj2AEMkh+SDkHNUUE+4i1ha
+         7zc8okcmp1/Py0tj0OAeU6QEIpIb2N5WlgUHdG75shJ68P30zXf421KiVoMwniTBWiSP
+         MYOvWZHndxUM8V8o4Qwwm1jj0nPIa1sbhrLaYMUXufMTk261e7TbHbVCv9tg4rIeXuQl
+         cnbA==
+X-Forwarded-Encrypted: i=2; AJvYcCVM3PQiDSoc5k5/NCKonzcde1XoUpObCiwdOaJGAZx487G0BFNG0p+GQJLy1cCcK3AQKTZvgPF2KvHtfDtVyMebWxMxa1+9JQ==
+X-Gm-Message-State: AOJu0YxQOJVOcHX3oPnYRoy5hmYim2+ANACMOY9Ym74AVWac3YIvo63e
+	Br/BFmqGCZr5WILNCW3lsXTsKSEUVFY5dtgIT/LvVWvtHmmaMxb3xBu/vZaRYhhkmpWk9e8Ogxg
+	RrCIeW4CDGyCwjlzBE9tOQhSfGHPEEIX9EzKGr15MW2y8pXB/I2A4OnRlbg==
+X-Received: by 2002:a05:6122:911:b0:4ef:630f:d579 with SMTP id 71dfb90a1353d-4ef6d8295f0mr3442887e0c.8.1719245388593;
+        Mon, 24 Jun 2024 09:09:48 -0700 (PDT)
+X-Forwarded-To: incoming@localhost
+X-Forwarded-For: outgoing@gmail.com incoming@localhost
+Delivered-To: outgoing@gmail.com
+Received: by 2002:a59:dc89:0:b0:482:b6d9:4cc with SMTP id eg9csp2027175vqb;
+        Mon, 24 Jun 2024 09:09:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG0YNWvMVQcELJmsNJCkI3F2wyLBnEHA6KNd0KQjWSqgdP+FEMCyFgj1c0tu5om/s/eqp1a
+X-Received: by 2002:a05:6870:2050:b0:254:c512:88c6 with SMTP id 586e51a60fabf-25d06e95dafmr5208984fac.51.1719245386920;
+        Mon, 24 Jun 2024 09:09:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1719245386; cv=none;
+        d=google.com; s=arc-20160816;
+        b=N+i7T0LbuU0X3jeC/qDI2zjAO9dGuHM9gMqpbcnyfWnA853FWM2tQWjmOqeVeW28Ol
+         6kTiBVNlpCYgGEX8pH3/tLoQv4ccjWOjpbzA53LXw5JWusTIEiC3WNkjIUn19JrYZ1FW
+         YNefPVluDKeZMJLdWVyEyQJiYnMQxt00ut+A6tyuH5n9rLQwIrmS+irJSD3JaJhUqsLg
+         AJCwin8RHvaOmpwqjqRc+iy7x7rhP+ccBUCqstpuyKIIZMlgeflLupsks2unacRJI7OD
+         V48ZppeURA8I7WgDz1N9vJ5ptI+LvrH0DLesusB+PQXHdb89byj4NKi52nJMC6OTyksG
+         LcTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=retry-count:notification-id:content-transfer-encoding:mime-version
+         :subject:message-id:to:from:date:dkim-signature;
+        bh=hK4IasLJ2Rvp7eIpQbzA8KbZcGVF9rWEfrQ+pZju3DM=;
+        fh=tvu9BkahkQt+bu2aOWbG8q26O0h+SvacjTTkbZ7z+iQ=;
+        b=J4NJJv5FJlMUeFzNBW36UOTHv1zRtdzEzhySLvivxpVbmxXrCZOdGftzjNc28xP0bc
+         88UiEtJbavXbWn3UfSG7yBmTHVW7tV73ypLPCmcOEbcvaTRxwTRXpwSvWVNkMUVC5H4X
+         ue3/a1Kjgdm3cQJ5fgM1SbK8quUZEhtJSU5/4BexJsbHdeRpdj4b2xQM7Ruahkx5GJ7r
+         tFLK+d2vVrCG68D/KNldHYSgcyg2F7/fYbgKOb8KCqBavVpv9veqLAFIDA671K2Fvm7J
+         RuLcA4sh7OW6R8B0w1Apw9NxGiNdfnSoulmc7Z+fv7goaaG1fVzbBg4ZNyeI0btE2LB5
+         qB3Q==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@chase.com header.s=d4815 header.b=6lLnZ2ll;
+       spf=pass (google.com: domain of no.reply.alerts.01@chase.com designates 159.53.111.162 as permitted sender) smtp.mailfrom=no.reply.alerts.01@chase.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=chase.com
+Received: from shvj22.jpmchase.com (shvj22.jpmchase.com. [159.53.111.162])
+        by mx.google.com with ESMTPS id ada2fe7eead31-48f3313b249si1256668137.146.2024.06.24.09.09.46
+        for <outgoing@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 24 Jun 2024 09:09:46 -0700 (PDT)
+Received-SPF: pass (google.com: domain of no.reply.alerts.01@chase.com designates 159.53.111.162 as permitted sender) client-ip=159.53.111.162;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@chase.com header.s=d4815 header.b=6lLnZ2ll;
+       spf=pass (google.com: domain of no.reply.alerts.01@chase.com designates 159.53.111.162 as permitted sender) smtp.mailfrom=no.reply.alerts.01@chase.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=chase.com
+Received: from pps.filterd (shvj22.dmz.us.jpmchase.net [127.0.0.1])
+	by shvj22.jpmchase.com (8.17.1.19/8.17.1.19) with ESMTP id 45OFPT2e040464
+	for <outgoing@gmail.com>; Mon, 24 Jun 2024 16:09:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chase.com;
+ h=content-transfer-encoding : content-type : date : from : message-id :
+ mime-version : subject : to; s=d4815;
+ bh=hK4IasLJ2Rvp7eIpQbzA8KbZcGVF9rWEfrQ+pZju3DM=;
+ b=6lLnZ2llJ0ygrSBO9SI7hjiTWC8l7bwCw6oXrK2qYXsv1QPznFaxMkswXv41HP7U/yg8
+ HlppMR50Ek2wYs9TOcXHBpKSBIOo6Ups7hq4G4HVmX2XSaJWeKJ7G+912ltUiWd140r2
+ MaHnAlU0rHx7hwQRgy46vodYpBasb+Ncuof4+hfk2QyEVJfd+nCdCuHbzEHRyNYLDYfl
+ piihYXQS/SIt0jZAruS7Wr6t9LGflyGqjD+KKGp1tOcPRWdUGlM7ornRUxGS1mCwCJQ1
+ KsyXytcBu4j9dLnw/R2BgXg+KgFuSncD+nHhjJSFpCEjeJpexd7YrGT4ylvOmdm+NZo/ OA== 
+Received: from vsin25p9786.svr.us.jpmchase.net ([165.168.218.237])
+	by shvj22.dmz.us.jpmchase.net (PPS) with ESMTPS id 3yx81s9x2b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <outgoing@gmail.com>; Mon, 24 Jun 2024 16:09:46 +0000
+Received: from iaasn00692073.nane.jpmchase.net (iaasn00692073.nane.jpmchase.net [169.103.127.223])       by vsin25p9786.svr.us.jpmchase.net  with ESMTP id 45OG9Yej021413       for <outgoing@gmail.com>; Mon, 24 Jun 2024 16:09:34 GMT
+Date: Mon, 24 Jun 2024 16:09:45 +0000 (UTC)
+From: Chase <no.reply.alerts@chase.com>
+To: outgoing@gmail.com
+Message-ID: <846895799.6163407.1719245385630.JavaMail.webuser@iaasn00692073>
+Subject: You have a $150.00 credit pending on your credit card
+MIME-Version: 1.0
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+NOTIFICATION-ID: CREDIT_REALTIME_AUTH-935d6cf4e7c79bf54e82058184535c0801d47a7160b8f501838663471fa0e806-ver2-3187-7d98228d-8aa5-38d2-98de-57bab2055161
+RETRY-COUNT: 0
+Status: RO
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml" lang=3D"en">
+You have a $150.00 credit pending on your credit card</td>
+</html>
+
+From outgoing+caf_=kfike=sagefinancial.dev@gmail.com  Fri Jul  4 16:27:29 2025
+Return-Path: <outgoing+caf_=kfike=sagefinancial.dev@gmail.com>
+X-Original-To: incoming@localhost
+Delivered-To: incoming@localhost
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
+	by prod (Postfix) with ESMTPS id C992ABD001
+	for <incoming@localhost>; Mon,  1 Jul 2024 18:15:27 +0000 (UTC)
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-48f48a5df47so862353137.0
+        for <incoming@localhost>; Mon, 01 Jul 2024 11:15:25 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=1719857725; cv=pass;
+        d=google.com; s=arc-20160816;
+        b=Q1QbowY1glYn1TlOCxfu7WnWXxe6v4nUYoIhlSku/F0ErtQ+8hpDLpRW5PBYly3JZ3
+         PvfctIrx/6ETS223ozISmSx8/tJSBjW4M4hilusS8KL7DpUsnWccq59z4r4Lslb20aEq
+         JSfpFI2hUd7U68/SlLDXW0U3j6pZ5whG9C7TqTaaVBHOzWCAzN8OLkq7Nm1q18sDLObA
+         Z3/qsogfW1LtXDAF01T4HpgvTQnaF6Wv+NP/9MHIbeup1tDWpTjEPhVqREbDUB/KZAYC
+         Org4URLwgO+kl9/RICYgvFzZNpZBzg5qMTk7XKkOzd+M1CoQixddZiC25uPRV5Bpqjm8
+         GbUA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=feedback-id:mime-version:errors-to:subject:message-id:to:reply-to
+         :from:date:dkim-signature:dkim-signature:delivered-to;
+        bh=PRuDl+SqzmozjZuplUfn/OlqwimxZfLYlJC4aYpCSSY=;
+        fh=9oXbIf87R8v/+WgLmOUVB7wkSCHT6cRiutKSh9APIak=;
+        b=N9fxU9VqTITmWMMtnK5i2gh7Qv1N0NlUivEximRr4rajrk9oNLhCZUrN3ACjzSApNd
+         UzfFI3BanvktHgTkCb3NRQm5a6/3bGXX3+9aidEQATgDG1pLPGYs8F9skbdI6QgLyuqB
+         FbfuYm9oNcM1kWNGyZIsU5ZTYFCtsnSL4uO8/cSZBgMAbGcAe9PgOsmZi2jBT7Hr7mXA
+         AllNxL/LX25aR7urSNltH3ioOvJOTIFbeC0YG9lmlgFPnHK46N+rmiueHq0tMTKwA0Og
+         5L5+m7PcgfWq+FfNPvWG+qvMqEzmiVcIUGnHyWhGoRC2ijKZUyzEtqzZ+HJLIH1CVyBH
+         H6pg==;
+        darn=sagefinancial.dev
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@discover.com header.s=gudqkzvwebjfvwnitlxxxt7me5oqwptd header.b=LH4C1hKU;
+       dkim=pass header.i=@amazonses.com header.s=ug7nbtf4gccmlpwj322ax3p6ow6yfsug header.b=LkDxHYxg;
+       spf=pass (google.com: domain of 010001906f823290-1590e9e7-08c8-4949-ab39-abf46f4f5847-000000@services.discover.com designates 54.240.125.40 as permitted sender) smtp.mailfrom=010001906f823290-1590e9e7-08c8-4949-ab39-abf46f4f5847-000000@services.discover.com;
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=discover.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719857725; x=1720462525;
+        h=feedback-id:mime-version:errors-to:subject:message-id:to:reply-to
+         :from:date:dkim-signature:dkim-signature:delivered-to
+         :x-forwarded-for:x-forwarded-to:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PRuDl+SqzmozjZuplUfn/OlqwimxZfLYlJC4aYpCSSY=;
+        b=gqLeBYQPHkwcPDhMhcQo6QK+o+zsGPgHJH9U8D4jvzR2wbowbtCjln5weKhTXtVJoC
+         PU1XpgbLfBVv77lwlVnI/Rbpiko8l3Cr+7E7Pcxq5da2GWfV2VC4pjFVub3+UcqD5CiX
+         DDdfcaFP37nC1ZzXSZXjtvhubJL7Fa9g0dFj6sAV5V1Yh1hsKd7GnEBwtSjm4fiYDacv
+         yu9a4y+95yNSVTMPUifoRmrPISEwXqUjNdOBZq1nv2qKTbhpN/tBGsaA5YI7Rjb/c7QZ
+         fi1GpRYPZ9zDKZ9Za3elPkCslXT9d/fdTgntptgz58ydLMQ43rodxIyT/1steaIXrGZQ
+         l1qg==
+X-Forwarded-Encrypted: i=2; AJvYcCX/NSyQHY7kAoiTvRmV+ZiPYC9Tc28sIkESo/cBa6s6PzfEqcVXNEGmIyvAOx4UeYPAP6s+8cCESJOsLUX2EsZG5i+lZEgqww==
+X-Gm-Message-State: AOJu0YxivRCjo/4REjKw8hzu1sIcRQVdp7vfajecKvUnAuCWTp181s0w
+	4Gib7M5SaKeRDuzfCasKwUrwfaY57wqCCxPI/0poI5O1pKM4YXjESYDkyzgwjPJm5BfEb3x9UeH
+	jBnYH4KY043qm/27sypLxKvOG/FQo3SBljlWFglX7FkW2n2ShGZkjsBJ/Qg==
+X-Received: by 2002:a05:6102:c8c:b0:48f:46ff:7b64 with SMTP id ada2fe7eead31-48faf06a661mr4168374137.9.1719857724524;
+        Mon, 01 Jul 2024 11:15:24 -0700 (PDT)
+X-Forwarded-To: incoming@localhost
+X-Forwarded-For: outgoing@gmail.com incoming@localhost
+Delivered-To: outgoing@gmail.com
+Received: by 2002:a05:612c:1a26:b0:482:b6d9:4cc with SMTP id ht6csp1984868vqb;
+        Mon, 1 Jul 2024 11:15:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHcxnIeemxBcL2+BnnSJUAQz2NVLwk6B/8vFUypK1YCvgW/pJr8goQKswhyWAiCV0AsEG6k
+X-Received: by 2002:a05:6102:5090:b0:48f:201d:a36f with SMTP id ada2fe7eead31-48faf11b31cmr4347684137.26.1719857722599;
+        Mon, 01 Jul 2024 11:15:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1719857722; cv=none;
+        d=google.com; s=arc-20160816;
+        b=PjmydsCmJxctiDJrC2M9PTw/0cBfEWir54XkEd4xyqowMDDKW3xcLrASAxRKRSQlV3
+         3egnUa8CsPTlh+pQed0L+bOYbqEkzJqoKR138dzQeH3c9O5p+6XKxbXtNRUlvKCbaG2q
+         J2PkMR4i1dSkSbkzm398shO4Yj3PdDSFj3tkTUspdAJoao4I5wJc0FrgS+9ZCnkDC0D+
+         LJFaT6cwwfXkmk/rpqnd8/S/3Mg10ywux63qp02z5+UocxQWTpiwxVPsZby2qQgxp4OA
+         CD7tbQU/Yr1IwiMXVxnyovIJ4uh0XMn8TXuXg/4gCf7ZZvbdZVjTuNrtLRCkJQaeS8xJ
+         1RmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=feedback-id:mime-version:errors-to:subject:message-id:to:reply-to
+         :from:date:dkim-signature:dkim-signature;
+        bh=PRuDl+SqzmozjZuplUfn/OlqwimxZfLYlJC4aYpCSSY=;
+        fh=tvu9BkahkQt+bu2aOWbG8q26O0h+SvacjTTkbZ7z+iQ=;
+        b=qru17IHQdNENEtDgc+UXYHm7UFPK47YScHk3CDCyXAMmmSBN3HpOkT9cHPIf7VrLB0
+         rYCIBftmQMjNmPrWN+Xu8sElV7TeQQcSStfas0OpeKrb2RO9aCxCgwbk0jGWTO9o4k3M
+         eHfJCpI6+LFbOIa4IhPm5kl7QE5FURy48Hbc0KHhmJwViO1HDbRi7pgze7n/OdqOETuH
+         gPRxrjAmw9wJq7vszFMT2EIB/8IqwZjrns83xJ4EjTOzJNHzAC7u0/r2bDASu1mX94Kv
+         MhHGwSmnmcEnRSwg6ZWO4AMEk9m8mooNWLOcVNeDEsxPrh3WTeJrM7WOg4s9PqW7DvW9
+         tpIg==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@discover.com header.s=gudqkzvwebjfvwnitlxxxt7me5oqwptd header.b=LH4C1hKU;
+       dkim=pass header.i=@amazonses.com header.s=ug7nbtf4gccmlpwj322ax3p6ow6yfsug header.b=LkDxHYxg;
+       spf=pass (google.com: domain of 010001906f823290-1590e9e7-08c8-4949-ab39-abf46f4f5847-000000@services.discover.com designates 54.240.125.40 as permitted sender) smtp.mailfrom=010001906f823290-1590e9e7-08c8-4949-ab39-abf46f4f5847-000000@services.discover.com;
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=discover.com
+Received: from a125-40.smtp-out.amazonses.com (a125-40.smtp-out.amazonses.com. [54.240.125.40])
+        by mx.google.com with ESMTPS id af79cd13be357-79d692f1d08si947243785a.268.2024.07.01.11.15.22
+        for <outgoing@gmail.com>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Jul 2024 11:15:22 -0700 (PDT)
+Received-SPF: pass (google.com: domain of 010001906f823290-1590e9e7-08c8-4949-ab39-abf46f4f5847-000000@services.discover.com designates 54.240.125.40 as permitted sender) client-ip=54.240.125.40;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@discover.com header.s=gudqkzvwebjfvwnitlxxxt7me5oqwptd header.b=LH4C1hKU;
+       dkim=pass header.i=@amazonses.com header.s=ug7nbtf4gccmlpwj322ax3p6ow6yfsug header.b=LkDxHYxg;
+       spf=pass (google.com: domain of 010001906f823290-1590e9e7-08c8-4949-ab39-abf46f4f5847-000000@services.discover.com designates 54.240.125.40 as permitted sender) smtp.mailfrom=010001906f823290-1590e9e7-08c8-4949-ab39-abf46f4f5847-000000@services.discover.com;
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=discover.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=gudqkzvwebjfvwnitlxxxt7me5oqwptd; d=discover.com; t=1719857722;
+	i=@services.discover.com;
+	h=Date:From:Reply-To:To:Message-ID:Subject:MIME-Version:Content-Type;
+	bh=bCH6wRC3T/mjpxzUSGzpp+rIIlgyEihEo8P6YeswUzE=;
+	b=LH4C1hKUmThHheRbvxxJinYHOPI/B+lK97dhN+uqLu1GXyHP4qtwGE1+w4d4DPe3
+	orfnKeSTbPPEGdumsNFi1GWv0lumySU8yQsBbMcgBvQoREqPUiob7IBWKC8kqoN3MiK
+	KQp4toPS8jTwoIDvSZJOWZf7QTHgs1MGVIOMCqlY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=ug7nbtf4gccmlpwj322ax3p6ow6yfsug; d=amazonses.com; t=1719857722;
+	h=Date:From:Reply-To:To:Message-ID:Subject:MIME-Version:Content-Type:Feedback-ID;
+	bh=bCH6wRC3T/mjpxzUSGzpp+rIIlgyEihEo8P6YeswUzE=;
+	b=LkDxHYxgk+PhHDo0foLv/2z7Jg42x400cJ3JH1QzULgMnkBnlKlRa3GyA2Keedn5
+	j+WbAaMYZUHsJhfspHM0fswIJWT+PBnG2/pUWjXWcAsmPDt3Sfowd0BoMNpq4r0HJ9r
+	x7itu0dqRFR2ELSc0ZKH0yPR6FxGUJ4axHcOulmg=
+Date: Mon, 1 Jul 2024 18:15:22 +0000
+From: Discover Card <discover@services.discover.com>
+Reply-To: dontrply@services.discovercard.com
+To: outgoing@gmail.com
+Message-ID: <010001906f823290-1590e9e7-08c8-4949-ab39-abf46f4f5847-000000@email.amazonses.com>
+Subject: Transaction Alert
+Errors-To: 513328112698636@services.discover.com
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="=_Part_55739287_934768169.1719857721861"
+X-FIN-AGR-TYP: CARD
+X-DFS-ENV: PROD
+X-FORM-CODE: TRANTHR
+X-FORM-GROUP-CODE: DCReminderRTA
+X-MSG-GROUP-CODE: DCardEmails
+X-envelope-sender: 513328112698636
+X-RECIPIENT-DOMAIN: gmail.com
+X-MSG-ID: 28112698636
+X-REQ-ID: 1011469571644086085195
+X-SENT-TIMESTAMP: 1719857721862
+Feedback-ID: ::1.us-east-1.N/DJeZ23Z6baklRh2jU65mA/q2QfUveOfBeDPzI3ako=:AmazonSES
+X-SES-Outgoing: 2024.07.01-54.240.125.40
+Status: RO
+
+--=_Part_55739287_934768169.1719857721861
+
+
+You've set an account alert to let you know if a purchase or cash advance e=
+xceeds your specified amount. This alert is just informational: we've proce=
+ssed the transaction as usual.
+
+Transaction Date:: July 01, 2024
+
+Merchant: Spotify P2D6787D4C
+
+Amount: $18.14
+
+--=_Part_55739287_934768169.1719857721861
+
+From outgoing+caf_=kfike=sagefinancial.dev@gmail.com  Fri Jul  4 16:27:28 2025
+Return-Path: <outgoing+caf_=kfike=sagefinancial.dev@gmail.com>
+X-Original-To: incoming@localhost
+Delivered-To: incoming@localhost
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+	by prod (Postfix) with ESMTPS id C733FC4AD0
+	for <incoming@localhost>; Tue,  4 Jun 2024 07:16:59 +0000 (UTC)
+Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-804efaaae87so257678241.0
+        for <incoming@localhost>; Tue, 04 Jun 2024 00:16:58 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=1717485418; cv=pass;
+        d=google.com; s=arc-20160816;
+        b=IDAmXMMl+Vw+MvRMT4WVVw2ChAPzjWmOgbxhGOGRJVWDEgPPAo0eBMHMOMjvhVQrB2
+         RH8jiv+PbAJlGnWIMS6MBH5lcbOV9jmm63EzNnBWKLrAG3dJdblK1hMUXR8Odwbpax9p
+         RXexbT1O9Yd4xhvndwyI83rxUogjLbMSFLKOtp8+RAx+XbfCQehYzaH3VnI/BJrzdOv5
+         amHyvrWoXNi5JAzQPhSUPHQTmmyeGp4XqIE6Q2W20oKc9ynmb7Cmn28wlKOchC4c1s6s
+         kSjIVF6kQTU4zrtr8tTUVKkqkAZviOv3Qy8eEWmyZMTBr5NWyC9oRZbaQ4vXl+wN1b7z
+         phXA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:feedback-id:message-id:list-id:reply-to
+         :mime-version:list-help:date:subject:to:from:dkim-signature
+         :delivered-to;
+        bh=hOWzr0JEFp3vmrWgWYLFfj4eYAslDy9HtsMppA68JiM=;
+        fh=VGafiVijs5aYrs4yPfN7aQlowZFAFm9viapsNtPlx9E=;
+        b=MD/6IGgtIYacKVvef6FQdAawhMgfevtJ1H5/YK+blQkcjVFHSiGNDBHIs8bFlWeqSv
+         Xk1ym7YuRzY6T7o6fYiVY90hX9UNQ7zZXulKGsou/1gqqcT0ej60DTmHePui97Q/Gufi
+         Vk9qzwMKJJmt7MrR3UQHgdsUxywFT1hX/FkfmeZuDGIJOtBYjCY5hFQQdtxDoNQXBfxh
+         KZyE1CQFflGjUG7Z5FfxgpMGdvMD+Iqlr5QbDJX/o2ILWWxA+sILh0jmtOzSiQ/qcEmK
+         DnET71T7UkEhY5TWLIWeEcqwqwllPARs3DuKAxNRjqSW76YtxGQygFmAzL6qiWZ9VbRR
+         AkBw==;
+        darn=sagefinancial.dev
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@email.huntington.com header.s=200608 header.b=qqa6EjWK;
+       spf=pass (google.com: domain of bounce-20839930_html-1320866408-46098529-10956480-2204076@bounce.email.huntington.com designates 207.67.38.53 as permitted sender) smtp.mailfrom=bounce-20839930_HTML-1320866408-46098529-10956480-2204076@bounce.email.huntington.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=email.huntington.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717485418; x=1718090218;
+        h=content-transfer-encoding:feedback-id:message-id:list-id:reply-to
+         :mime-version:list-help:date:subject:to:from:dkim-signature
+         :delivered-to:x-forwarded-for:x-forwarded-to:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hOWzr0JEFp3vmrWgWYLFfj4eYAslDy9HtsMppA68JiM=;
+        b=wYKakSb/aIxKcU2jJCkMCnjAD16vhLCnm6bVBE7LDOQl8458n/WrZs11XSf/gSbtli
+         1JrKDFUmwtak6PkunSeHjdbKRv1U/SpYpX+TnFgS+jjbutkUlBJ0uKeQt6HMyYLskyiL
+         +KH57L4Navl/1YBx/HTIXRlvj5OM0pM5HbbZc0TuYqSgstgIyPPAmjK19FRgqRronGU6
+         jSgKEXrJEFv3T/WyCUZ7hWTjhPv+UrAn41yyqp2z4i6g5CkAsc8ukkxlNHoWxpyBV5vf
+         0E0oe+pypMv3O2ez5duWALUZ/hq7wBsFLnw6+8hWzakizl+2OL6mWQAePj8NxgJaDNlm
+         DrLw==
+X-Forwarded-Encrypted: i=2; AJvYcCX575OjCMT/ORcgO9aLdhyJtuqYg+f8YvUVidmU3lInnAciY0dvRXzvJ4OuEYMx1z7J4ovPAH/3e8Y7ldPe096d77OnwT7GWg==
+X-Gm-Message-State: AOJu0YzSn2O8pR9rASHEDQbECIbqvw9V03VSv0PLN5L2SPNtmoGuQxET
+	2Ieq2t3m7agfmqBpwpair4jSF4hOkeQpV8aL+/T5hcKa0O3b7tvukjlsXnIrjPkxT3qWHZV0Iuj
+	D+UUHaDykAlJqcl6ocQ3TjvaHhCobjpNZUP73oHVbfSouU3GneKtoefVLJw==
+X-Received: by 2002:a67:b913:0:b0:48b:ac24:2dba with SMTP id ada2fe7eead31-48bc1e66f4cmr12204979137.0.1717485417620;
+        Tue, 04 Jun 2024 00:16:57 -0700 (PDT)
+X-Forwarded-To: incoming@localhost
+X-Forwarded-For: outgoing@gmail.com incoming@localhost
+Delivered-To: outgoing@gmail.com
+Received: by 2002:a59:1217:0:b0:46d:873a:c5ab with SMTP id 23csp2394392vqs;
+        Tue, 4 Jun 2024 00:16:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFpPaQkMqDRv16nTNHqGezEx1dD8wEvthygPUNRZIeQaIXbgpwD8jkIW6iaaD5jjGOMCZLK
+X-Received: by 2002:a05:6214:5a03:b0:6af:6d72:cddc with SMTP id 6a1803df08f44-6af6d72cf27mr73572076d6.13.1717485415794;
+        Tue, 04 Jun 2024 00:16:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1717485415; cv=none;
+        d=google.com; s=arc-20160816;
+        b=xyN+rJMpveRwzLexaBo9jivKq8PaMW7CraJkjmD0unbYykO6uDN8nvjj4bc0+6rYZL
+         hpOp2IlChDUaWQ2KVOeW30lX/GEm1DMThTpOdbCvlFrXlrI7Cv6J4LF0yUxsxOToX+iU
+         R1bw+c6pPszR/XVfjC1bbBZa54vynpzAlwigb8H+nkuAbt/cIvzRR2EzfEWlimdgewkt
+         8GJ6kJiEk0ZBY7lu31JXwS6TTHIpumumFfNqy4r61V9CzYISRY2v4hlX5NMJQMT9/p2F
+         WtyUZxaRo6lRAcogGSnMuJIN1GNUEb2e5/RDfZQwVdvezv4831DzWoadW2d7u4HhdvER
+         rbng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:feedback-id:message-id:list-id:reply-to
+         :mime-version:list-help:date:subject:to:from:dkim-signature;
+        bh=hOWzr0JEFp3vmrWgWYLFfj4eYAslDy9HtsMppA68JiM=;
+        fh=Ln8UHqZ5H/eG/78z3KHzeHZ9c+K/pwEH9W5YI6weeXE=;
+        b=SIc54i65kU/yfV0ZDMV/qpxugJRNhXLsOg/BPwEnSnEbOIPYKoFcY0rTuOAIYL+Ajl
+         m/6zOlN2kptIIsZFKutqUy+rkAvPNjbM7ANrOpR32pliJ6s6U25mjqvg3YuWVsgaYMH8
+         nX9kZWQyxv0C2Xx2NodWApN83HvHF4OpwyrC7HNmAhh0/qd2KD2fPKJGMFXboHYiob0g
+         8iMJLrvbqyXWaxL2fzEWWOKSFsU3Z4rT3IyfhOhzH1XnVZEU7SizyG/85O7a6BnCxZNr
+         wTGaBzCKQBAqBtgO46aQ9ryfRFGWmAS/s37izgsCaNBLcK4MzSIDHqcRaEokrMrNaT3j
+         j9uA==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@email.huntington.com header.s=200608 header.b=qqa6EjWK;
+       spf=pass (google.com: domain of bounce-20839930_html-1320866408-46098529-10956480-2204076@bounce.email.huntington.com designates 207.67.38.53 as permitted sender) smtp.mailfrom=bounce-20839930_HTML-1320866408-46098529-10956480-2204076@bounce.email.huntington.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=email.huntington.com
+Received: from mta.huntington-email.com (mta.huntington-email.com. [207.67.38.53])
+        by mx.google.com with ESMTPS id 6a1803df08f44-6ae4b41c4cbsi110906096d6.427.2024.06.04.00.16.55
+        for <outgoing@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 04 Jun 2024 00:16:55 -0700 (PDT)
+Received-SPF: pass (google.com: domain of bounce-20839930_html-1320866408-46098529-10956480-2204076@bounce.email.huntington.com designates 207.67.38.53 as permitted sender) client-ip=207.67.38.53;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@email.huntington.com header.s=200608 header.b=qqa6EjWK;
+       spf=pass (google.com: domain of bounce-20839930_html-1320866408-46098529-10956480-2204076@bounce.email.huntington.com designates 207.67.38.53 as permitted sender) smtp.mailfrom=bounce-20839930_HTML-1320866408-46098529-10956480-2204076@bounce.email.huntington.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=email.huntington.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=200608; d=email.huntington.com;
+ h=From:To:Subject:Date:List-Help:MIME-Version:Reply-To:List-ID:Message-ID:
+ Content-Type:Content-Transfer-Encoding;
+ i=HuntingtonAlerts@email.huntington.com;
+ bh=hOWzr0JEFp3vmrWgWYLFfj4eYAslDy9HtsMppA68JiM=;
+ b=qqa6EjWKA0oQrG7rwsiY2UExscIqjZZbsXNbHFrn9vL6P9vq+lf2TuKOISPkGM+eHq1TzIR8sofP
+   OYoWO9Mcp1qO1J0iLz5oQ8VcZ5JqVrq9jMX4pYDB/ZWnWr0aH89c0YtyaPDe0Ux0roNDVhkT1Ein
+   JPXNYVwwAdP+Qsrf0VU=
+Received: by mta.huntington-email.com id hbqvme2fmd4l for <outgoing@gmail.com>; Tue, 4 Jun 2024 07:16:55 +0000 (envelope-from <bounce-20839930_HTML-1320866408-46098529-10956480-2204076@bounce.email.huntington.com>)
+From: "Huntington Alerts" <HuntingtonAlerts@email.huntington.com>
+To: <outgoing@gmail.com>
+Subject: Deposit
+Date: Tue, 04 Jun 2024 01:16:55 -0600
+List-Help: <https://click.email.huntington.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiIxMDk1NjQ4MCIsInMiOiIxMzIwODY2NDA4IiwibGlkIjoiMjA4Mzk5MzAiLCJqIjoiNDYwOTg1MjkiLCJqYiI6IjIyMDQwNzYiLCJkIjoiMTAxODYifQ.s-yEMW1mzZ4Dk10ND2hvSZaOiSxvMnrNV1P8nA4bgso>
+MIME-Version: 1.0
+Reply-To: "Huntington Online Banking" <reply-46098529-20839930_HTML-1320866408-10956480-2204076@email.huntington.com>
+List-ID: <10944120.xt.local>
+X-SFMC-Stack: 1
+x-job: 10956480_46098529
+Message-ID: <26e03693-b965-48ec-8443-4b9173f949a2@ind1s01mta612.xt.local>
+Feedback-ID: 10956480:46098529:207.67.38.53:sfmktgcld
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Status: RO
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4=2E01 Transitional//EN" "http://ww=
+w=2Ew3=2Eorg/TR/html4/loose=2Edtd">
+<html>
+We've processed an ACH deposit for $1,040=2E00 from APA=
+  TREAS 310     MISC PAY to your account nicknamed SAVE=2E That's above the=
+ $0=2E00 you set for an alert=2E<br>
+<br>
+Your balance is $1,656=2E00 as of 6/04/24 3:16 AM ET=2E<br>
+<br>
+Thank you for banking with Huntington=2E</span></span><br>
+<br>
+</html>

@@ -21,4 +21,3 @@ ENV["ISDEV"] = ISDEV
 
 with open(APP_ROOT + BANKS_CONFIG_FILE, 'r') as file:
     BANKS_CONFIG = yaml.safe_load(file)
-

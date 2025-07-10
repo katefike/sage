@@ -10,6 +10,8 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 - UID = unique identifier
 - STMT = SQL statement
 - MX = mailserver
+- md = Maildir
+- mb = mbox
 - DB = database
 
 ## Production Setup Instructions
@@ -55,18 +57,34 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
 
 ## Additional Documentation
 All additional documentation can be found in the `docs/` directory.
-- [Troubleshooting](docs/troubleshooting.md): 
+- [Local Development](docs/local_development.md): Provides local development setup instructions, how to create an ephemeral version of Sage for deployment testing (this part costs money), and using Pytest.
+- [Local Architecture .drawio Diagram](docs/local_architecture.drawio)
+- [Prod Architecture .drawio Diagram](docs/prod_architecture.drawio)
+- [Disaster Recovery](docs/disaster_rcovery.md): Provides disaster recovery instructions. This is helpful for when something is deeply wrong with your current Sage deployment, but you have data in the MX and/or DB that you don't want to lose. The guide describes how to create a brand new Sage deployment and attach your existing data to it.
+- [Troubleshooting](docs/troubleshooting.md): Provides troubleshooting advice applicable in both local and prod. If you don't see what you're looking for, it may be in the env specific [local troubleshooting](docs/local_troubleshooting.md) or [prod troubleshooting](docs/prod_troubleshooting.md) files.
     - Lists locations of important log files
-    - How to troubleshoot common scenarios
+    - Common _Help!_ scenarios
     - How to manually test MX operations
-        - Sending emails
         - Retrieving emails
-    - Useful commands for troubleshooting problems with the following
+    - Useful commands
         - Digital Ocean Droplet VM
         - Ansible
         - Docker
         - Python
         - MX Container (running Postfix and Dovecot)
         - Postgres Container
-- [Local Development](docs/local_development.md): Provides local development setup instructions, how to create an ephemeral version of Sage for deployment testing (this part costs money), and using Pytest.
-- [Disaster Recovery](docs/disaster_rcovery.md): Provides disaster recovery instructions. This is helpful for when something is deeply wrong with your current Sage deployment, but you have data in the MX and/or DB that you don't want to lose. The guide describes how to create a brand new Sage deployment and attach your existing data to it. 
+- [Local Troubleshooting](docs/local_troubleshooting.md):
+    - Environment Variables
+    - How to manually test MX operations
+        - Sending emails
+        - Getting an mbox file from your Gmail account
+- [Prod Troubleshooting](docs/prod_troubleshooting.md):
+    - Lists locations of important log files
+    - Common _Help!_ scenarios
+    - How to manually test MX operations
+        - Sending emails
+        - Getting your Maildir directory from the MX
+        - Converting Maildir/ to .mbox
+        - Converting .mbox to Maildir/
+    - Useful commands
+        - Server

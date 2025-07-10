@@ -1,4 +1,3 @@
-import re
 from datetime import datetime
 
 from loguru import logger
@@ -12,6 +11,7 @@ from . import BANKS_CONFIG
 
 logger.add(sink="sage_main.log")
 
+
 def main(email: Email) -> Transaction:
     """
     Parse the txn data from the email.
@@ -22,7 +22,7 @@ def main(email: Email) -> Transaction:
 
     txn = Transaction(email.id)
     # Identify the bank from the email
-    bank = get_bank(email.body)
+    bank = get_bank(email)
     if not bank:
         return
     txn.bank = bank
@@ -66,13 +66,17 @@ def main(email: Email) -> Transaction:
         return
     txn.amount = transform_amount(raw_amount)
     # Identify the date the tansaction email arrived
-    txn.date = get_date(email.body)
+    txn.date = get_date(email)
     return txn
 
 
-def get_bank(body: str) -> str:
+def get_bank(email: Email) -> str:
     """
-    Identify the bank using the bank's email
+    Identify the bank using the bank's email From: header
+    E.g.
+    From: "Huntington Alerts" <HuntingtonAlerts@email.huntington.com>
+
+    or for manually forwarded emails, from the email body
     E.g.
         ---------- Forwarded message ---------
         From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
@@ -80,17 +84,16 @@ def get_bank(body: str) -> str:
         Subject: Withdrawal or Purchase
         To: <localhost>
     """
-    for bank, accounts in BANKS_CONFIG.items():
-        for account in accounts:
-            if regex_search(f"({account.get('email')})", body):
-                return bank
+    for bank, data in BANKS_CONFIG.items():
+        if email.from_ in data['email_addresses']:
+            return bank
     logger.warning("No bank identified")
     return None
 
 
-def get_date(body: str) -> str:
+def get_date(email: Email) -> str:
     """
-    Identify the date using the bank's email
+    Identify the date using the bank's email body
     E.g.
         ---------- Forwarded message ---------
         From: Huntington Alerts <HuntingtonAlerts@email.huntington.com>
@@ -104,10 +107,16 @@ def get_date(body: str) -> str:
         Subject: Your $253.36 transaction with AMZN Mktp US
         To: <localhost>
     """
+    if not email.manually_forwarded:
+        # Date: header is month, day, year format e.g. "Oct 6, 2022"
+        # Reformat the datetime object to ISO 8601 format
+        transformed_date = datetime.strftime(email.forwarded_date, "%Y-%m-%d")
+        return transformed_date
+
     # Match month, day, year format e.g. "Oct 6, 2022"
     raw_date = regex_search(
         r"(?<=Date: \w{3}, )(\w{3} [0-9]{1,2}, [0-9]{4})(?= at [0-9]{1,2}:[0-9]{2}\S|\s\w{2})",
-        body,
+        email.body,
     )
     if raw_date is not None:
         # Converts raw date to datetime object. E.g. "Oct 6, 2022"
@@ -119,7 +128,7 @@ def get_date(body: str) -> str:
     # Match day month year format E.g. "24 Apr 2024"
     raw_date = regex_search(
         r"(?<=Date: \w{3}, )([0-9]{1,2} \w{3},? [0-9]{4})(?= [0-9]{2}:[0-9]{2}:[0-9]{2} )",
-        body,
+        email.body,
     )
     if raw_date is not None:
         # Converts raw date to datetime object. E.g. "24 Apr 2024"
@@ -128,4 +137,7 @@ def get_date(body: str) -> str:
         transformed_date = datetime.strftime(datetime_raw_date, "%Y-%m-%d")
         return transformed_date
     else:
-        raise RegexError(f"Regex failed to get the date from body: {body}")
+        raise RegexError(f"""
+        Regex failed to get the date from body:
+        {email.body}
+        """)

@@ -20,4 +20,6 @@ def test_email_insert(etl_db_conn):
         )
         for result in cursor.fetchall():
             inserted_count = result[0]
+    # Without this it "passes" even if no emails were retrieved
+    assert msg_count.get("retrieved") > 0
     assert msg_count.get("retrieved") == inserted_count
