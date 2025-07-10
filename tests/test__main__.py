@@ -55,3 +55,14 @@ def test_retry_unparsed_emails():
     email_count = main(retry_unparsed_emails=True)
     assert len(emails_) == email_count.get("retrieved")
     assert email_count.get("retrieved") == email_count.get("processed")
+
+
+def test_parsable_emails():
+    """
+    Load parasble emails. 1 txn per available bank will be loaded.
+    They should be retrieved and parsed.
+    """
+
+    utils.refresh_inbox("txn_emails.mbox")
+    msg_count = main()
+    assert msg_count.get("retrieved") == msg_count.get("processed")

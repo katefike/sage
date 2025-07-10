@@ -18,10 +18,14 @@ class Email:
     # and received by the mail server
     # ISO 8601/RFC 3339 format; 1999-01-08 23:04:01
     forwarded_date: str
-    # The email From: line; it should always be the forwarding email
-    from_: str
+    # Was the email manually forwarded and includes
+    # "Fwd:' in the subject and ---------- Forwarded message ---------
+    # in the body. This is helpful for seeing what was forwarded via
+    # IMAP vs manually forwarded
+    manually_forwarded: bool
     # The email of the original sender; the financial instiution's email
-    origin: str
+    # the original From: of manually forwarded emails won't match from_
+    from_: str
     # The email Subject: line
     subject: str
     # Indicates if the email body is html or plain text

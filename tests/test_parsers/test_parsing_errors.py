@@ -48,18 +48,29 @@ sage/models/transaction.py
 """
 import pytest
 
+from sage.models.email import Email
 from sage.parsers import email_parser
+from sage.parsers.banks import huntington, chase, discover
 
 
 def test_get_date_regex_error():
     """
     Raise error when no date parsed from a body.
     """
-    body = "Invalid"
+    email = Email(
+        uid=1,
+        batch_time="1999-01-08 23:04:01",
+        forwarded_date="1999-01-07",
+        manually_forwarded=True,
+        from_="test@test.com",
+        subject="Test invalid body",
+        html="NA",
+        body="Invalid",
+    )
     with pytest.raises(
         email_parser.RegexError, match=f"Regex failed to get the date from body"
     ):
-        email_parser.get_date(body)
+        email_parser.get_date(email)
 
 
 def test_parse_huntington_transfer_withdrawal_regex_error():
@@ -72,7 +83,7 @@ def test_parse_huntington_transfer_withdrawal_regex_error():
         email_parser.RegexError,
         match="Regex failed to get the raw amount from a Huntington transfer withdrawal email body",
     ):
-        email_parser.parse_huntington_transfer_withdrawal(body)
+        huntington.parse_transfer_withdrawal(body)
 
 
 def test_parse_huntington_transfer_deposit_regex_error():
@@ -85,7 +96,7 @@ def test_parse_huntington_transfer_deposit_regex_error():
         email_parser.RegexError,
         match="Regex failed to get the raw amount from a Huntington transfer deposit email body",
     ):
-        email_parser.parse_huntington_transfer_deposit(body)
+        huntington.parse_transfer_deposit(body)
 
 
 def test_parse_huntington_withdrawal_merchant_regex_error():
@@ -100,7 +111,7 @@ def test_parse_huntington_withdrawal_merchant_regex_error():
         email_parser.RegexError,
         match="Regex failed to get the merchant from a Huntington withdrawal email body",
     ):
-        email_parser.parse_huntington_withdrawal(body)
+        huntington.parse_withdrawal(body)
 
 
 def test_parse_huntington_deposit_raw_amount_regex_error():
@@ -115,7 +126,7 @@ def test_parse_huntington_deposit_raw_amount_regex_error():
         email_parser.RegexError,
         match="Regex failed to get the raw amount from a Huntington deposit email body",
     ):
-        email_parser.parse_huntington_deposit(body)
+        huntington.parse_deposit(body)
 
 
 def test_parse_huntington_deposit_payer_regex_error():
@@ -130,7 +141,7 @@ def test_parse_huntington_deposit_payer_regex_error():
         email_parser.RegexError,
         match="Regex failed to get the payer from a Huntington deposit email body",
     ):
-        email_parser.parse_huntington_deposit(body)
+        huntington.parse_deposit(body)
 
 
 def test_get_huntington_account_regex_error():
@@ -143,7 +154,7 @@ def test_get_huntington_account_regex_error():
         email_parser.RegexError,
         match="Regex failed to get the account from a Huntington txn email body",
     ):
-        email_parser.get_huntington_account(body)
+        huntington.get_account(body)
 
 
 def test_get_huntington_balance_regex_error():
@@ -156,4 +167,4 @@ def test_get_huntington_balance_regex_error():
         email_parser.RegexError,
         match="Regex failed to get the balance from a Huntington txn email body",
     ):
-        email_parser.get_huntington_balance(body)
+        huntington.get_balance(body)
