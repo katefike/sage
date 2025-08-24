@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>diff</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="settings" content="whole_filler,use_css,no_foldcolumn,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="none">
+<style>
+<!--
+pre { font-family: monospace; color: #000000; background-color: #ffffff; }
+body { font-family: monospace; color: #000000; background-color: #ffffff; }
+* { font-size: 1em; }
+.Statement { color: #af5f00; }
+.Constant { color: #c00000; }
+.Identifier { color: #008080; }
+.Special { color: #c000c0; }
+.Comment { color: #0000c0; }
+.Type { color: #008000; }
+.Folded { color: #0000c0; background-color: #a8a8a8; padding-bottom: 1px; }
+.DiffAdd { background-color: #5fd7ff; padding-bottom: 1px; }
+.DiffChange { background-color: #ffd7ff; padding-bottom: 1px; }
+.DiffDelete { color: #8080ff; background-color: #afffff; padding-bottom: 1px; }
+.DiffText { background-color: #ff6060; padding-bottom: 1px; font-weight: bold; }
+-->
+<!--
+table { table-layout: fixed; }
+html, body, table, tbody { width: 100%; margin: 0; padding: 0; }
+table, td, th { border: 1px solid; }
+td { vertical-align: top; }
+th, td { width: 50.0%; }
+td div { overflow: auto; }
+-->
+</style>
+</head>
+<body>
+<table id='vimCodeElement'>
+<tr>
+<th>schema_prod_25082401.sql</th>
+<th>schema_dev_25082401.sql</th>
+</tr><tr>
+<td><div>
+<pre>
+<span class="Folded">+-- 53 lines: ----------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="Statement">CREATE</span> <span class="Special">TABLE</span> <span class="Special">public</span>.emails (
+    id <span class="Type">integer</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    <span class="Identifier">uid</span> <span class="Type">integer</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    batch_time <span class="Type">timestamp</span> <span class="Special">with</span> time zone <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    forwarded_date <span class="Type">date</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+    from_ text <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+<span class="DiffAdd">    origin text </span><span class="Statement DiffAdd">NOT</span><span class="DiffAdd"> </span><span class="Special DiffAdd">NULL</span><span class="DiffAdd">,                                                                                                                                                     </span>
+    subject text <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    html <span class="Type">boolean</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    body text <span class="Statement">NOT</span> <span class="Special">NULL</span>
+);
+
+
+<span class="Folded">+-- 92 lines: ALTER TABLE public.emails OWNER TO admin;-----------------------------------------------------------------------------------------------------------------------</span>
+    NO MAXVALUE
+    <span class="Special">CACHE</span> <span class="Constant">1</span>
+);
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">ransactio</span><span class="Comment DiffChange">n_tag_mapping; Type: TABLE; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                   </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">CREATE</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tag_mapping (                                                                                                                                 </span>
+    id <span class="Type">integer</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+<span class="DiffChange">    t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_id </span><span class="Type DiffChange">integer</span><span class="DiffChange"> </span><span class="Statement DiffChange">NOT</span><span class="DiffChange"> </span><span class="Special DiffChange">NULL</span><span class="DiffChange">,                                                                                                                                          </span>
+<span class="DiffChange">    t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tag_id </span><span class="Type DiffChange">integer</span><span class="DiffChange"> </span><span class="Statement DiffChange">NOT</span><span class="DiffChange"> </span><span class="Special DiffChange">NULL</span><span class="DiffChange">                                                                                                                                       </span>
+);
+
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tag_mapping OWNER </span><span class="Special DiffChange">TO</span><span class="DiffChange"> admin;                                                                                                                    </span>
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">ransactio</span><span class="Comment DiffChange">n_tag_mapping_id_seq; Type: SEQUENCE; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                         </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tag_mapping </span><span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">COLUMN</span><span class="DiffChange"> id </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> GENERATED ALWAYS </span><span class="Special DiffChange">AS</span><span class="DiffChange"> IDENTITY (                                                                                 </span>
+<span class="DiffChange">    SEQUENCE NAME </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tag_mapping_id_seq                                                                                                                       </span>
+    <span class="Special">START</span> <span class="Special">WITH</span> <span class="Constant">1</span>
+    <span class="Special">INCREMENT</span> <span class="Special">BY</span> <span class="Constant">1</span>
+    NO MINVALUE
+    NO MAXVALUE
+    <span class="Special">CACHE</span> <span class="Constant">1</span>
+);
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">ransactio</span><span class="Comment DiffChange">n_tags; Type: TABLE; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                          </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">CREATE</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tags (                                                                                                                                        </span>
+    id <span class="Type">integer</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    name text <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    recurring <span class="Type">boolean</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>
+);
+
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tags OWNER </span><span class="Special DiffChange">TO</span><span class="DiffChange"> admin;                                                                                                                           </span>
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">ransactio</span><span class="Comment DiffChange">n_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tags </span><span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">COLUMN</span><span class="DiffChange"> id </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> GENERATED ALWAYS </span><span class="Special DiffChange">AS</span><span class="DiffChange"> IDENTITY (                                                                                        </span>
+<span class="DiffChange">    SEQUENCE NAME </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tags_id_seq                                                                                                                              </span>
+    <span class="Special">START</span> <span class="Special">WITH</span> <span class="Constant">1</span>
+    <span class="Special">INCREMENT</span> <span class="Special">BY</span> <span class="Constant">1</span>
+    NO MINVALUE
+    NO MAXVALUE
+    <span class="Special">CACHE</span> <span class="Constant">1</span>
+);
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">ransactio</span><span class="Comment DiffChange">ns; Type: TABLE; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                              </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">CREATE</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">ns (                                                                                                                                            </span>
+    id <span class="Type">integer</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    email_id <span class="Type">integer</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    <span class="Type">date</span> <span class="Type">date</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    <span class="Special">type</span> text <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    bank_id <span class="Type">integer</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    amount <span class="Type">numeric</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+<span class="DiffChange">    </span><span class="DiffText">entity_id </span><span class="Type DiffText">integer</span><span class="DiffChange">                                                                                                                                                         </span>
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+);
+
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">ns OWNER </span><span class="Special DiffChange">TO</span><span class="DiffChange"> admin;                                                                                                                               </span>
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">ransactio</span><span class="Comment DiffChange">ns_id_seq; Type: SEQUENCE; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                    </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">ns </span><span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">COLUMN</span><span class="DiffChange"> id </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> GENERATED ALWAYS </span><span class="Special DiffChange">AS</span><span class="DiffChange"> IDENTITY (                                                                                            </span>
+<span class="DiffChange">    SEQUENCE NAME </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">ns_id_seq                                                                                                                                  </span>
+    <span class="Special">START</span> <span class="Special">WITH</span> <span class="Constant">1</span>
+    <span class="Special">INCREMENT</span> <span class="Special">BY</span> <span class="Constant">1</span>
+    NO MINVALUE
+    NO MAXVALUE
+    <span class="Special">CACHE</span> <span class="Constant">1</span>
+);
+<span class="Folded">+-- 37 lines: ----------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="Statement">ALTER</span> <span class="Special">TABLE</span> ONLY <span class="Special">public</span>.entity_tags
+    <span class="Special">ADD</span> CONSTRAINT entity_tags_pkey PRIMARY KEY (id);
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">ransaction_tag_mapping transactio</span><span class="Comment DiffChange">n_tag_mapping_pkey; Type: CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffChange">                                                                 </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> ONLY </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tag_mapping                                                                                                                               </span>
+<span class="DiffChange">    </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> CONSTRAINT t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tag_mapping_pkey PRIMARY KEY (id);                                                                                                             </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">ransaction_tags transactio</span><span class="Comment DiffChange">n_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffChange">                                                                               </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> ONLY </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tags                                                                                                                                      </span>
+<span class="DiffChange">    </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> CONSTRAINT t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tags_pkey PRIMARY KEY (id);                                                                                                                    </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">ransactions transactio</span><span class="Comment DiffChange">ns_pkey; Type: CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                       </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> ONLY </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">ns                                                                                                                                          </span>
+<span class="DiffChange">    </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> CONSTRAINT t</span><span class="DiffText">ransactio</span><span class="DiffChange">ns_pkey PRIMARY KEY (id);                                                                                                                        </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment">-- Name: entity_tag_mapping entity_tag_mapping_entity_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin</span>
+<span class="Comment">--</span>
+
+<span class="Folded">+--  7 lines: ALTER TABLE ONLY public.entity_tag_mapping----------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="Statement">ALTER</span> <span class="Special">TABLE</span> ONLY <span class="Special">public</span>.entity_tag_mapping
+    <span class="Special">ADD</span> CONSTRAINT entity_tag_mapping_entity_tag_id_fkey FOREIGN KEY (entity_tag_id) REFERENCES <span class="Special">public</span>.entity_tags(id);
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">ransaction_tag_mapping transaction_tag_mapping_transactio</span><span class="Comment DiffChange">n_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffChange">                                               </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> ONLY </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tag_mapping                                                                                                                               </span>
+<span class="DiffChange">    </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> CONSTRAINT t</span><span class="DiffText">ransaction_tag_mapping_transaction_id_fkey FOREIGN KEY (transaction_id) REFERENCES </span><span class="Special DiffText">public</span><span class="DiffText">.transactio</span><span class="DiffChange">ns(id);                                               </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">ransaction_tag_mapping transaction_tag_mapping_transactio</span><span class="Comment DiffChange">n_tag_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffChange">                                           </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> ONLY </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tag_mapping                                                                                                                               </span>
+<span class="DiffChange">    </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> CONSTRAINT t</span><span class="DiffText">ransaction_tag_mapping_transaction_tag_id_fkey FOREIGN KEY (transaction_tag_id) REFERENCES </span><span class="Special DiffText">public</span><span class="DiffText">.transactio</span><span class="DiffChange">n_tags(id);                                   </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">ransactions transactio</span><span class="Comment DiffChange">ns_bank_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffChange">                                                                            </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> ONLY </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">ns                                                                                                                                          </span>
+<span class="DiffChange">    </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> CONSTRAINT t</span><span class="DiffText">ransactio</span><span class="DiffChange">ns_bank_id_fkey FOREIGN KEY (bank_id) REFERENCES </span><span class="Special DiffChange">public</span><span class="DiffChange">.banks(id);                                                                               </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">ransactions transactio</span><span class="Comment DiffChange">ns_email_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffChange">                                                                           </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> ONLY </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">ns                                                                                                                                          </span>
+<span class="DiffChange">    </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> CONSTRAINT t</span><span class="DiffText">ransactio</span><span class="DiffChange">ns_email_id_fkey FOREIGN KEY (email_id) REFERENCES </span><span class="Special DiffChange">public</span><span class="DiffChange">.emails(id);                                                                            </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">ransactions transactio</span><span class="Comment DiffChange">ns_entity_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffChange">                                                                          </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> ONLY </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">ns                                                                                                                                          </span>
+<span class="DiffChange">    </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> CONSTRAINT t</span><span class="DiffText">ransactio</span><span class="DiffChange">ns_entity_id_fkey FOREIGN KEY (entity_id) REFERENCES </span><span class="Special DiffChange">public</span><span class="DiffChange">.entities(id);                                                                        </span>
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+
+<span class="Comment">--</span>
+<span class="Comment">-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: admin</span>
+<span class="Comment">--</span>
+
+<span class="Folded">+--  2 lines: GRANT USAGE ON SCHEMA public TO grafanareader;------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="Comment">--</span>
+<span class="Comment">-- Name: TABLE banks; Type: ACL; Schema: public; Owner: admin</span>
+<span class="Comment">--</span>
+
+<span class="Statement">GRANT</span> INSERT <span class="Special">ON</span> <span class="Special">TABLE</span> <span class="Special">public</span>.banks <span class="Special">TO</span> etl;
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+
+<span class="Comment">--</span>
+<span class="Comment">-- Name: TABLE emails; Type: ACL; Schema: public; Owner: admin</span>
+<span class="Comment">--</span>
+
+<span class="Statement">GRANT</span> INSERT <span class="Special">ON</span> <span class="Special">TABLE</span> <span class="Special">public</span>.emails <span class="Special">TO</span> etl;
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+
+<span class="Comment">--</span>
+<span class="Comment">-- Name: TABLE entities; Type: ACL; Schema: public; Owner: admin</span>
+<span class="Comment">--</span>
+
+<span class="Statement">GRANT</span> INSERT <span class="Special">ON</span> <span class="Special">TABLE</span> <span class="Special">public</span>.entities <span class="Special">TO</span> etl;
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+
+<span class="Comment">--</span>
+<span class="Comment">-- Name: TABLE entity_tag_mapping; Type: ACL; Schema: public; Owner: admin</span>
+<span class="Comment">--</span>
+
+<span class="Statement">GRANT</span> INSERT <span class="Special">ON</span> <span class="Special">TABLE</span> <span class="Special">public</span>.entity_tag_mapping <span class="Special">TO</span> etl;
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+
+<span class="Comment">--</span>
+<span class="Comment">-- Name: TABLE entity_tags; Type: ACL; Schema: public; Owner: admin</span>
+<span class="Comment">--</span>
+
+<span class="Statement">GRANT</span> INSERT <span class="Special">ON</span> <span class="Special">TABLE</span> <span class="Special">public</span>.entity_tags <span class="Special">TO</span> etl;
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: TABLE t</span><span class="Comment DiffText">ransactio</span><span class="Comment DiffChange">n_tag_mapping; Type: ACL; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                               </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">GRANT</span><span class="DiffChange"> INSERT </span><span class="Special DiffChange">ON</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tag_mapping </span><span class="Special DiffChange">TO</span><span class="DiffChange"> etl;                                                                                                                  </span>
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: TABLE t</span><span class="Comment DiffText">ransactio</span><span class="Comment DiffChange">n_tags; Type: ACL; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                      </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">GRANT</span><span class="DiffChange"> INSERT </span><span class="Special DiffChange">ON</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">n_tags </span><span class="Special DiffChange">TO</span><span class="DiffChange"> etl;                                                                                                                         </span>
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: TABLE t</span><span class="Comment DiffText">ransactio</span><span class="Comment DiffChange">ns; Type: ACL; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                          </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">GRANT</span><span class="DiffChange"> INSERT </span><span class="Special DiffChange">ON</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">ransactio</span><span class="DiffChange">ns </span><span class="Special DiffChange">TO</span><span class="DiffChange"> etl;                                                                                                                             </span>
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+
+<span class="Comment">--</span>
+<span class="Comment">-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: public; Owner: admin</span>
+<span class="Comment">--</span>
+
+<span class="Folded">+--  8 lines: ALTER DEFAULT PRIVILEGES FOR ROLE admin IN SCHEMA public GRANT INSERT ON TABLES  TO etl;------------------------------------------------------------------------</span>
+</pre>
+</div></td>
+<td><div>
+<pre>
+<span class="Folded">+-- 53 lines: ----------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="Statement">CREATE</span> <span class="Special">TABLE</span> <span class="Special">public</span>.emails (
+    id <span class="Type">integer</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    <span class="Identifier">uid</span> <span class="Type">integer</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    batch_time <span class="Type">timestamp</span> <span class="Special">with</span> time zone <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    forwarded_date <span class="Type">date</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+<span class="DiffAdd">    manually_forwarded </span><span class="Type DiffAdd">boolean</span><span class="DiffAdd"> </span><span class="Statement DiffAdd">NOT</span><span class="DiffAdd"> </span><span class="Special DiffAdd">NULL</span><span class="DiffAdd">,                                                                                                                                      </span>
+    from_ text <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+<span class="DiffDelete">------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+    subject text <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    html <span class="Type">boolean</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    body text <span class="Statement">NOT</span> <span class="Special">NULL</span>
+);
+
+
+<span class="Folded">+-- 92 lines: ALTER TABLE public.emails OWNER TO admin;-----------------------------------------------------------------------------------------------------------------------</span>
+    NO MAXVALUE
+    <span class="Special">CACHE</span> <span class="Constant">1</span>
+);
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">x</span><span class="Comment DiffChange">n_tag_mapping; Type: TABLE; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                           </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">CREATE</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">n_tag_mapping (                                                                                                                                         </span>
+    id <span class="Type">integer</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+<span class="DiffChange">    t</span><span class="DiffText">x</span><span class="DiffChange">n_id </span><span class="Type DiffChange">integer</span><span class="DiffChange"> </span><span class="Statement DiffChange">NOT</span><span class="DiffChange"> </span><span class="Special DiffChange">NULL</span><span class="DiffChange">,                                                                                                                                                  </span>
+<span class="DiffChange">    t</span><span class="DiffText">x</span><span class="DiffChange">n_tag_id </span><span class="Type DiffChange">integer</span><span class="DiffChange"> </span><span class="Statement DiffChange">NOT</span><span class="DiffChange"> </span><span class="Special DiffChange">NULL</span><span class="DiffChange">                                                                                                                                               </span>
+);
+
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">n_tag_mapping OWNER </span><span class="Special DiffChange">TO</span><span class="DiffChange"> admin;                                                                                                                            </span>
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">x</span><span class="Comment DiffChange">n_tag_mapping_id_seq; Type: SEQUENCE; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                 </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">n_tag_mapping </span><span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">COLUMN</span><span class="DiffChange"> id </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> GENERATED ALWAYS </span><span class="Special DiffChange">AS</span><span class="DiffChange"> IDENTITY (                                                                                         </span>
+<span class="DiffChange">    SEQUENCE NAME </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">n_tag_mapping_id_seq                                                                                                                               </span>
+    <span class="Special">START</span> <span class="Special">WITH</span> <span class="Constant">1</span>
+    <span class="Special">INCREMENT</span> <span class="Special">BY</span> <span class="Constant">1</span>
+    NO MINVALUE
+    NO MAXVALUE
+    <span class="Special">CACHE</span> <span class="Constant">1</span>
+);
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">x</span><span class="Comment DiffChange">n_tags; Type: TABLE; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                                  </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">CREATE</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">n_tags (                                                                                                                                                </span>
+    id <span class="Type">integer</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    name text <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    recurring <span class="Type">boolean</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>
+);
+
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">n_tags OWNER </span><span class="Special DiffChange">TO</span><span class="DiffChange"> admin;                                                                                                                                   </span>
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">x</span><span class="Comment DiffChange">n_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                        </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">n_tags </span><span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">COLUMN</span><span class="DiffChange"> id </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> GENERATED ALWAYS </span><span class="Special DiffChange">AS</span><span class="DiffChange"> IDENTITY (                                                                                                </span>
+<span class="DiffChange">    SEQUENCE NAME </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">n_tags_id_seq                                                                                                                                      </span>
+    <span class="Special">START</span> <span class="Special">WITH</span> <span class="Constant">1</span>
+    <span class="Special">INCREMENT</span> <span class="Special">BY</span> <span class="Constant">1</span>
+    NO MINVALUE
+    NO MAXVALUE
+    <span class="Special">CACHE</span> <span class="Constant">1</span>
+);
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">x</span><span class="Comment DiffChange">ns; Type: TABLE; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                                      </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">CREATE</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">ns (                                                                                                                                                    </span>
+    id <span class="Type">integer</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    email_id <span class="Type">integer</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    <span class="Type">date</span> <span class="Type">date</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    <span class="Special">type</span> text <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    bank_id <span class="Type">integer</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+    amount <span class="Type">numeric</span> <span class="Statement">NOT</span> <span class="Special">NULL</span>,
+<span class="DiffChange">    </span><span class="DiffText">balance </span><span class="Type DiffText">numeric</span><span class="DiffText">,</span><span class="DiffChange">                                                                                                                                                          </span>
+<span class="DiffAdd">    entity_id </span><span class="Type DiffAdd">integer</span><span class="DiffAdd">,                                                                                                                                                        </span>
+<span class="DiffAdd">    identical_txn_id </span><span class="Type DiffAdd">integer</span><span class="DiffAdd">                                                                                                                                                  </span>
+);
+
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">ns OWNER </span><span class="Special DiffChange">TO</span><span class="DiffChange"> admin;                                                                                                                                       </span>
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">x</span><span class="Comment DiffChange">ns_id_seq; Type: SEQUENCE; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                            </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">ns </span><span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">COLUMN</span><span class="DiffChange"> id </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> GENERATED ALWAYS </span><span class="Special DiffChange">AS</span><span class="DiffChange"> IDENTITY (                                                                                                    </span>
+<span class="DiffChange">    SEQUENCE NAME </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">ns_id_seq                                                                                                                                          </span>
+    <span class="Special">START</span> <span class="Special">WITH</span> <span class="Constant">1</span>
+    <span class="Special">INCREMENT</span> <span class="Special">BY</span> <span class="Constant">1</span>
+    NO MINVALUE
+    NO MAXVALUE
+    <span class="Special">CACHE</span> <span class="Constant">1</span>
+);
+<span class="Folded">+-- 37 lines: ----------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="Statement">ALTER</span> <span class="Special">TABLE</span> ONLY <span class="Special">public</span>.entity_tags
+    <span class="Special">ADD</span> CONSTRAINT entity_tags_pkey PRIMARY KEY (id);
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">xn_tag_mapping tx</span><span class="Comment DiffChange">n_tag_mapping_pkey; Type: CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                 </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> ONLY </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">n_tag_mapping                                                                                                                                       </span>
+<span class="DiffChange">    </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> CONSTRAINT t</span><span class="DiffText">x</span><span class="DiffChange">n_tag_mapping_pkey PRIMARY KEY (id);                                                                                                                     </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">xn_tags tx</span><span class="Comment DiffChange">n_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                               </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> ONLY </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">n_tags                                                                                                                                              </span>
+<span class="DiffChange">    </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> CONSTRAINT t</span><span class="DiffText">x</span><span class="DiffChange">n_tags_pkey PRIMARY KEY (id);                                                                                                                            </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">xns tx</span><span class="Comment DiffChange">ns_pkey; Type: CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                       </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> ONLY </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">ns                                                                                                                                                  </span>
+<span class="DiffChange">    </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> CONSTRAINT t</span><span class="DiffText">x</span><span class="DiffChange">ns_pkey PRIMARY KEY (id);                                                                                                                                </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment">-- Name: entity_tag_mapping entity_tag_mapping_entity_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin</span>
+<span class="Comment">--</span>
+
+<span class="Folded">+--  7 lines: ALTER TABLE ONLY public.entity_tag_mapping----------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="Statement">ALTER</span> <span class="Special">TABLE</span> ONLY <span class="Special">public</span>.entity_tag_mapping
+    <span class="Special">ADD</span> CONSTRAINT entity_tag_mapping_entity_tag_id_fkey FOREIGN KEY (entity_tag_id) REFERENCES <span class="Special">public</span>.entity_tags(id);
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">xn_tag_mapping txn_tag_mapping_tx</span><span class="Comment DiffChange">n_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffChange">                                                                       </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> ONLY </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">n_tag_mapping                                                                                                                                       </span>
+<span class="DiffChange">    </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> CONSTRAINT t</span><span class="DiffText">xn_tag_mapping_txn_id_fkey FOREIGN KEY (txn_id) REFERENCES </span><span class="Special DiffText">public</span><span class="DiffText">.tx</span><span class="DiffChange">ns(id);                                                                               </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">xn_tag_mapping txn_tag_mapping_tx</span><span class="Comment DiffChange">n_tag_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffChange">                                                                   </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> ONLY </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">n_tag_mapping                                                                                                                                       </span>
+<span class="DiffChange">    </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> CONSTRAINT t</span><span class="DiffText">xn_tag_mapping_txn_tag_id_fkey FOREIGN KEY (txn_tag_id) REFERENCES </span><span class="Special DiffText">public</span><span class="DiffText">.tx</span><span class="DiffChange">n_tags(id);                                                                   </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">xns tx</span><span class="Comment DiffChange">ns_bank_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                            </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> ONLY </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">ns                                                                                                                                                  </span>
+<span class="DiffChange">    </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> CONSTRAINT t</span><span class="DiffText">x</span><span class="DiffChange">ns_bank_id_fkey FOREIGN KEY (bank_id) REFERENCES </span><span class="Special DiffChange">public</span><span class="DiffChange">.banks(id);                                                                                       </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">xns tx</span><span class="Comment DiffChange">ns_email_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                           </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> ONLY </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">ns                                                                                                                                                  </span>
+<span class="DiffChange">    </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> CONSTRAINT t</span><span class="DiffText">x</span><span class="DiffChange">ns_email_id_fkey FOREIGN KEY (email_id) REFERENCES </span><span class="Special DiffChange">public</span><span class="DiffChange">.emails(id);                                                                                    </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: t</span><span class="Comment DiffText">xns tx</span><span class="Comment DiffChange">ns_entity_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                          </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">ALTER</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> ONLY </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">ns                                                                                                                                                  </span>
+<span class="DiffChange">    </span><span class="Special DiffChange">ADD</span><span class="DiffChange"> CONSTRAINT t</span><span class="DiffText">x</span><span class="DiffChange">ns_entity_id_fkey FOREIGN KEY (entity_id) REFERENCES </span><span class="Special DiffChange">public</span><span class="DiffChange">.entities(id);                                                                                </span>
+<span class="DiffAdd"> </span><span class="DiffAdd">                                                                                                                                                                             </span>
+<span class="DiffAdd"> </span><span class="DiffAdd">                                                                                                                                                                             </span>
+<span class="Comment DiffAdd">--</span><span class="DiffAdd">                                                                                                                                                                            </span>
+<span class="Comment DiffAdd">-- Name: txns txns_identical_txn_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin</span><span class="DiffAdd">                                                                                   </span>
+<span class="Comment DiffAdd">--</span><span class="DiffAdd">                                                                                                                                                                            </span>
+<span class="DiffAdd"> </span><span class="DiffAdd">                                                                                                                                                                             </span>
+<span class="Statement DiffAdd">ALTER</span><span class="DiffAdd"> </span><span class="Special DiffAdd">TABLE</span><span class="DiffAdd"> ONLY </span><span class="Special DiffAdd">public</span><span class="DiffAdd">.txns                                                                                                                                                  </span>
+<span class="DiffAdd">    </span><span class="Special DiffAdd">ADD</span><span class="DiffAdd"> CONSTRAINT txns_identical_txn_id_fkey FOREIGN KEY (identical_txn_id) REFERENCES </span><span class="Special DiffAdd">public</span><span class="DiffAdd">.txns(id);                                                                      </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment">-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: admin</span>
+<span class="Comment">--</span>
+
+<span class="Folded">+--  2 lines: GRANT USAGE ON SCHEMA public TO grafanareader;------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="Comment">--</span>
+<span class="Comment">-- Name: TABLE banks; Type: ACL; Schema: public; Owner: admin</span>
+<span class="Comment">--</span>
+
+<span class="Statement">GRANT</span> INSERT <span class="Special">ON</span> <span class="Special">TABLE</span> <span class="Special">public</span>.banks <span class="Special">TO</span> etl;
+<span class="Statement DiffAdd">GRANT</span><span class="DiffAdd"> SELECT </span><span class="Special DiffAdd">ON</span><span class="DiffAdd"> </span><span class="Special DiffAdd">TABLE</span><span class="DiffAdd"> </span><span class="Special DiffAdd">public</span><span class="DiffAdd">.banks </span><span class="Special DiffAdd">TO</span><span class="DiffAdd"> grafanareader;                                                                                                                          </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment">-- Name: TABLE emails; Type: ACL; Schema: public; Owner: admin</span>
+<span class="Comment">--</span>
+
+<span class="Statement">GRANT</span> INSERT <span class="Special">ON</span> <span class="Special">TABLE</span> <span class="Special">public</span>.emails <span class="Special">TO</span> etl;
+<span class="Statement DiffAdd">GRANT</span><span class="DiffAdd"> SELECT </span><span class="Special DiffAdd">ON</span><span class="DiffAdd"> </span><span class="Special DiffAdd">TABLE</span><span class="DiffAdd"> </span><span class="Special DiffAdd">public</span><span class="DiffAdd">.emails </span><span class="Special DiffAdd">TO</span><span class="DiffAdd"> grafanareader;                                                                                                                         </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment">-- Name: TABLE entities; Type: ACL; Schema: public; Owner: admin</span>
+<span class="Comment">--</span>
+
+<span class="Statement">GRANT</span> INSERT <span class="Special">ON</span> <span class="Special">TABLE</span> <span class="Special">public</span>.entities <span class="Special">TO</span> etl;
+<span class="Statement DiffAdd">GRANT</span><span class="DiffAdd"> SELECT </span><span class="Special DiffAdd">ON</span><span class="DiffAdd"> </span><span class="Special DiffAdd">TABLE</span><span class="DiffAdd"> </span><span class="Special DiffAdd">public</span><span class="DiffAdd">.entities </span><span class="Special DiffAdd">TO</span><span class="DiffAdd"> grafanareader;                                                                                                                       </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment">-- Name: TABLE entity_tag_mapping; Type: ACL; Schema: public; Owner: admin</span>
+<span class="Comment">--</span>
+
+<span class="Statement">GRANT</span> INSERT <span class="Special">ON</span> <span class="Special">TABLE</span> <span class="Special">public</span>.entity_tag_mapping <span class="Special">TO</span> etl;
+<span class="Statement DiffAdd">GRANT</span><span class="DiffAdd"> SELECT </span><span class="Special DiffAdd">ON</span><span class="DiffAdd"> </span><span class="Special DiffAdd">TABLE</span><span class="DiffAdd"> </span><span class="Special DiffAdd">public</span><span class="DiffAdd">.entity_tag_mapping </span><span class="Special DiffAdd">TO</span><span class="DiffAdd"> grafanareader;                                                                                                             </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment">-- Name: TABLE entity_tags; Type: ACL; Schema: public; Owner: admin</span>
+<span class="Comment">--</span>
+
+<span class="Statement">GRANT</span> INSERT <span class="Special">ON</span> <span class="Special">TABLE</span> <span class="Special">public</span>.entity_tags <span class="Special">TO</span> etl;
+<span class="Statement DiffAdd">GRANT</span><span class="DiffAdd"> SELECT </span><span class="Special DiffAdd">ON</span><span class="DiffAdd"> </span><span class="Special DiffAdd">TABLE</span><span class="DiffAdd"> </span><span class="Special DiffAdd">public</span><span class="DiffAdd">.entity_tags </span><span class="Special DiffAdd">TO</span><span class="DiffAdd"> grafanareader;                                                                                                                    </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: TABLE t</span><span class="Comment DiffText">x</span><span class="Comment DiffChange">n_tag_mapping; Type: ACL; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                       </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">GRANT</span><span class="DiffChange"> INSERT </span><span class="Special DiffChange">ON</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">n_tag_mapping </span><span class="Special DiffChange">TO</span><span class="DiffChange"> etl;                                                                                                                          </span>
+<span class="Statement DiffAdd">GRANT</span><span class="DiffAdd"> SELECT </span><span class="Special DiffAdd">ON</span><span class="DiffAdd"> </span><span class="Special DiffAdd">TABLE</span><span class="DiffAdd"> </span><span class="Special DiffAdd">public</span><span class="DiffAdd">.txn_tag_mapping </span><span class="Special DiffAdd">TO</span><span class="DiffAdd"> grafanareader;                                                                                                                </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: TABLE t</span><span class="Comment DiffText">x</span><span class="Comment DiffChange">n_tags; Type: ACL; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                              </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">GRANT</span><span class="DiffChange"> INSERT </span><span class="Special DiffChange">ON</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">n_tags </span><span class="Special DiffChange">TO</span><span class="DiffChange"> etl;                                                                                                                                 </span>
+<span class="Statement DiffAdd">GRANT</span><span class="DiffAdd"> SELECT </span><span class="Special DiffAdd">ON</span><span class="DiffAdd"> </span><span class="Special DiffAdd">TABLE</span><span class="DiffAdd"> </span><span class="Special DiffAdd">public</span><span class="DiffAdd">.txn_tags </span><span class="Special DiffAdd">TO</span><span class="DiffAdd"> grafanareader;                                                                                                                       </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment DiffChange">-- Name: TABLE t</span><span class="Comment DiffText">x</span><span class="Comment DiffChange">ns; Type: ACL; Schema: public; Owner: admin</span><span class="DiffChange">                                                                                                                  </span>
+<span class="Comment">--</span>
+
+<span class="Statement DiffChange">GRANT</span><span class="DiffChange"> INSERT </span><span class="Special DiffChange">ON</span><span class="DiffChange"> </span><span class="Special DiffChange">TABLE</span><span class="DiffChange"> </span><span class="Special DiffChange">public</span><span class="DiffChange">.t</span><span class="DiffText">x</span><span class="DiffChange">ns </span><span class="Special DiffChange">TO</span><span class="DiffChange"> etl;                                                                                                                                     </span>
+<span class="Statement DiffAdd">GRANT</span><span class="DiffAdd"> SELECT </span><span class="Special DiffAdd">ON</span><span class="DiffAdd"> </span><span class="Special DiffAdd">TABLE</span><span class="DiffAdd"> </span><span class="Special DiffAdd">public</span><span class="DiffAdd">.txns </span><span class="Special DiffAdd">TO</span><span class="DiffAdd"> grafanareader;                                                                                                                           </span>
+
+
+<span class="Comment">--</span>
+<span class="Comment">-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: public; Owner: admin</span>
+<span class="Comment">--</span>
+
+<span class="Folded">+--  8 lines: ALTER DEFAULT PRIVILEGES FOR ROLE admin IN SCHEMA public GRANT INSERT ON TABLES  TO etl;------------------------------------------------------------------------</span>
+</pre>
+</div></td>
+</tr>
+</table>
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->
+
