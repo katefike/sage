@@ -24,20 +24,23 @@ CREATE TABLE IF NOT EXISTS public.emails(
 );
 CREATE TABLE IF NOT EXISTS public.banks(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    NAME TEXT NOT NULL,
+    name TEXT NOT NULL,
     account TEXT,
-    -- TODO: Replace with enum (liquid, debt, investment)
-    TYPE TEXT NOT NULL
+    type TEXT NOT NULL,
+    email_addresses TEXT[] NOT NULL,
+    date_opened DATE,
+    date_closed DATE
 );
-INSERT INTO public.banks (NAME, account, TYPE)
-VALUES ('Huntington', 'savings', 'liquid'),
-    ('Huntington', 'asterisk-free checking', 'liquid'),
-    ('Huntington', 'perks checking', 'liquid'),
-    ('Discover', 'student', 'credit'),
-    ('Discover', 'miles', 'credit'),
-    ('Discover', 'savings', 'liquid');
-INSERT INTO public.banks (NAME, TYPE)
-VALUES ('Chase', 'credit');
+INSERT INTO public.banks (name, account, type, email_addresses, date_opened, date_closed)
+VALUES 
+    ('Huntington', 'SAVE', 'liquid', ARRAY['HuntingtonAlerts@email.huntington.com', 'HuntingtonOnline@email.huntington.com'], '2024-01-01', '2024-12-31'),
+    ('Huntington', 'CHECK', 'liquid', ARRAY['HuntingtonAlerts@email.huntington.com', 'HuntingtonOnline@email.huntington.com'], '2024-01-01', '2024-12-31'),
+    ('Huntington', 'CK9706', 'liquid', ARRAY['HuntingtonAlerts@email.huntington.com', 'HuntingtonOnline@email.huntington.com'], '2024-01-01', '2024-12-31'),
+    ('Discover', 'student', 'credit', ARRAY['discover@services.discover.com'], '2024-01-01', '2024-12-31'),
+    ('Discover', 'miles', 'credit', ARRAY['discover@services.discover.com'], '2024-01-01', '2024-12-31'),
+    ('Discover', 'savings', 'liquid', ARRAY['discover@services.discover.com'], '2024-01-01', '2024-12-31');
+INSERT INTO public.banks (name, type, email_addresses, date_opened, date_closed)
+VALUES ('Chase', 'credit', ARRAY['no.reply.alerts@chase.com'], '2024-01-01', '2024-12-31');
 CREATE TABLE IF NOT EXISTS public.entity_tags(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     NAME TEXT NOT NULL,
