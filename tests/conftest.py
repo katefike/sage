@@ -67,7 +67,7 @@ def etl_db_conn():
 def truncate_tables(admin_db_conn):
     """Only truncates `public` tables"""
 
-    tables_not_to_truncate = ["banks"]
+    tables_not_to_truncate = []
     with admin_db_conn, admin_db_conn.cursor() as cursor:
         cursor.execute(
             """
