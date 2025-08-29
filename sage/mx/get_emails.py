@@ -38,7 +38,7 @@ def main(
             all_email_addresses.update(banks_email_addresses)
             logger.info(
                 f"""
-                Only getting emails from FORWARDING_EMAIL and banks tableemail addresses:
+                Only getting emails from FORWARDING_EMAIL and banks.email_addresses:
                 {all_email_addresses}
                 """
             )
