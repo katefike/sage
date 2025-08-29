@@ -16,11 +16,6 @@ if [ ! -f .env ]; then
     cp .env-example .env
 fi
 
-echo "Copying banks_config-example.yml file"
-echo "and creating your banks_config.yml file..."
 
-if [ ! -f banks_config.yml ]; then
-    cp banks_config-example.yml banks_config.yml
-fi
 
 echo "Go to Step 3 in the README: Define the following environment variables in the .env file:"
