@@ -147,6 +147,3 @@ real_data/
 
 # Logs
 *.log
-
-# Bank config
-banks_config.yml
