@@ -21,7 +21,7 @@ def get_banks_config_email_addresses() -> Set:
     Creates a set (unique list) of bank emails in BANKS_CONFIG
     """
     all_banks_addresses = []
-    for bank in BANKS_CONFIG.values():
+    for bank in BANKS_CONFIG().values():
         all_banks_addresses.extend(bank['email_addresses'])
     unique_banks_email_addresses = set(all_banks_addresses)
     return unique_banks_email_addresses
