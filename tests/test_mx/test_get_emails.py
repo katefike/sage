@@ -53,6 +53,8 @@ def test_get_all_emails():
 def test_get_bank_config_emails():
     """
     Load an mbox containing emails from banks.email_addresses in the DB.
+    Verify the number of emails retrieved is equal to the number of
+    unique email addresses in the banks table.
     """
     banks_email_addresses = get_emails.get_banks_config_email_addresses()
 
