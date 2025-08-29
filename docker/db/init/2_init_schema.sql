@@ -32,6 +32,10 @@ CREATE TABLE IF NOT EXISTS public.banks(
     date_closed DATE
 );
 
+-- Example bank row - customize or remove as needed
+INSERT INTO public.banks (name, account, type, email_addresses, date_opened, date_closed)
+VALUES ('Example Bank', 'checking', 'liquid', ARRAY['alerts@examplebank.com'], '2024-01-01', '2024-12-31');
+
 CREATE TABLE IF NOT EXISTS public.entity_tags(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     NAME TEXT NOT NULL,
