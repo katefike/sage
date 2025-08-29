@@ -52,8 +52,7 @@ def test_get_all_emails():
 
 def test_get_bank_config_emails():
     """
-    Load an mbox containing emails from the addresses in
-    banks_config-example.yml.
+    Load an mbox containing emails from banks.email_addresses in the DB.
     """
     banks_email_addresses = get_emails.get_banks_config_email_addresses()
 
@@ -64,8 +63,9 @@ def test_get_bank_config_emails():
 
 def test_get_unparsed_emails():
     """
-    Insert data into the emails table, simulating initially unparsed emails.
-    Load parsable emails. Run sage and verify they were all processed.
+    Insert data into the emails table, simulating initially unparsed
+    emails. Load parsable emails. Run sage and verify they were all
+    processed.
     """
     utils.refresh_inbox("identical_txns_gmail+cloudHQ_forwards.mbox")
     emails_ = get_emails.main(filter="forwarded")
