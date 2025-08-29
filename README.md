@@ -37,7 +37,7 @@ Thank you @nhopkinson and @whosgonna for their ongoing feedback on this project.
   <br> `POSTGRES_GRAFANA_PASSWORD`: grafanareader role's password
   <br> `POSTGRES_GRAFANA_SSL_MODE`: Change this to "enable".
   <br> `GRAFANA_PASSWORD`: Grafana admin user's password.
-4. Define the banks you will be paring data from in the banks_config.yml file.
+4. Define the banks you will be parsing data from in the database `banks` table.
 5. **WARNING: RUNNING THIS SCRIPT CAUSES DIGITAL OCEAN TO START CHARGING YOU MONEY ON A MONTHLY BASIS FOR YOUR PRODUCTION SERVER.**
   <br> Run the script to create a production Digital Ocean Droplet server that runs the application.
   <br> `bash setup/2_create_prod_server.sh`

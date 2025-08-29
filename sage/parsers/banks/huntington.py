@@ -137,13 +137,7 @@ def get_account(body: str) -> str:
     account = regex_search(
         r"(?<= your account nicknamed )(\w*)(?=. That's above the)", body
     )
-    if account == "CHECK":
-        account = "asterisk-free checking"
-    elif account == "CK2379":
-        account = "perks checking"
-    elif account == "SAVE":
-        account = "savings"
-    else:
+    if not account:
         raise RegexError(
             f"Regex failed to get the account from a Huntington txn email body: {body}"
         )

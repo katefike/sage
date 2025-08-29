@@ -45,7 +45,7 @@ data = [
             merchant=None,
             payer=None,
             amount="999.51",
-            account="asterisk-free checking",
+            account="CHECK",
             balance="1693.13",
         )
     ),
@@ -57,7 +57,7 @@ data = [
             merchant=None,
             payer=None,
             amount="999.51",
-            account="savings",
+            account="SAVE",
             balance="20000.00",
         )
     ),
@@ -69,7 +69,7 @@ data = [
             merchant="VENMO PAYMENT",
             payer=None,
             amount="200.00",
-            account="asterisk-free checking",
+            account="CHECK",
             balance="14.80",
         )
     ),
@@ -81,7 +81,7 @@ data = [
             merchant="TREASURY DIRECT TREAS DRCT",
             payer=None,
             amount="10000.00",
-            account="savings",
+            account="SAVE",
             balance="14000.00",
         )
     ),
@@ -105,7 +105,7 @@ data = [
             merchant=None,
             payer=None,
             amount="500.00",
-            account="savings",
+            account="SAVE",
             balance="16000.00",
         )
     ),
@@ -129,7 +129,7 @@ data = [
             merchant=None,
             payer=None,
             amount="500.00",
-            account="asterisk-free checking",
+            account="CHECK",
             balance="757.06",
         )
     ),
@@ -141,7 +141,7 @@ data = [
             merchant=None,
             payer="CHASE CREDIT CRD RWRD RDM",
             amount="17.09",
-            account="asterisk-free checking",
+            account="CHECK",
             balance="257.06",
         )
     ),

@@ -67,7 +67,7 @@ def etl_db_conn():
 def truncate_tables(admin_db_conn):
     """Only truncates `public` tables"""
 
-    tables_not_to_truncate = ["banks"]
+    tables_not_to_truncate = []
     with admin_db_conn, admin_db_conn.cursor() as cursor:
         cursor.execute(
             """
@@ -88,10 +88,34 @@ def truncate_tables(admin_db_conn):
         print("TRUNCATED TABLES")
 
 
+def insert_bank_data(admin_db_conn):
+    """Insert test bank data into the banks table"""
+    with admin_db_conn, admin_db_conn.cursor() as cursor:
+        cursor.execute("""
+            INSERT INTO public.banks (name, account, type, email_addresses, date_opened, date_closed)
+            VALUES 
+                ('Huntington', 'SAVE', 'liquid', ARRAY['HuntingtonAlerts@email.huntington.com', 'HuntingtonOnline@email.huntington.com'], '2024-01-01', '2024-12-31'),
+                ('Huntington', 'CHECK', 'liquid', ARRAY['HuntingtonAlerts@email.huntington.com', 'HuntingtonOnline@email.huntington.com'], '2024-01-01', '2024-12-31'),
+                ('Huntington', 'CK9706', 'liquid', ARRAY['HuntingtonAlerts@email.huntington.com', 'HuntingtonOnline@email.huntington.com'], '2024-01-01', '2024-12-31'),
+                ('Discover', 'student', 'credit', ARRAY['discover@services.discover.com'], '2024-01-01', '2024-12-31'),
+                ('Discover', 'miles', 'credit', ARRAY['discover@services.discover.com'], '2024-01-01', '2024-12-31'),
+                ('Discover', 'savings', 'liquid', ARRAY['discover@services.discover.com'], '2024-01-01', '2024-12-31')
+        """)
+        cursor.execute("""
+            INSERT INTO public.banks (name, type, email_addresses, date_opened, date_closed)
+            VALUES ('Chase', 'credit', ARRAY['no.reply.alerts@chase.com'], '2024-01-01', '2024-12-31')
+        """)
+        
+        print("INSERTED BANK DATA")
+
+
 @pytest.fixture(scope="function", autouse=True)
 def fresh_conn(admin_db_conn, etl_db_conn):
     # Preemptive pre-test truncation
     truncate_tables(admin_db_conn)
+    
+    # Insert bank data for tests
+    insert_bank_data(admin_db_conn)
 
     yield etl_db_conn
 
