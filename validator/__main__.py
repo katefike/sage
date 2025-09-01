@@ -38,18 +38,21 @@ def main(file: str, date: str):
 
     dates, start_date, stop_date = create_dates(date)
 
-    # Get DB data
+    # Get bank and account from file name
     file_parts = file.split("_")
     bank = file_parts[0]
     account = file_parts[1]
 
+    # Define CSV format for the bank
     if bank == "Huntington":
         csv_cols = dict(date_col="Date", merchant_col="Payee Name", amount_col="Amount")
     if bank == "Chase":
+        # Chase doesn't have an account name
         account = None
         csv_cols = dict(
             date_col="Txn Date", merchant_col="Description", amount_col="Amount"
         )
+
 
     if start_date == stop_date:
         logger.info(
@@ -59,6 +62,7 @@ def main(file: str, date: str):
         logger.info(
             f"Getting DB txn data from {start_date} to {stop_date}, bank {bank}, account {account}."
         )
+
 
     db_data = get_db_data(start_date, stop_date, bank, account)
 
@@ -237,7 +241,7 @@ def diff_csv_and_db_data(csv_data: List, db_data: List, csv_cols: Dict) -> Dict:
                 continue
 
             if "transfer" in txn.type_:
-                continue
+                txn.merchant = txn.type_
 
             stripped_txn_merchant = txn.merchant.replace(" ", "")
             transformed_txn_merchant = stripped_txn_merchant.lower()[:10]
