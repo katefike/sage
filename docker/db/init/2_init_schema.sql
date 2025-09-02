@@ -24,20 +24,18 @@ CREATE TABLE IF NOT EXISTS public.emails(
 );
 CREATE TABLE IF NOT EXISTS public.banks(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    NAME TEXT NOT NULL,
+    name TEXT NOT NULL,
     account TEXT,
-    -- TODO: Replace with enum (liquid, debt, investment)
-    TYPE TEXT NOT NULL
+    type TEXT NOT NULL,
+    email_addresses TEXT[] NOT NULL,
+    date_opened DATE,
+    date_closed DATE
 );
-INSERT INTO public.banks (NAME, account, TYPE)
-VALUES ('Huntington', 'savings', 'liquid'),
-    ('Huntington', 'asterisk-free checking', 'liquid'),
-    ('Huntington', 'perks checking', 'liquid'),
-    ('Discover', 'student', 'credit'),
-    ('Discover', 'miles', 'credit'),
-    ('Discover', 'savings', 'liquid');
-INSERT INTO public.banks (NAME, TYPE)
-VALUES ('Chase', 'credit');
+
+-- Example bank row - customize or remove as needed
+INSERT INTO public.banks (name, account, type, email_addresses, date_opened, date_closed)
+VALUES ('Example Bank', 'checking', 'liquid', ARRAY['alerts@examplebank.com'], '2024-01-01', '2024-12-31');
+
 CREATE TABLE IF NOT EXISTS public.entity_tags(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     NAME TEXT NOT NULL,
