@@ -97,6 +97,7 @@ def insert_bank_data(admin_db_conn):
                 ('Huntington', 'SAVE', 'liquid', ARRAY['HuntingtonAlerts@email.huntington.com', 'HuntingtonOnline@email.huntington.com'], '2024-01-01', '2024-12-31'),
                 ('Huntington', 'CHECK', 'liquid', ARRAY['HuntingtonAlerts@email.huntington.com', 'HuntingtonOnline@email.huntington.com'], '2024-01-01', '2024-12-31'),
                 ('Huntington', 'CK9706', 'liquid', ARRAY['HuntingtonAlerts@email.huntington.com', 'HuntingtonOnline@email.huntington.com'], '2024-01-01', '2024-12-31'),
+                ('Huntington', 'CK2379', 'liquid', ARRAY['HuntingtonAlerts@email.huntington.com', 'HuntingtonOnline@email.huntington.com'], '2024-01-01', '2024-12-31'),
                 ('Discover', 'student', 'credit', ARRAY['discover@services.discover.com'], '2024-01-01', '2024-12-31'),
                 ('Discover', 'miles', 'credit', ARRAY['discover@services.discover.com'], '2024-01-01', '2024-12-31'),
                 ('Discover', 'savings', 'liquid', ARRAY['discover@services.discover.com'], '2024-01-01', '2024-12-31')
