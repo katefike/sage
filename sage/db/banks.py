@@ -33,5 +33,9 @@ def get_id(bank_name: str, account: Optional[str]) -> int:
                 name = %s
             """
     rows, _colummns = execute_statements.select(query, params)
+    
+    if not rows:
+        raise ValueError(f"Bank not found: {bank_name}" + (f" account: {account}" if account else ""))
+    
     bank_id = rows[0][0]
     return bank_id
