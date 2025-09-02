@@ -23,6 +23,10 @@ DATA = [
         dict(file="identical_txns_2_cloudHQ_forwards.mbox"),
         dict(inserted_txn_count=2, identical_txn_count=1),
     ),
+    (
+        dict(file="identical_txns_2_Huntington_transfers.mbox"),
+        dict(inserted_txn_count=2, identical_txn_count=1),
+    ),
 ]
 
 

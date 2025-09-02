@@ -1,0 +1,1191 @@
+From 1806109042330187379@xxx Wed Jul 31 15:30:06 +0000 2024
+X-GM-THRID: 1806109042330187379
+X-Gmail-Labels: Inbox,Category Updates,Backfill/202407
+Delivered-To: outgoing@gmail.com
+Received: by 2002:a05:612c:83:b0:486:8641:dba5 with SMTP id 3csp376863vql;
+        Wed, 31 Jul 2024 08:30:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGb73dnGRRHww6Zcbb/hSZldtrkMc3vjn8Acbf3DyY70jQrvPCBBKTXT5dvB0V38l+DYnWP
+X-Received: by 2002:a05:6122:469a:b0:4ef:280f:96ea with SMTP id 71dfb90a1353d-4f6e68d363cmr18054440e0c.4.1722439806149;
+        Wed, 31 Jul 2024 08:30:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1722439806; cv=none;
+        d=google.com; s=arc-20160816;
+        b=EnaR4DhSguikZp1xxBemiBxbcYMxDPeQ5pivOA1sJGNbEf3M7hdn5gbE1eUPLPSjUH
+         HgYwbEdzSkpyeJZ3R5WfDNtBnzJt6d44Fp4qM+XoKXv5oEKOiytRdrGL7RF4mTExGrXV
+         8HylPGz6fjBNQkIT2RmlqS45a5PzofVTt2UbY42GRPz3aArdxHHGWRy155vmvtu/5oif
+         Ysyeyu6eMx/RcGVnGH/ExzU184nmZkx71I/BnoyG9CqxBHbdqpBiJNEeI8ZnZcnsiAQJ
+         M9CrDVI/kqAF7NWBIxSQhAoPCmDb1cjAEVdhg5NFtyVpKOV3eVmiOIsZAMm6e5XxiZ5A
+         dHxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:feedback-id:message-id:list-id:reply-to
+         :mime-version:list-help:date:subject:to:from:dkim-signature;
+        bh=lZ05TEHm2mY4N0RLCIGn7fW9MZ1aeYl7M7RR5Xejw2M=;
+        fh=Ln8UHqZ5H/eG/78z3KHzeHZ9c+K/pwEH9W5YI6weeXE=;
+        b=APx5xrqcyY+erZgaNzZFrsHDM9QIUSuxXmDJEGNm/+ESTJ03phlpLMbQ2ckZnWcEXC
+         5sIW93xztzEo2Lo0qo8lWTGjACQ2yYtshO1BPZzJGgF3JwSA65Cf7uvepSgux5ujJXOe
+         kwZPMhhVw10MZDPFAnzEQ8G05Z3YVhCGkZJjC6QffhRDvUMexTQiQFJtOVznc0Nt6Z4i
+         faEYttcySVAjYEHaumDvJivOfU5hwvjA21ZnctU1/TXPa8n+dGuUgk8jUzcNd83N12rb
+         fQQmu9Qqhcct1KNTaFQmehf3L2aUClVV4hxpWOSN73Hjy5aMGmmLOF+jz5DfemTx7h75
+         MsCg==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@email.huntington.com header.s=200608 header.b=WxP3wUuo;
+       spf=pass (google.com: domain of bounce-20547735_html-889798751-46471468-10956480-1089583@bounce.email.huntington.com designates 207.67.38.53 as permitted sender) smtp.mailfrom=bounce-20547735_HTML-889798751-46471468-10956480-1089583@bounce.email.huntington.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=email.huntington.com
+Return-Path: <bounce-20547735_HTML-889798751-46471468-10956480-1089583@bounce.email.huntington.com>
+Received: from mta.huntington-email.com (mta.huntington-email.com. [207.67.38.53])
+        by mx.google.com with ESMTPS id d75a77b69052e-44fe851b536si157750031cf.672.2024.07.31.08.30.06
+        for <outgoing@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 31 Jul 2024 08:30:06 -0700 (PDT)
+Received-SPF: pass (google.com: domain of bounce-20547735_html-889798751-46471468-10956480-1089583@bounce.email.huntington.com designates 207.67.38.53 as permitted sender) client-ip=207.67.38.53;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@email.huntington.com header.s=200608 header.b=WxP3wUuo;
+       spf=pass (google.com: domain of bounce-20547735_html-889798751-46471468-10956480-1089583@bounce.email.huntington.com designates 207.67.38.53 as permitted sender) smtp.mailfrom=bounce-20547735_HTML-889798751-46471468-10956480-1089583@bounce.email.huntington.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=email.huntington.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=200608; d=email.huntington.com;
+ h=From:To:Subject:Date:List-Help:MIME-Version:Reply-To:List-ID:Message-ID:
+ Content-Type:Content-Transfer-Encoding;
+ i=HuntingtonAlerts@email.huntington.com;
+ bh=lZ05TEHm2mY4N0RLCIGn7fW9MZ1aeYl7M7RR5Xejw2M=;
+ b=WxP3wUuoVDAnT90wxBJkHps2I0GJJv5jEt/Iz15RG8q9QyVNwX4Huf39r925vl6m9K83sA9jbXQR
+   a5V8jVychh91ZHijgLsgH/p8H/jpFG7VO+ZCsgBAaPFaeJIZ2RyKZzdOGC67rEME52nLyfO8gGFW
+   +GHPqnn9JyAOKoZUi8k=
+Received: by mta.huntington-email.com id hl9c7s2fmd48 for <outgoing@gmail.com>; Wed, 31 Jul 2024 15:30:05 +0000 (envelope-from <bounce-20547735_HTML-889798751-46471468-10956480-1089583@bounce.email.huntington.com>)
+From: "Huntington Alerts" <HuntingtonAlerts@email.huntington.com>
+To: <outgoing@gmail.com>
+Subject: Withdrawal or Purchase
+Date: Wed, 31 Jul 2024 09:30:05 -0600
+List-Help: <https://click.email.huntington.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiIxMDk1NjQ4MCIsInMiOiI4ODk3OTg3NTEiLCJsaWQiOiIyMDU0NzczNSIsImoiOiI0NjQ3MTQ2OCIsImpiIjoiMTA4OTU4MyIsImQiOiIxMDE4MiJ9.lpXqjbqzuRkjr_99YYmZvnzOHLw-xi9nF4O_UDCUFGU>
+MIME-Version: 1.0
+Reply-To: "Huntington Online Banking" <reply-46471468-20547735_HTML-889798751-10956480-1089583@email.huntington.com>
+List-ID: <10944120.xt.local>
+X-SFMC-Stack: 1
+x-job: 10956480_46471468
+Message-ID: <c8a91478-aaeb-41d3-8369-3bb067ddec65@ind1s01mta612.xt.local>
+Feedback-ID: 10956480:46471468:207.67.38.53:sfmktgcld
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4=2E01 Transitional//EN" "http://ww=
+w=2Ew3=2Eorg/TR/html4/loose=2Edtd">
+<html>
+  <head>
+    <meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=
+=3D1, maximum-scale=3D1, user-scalable=3D0" />
+    <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8=
+" />
+    <style type=3D"text/css">
+      ReadMsgBody{ width: 100%;}
+      =2EExternalClass {width: 100%;}
+      =2EExternalClass, =2EExternalClass p, =2EExternalClass span, =2EExter=
+nalClass font, =2EExternalClass td, =2EExternalClass div {line-height: 100%=
+;}
+      body {-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;margin=
+:0 !important;}
+      p { margin: 1em 0;}
+      table td { border-collapse: collapse;}
+      img {outline:0;}
+      a img {border:none;}
+      p {margin: 1em 0;}
+      @-ms-viewport{ width: device-width;}
+    </style>
+    <style type=3D"text/css">
+      @media only screen and (max-width: 480px) {
+        =2Econtainer {width: 100% !important;}
+        =2Efooter { width:auto !important; margin-left:0; }
+        =2Econtent-padding{ padding:4px !important; }
+        =2Emobile-hidden { display:none !important; }
+        =2Elogo { display:block !important; padding:0 !important; }
+        img { max-width:100% !important; height:auto !important; max-height=
+:auto !important;}
+        =2Eheader img{max-width:100% !important;height:auto !important; max=
+-height:auto !important;}
+        =2Ephoto img { width:100% !important; max-width:100% !important; he=
+ight:auto !important;}
+        =2Edrop { display:block !important; width: 100% !important; float:l=
+eft; clear:both;}
+        =2Efooterlogo { display:block !important; width: 100% !important; p=
+adding-top:15px; float:left; clear:both;}
+        =2Enav4, =2Enav5, =2Enav6 { display: none !important; }
+        =2EtableBlock {width:100% !important;}
+        =2Eresponsive-td {width:100% !important; display:block !important; =
+padding:0 !important; }
+        =2Efluid, =2Efluid-centered {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: auto !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        =2Efluid-centered {
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        /* MOBILE GLOBAL STYLES - DO NOT CHANGE */
+        body { padding: 0px !important; font-size: 16px !important; line-he=
+ight: 150% !important;}
+        h1 { font-size: 22px !important; line-height: normal !important;}
+        h2 { font-size: 20px !important; line-height: normal !important;}
+        h3 { font-size: 18px !important; line-height: normal !important;}
+        =2Ebuttonstyles {
+          font-family:arial,helvetica,sans-serif !important;
+          font-size: 16px !important;
+          color: #FFFFFF !important;
+          padding: 10px !important;
+        }
+        /* END OF MOBILE GLOBAL STYLES - DO NOT CHANGE */
+      }
+      @media only screen and (max-width: 640px) {
+        =2Econtainer { width:100% !important; }
+        =2Emobile-hidden { display:none !important; }
+        =2Elogo { display:block !important; padding:0 !important; }
+        =2Econtact a {color:#5BA63C!important; text-decoration:underline!im=
+portant;}
+        =2Ephoto img { width:100% !important; height:auto !important;}
+        =2Enav5, =2Enav6 { display: none !important;}
+        =2Efluid, =2Efluid-centered {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: auto !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        =2Efluid-centered {
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+      }
+    </style>
+    <!--[if mso]>       <style type=3D"text/css">           /* Begin Outloo=
+k Font Fix */           body, table, td {               font-family: Arial,=
+ Helvetica, sans-serif ;               font-size:16px;               color:=
+#808080;               line-height:1;           }           /* End Outlook =
+Font Fix */       </style>     <![endif]-->
+  </head>
+  <body bgcolor=3D"#ffffff" text=3D"#000000" style=3D"background-color: #ff=
+ffff; color: #000000; padding: 0px; -webkit-text-size-adjust:none; font-siz=
+e: 16px; font-family:arial,helvetica,sans-serif;"><style type=3D"text/css">=
+
+div=2Epreheader 
+{ display: none !important; } 
+</style>
+<div class=3D"preheader" style=3D"font-size: 1px; display: none !important;=
+">We've processed a withdrawal or purchase above the amount you set for an =
+alert=2E</div>
+    <table width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+align=3D"center">
+      <tr>
+        <td align=3D"center" valign=3D"top">
+          
+        </td>
+      </tr>
+      <tr>
+        <td align=3D"center">
+          <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"=
+600" class=3D"container" align=3D"center">
+            <tr>
+              <td>
+                <table class=3D"tb_properties border_style" style=3D"backgr=
+ound-color:#FFFFFF;" cellspacing=3D"0" cellpadding=3D"0" bgcolor=3D"#ffffff=
+" width=3D"100%">
+                  <tr>
+                    <td align=3D"center" valign=3D"top">
+                      <table align=3D"left" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" width=3D"100%">
+                        <tr>
+                          <!-- added padding here -->
+                          <td class=3D"content_padding" style=3D"">
+                            <!-- end of comment -->
+                            <table border=3D"0" cellpadding=3D"0" cellspaci=
+ng=3D"0" width=3D"100%">
+                              <tr> <!-- top slot -->
+                                <td align=3D"center" class=3D"header" valig=
+n=3D"top">
+                                  <table align=3D"left" border=3D"0" cellpa=
+dding=3D"0" cellspacing=3D"0" width=3D"100%">
+                                    <tbody>
+                                        <tr>
+                                          <td align=3D"left" valign=3D"top"=
+>
+                                            <table cellspacing=3D"0" cellpa=
+dding=3D"0" style=3D"width:100%">
+                                              <tbody>
+                                              <tr>
+                                                <td class=3D"responsive-td"=
+ valign=3D"top" style=3D"width: 100%;">
+                                                  <table style=3D"min-width=
+: 100%; " class=3D"stylingblock-content-wrapper" width=3D"100%" cellspacing=
+=3D"0" cellpadding=3D"0"><tr><td class=3D"stylingblock-content-wrapper cama=
+rker-inner">
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
+<meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D1"=
+>
+<title></title>
+<style type=3D"text/css">
+
+ /* CLIENT-SPECIFIC STYLES */
+   body{ width:100% !important; -webkit-text-size-adjust:100%; -ms-text-siz=
+e-adjust:100%; margin:0; padding:0;} /* Prevent WebKit and Windows mobile c=
+hanging default text sizes + Margin Reset */
+  =2EReadMsgBody{width:100%;} =2EExternalClass{width:100%;} /* Force Hotmai=
+l to display emails at full width */
+  =2EExternalClass * {line-height: 100%} /* Force Hotmail/Outlook to displa=
+y normal line spacing */
+  #outlook a{padding:0;} /* Force Outlook to provide a "view in browser" me=
+ssage */
+  table, td{mso-table-lspace:0pt; mso-table-rspace:0pt;} /* Remove spacing =
+between tables in Outlook 2007 and up */
+  img { outline:none; text-decoration:none; -ms-interpolation-mode:bicubic;=
+} /* Allow smoother rendering of resized image in Internet Explorer */
+
+/* RESET STYLES */
+
+    img{border:0; line-height:100%; outline:none; text-decoration:none;}
+    table{border-collapse:collapse !important;}
+    body{height:100% !important; margin:0; padding:0; width:100% !important=
+;}
+ a:link, v:link {color:#417300;} /*Link Color for IOS */
+ =2EappleLinksWhite a {color: #ffffff !important; text-decoration: none;} 
+=
+
+ =2EappleLinksBlack a {color: #394048 !important; text-decoration: none;}
+=
+
+ =2EappleLinksGreen a {color: #766d65 !important; text-decoration: none;}
+=
+
+ 
+ @media only screen and (max-width:480px) {
+  *[class*=3Dresizetofull] { width:100% !important; height:auto !important;=
+ margin: 0 auto  !important; padding:0 !important;}/*Place this on main tab=
+le hosting email - Makes it fluid*/
+  *[class*=3Dcolstack] { display: block; width: 100%; padding: 0 !important=
+ }
+  *[class*=3Dmobile-hide] {display:none !important;} /*Hide images from mob=
+ile - but keeps it in desktop */  
+  *[class*=3Dmobile-show] {display: block !important;overflow : visible !im=
+portant;height: auto !important;max-height: inherit !important;} /*Hides el=
+ements in desktop but displays them in Mobile */
+  *[class*=3Dmobile-show-footer-text] {display:inline !important; font-size=
+:11px !important; line-height:1;} /*Hides elements in desktop but displays =
+them in Mobile */
+  *[class*=3Dmobile-show-inline] {display: inline-block !important;overflow=
+ : visible !important;height: auto !important;max-height: inherit !importan=
+t;} /*Hides elements in desktop but displays them in Mobile */
+  *[class*=3Dmobile-show-table] {display:table !important;overflow : visibl=
+e !important;height: auto !important;max-height: inherit !important;} /* As=
+sign to a table that is hidden in mobile, but shows in mobile */
+  *[class*=3Dmobile-show-tr] {display:table-row !important;overflow : visib=
+le !important;height: auto !important;max-height: inherit !important;} /* A=
+ssign to a tr that is hidden in mobile, but shows in mobile */
+  *[class*=3Dmobile-show-td] {display:table-cell !important;overflow : visi=
+ble !important;height: auto !important;max-height: inherit !important;} /* =
+Assign to a td that is hidden in mobile, but shows in mobile */
+  *[class*=3Dremovepadding] {padding: 0 !important;} /* removes padding fro=
+m Desktop view */
+  *[class*=3Dmobilepadding] { padding: 10px !important; } /* Mobile padding=
+ */
+  *[class*=3DpadT10] { padding-top: 10px !important; } /* Mobile padding to=
+p*/
+  *[class*=3DpadT20] { padding-top: 20px !important; } /* Mobile padding to=
+p*/
+  *[class*=3DpadL10] { padding-left: 10px !important; } /* Mobile padding l=
+eft*/
+  *[class*=3DpadR10] { padding-Right: 10px !important; } /* Mobile padding =
+right*/
+  *[class*=3DpadB10] { padding-Bottom: 10px !important; } /* Mobile padding=
+ left*/
+  *[class*=3DpadB20] { padding-Bottom: 20px !important; } /* Mobile padding=
+ left*/
+  *[class*=3Dfourteen] { font-size: 14px !important; } /* Mobile font size =
+*/
+  *[class~=3Dmobile-block] { width: 100% !important; } /* unhide image elem=
+ent from desktop*/
+  =2Eleftcol { display:table-footer-group; }
+  =2Erightcol { display:table-header-group; }
+    *[class~=3Dalign-left] { text-align:left !important;}
+  *[class~=3Dalign-center] { text-align:center !important; margin: 0 auto !=
+important }
+  *[class~=3Dalign-right] { text-align:right !important;}
+  *[class~=3DminWFix] {min-width:inherit !important;}
+  *[class~=3Dh10] {height:10px !important;}
+  *[class~=3Dborder1Bgrey] {border-bottom:1px solid #cccccc !important;}
+  *[class~=3DbgGrey] {background-color:#ebebeb !important;}
+  *[class~=3DbgWhite] {background-color:#ffffff !important;}
+  *[class~=3DfontWeightNorm] {font-weight:normal !important;}
+  *[class~=3DmobileNav] {display:block !important; border-top:2px solid #ff=
+ffff; padding:15px 0; font-weight:bold; font-size:14px; line-height:1;}
+  
+}
+</style>
+
+
+      
+      <table width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0=
+">
+          
+            <tr>
+              <td class=3D"mobile-hide" style=3D"color:#766d65; padding-top=
+:15px; padding-bottom:15px;" width=3D"50%" align=3D"left"><!-- content area=
+ here -->
+              <table class=3D"dashedborder" width=3D"100%" cellspacing=3D"0=
+" cellpadding=3D"0" border=3D"0">
+          
+    <tr>
+      <td style=3D"color:#766d65; font-size:12px; line-height:1; font-famil=
+y:Tahoma, Arial, Helvetica, sans-serif" align=3D"left"><custom name=3D"preh=
+eader" type=3D"content"></custom></td>
+    </tr>
+  
+</table><!-- end content area -->
+</td>
+      <td class=3D"align-center padB10" style=3D" font-size:12px; font-fami=
+ly:Tahoma, Arial, Helvetica, sans-serif;" width=3D"50%" align=3D"right"><a =
+href=3D"https://view=2Eemail=2Ehuntington=2Ecom/?qs=3D95056e108d4100426e9df=
+ecb4a1978e844c494af849cbb6f781b878dc2ca07a2e2f258354eddd3d3d088b3bdd4c31dfc=
+1a4bd242be43beddbcb36cafc94ef6e76f1a56f486468ade76cd7eb2e38f271984b8b5d54c4=
+232fb4b175b0de02e4bba" style=3D"color:#766d65; font-weight:bold;">View as a=
+ web page</a></td>
+    </tr>
+  
+</table>
+    </td></tr></table><table style=3D"min-width: 100%; " class=3D"stylingbl=
+ock-content-wrapper" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><tr=
+><td class=3D"stylingblock-content-wrapper camarker-inner"><table class=3D"=
+dashedborder" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0">
+ 
+  <tr>
+   <td style=3D"line-height: 0; font-size: 0px;" height=3D"15">&nbsp;</td>
+=
+
+  </tr>
+ 
+</table></td></tr></table><table style=3D"min-width: 100%; " class=3D"styli=
+ngblock-content-wrapper" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0"=
+><tr><td class=3D"stylingblock-content-wrapper camarker-inner"><table width=
+=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><tr><td align=3D"left"><img s=
+rc=3D"http://image=2Eemail=2Ehuntington=2Ecom/lib/fe5e15707c6102797d14/m/2/=
+d03bbf4b-4df4-451a-b9a5-c3e217c63851=2Ejpg" style=3D"display: block; height=
+: 54px; width: 185px; padding: 0px; text-align: left;" sdata-assetid=3D"105=
+158" width=3D"185" height=3D"54"></td></tr></table></td></tr></table><table=
+ style=3D"min-width: 100%; " class=3D"stylingblock-content-wrapper" width=
+=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><tr><td class=3D"stylingblock=
+-content-wrapper camarker-inner"><table class=3D"dashedborder" width=3D"100=
+%" cellspacing=3D"0" cellpadding=3D"0">
+ 
+  <tr>
+   <td style=3D"line-height: 0; font-size: 0px;" height=3D"15">&nbsp;</td>
+=
+
+  </tr>
+ 
+</table></td></tr></table><table style=3D"min-width: 100%; " class=3D"styli=
+ngblock-content-wrapper" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0"=
+><tr><td style=3D"padding: 0px 5px; " class=3D"stylingblock-content-wrapper=
+ camarker-inner"><span style=3D"font-family:arial,helvetica,sans-serif;"><s=
+pan style=3D"color: rgb(57, 64, 72);">Hello,<br>
+<br>
+Just a heads up for you=2E We've processed a transfer withdrawal for $2,546=
+=2E74 from your account nicknamed CK2379=2E That's above the $1=2E00 you se=
+t for an alert=2E<br>
+<br>
+Your balance is $0=2E00 as of 7/31/24 11:30 AM ET=2E<br>
+<br>
+Thank you for banking with Huntington=2E</span><br>
+<br>
+<span style=3D"font-size: 12px;"><span style=3D"color: rgb(57, 64, 72);">Yo=
+u received this message because you turned on email alerts for certain even=
+ts or conditions related to your Huntington account(s)=2E For more informat=
+ion or to manage your alerts, log into </span><span class=3D"contact"><a hr=
+ef=3D"https://click=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a8085336764ee3=
+7e5cb9a82cf61d91a386d75141dbdfa8c6ae6ae2188d998fef3f4f742d7c699196f7bcfd1b1=
+ba5ecf15ae70b66fdf37c96076e4256" style=3D"color: #5BA63C;">huntington=2Ecom=
+</a></span><span style=3D"color: rgb(57, 64, 72);"> or the <a href=3D"https=
+://click=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a8085336fa13bd25e19ef7d29=
+21d418ac512c863b2a4834b708e3f4d3fe255fd05c505ad25ef987fd366607f1558b8ed31d3=
+588766647d0b6edc84a7" style=3D"color: #5BA63C;">Huntington Mobile app</a>=
+=2E<br>
+<br>
+This email was generated automatically=2E Please do not reply to this messa=
+ge</span></span></span></td></tr></table><table style=3D"min-width: 100%; "=
+ class=3D"stylingblock-content-wrapper" width=3D"100%" cellspacing=3D"0" ce=
+llpadding=3D"0"><tr><td class=3D"stylingblock-content-wrapper camarker-inne=
+r"><table class=3D"dashedborder" width=3D"100%" cellspacing=3D"0" cellpaddi=
+ng=3D"0">
+ 
+  <tr>
+   <td style=3D"line-height: 0; font-size: 0px;" height=3D"15">&nbsp;</td>
+=
+
+  </tr>
+ 
+</table></td></tr></table><table cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"100%" style=3D"background-color: #EBEBEB; min-width: 100%; " class=3D"s=
+tylingblock-content-wrapper"><tr><td style=3D"padding: 10px; " class=3D"sty=
+lingblock-content-wrapper camarker-inner"><table class=3D"socialshare-wrapp=
+er" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><tr><td align=3D"cen=
+ter"><table cellspacing=3D"0" cellpadding=3D"0" align=3D"center"><tr><td al=
+ign=3D"center"><!--[if mso]><table border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0"><tr><td style=3D"padding-right:10px;"><![endif]--><table class=3D"=
+socialshare-innertable" style=3D"display: inline-block"><tr><td style=3D"pa=
+dding:5px 10px"><a href=3D"https://click=2Eemail=2Ehuntington=2Ecom/?qs=3Da=
+c97caf5a8085336bda2e703951326d245e73708f4120f387cad41d76c83367f8611d912fa5f=
+60437731b533f2c75fcd491c19e97630cc09e81cd7711e758ede" ><img src=3D"https://=
+image=2Es4=2Eexct=2Enet/lib/fe911573736c007d7d/m/2/24b84e22-8d38-4d6c-98db-=
+80812ca4de5f=2Epng" alt=3D"Facebook" style=3D"display: block;; width: 24px =
+!important; height: 24px !important" width=3D"24" height=3D"24"></a></td></=
+tr></table><!--[if mso]></td><td style=3D"padding-right:10px;"><![endif]-->=
+<table class=3D"socialshare-innertable" style=3D"display: inline-block"><tr=
+><td style=3D"padding:5px 10px"><a href=3D"https://click=2Eemail=2Ehuntingt=
+on=2Ecom/?qs=3Dac97caf5a8085336453775e18dd7144889825702c4f98423ea457bb32843=
+9f65c9e8eac88f5228bb3bd070eadf92a9f9f352327db8be6ecefd386ae9adcb8292" ><img=
+ src=3D"https://image=2Es4=2Eexct=2Enet/lib/fe911573736c007d7d/m/2/11a4a1aa=
+-4e8a-432a-8f1f-f8898206da39=2Epng" alt=3D"Instagram" style=3D"display: blo=
+ck;; width: 24px !important; height: 24px !important" width=3D"24" height=
+=3D"24"></a></td></tr></table><!--[if mso]></td><td style=3D"padding-right:=
+10px;"><![endif]--><table class=3D"socialshare-innertable" style=3D"display=
+: inline-block"><tr><td style=3D"padding:5px 10px"><a href=3D"https://click=
+=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a80853369154738e933632735c4ed547f=
+9bd3b02f21c6c90f951246ead21cece82b4b2ad4a32d2f6f93c08ef171fd5881c0eb7f602f8=
+8eae1bf5f1a2" ><img src=3D"https://image=2Es4=2Eexct=2Enet/lib/fe911573736c=
+007d7d/m/2/44cae9a3-eba9-48b9-911b-705f7777cd0e=2Epng" alt=3D"LinkedIn" sty=
+le=3D"display: block;; width: 24px !important; height: 24px !important" wid=
+th=3D"24" height=3D"24"></a></td></tr></table><!--[if mso]></td><td style=
+=3D"padding-right:10px;"><![endif]--><table class=3D"socialshare-innertable=
+" style=3D"display: inline-block"><tr><td style=3D"padding:5px 10px"><a hre=
+f=3D"https://click=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a8085336d98fd1a=
+c3b1190390c2f3d9b6a568b9b3597f0949791ab383c4acd37e703eb1a787e7f398662b01bfe=
+431c77bec8a4f3d8cbe69900d8ce43" ><img src=3D"https://image=2Es4=2Eexct=2Ene=
+t/lib/fe911573736c007d7d/m/2/a14c2439-7025-4aab-a01f-423077193687=2Epng" al=
+t=3D"Twitter" style=3D"display: block;; width: 24px !important; height: 24p=
+x !important" width=3D"24" height=3D"24"></a></td></tr></table><!--[if mso]=
+></td><td><![endif]--><table class=3D"socialshare-innertable" style=3D"disp=
+lay: inline-block"><tr><td style=3D"padding:5px 10px"><a href=3D"https://cl=
+ick=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a808533624f2ca73ac4aa66fe6e38e=
+364f27a6ee8d81cd3859210a8eacbd530dea13dc6f4d2053d88f7e0f6108c10815a70232650=
+e7b4d8829dbccbd" ><img src=3D"https://image=2Es4=2Eexct=2Enet/lib/fe9115737=
+36c007d7d/m/2/21512fbe-b12b-487d-b71f-5eb6388a49d1=2Epng" alt=3D"YouTube" s=
+tyle=3D"display: block;; width: 24px !important; height: 24px !important" w=
+idth=3D"24" height=3D"24"></a></td></tr></table><!--[if mso]></td></tr></ta=
+ble><![endif]--></td></tr></table></td></tr></table></td></tr></table><tabl=
+e cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentation" =
+style=3D"background-color: #EBEBEB; min-width: 100%; " class=3D"stylingbloc=
+k-content-wrapper"><tr><td style=3D"padding: 0px; " class=3D"stylingblock-c=
+ontent-wrapper camarker-inner"><table class=3D"mobile-hide" width=3D"90%" c=
+ellspacing=3D"0" cellpadding=3D"0" border=3D"0" bgcolor=3D"#ebebeb" align=
+=3D"center">
+ 
+  <tr>
+   <td style=3D"font-family:Tahoma, Arial, Helvetica, sans-serif; font-size=
+:14px; font-weight:bold;" align=3D"left">
+    <u><a href=3D"https://click=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a8=
+085336ced6091af9a094a6fdad2685e728b1920ff279b930bfb014a1d340651479ebc325bbc=
+85cddc1c8381735a00a92db38200ccd365852958b7b" style=3D"color:#2b3138; text-d=
+ecoration:none">HUNTINGTON=2ECOM</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href=
+=3D"https://click=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a80853367875a2e2=
+c483d2c4bdeb5a44996110616d6e614e300c6cc58f5cb55a50c5937b80d230dabea9205889f=
+3fe93bbbbfb942be89b4e32519198" style=3D"color:#2b3138; text-decoration:none=
+">BANK &amp; ATM LOCATOR</a></u></td>
+   <td align=3D"right">
+    <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0">
+    </table></td></tr></table>
+<span class=3D"mobile-show" style=3D"display:none; height:0; max-height:0; =
+font-size:0; line-height:0;"><u><a class=3D"mobileNav bgGrey align-center" =
+href=3D"https://click=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a8085336ced6=
+091af9a094a6fdad2685e728b1920ff279b930bfb014a1d340651479ebc325bbc85cddc1c83=
+81735a00a92db38200ccd365852958b7b" style=3D"color:#2b3138; text-decoration:=
+none">HUNTINGTON=2ECOM</a></u> <u><a class=3D"mobileNav bgGrey align-center=
+" href=3D"https://click=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a808533678=
+75a2e2c483d2c4bdeb5a44996110616d6e614e300c6cc58f5cb55a50c5937b80d230dabea92=
+05889f3fe93bbbbfb942be89b4e32519198" style=3D"color:#2b3138; text-decoratio=
+n:none">BANK &amp; ATM LOCATOR</a></u></span><table width=3D"90%" cellspaci=
+ng=3D"0" cellpadding=3D"0" align=3D"center">
+ 
+  <tr>
+   <td class=3D"resizetofull bgGrey align-center" style=3D"color:#394048; f=
+ont-size:11px; font-family:Tahoma, Arial, Helvetica, sans-serif; padding-bo=
+ttom:40px;" bgcolor=3D"#ebebeb" align=3D"left">
+
+<span class=3D"appleLinksBlack">Save paper=2E Please think before you print=
+=2E<br>
+ 
+    <br><strong>Privacy Policy for how we use email to communicate with our=
+ customers:</strong><br>
+    When we send you communications, they may include links that connect yo=
+u to information on our website about our products, services, and special p=
+ricing or promotional offers=2E However, we will never include links, in em=
+ails or texts, that take you to a non-secure page (for example, a page that=
+ doesn't start with "https" or show a lock symbol) that asks you to provide=
+  personal information=2E Additionally, Huntington will never ask you to pr=
+ovide your personal information such as username, password, PINs, account n=
+umber, or Social Security number via email, phone, or text unless you conta=
+ct us first=2E  To verify whether a communication you have received from Hu=
+ntington is legitimate, you can contact our Customer Service Center toll-fr=
+ee at 1-800-480-2265=2E<br>
+    <br>
+ <strong>Security:</strong><br>
+   If you receive an email or other correspondence requesting that you prov=
+ide any sensitive information via email or to a website that does not seem =
+to be affiliated with the website, or that otherwise seems suspicious to yo=
+u, please do not provide such information and report such requests to <a hr=
+ef=3D"mailto:ReportFraud@huntington=2Ecom" style=3D"color:#394048; text-dec=
+oration:none;">ReportFraud@huntington=2Ecom</a>=2E<br>
+    <br>
+
+    
+    
+    <b>Investment, Insurance and Non-deposit Trust products are:</b> NOT A =
+DEPOSIT &bull; NOT FDIC INSURED &bull; NOT GUARANTEED BY THE BANK &bull; NO=
+T INSURED BY ANY FEDERAL GOVERNMENT AGENCY &bull; MAY LOSE VALUE   <br><br>=
+  
+Loans subject to credit application and approval=2E  <br><br>    
+  
+<img alt=3D"" src=3D"https://image=2Eemail=2Ehuntington=2Ecom/lib/fe5e15707=
+c6102797d14/m/3/ade7744a-68e2-4cb8-8928-309fcc04ef87=2Epng" width=3D"12" bo=
+rder=3D"0"> The Huntington National Bank is an Equal Housing Lender and Mem=
+ber FDIC=2E&nbsp;<img alt=3D"" src=3D"http://image=2Eemail=2Ehuntington=2Ec=
+om/lib/fe5e15707c6102797d14/m/2/b225cda0-1a0d-4e4a-937b-84fb22e88fe6=2Epng"=
+ width=3D"12" border=3D"0"><sup>&reg;</sup>, Huntington<sup>&reg;</sup>, <i=
+mg alt=3D"" src=3D"http://image=2Eemail=2Ehuntington=2Ecom/lib/fe5e15707c61=
+02797d14/m/2/b225cda0-1a0d-4e4a-937b-84fb22e88fe6=2Epng" width=3D"12" borde=
+r=3D"0">Huntington<sup>&reg;</sup> and <img alt=3D"" src=3D"http://image=2E=
+email=2Ehuntington=2Ecom/lib/fe5e15707c6102797d14/m/2/b225cda0-1a0d-4e4a-93=
+7b-84fb22e88fe6=2Epng" width=3D"12" border=3D"0">Huntington=2EWelcome=2E<su=
+p>&reg;</sup> are federally registered service marks of Huntington Bancshar=
+es Incorporated=2E &copy;2024 Huntington Bancshares Incorporated=2E<br>
+    <br>
+    <strong>This email was sent by:</strong><br>
+    The Huntington National Bank, 41 South High Street, Columbus, OH 43215,=
+ USA</span></td></tr></table></td></tr></table>
+              
+                                                </td>
+                                              </tr>
+                                              </tbody>
+                                            </table>
+                                          </td>
+                                        </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td valign=3D"top">
+          
+        </td>
+      </tr>
+    </table>
+    <img src=3D"https://click=2Eemail=2Ehuntington=2Ecom/open=2Easpx?ffcb10=
+-fe57107671630579731c-fdc015777d64047b7412787d66-fe5e15707c6102797d14-fe5e1=
+6707060037a7611-fe111c787c630d75721171-fe8d15707d6d017576&d=3D10182&bmt=3D0=
+" width=3D"1" height=3D"1" alt=3D"">
+  </body>
+</html>
+
+From 1806109042330187379@xxx Wed Jul 31 15:30:06 +0000 2024
+X-GM-THRID: 1806109042330187379
+X-Gmail-Labels: Inbox,Category Updates,Backfill/202407
+Delivered-To: outgoing@gmail.com
+Received: by 2002:a05:612c:83:b0:486:8641:dba5 with SMTP id 3csp376863vql;
+        Wed, 31 Jul 2024 08:30:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGb73dnGRRHww6Zcbb/hSZldtrkMc3vjn8Acbf3DyY70jQrvPCBBKTXT5dvB0V38l+DYnWP
+X-Received: by 2002:a05:6122:469a:b0:4ef:280f:96ea with SMTP id 71dfb90a1353d-4f6e68d363cmr18054440e0c.4.1722439806149;
+        Wed, 31 Jul 2024 08:30:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1722439806; cv=none;
+        d=google.com; s=arc-20160816;
+        b=EnaR4DhSguikZp1xxBemiBxbcYMxDPeQ5pivOA1sJGNbEf3M7hdn5gbE1eUPLPSjUH
+         HgYwbEdzSkpyeJZ3R5WfDNtBnzJt6d44Fp4qM+XoKXv5oEKOiytRdrGL7RF4mTExGrXV
+         8HylPGz6fjBNQkIT2RmlqS45a5PzofVTt2UbY42GRPz3aArdxHHGWRy155vmvtu/5oif
+         Ysyeyu6eMx/RcGVnGH/ExzU184nmZkx71I/BnoyG9CqxBHbdqpBiJNEeI8ZnZcnsiAQJ
+         M9CrDVI/kqAF7NWBIxSQhAoPCmDb1cjAEVdhg5NFtyVpKOV3eVmiOIsZAMm6e5XxiZ5A
+         dHxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:feedback-id:message-id:list-id:reply-to
+         :mime-version:list-help:date:subject:to:from:dkim-signature;
+        bh=lZ05TEHm2mY4N0RLCIGn7fW9MZ1aeYl7M7RR5Xejw2M=;
+        fh=Ln8UHqZ5H/eG/78z3KHzeHZ9c+K/pwEH9W5YI6weeXE=;
+        b=APx5xrqcyY+erZgaNzZFrsHDM9QIUSuxXmDJEGNm/+ESTJ03phlpLMbQ2ckZnWcEXC
+         5sIW93xztzEo2Lo0qo8lWTGjACQ2yYtshO1BPZzJGgF3JwSA65Cf7uvepSgux5ujJXOe
+         kwZPMhhVw10MZDPFAnzEQ8G05Z3YVhCGkZJjC6QffhRDvUMexTQiQFJtOVznc0Nt6Z4i
+         faEYttcySVAjYEHaumDvJivOfU5hwvjA21ZnctU1/TXPa8n+dGuUgk8jUzcNd83N12rb
+         fQQmu9Qqhcct1KNTaFQmehf3L2aUClVV4hxpWOSN73Hjy5aMGmmLOF+jz5DfemTx7h75
+         MsCg==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@email.huntington.com header.s=200608 header.b=WxP3wUuo;
+       spf=pass (google.com: domain of bounce-20547735_html-889798751-46471468-10956480-1089583@bounce.email.huntington.com designates 207.67.38.53 as permitted sender) smtp.mailfrom=bounce-20547735_HTML-889798751-46471468-10956480-1089583@bounce.email.huntington.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=email.huntington.com
+Return-Path: <bounce-20547735_HTML-889798751-46471468-10956480-1089583@bounce.email.huntington.com>
+Received: from mta.huntington-email.com (mta.huntington-email.com. [207.67.38.53])
+        by mx.google.com with ESMTPS id d75a77b69052e-44fe851b536si157750031cf.672.2024.07.31.08.30.06
+        for <outgoing@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 31 Jul 2024 08:30:06 -0700 (PDT)
+Received-SPF: pass (google.com: domain of bounce-20547735_html-889798751-46471468-10956480-1089583@bounce.email.huntington.com designates 207.67.38.53 as permitted sender) client-ip=207.67.38.53;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@email.huntington.com header.s=200608 header.b=WxP3wUuo;
+       spf=pass (google.com: domain of bounce-20547735_html-889798751-46471468-10956480-1089583@bounce.email.huntington.com designates 207.67.38.53 as permitted sender) smtp.mailfrom=bounce-20547735_HTML-889798751-46471468-10956480-1089583@bounce.email.huntington.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=email.huntington.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=200608; d=email.huntington.com;
+ h=From:To:Subject:Date:List-Help:MIME-Version:Reply-To:List-ID:Message-ID:
+ Content-Type:Content-Transfer-Encoding;
+ i=HuntingtonAlerts@email.huntington.com;
+ bh=lZ05TEHm2mY4N0RLCIGn7fW9MZ1aeYl7M7RR5Xejw2M=;
+ b=WxP3wUuoVDAnT90wxBJkHps2I0GJJv5jEt/Iz15RG8q9QyVNwX4Huf39r925vl6m9K83sA9jbXQR
+   a5V8jVychh91ZHijgLsgH/p8H/jpFG7VO+ZCsgBAaPFaeJIZ2RyKZzdOGC67rEME52nLyfO8gGFW
+   +GHPqnn9JyAOKoZUi8k=
+Received: by mta.huntington-email.com id hl9c7s2fmd48 for <outgoing@gmail.com>; Wed, 31 Jul 2024 15:30:05 +0000 (envelope-from <bounce-20547735_HTML-889798751-46471468-10956480-1089583@bounce.email.huntington.com>)
+From: "Huntington Alerts" <HuntingtonAlerts@email.huntington.com>
+To: <outgoing@gmail.com>
+Subject: Withdrawal or Purchase
+Date: Wed, 31 Jul 2024 09:30:05 -0600
+List-Help: <https://click.email.huntington.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiIxMDk1NjQ4MCIsInMiOiI4ODk3OTg3NTEiLCJsaWQiOiIyMDU0NzczNSIsImoiOiI0NjQ3MTQ2OCIsImpiIjoiMTA4OTU4MyIsImQiOiIxMDE4MiJ9.lpXqjbqzuRkjr_99YYmZvnzOHLw-xi9nF4O_UDCUFGU>
+MIME-Version: 1.0
+Reply-To: "Huntington Online Banking" <reply-46471468-20547735_HTML-889798751-10956480-1089583@email.huntington.com>
+List-ID: <10944120.xt.local>
+X-SFMC-Stack: 1
+x-job: 10956480_46471468
+Message-ID: <c8a91478-aaeb-41d3-8369-3bb067ddec65@ind1s01mta612.xt.local>
+Feedback-ID: 10956480:46471468:207.67.38.53:sfmktgcld
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4=2E01 Transitional//EN" "http://ww=
+w=2Ew3=2Eorg/TR/html4/loose=2Edtd">
+<html>
+  <head>
+    <meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=
+=3D1, maximum-scale=3D1, user-scalable=3D0" />
+    <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8=
+" />
+    <style type=3D"text/css">
+      ReadMsgBody{ width: 100%;}
+      =2EExternalClass {width: 100%;}
+      =2EExternalClass, =2EExternalClass p, =2EExternalClass span, =2EExter=
+nalClass font, =2EExternalClass td, =2EExternalClass div {line-height: 100%=
+;}
+      body {-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;margin=
+:0 !important;}
+      p { margin: 1em 0;}
+      table td { border-collapse: collapse;}
+      img {outline:0;}
+      a img {border:none;}
+      p {margin: 1em 0;}
+      @-ms-viewport{ width: device-width;}
+    </style>
+    <style type=3D"text/css">
+      @media only screen and (max-width: 480px) {
+        =2Econtainer {width: 100% !important;}
+        =2Efooter { width:auto !important; margin-left:0; }
+        =2Econtent-padding{ padding:4px !important; }
+        =2Emobile-hidden { display:none !important; }
+        =2Elogo { display:block !important; padding:0 !important; }
+        img { max-width:100% !important; height:auto !important; max-height=
+:auto !important;}
+        =2Eheader img{max-width:100% !important;height:auto !important; max=
+-height:auto !important;}
+        =2Ephoto img { width:100% !important; max-width:100% !important; he=
+ight:auto !important;}
+        =2Edrop { display:block !important; width: 100% !important; float:l=
+eft; clear:both;}
+        =2Efooterlogo { display:block !important; width: 100% !important; p=
+adding-top:15px; float:left; clear:both;}
+        =2Enav4, =2Enav5, =2Enav6 { display: none !important; }
+        =2EtableBlock {width:100% !important;}
+        =2Eresponsive-td {width:100% !important; display:block !important; =
+padding:0 !important; }
+        =2Efluid, =2Efluid-centered {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: auto !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        =2Efluid-centered {
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        /* MOBILE GLOBAL STYLES - DO NOT CHANGE */
+        body { padding: 0px !important; font-size: 16px !important; line-he=
+ight: 150% !important;}
+        h1 { font-size: 22px !important; line-height: normal !important;}
+        h2 { font-size: 20px !important; line-height: normal !important;}
+        h3 { font-size: 18px !important; line-height: normal !important;}
+        =2Ebuttonstyles {
+          font-family:arial,helvetica,sans-serif !important;
+          font-size: 16px !important;
+          color: #FFFFFF !important;
+          padding: 10px !important;
+        }
+        /* END OF MOBILE GLOBAL STYLES - DO NOT CHANGE */
+      }
+      @media only screen and (max-width: 640px) {
+        =2Econtainer { width:100% !important; }
+        =2Emobile-hidden { display:none !important; }
+        =2Elogo { display:block !important; padding:0 !important; }
+        =2Econtact a {color:#5BA63C!important; text-decoration:underline!im=
+portant;}
+        =2Ephoto img { width:100% !important; height:auto !important;}
+        =2Enav5, =2Enav6 { display: none !important;}
+        =2Efluid, =2Efluid-centered {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: auto !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        =2Efluid-centered {
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+      }
+    </style>
+    <!--[if mso]>       <style type=3D"text/css">           /* Begin Outloo=
+k Font Fix */           body, table, td {               font-family: Arial,=
+ Helvetica, sans-serif ;               font-size:16px;               color:=
+#808080;               line-height:1;           }           /* End Outlook =
+Font Fix */       </style>     <![endif]-->
+  </head>
+  <body bgcolor=3D"#ffffff" text=3D"#000000" style=3D"background-color: #ff=
+ffff; color: #000000; padding: 0px; -webkit-text-size-adjust:none; font-siz=
+e: 16px; font-family:arial,helvetica,sans-serif;"><style type=3D"text/css">=
+
+div=2Epreheader 
+{ display: none !important; } 
+</style>
+<div class=3D"preheader" style=3D"font-size: 1px; display: none !important;=
+">We've processed a withdrawal or purchase above the amount you set for an =
+alert=2E</div>
+    <table width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+align=3D"center">
+      <tr>
+        <td align=3D"center" valign=3D"top">
+          
+        </td>
+      </tr>
+      <tr>
+        <td align=3D"center">
+          <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"=
+600" class=3D"container" align=3D"center">
+            <tr>
+              <td>
+                <table class=3D"tb_properties border_style" style=3D"backgr=
+ound-color:#FFFFFF;" cellspacing=3D"0" cellpadding=3D"0" bgcolor=3D"#ffffff=
+" width=3D"100%">
+                  <tr>
+                    <td align=3D"center" valign=3D"top">
+                      <table align=3D"left" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" width=3D"100%">
+                        <tr>
+                          <!-- added padding here -->
+                          <td class=3D"content_padding" style=3D"">
+                            <!-- end of comment -->
+                            <table border=3D"0" cellpadding=3D"0" cellspaci=
+ng=3D"0" width=3D"100%">
+                              <tr> <!-- top slot -->
+                                <td align=3D"center" class=3D"header" valig=
+n=3D"top">
+                                  <table align=3D"left" border=3D"0" cellpa=
+dding=3D"0" cellspacing=3D"0" width=3D"100%">
+                                    <tbody>
+                                        <tr>
+                                          <td align=3D"left" valign=3D"top"=
+>
+                                            <table cellspacing=3D"0" cellpa=
+dding=3D"0" style=3D"width:100%">
+                                              <tbody>
+                                              <tr>
+                                                <td class=3D"responsive-td"=
+ valign=3D"top" style=3D"width: 100%;">
+                                                  <table style=3D"min-width=
+: 100%; " class=3D"stylingblock-content-wrapper" width=3D"100%" cellspacing=
+=3D"0" cellpadding=3D"0"><tr><td class=3D"stylingblock-content-wrapper cama=
+rker-inner">
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
+<meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D1"=
+>
+<title></title>
+<style type=3D"text/css">
+
+ /* CLIENT-SPECIFIC STYLES */
+   body{ width:100% !important; -webkit-text-size-adjust:100%; -ms-text-siz=
+e-adjust:100%; margin:0; padding:0;} /* Prevent WebKit and Windows mobile c=
+hanging default text sizes + Margin Reset */
+  =2EReadMsgBody{width:100%;} =2EExternalClass{width:100%;} /* Force Hotmai=
+l to display emails at full width */
+  =2EExternalClass * {line-height: 100%} /* Force Hotmail/Outlook to displa=
+y normal line spacing */
+  #outlook a{padding:0;} /* Force Outlook to provide a "view in browser" me=
+ssage */
+  table, td{mso-table-lspace:0pt; mso-table-rspace:0pt;} /* Remove spacing =
+between tables in Outlook 2007 and up */
+  img { outline:none; text-decoration:none; -ms-interpolation-mode:bicubic;=
+} /* Allow smoother rendering of resized image in Internet Explorer */
+
+/* RESET STYLES */
+
+    img{border:0; line-height:100%; outline:none; text-decoration:none;}
+    table{border-collapse:collapse !important;}
+    body{height:100% !important; margin:0; padding:0; width:100% !important=
+;}
+ a:link, v:link {color:#417300;} /*Link Color for IOS */
+ =2EappleLinksWhite a {color: #ffffff !important; text-decoration: none;} 
+=
+
+ =2EappleLinksBlack a {color: #394048 !important; text-decoration: none;}
+=
+
+ =2EappleLinksGreen a {color: #766d65 !important; text-decoration: none;}
+=
+
+ 
+ @media only screen and (max-width:480px) {
+  *[class*=3Dresizetofull] { width:100% !important; height:auto !important;=
+ margin: 0 auto  !important; padding:0 !important;}/*Place this on main tab=
+le hosting email - Makes it fluid*/
+  *[class*=3Dcolstack] { display: block; width: 100%; padding: 0 !important=
+ }
+  *[class*=3Dmobile-hide] {display:none !important;} /*Hide images from mob=
+ile - but keeps it in desktop */  
+  *[class*=3Dmobile-show] {display: block !important;overflow : visible !im=
+portant;height: auto !important;max-height: inherit !important;} /*Hides el=
+ements in desktop but displays them in Mobile */
+  *[class*=3Dmobile-show-footer-text] {display:inline !important; font-size=
+:11px !important; line-height:1;} /*Hides elements in desktop but displays =
+them in Mobile */
+  *[class*=3Dmobile-show-inline] {display: inline-block !important;overflow=
+ : visible !important;height: auto !important;max-height: inherit !importan=
+t;} /*Hides elements in desktop but displays them in Mobile */
+  *[class*=3Dmobile-show-table] {display:table !important;overflow : visibl=
+e !important;height: auto !important;max-height: inherit !important;} /* As=
+sign to a table that is hidden in mobile, but shows in mobile */
+  *[class*=3Dmobile-show-tr] {display:table-row !important;overflow : visib=
+le !important;height: auto !important;max-height: inherit !important;} /* A=
+ssign to a tr that is hidden in mobile, but shows in mobile */
+  *[class*=3Dmobile-show-td] {display:table-cell !important;overflow : visi=
+ble !important;height: auto !important;max-height: inherit !important;} /* =
+Assign to a td that is hidden in mobile, but shows in mobile */
+  *[class*=3Dremovepadding] {padding: 0 !important;} /* removes padding fro=
+m Desktop view */
+  *[class*=3Dmobilepadding] { padding: 10px !important; } /* Mobile padding=
+ */
+  *[class*=3DpadT10] { padding-top: 10px !important; } /* Mobile padding to=
+p*/
+  *[class*=3DpadT20] { padding-top: 20px !important; } /* Mobile padding to=
+p*/
+  *[class*=3DpadL10] { padding-left: 10px !important; } /* Mobile padding l=
+eft*/
+  *[class*=3DpadR10] { padding-Right: 10px !important; } /* Mobile padding =
+right*/
+  *[class*=3DpadB10] { padding-Bottom: 10px !important; } /* Mobile padding=
+ left*/
+  *[class*=3DpadB20] { padding-Bottom: 20px !important; } /* Mobile padding=
+ left*/
+  *[class*=3Dfourteen] { font-size: 14px !important; } /* Mobile font size =
+*/
+  *[class~=3Dmobile-block] { width: 100% !important; } /* unhide image elem=
+ent from desktop*/
+  =2Eleftcol { display:table-footer-group; }
+  =2Erightcol { display:table-header-group; }
+    *[class~=3Dalign-left] { text-align:left !important;}
+  *[class~=3Dalign-center] { text-align:center !important; margin: 0 auto !=
+important }
+  *[class~=3Dalign-right] { text-align:right !important;}
+  *[class~=3DminWFix] {min-width:inherit !important;}
+  *[class~=3Dh10] {height:10px !important;}
+  *[class~=3Dborder1Bgrey] {border-bottom:1px solid #cccccc !important;}
+  *[class~=3DbgGrey] {background-color:#ebebeb !important;}
+  *[class~=3DbgWhite] {background-color:#ffffff !important;}
+  *[class~=3DfontWeightNorm] {font-weight:normal !important;}
+  *[class~=3DmobileNav] {display:block !important; border-top:2px solid #ff=
+ffff; padding:15px 0; font-weight:bold; font-size:14px; line-height:1;}
+  
+}
+</style>
+
+
+      
+      <table width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0=
+">
+          
+            <tr>
+              <td class=3D"mobile-hide" style=3D"color:#766d65; padding-top=
+:15px; padding-bottom:15px;" width=3D"50%" align=3D"left"><!-- content area=
+ here -->
+              <table class=3D"dashedborder" width=3D"100%" cellspacing=3D"0=
+" cellpadding=3D"0" border=3D"0">
+          
+    <tr>
+      <td style=3D"color:#766d65; font-size:12px; line-height:1; font-famil=
+y:Tahoma, Arial, Helvetica, sans-serif" align=3D"left"><custom name=3D"preh=
+eader" type=3D"content"></custom></td>
+    </tr>
+  
+</table><!-- end content area -->
+</td>
+      <td class=3D"align-center padB10" style=3D" font-size:12px; font-fami=
+ly:Tahoma, Arial, Helvetica, sans-serif;" width=3D"50%" align=3D"right"><a =
+href=3D"https://view=2Eemail=2Ehuntington=2Ecom/?qs=3D95056e108d4100426e9df=
+ecb4a1978e844c494af849cbb6f781b878dc2ca07a2e2f258354eddd3d3d088b3bdd4c31dfc=
+1a4bd242be43beddbcb36cafc94ef6e76f1a56f486468ade76cd7eb2e38f271984b8b5d54c4=
+232fb4b175b0de02e4bba" style=3D"color:#766d65; font-weight:bold;">View as a=
+ web page</a></td>
+    </tr>
+  
+</table>
+    </td></tr></table><table style=3D"min-width: 100%; " class=3D"stylingbl=
+ock-content-wrapper" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><tr=
+><td class=3D"stylingblock-content-wrapper camarker-inner"><table class=3D"=
+dashedborder" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0">
+ 
+  <tr>
+   <td style=3D"line-height: 0; font-size: 0px;" height=3D"15">&nbsp;</td>
+=
+
+  </tr>
+ 
+</table></td></tr></table><table style=3D"min-width: 100%; " class=3D"styli=
+ngblock-content-wrapper" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0"=
+><tr><td class=3D"stylingblock-content-wrapper camarker-inner"><table width=
+=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><tr><td align=3D"left"><img s=
+rc=3D"http://image=2Eemail=2Ehuntington=2Ecom/lib/fe5e15707c6102797d14/m/2/=
+d03bbf4b-4df4-451a-b9a5-c3e217c63851=2Ejpg" style=3D"display: block; height=
+: 54px; width: 185px; padding: 0px; text-align: left;" sdata-assetid=3D"105=
+158" width=3D"185" height=3D"54"></td></tr></table></td></tr></table><table=
+ style=3D"min-width: 100%; " class=3D"stylingblock-content-wrapper" width=
+=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><tr><td class=3D"stylingblock=
+-content-wrapper camarker-inner"><table class=3D"dashedborder" width=3D"100=
+%" cellspacing=3D"0" cellpadding=3D"0">
+ 
+  <tr>
+   <td style=3D"line-height: 0; font-size: 0px;" height=3D"15">&nbsp;</td>
+=
+
+  </tr>
+ 
+</table></td></tr></table><table style=3D"min-width: 100%; " class=3D"styli=
+ngblock-content-wrapper" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0"=
+><tr><td style=3D"padding: 0px 5px; " class=3D"stylingblock-content-wrapper=
+ camarker-inner"><span style=3D"font-family:arial,helvetica,sans-serif;"><s=
+pan style=3D"color: rgb(57, 64, 72);">Hello,<br>
+<br>
+Just a heads up for you=2E We've processed a transfer withdrawal for $2,546=
+=2E74 from your account nicknamed CK2379=2E That's above the $1=2E00 you se=
+t for an alert=2E<br>
+<br>
+Your balance is $0=2E00 as of 7/31/24 11:30 AM ET=2E<br>
+<br>
+Thank you for banking with Huntington=2E</span><br>
+<br>
+<span style=3D"font-size: 12px;"><span style=3D"color: rgb(57, 64, 72);">Yo=
+u received this message because you turned on email alerts for certain even=
+ts or conditions related to your Huntington account(s)=2E For more informat=
+ion or to manage your alerts, log into </span><span class=3D"contact"><a hr=
+ef=3D"https://click=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a8085336764ee3=
+7e5cb9a82cf61d91a386d75141dbdfa8c6ae6ae2188d998fef3f4f742d7c699196f7bcfd1b1=
+ba5ecf15ae70b66fdf37c96076e4256" style=3D"color: #5BA63C;">huntington=2Ecom=
+</a></span><span style=3D"color: rgb(57, 64, 72);"> or the <a href=3D"https=
+://click=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a8085336fa13bd25e19ef7d29=
+21d418ac512c863b2a4834b708e3f4d3fe255fd05c505ad25ef987fd366607f1558b8ed31d3=
+588766647d0b6edc84a7" style=3D"color: #5BA63C;">Huntington Mobile app</a>=
+=2E<br>
+<br>
+This email was generated automatically=2E Please do not reply to this messa=
+ge</span></span></span></td></tr></table><table style=3D"min-width: 100%; "=
+ class=3D"stylingblock-content-wrapper" width=3D"100%" cellspacing=3D"0" ce=
+llpadding=3D"0"><tr><td class=3D"stylingblock-content-wrapper camarker-inne=
+r"><table class=3D"dashedborder" width=3D"100%" cellspacing=3D"0" cellpaddi=
+ng=3D"0">
+ 
+  <tr>
+   <td style=3D"line-height: 0; font-size: 0px;" height=3D"15">&nbsp;</td>
+=
+
+  </tr>
+ 
+</table></td></tr></table><table cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"100%" style=3D"background-color: #EBEBEB; min-width: 100%; " class=3D"s=
+tylingblock-content-wrapper"><tr><td style=3D"padding: 10px; " class=3D"sty=
+lingblock-content-wrapper camarker-inner"><table class=3D"socialshare-wrapp=
+er" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><tr><td align=3D"cen=
+ter"><table cellspacing=3D"0" cellpadding=3D"0" align=3D"center"><tr><td al=
+ign=3D"center"><!--[if mso]><table border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0"><tr><td style=3D"padding-right:10px;"><![endif]--><table class=3D"=
+socialshare-innertable" style=3D"display: inline-block"><tr><td style=3D"pa=
+dding:5px 10px"><a href=3D"https://click=2Eemail=2Ehuntington=2Ecom/?qs=3Da=
+c97caf5a8085336bda2e703951326d245e73708f4120f387cad41d76c83367f8611d912fa5f=
+60437731b533f2c75fcd491c19e97630cc09e81cd7711e758ede" ><img src=3D"https://=
+image=2Es4=2Eexct=2Enet/lib/fe911573736c007d7d/m/2/24b84e22-8d38-4d6c-98db-=
+80812ca4de5f=2Epng" alt=3D"Facebook" style=3D"display: block;; width: 24px =
+!important; height: 24px !important" width=3D"24" height=3D"24"></a></td></=
+tr></table><!--[if mso]></td><td style=3D"padding-right:10px;"><![endif]-->=
+<table class=3D"socialshare-innertable" style=3D"display: inline-block"><tr=
+><td style=3D"padding:5px 10px"><a href=3D"https://click=2Eemail=2Ehuntingt=
+on=2Ecom/?qs=3Dac97caf5a8085336453775e18dd7144889825702c4f98423ea457bb32843=
+9f65c9e8eac88f5228bb3bd070eadf92a9f9f352327db8be6ecefd386ae9adcb8292" ><img=
+ src=3D"https://image=2Es4=2Eexct=2Enet/lib/fe911573736c007d7d/m/2/11a4a1aa=
+-4e8a-432a-8f1f-f8898206da39=2Epng" alt=3D"Instagram" style=3D"display: blo=
+ck;; width: 24px !important; height: 24px !important" width=3D"24" height=
+=3D"24"></a></td></tr></table><!--[if mso]></td><td style=3D"padding-right:=
+10px;"><![endif]--><table class=3D"socialshare-innertable" style=3D"display=
+: inline-block"><tr><td style=3D"padding:5px 10px"><a href=3D"https://click=
+=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a80853369154738e933632735c4ed547f=
+9bd3b02f21c6c90f951246ead21cece82b4b2ad4a32d2f6f93c08ef171fd5881c0eb7f602f8=
+8eae1bf5f1a2" ><img src=3D"https://image=2Es4=2Eexct=2Enet/lib/fe911573736c=
+007d7d/m/2/44cae9a3-eba9-48b9-911b-705f7777cd0e=2Epng" alt=3D"LinkedIn" sty=
+le=3D"display: block;; width: 24px !important; height: 24px !important" wid=
+th=3D"24" height=3D"24"></a></td></tr></table><!--[if mso]></td><td style=
+=3D"padding-right:10px;"><![endif]--><table class=3D"socialshare-innertable=
+" style=3D"display: inline-block"><tr><td style=3D"padding:5px 10px"><a hre=
+f=3D"https://click=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a8085336d98fd1a=
+c3b1190390c2f3d9b6a568b9b3597f0949791ab383c4acd37e703eb1a787e7f398662b01bfe=
+431c77bec8a4f3d8cbe69900d8ce43" ><img src=3D"https://image=2Es4=2Eexct=2Ene=
+t/lib/fe911573736c007d7d/m/2/a14c2439-7025-4aab-a01f-423077193687=2Epng" al=
+t=3D"Twitter" style=3D"display: block;; width: 24px !important; height: 24p=
+x !important" width=3D"24" height=3D"24"></a></td></tr></table><!--[if mso]=
+></td><td><![endif]--><table class=3D"socialshare-innertable" style=3D"disp=
+lay: inline-block"><tr><td style=3D"padding:5px 10px"><a href=3D"https://cl=
+ick=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a808533624f2ca73ac4aa66fe6e38e=
+364f27a6ee8d81cd3859210a8eacbd530dea13dc6f4d2053d88f7e0f6108c10815a70232650=
+e7b4d8829dbccbd" ><img src=3D"https://image=2Es4=2Eexct=2Enet/lib/fe9115737=
+36c007d7d/m/2/21512fbe-b12b-487d-b71f-5eb6388a49d1=2Epng" alt=3D"YouTube" s=
+tyle=3D"display: block;; width: 24px !important; height: 24px !important" w=
+idth=3D"24" height=3D"24"></a></td></tr></table><!--[if mso]></td></tr></ta=
+ble><![endif]--></td></tr></table></td></tr></table></td></tr></table><tabl=
+e cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentation" =
+style=3D"background-color: #EBEBEB; min-width: 100%; " class=3D"stylingbloc=
+k-content-wrapper"><tr><td style=3D"padding: 0px; " class=3D"stylingblock-c=
+ontent-wrapper camarker-inner"><table class=3D"mobile-hide" width=3D"90%" c=
+ellspacing=3D"0" cellpadding=3D"0" border=3D"0" bgcolor=3D"#ebebeb" align=
+=3D"center">
+ 
+  <tr>
+   <td style=3D"font-family:Tahoma, Arial, Helvetica, sans-serif; font-size=
+:14px; font-weight:bold;" align=3D"left">
+    <u><a href=3D"https://click=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a8=
+085336ced6091af9a094a6fdad2685e728b1920ff279b930bfb014a1d340651479ebc325bbc=
+85cddc1c8381735a00a92db38200ccd365852958b7b" style=3D"color:#2b3138; text-d=
+ecoration:none">HUNTINGTON=2ECOM</a></u>&nbsp;&nbsp;&nbsp;&nbsp;<u><a href=
+=3D"https://click=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a80853367875a2e2=
+c483d2c4bdeb5a44996110616d6e614e300c6cc58f5cb55a50c5937b80d230dabea9205889f=
+3fe93bbbbfb942be89b4e32519198" style=3D"color:#2b3138; text-decoration:none=
+">BANK &amp; ATM LOCATOR</a></u></td>
+   <td align=3D"right">
+    <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0">
+    </table></td></tr></table>
+<span class=3D"mobile-show" style=3D"display:none; height:0; max-height:0; =
+font-size:0; line-height:0;"><u><a class=3D"mobileNav bgGrey align-center" =
+href=3D"https://click=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a8085336ced6=
+091af9a094a6fdad2685e728b1920ff279b930bfb014a1d340651479ebc325bbc85cddc1c83=
+81735a00a92db38200ccd365852958b7b" style=3D"color:#2b3138; text-decoration:=
+none">HUNTINGTON=2ECOM</a></u> <u><a class=3D"mobileNav bgGrey align-center=
+" href=3D"https://click=2Eemail=2Ehuntington=2Ecom/?qs=3Dac97caf5a808533678=
+75a2e2c483d2c4bdeb5a44996110616d6e614e300c6cc58f5cb55a50c5937b80d230dabea92=
+05889f3fe93bbbbfb942be89b4e32519198" style=3D"color:#2b3138; text-decoratio=
+n:none">BANK &amp; ATM LOCATOR</a></u></span><table width=3D"90%" cellspaci=
+ng=3D"0" cellpadding=3D"0" align=3D"center">
+ 
+  <tr>
+   <td class=3D"resizetofull bgGrey align-center" style=3D"color:#394048; f=
+ont-size:11px; font-family:Tahoma, Arial, Helvetica, sans-serif; padding-bo=
+ttom:40px;" bgcolor=3D"#ebebeb" align=3D"left">
+
+<span class=3D"appleLinksBlack">Save paper=2E Please think before you print=
+=2E<br>
+ 
+    <br><strong>Privacy Policy for how we use email to communicate with our=
+ customers:</strong><br>
+    When we send you communications, they may include links that connect yo=
+u to information on our website about our products, services, and special p=
+ricing or promotional offers=2E However, we will never include links, in em=
+ails or texts, that take you to a non-secure page (for example, a page that=
+ doesn't start with "https" or show a lock symbol) that asks you to provide=
+  personal information=2E Additionally, Huntington will never ask you to pr=
+ovide your personal information such as username, password, PINs, account n=
+umber, or Social Security number via email, phone, or text unless you conta=
+ct us first=2E  To verify whether a communication you have received from Hu=
+ntington is legitimate, you can contact our Customer Service Center toll-fr=
+ee at 1-800-480-2265=2E<br>
+    <br>
+ <strong>Security:</strong><br>
+   If you receive an email or other correspondence requesting that you prov=
+ide any sensitive information via email or to a website that does not seem =
+to be affiliated with the website, or that otherwise seems suspicious to yo=
+u, please do not provide such information and report such requests to <a hr=
+ef=3D"mailto:ReportFraud@huntington=2Ecom" style=3D"color:#394048; text-dec=
+oration:none;">ReportFraud@huntington=2Ecom</a>=2E<br>
+    <br>
+
+    
+    
+    <b>Investment, Insurance and Non-deposit Trust products are:</b> NOT A =
+DEPOSIT &bull; NOT FDIC INSURED &bull; NOT GUARANTEED BY THE BANK &bull; NO=
+T INSURED BY ANY FEDERAL GOVERNMENT AGENCY &bull; MAY LOSE VALUE   <br><br>=
+  
+Loans subject to credit application and approval=2E  <br><br>    
+  
+<img alt=3D"" src=3D"https://image=2Eemail=2Ehuntington=2Ecom/lib/fe5e15707=
+c6102797d14/m/3/ade7744a-68e2-4cb8-8928-309fcc04ef87=2Epng" width=3D"12" bo=
+rder=3D"0"> The Huntington National Bank is an Equal Housing Lender and Mem=
+ber FDIC=2E&nbsp;<img alt=3D"" src=3D"http://image=2Eemail=2Ehuntington=2Ec=
+om/lib/fe5e15707c6102797d14/m/2/b225cda0-1a0d-4e4a-937b-84fb22e88fe6=2Epng"=
+ width=3D"12" border=3D"0"><sup>&reg;</sup>, Huntington<sup>&reg;</sup>, <i=
+mg alt=3D"" src=3D"http://image=2Eemail=2Ehuntington=2Ecom/lib/fe5e15707c61=
+02797d14/m/2/b225cda0-1a0d-4e4a-937b-84fb22e88fe6=2Epng" width=3D"12" borde=
+r=3D"0">Huntington<sup>&reg;</sup> and <img alt=3D"" src=3D"http://image=2E=
+email=2Ehuntington=2Ecom/lib/fe5e15707c6102797d14/m/2/b225cda0-1a0d-4e4a-93=
+7b-84fb22e88fe6=2Epng" width=3D"12" border=3D"0">Huntington=2EWelcome=2E<su=
+p>&reg;</sup> are federally registered service marks of Huntington Bancshar=
+es Incorporated=2E &copy;2024 Huntington Bancshares Incorporated=2E<br>
+    <br>
+    <strong>This email was sent by:</strong><br>
+    The Huntington National Bank, 41 South High Street, Columbus, OH 43215,=
+ USA</span></td></tr></table></td></tr></table>
+              
+                                                </td>
+                                              </tr>
+                                              </tbody>
+                                            </table>
+                                          </td>
+                                        </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td valign=3D"top">
+          
+        </td>
+      </tr>
+    </table>
+    <img src=3D"https://click=2Eemail=2Ehuntington=2Ecom/open=2Easpx?ffcb10=
+-fe57107671630579731c-fdc015777d64047b7412787d66-fe5e15707c6102797d14-fe5e1=
+6707060037a7611-fe111c787c630d75721171-fe8d15707d6d017576&d=3D10182&bmt=3D0=
+" width=3D"1" height=3D"1" alt=3D"">
+  </body>
+</html>

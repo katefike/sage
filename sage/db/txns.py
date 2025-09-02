@@ -95,28 +95,39 @@ def get_identical_txn_id(txn: Transaction) -> Optional[int]:
     """
     bank_id = banks.get_id(txn.bank, txn.account)
 
-    # Transfers don't have entities
-    entity_id = None
-    if "transfer" not in txn.type_:
-        entity_id = entities.get_id(txn.merchant, txn.payer)
-
     params = (
         txn.date,
         txn.type_,
         bank_id,
         txn.amount,
-        entity_id,
     )
-    query = """
-    SELECT
-        MIN(t.id) AS "txn_id"
-    FROM txns t
-    WHERE t.date = %s
-        AND t.type = %s
-        AND t.bank_id = %s
-        AND t.amount = %s
-        AND t.entity_id = %s;
-    """
+
+    # Transfers don't have entities
+    if "transfer" in txn.type_:
+        query = """
+        SELECT
+            MIN(t.id) AS "txn_id"
+        FROM txns t
+        WHERE t.date = %s
+            AND t.type = %s
+            AND t.bank_id = %s
+            AND t.amount = %s
+            AND t.entity_id IS NULL;
+        """
+    else:
+        entity_id = entities.get_id(txn.merchant, txn.payer)
+        query = """
+        SELECT
+            MIN(t.id) AS "txn_id"
+        FROM txns t
+        WHERE t.date = %s
+            AND t.type = %s
+            AND t.bank_id = %s
+            AND t.amount = %s
+            AND t.entity_id = %s;
+        """
+        params = params + (entity_id,)
+    
     row, _column = execute_statements.select(query, params)
     identical_txn_id = row[0][0]
     return identical_txn_id
